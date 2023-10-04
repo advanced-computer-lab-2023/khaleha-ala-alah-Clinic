@@ -8,6 +8,27 @@ const Patient = require('./../models/patientModel');
 
 
 //examples -- we need api bellow to test with them
+// get patient and create patient written here to test add family members
+
+// get all patients
+exports.getAllPatients = async function (req, res) {
+    try{
+        const patients = await Patient.find();
+        res.status(200).json({
+            status : 'success',
+            results: patients.length,
+            data: {
+                patients
+            }
+        })
+    }
+    catch(err){
+        res.status(500).json({
+            status: 'error',
+            message: 'this route is not defined yet'
+        })
+    } 
+}
 
 exports.getPatients = async function (req, res) {
     try{
