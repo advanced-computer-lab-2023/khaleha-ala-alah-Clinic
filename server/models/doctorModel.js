@@ -22,11 +22,11 @@ const doctorSchema = new Schema({
     message: 'Username must start with Dr',
   },
   },
-  Name: {
+  name: {
     type: String,
     required: true,
   },
-  Email: {
+  email: {
     type: String,
     required: true,
     validate: {
@@ -34,40 +34,22 @@ const doctorSchema = new Schema({
       message: 'Invalid email address.',
     },
   },
-  Gender: {
-    type: String,
-    enum: ['Male', 'Female', 'Other'],
-    required: true,
-  },
-  HourlyRate: {
+  hourlyRate: {
     type: Number,
     required: true,
-  },
-  Password: {
-    type: String,
-    required: true,
-    validate: {
-      validator: (value) => validator.isLength(value, { min: 8 }),
-      message: 'Password must contain at least 8 characters.',
-    },
   },
   fixedSlots: {
     type: [Date]
   },
-  Username: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  Birthdate: {
+  dateOfBirth: {
     type: Date,
     required: true,
   },
-  Affiliation: {
+  hospital: {
     type: String,
     required: true,
   },
-  EducationalBackground: {
+  educationalBackground: {
     type: String,
     required: true,
   },
@@ -76,12 +58,9 @@ const doctorSchema = new Schema({
     required: true,
   },
 
+
 },
 { timestamps: true });
-
-
-
-
 // Export the Doctor model
 const Doctor = mongoose.model('Doctor', doctorSchema);
 
