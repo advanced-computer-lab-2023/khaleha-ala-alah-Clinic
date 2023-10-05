@@ -31,7 +31,6 @@ const pharmacistSchema = new Schema({
   email: {
     type: String,
     required: true,
-    unique: true,
     validate: {
       validator: (value) => validator.isEmail(value),
       message: 'Invalid email address.',
