@@ -4,7 +4,9 @@ const cors = require("cors");
 
 const app = express();
 
-const patientRouter = require("./routes/patientRoutes");
+
+const patientRouter = require('./routes/patientRoutes');
+const doctorRouter = require('./routes/doctorRoutes');
 
 //1) middleware
 if (process.env.NODE_ENV == "development") {
@@ -17,6 +19,8 @@ app.use(cors()); // to allow all cors requests
 
 //2) routes
 
+
+app.use('/doctors', doctorRouter);
 app.use("/patients", patientRouter);
 app.use("/users", require("./routes/userRoute"));
 

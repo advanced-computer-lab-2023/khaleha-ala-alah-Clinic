@@ -1,33 +1,32 @@
-const Patient = require("./../models/patientModel");
-const Doctors = require("./../models/doctorModel");
-const Appointments = require("./../models/appointmentModel");
+const Appointment = require('../models/appointmentModel');
+const patientModel = require('./../models/patientModel');
+
 
 exports.getAppointmentsPatients = async function (req, res) {
-  try {
-    console.log(req.body.id);
-    const patientsID = await Appointments.find({
-      PatientID: req.body.id,
-    }).select({ PatiendID: 1, _id: 0 });
-    console.log(patientsID + "    AAA");
-    const allPatients = await Patient.find();
-    const patients = [];
-
-    for (let i = 0; i < allPatients.length; i++) {
-      for (let j = 0; j < patientsID.length; j++) {
-        if (allPatients[i]._id == patientsID[j].DoctorID) {
-          patients.push(allPatients[i].name);
-          break;
+    try {
+      console.log(req.user._id);
+      const patientsID = await Appointment.find({
+        DoctorID: req.user._id,
+      }).select({ PatientID: 1, _id: 0 });
+      console.log(patientsID);
+      const allPatients = await patientModel.find();
+      const patients = [];
+  
+      for (let i = 0; i < allPatients.length; i++) {
+        for (let j = 0; j < patientsID.length; j++) {
+          if (allPatients[i].userID == patientsID[j].PatientID) {
+            patients.push(allPatients[i].name);
+            break;
+          }
         }
       }
+      res.status(200).json({
+        patients,
+      });
+    } catch (err) {
+      res.status(500).json({
+        status: "error",
+        message: "this route is not defined yet",
+      });
     }
-    console.log("ALO");
-    res.status(200).json({
-      patients,
-    });
-  } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: "this route is not defined yet",
-    });
-  }
-};
+  };
