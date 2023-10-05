@@ -122,4 +122,28 @@ exports.verifyUser = async (req, res) => {
     }
 }
 
+// Login
+exports.login = async (req, res) => {
+  try {
+      const { username, password } = req.body;
+      // Check if user exists
+      let user=await userModel.findOne({username});
+      if(!user){
+          return res.status(400).json({error : "User does not exists"});
+      }
+      const validPassword = await bcrypt.compare(password, user.password);
+      if(!validPassword){
+          return res.status(400).json({error : "Invalid password"});
+      }
+      const token = generateToken(user._id, user.role);
+      if(!user.verified){
+          return res.status(400).json({error : "User not verified",token:token});
+      }
+      res.status(200).json({ message: 'User logged in successfully',token:token,role:user.role });
+
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
+}
+
 
