@@ -76,30 +76,11 @@ const doctorSchema = new Schema({
     required: true,
   },
 
-  // Define a virtual field for confirmPassword
-  confirmPassword: {
-    type: String,
-    required: true,
-    validate: {
-      validator: function (value) {
-        // Use validator's "equals" method to compare values
-        return validator.equals(value, this.Password);
-      },
-      message: 'Passwords do not match.',
-    },
-  },
 },
 { timestamps: true });
 
 
-// Create a virtual for confirmPassword that won't be stored in the database
-doctorSchema.virtual('confirmPassword')
-  .get(function () {
-    return this._confirmPassword;
-  })
-  .set(function (value) {
-    this._confirmPassword = value;
-  });
+
 
 // Export the Doctor model
 const Doctor = mongoose.model('Doctor', doctorSchema);
