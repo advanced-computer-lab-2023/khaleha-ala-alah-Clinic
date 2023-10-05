@@ -9,11 +9,11 @@ const userSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    required: [true, "Please tell us your name!"],
+    required: [false, "Please tell us your name!"],
   },
   email: {
     type: String,
-    required: [true, "Please provide your email"],
+    required: [false, "Please provide your email"],
     lowercase: true,
     validate: [validator.isEmail, "Please provide a valid email"],
   },
@@ -23,6 +23,6 @@ const userSchema = new mongoose.Schema({
     minlength: 8,
   },
 });
-const User = mongoose.model("User", userSchema);
+const Admin = mongoose.model("Admin", userSchema);
 
-module.exports = User;
+module.exports = Admin;

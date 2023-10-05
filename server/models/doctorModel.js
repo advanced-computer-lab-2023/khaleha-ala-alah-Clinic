@@ -79,8 +79,6 @@ const doctorSchema = new Schema(
   { timestamps: true }
 );
 
-// Create a virtual for confirmPassword that won't be stored in the database
-
 // Export the Doctor model
 const Doctor = mongoose.model("Doctor", doctorSchema);
 
