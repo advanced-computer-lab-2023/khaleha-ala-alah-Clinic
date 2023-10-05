@@ -14,7 +14,7 @@ const package = new mongoose.Schema({
         type: String,
         required: [true, 'Please provide description for packages'],
     },
-    default: null
+     
 });
 
 const Package = mongoose.model('Package', package);

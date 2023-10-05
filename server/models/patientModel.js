@@ -34,7 +34,6 @@ const familyMemberSchema = new mongoose.Schema({
     nationalID: {
       type: String,
       required: true,
-      unique: true,
     },
     age: {
       type: Number,
@@ -94,32 +93,15 @@ const userSchema = new mongoose.Schema({
     package : {
       type: package,
     },
-    presecriptions:{
-        type: [presecriptionsSchema],
-        default: 'No presecriptions'
-    },
+    // presecriptions:{
+    //     type: [presecriptionsSchema],
+    //     default:[]
+    // },
     EmergencyContact: emergencyContactSchema,
     familyMembers: {
         type: [familyMemberSchema],
         default: []
     },
-    password: {
-        type: String,
-        required: [true, 'Please provide a password'],
-        minlength: 8
-    },
-    passwordConfirm: {
-        type: String,
-        required: [true, 'Please confirm your password'],
-        validate: {
-          // This only works on CREATE and SAVE!!!
-          validator: function(el) {
-            return el === this.password;
-          },
-          message: 'Passwords are not the same!'
-        }
-    }
-
 });
 
 const Patient = mongoose.model('Patient', userSchema);
