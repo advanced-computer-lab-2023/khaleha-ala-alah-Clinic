@@ -30,4 +30,3 @@ exports.getAppointmentsPatients = async function (req, res) {
       });
     }
   };
-
