@@ -1,3 +1,4 @@
+const { CheckAuth } = require("../middlewares/auth");
 const express = require("express");
 const router = express.Router();
 const patientController = require("./../controllers/patientController");
@@ -11,7 +12,7 @@ router.route("/").post(patientController.createPatient);
 router.get("/:id", patientController.getPatients);
 router.patch("/add-family-members/:id", patientController.addFamilyMembers);
 
-router.get("/", patientController.getAppointmentsDoctors);
+router.get("/", CheckAuth, patientController.getAppointmentsDoctors);
 
 router.get("/patient-alo", patientController.getAppointmentsDoctors);
 

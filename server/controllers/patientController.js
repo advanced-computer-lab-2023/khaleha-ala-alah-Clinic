@@ -198,10 +198,10 @@ exports.addFamilyMembers = async function (req, res) {
 };
 exports.getAppointmentsDoctors = async function (req, res) {
   try {
-    console.log(req.body.id);
     const doctorsID = await Appointments.find({
-      DoctorID: req.body.id,
-    }).select({ DoctorID: 1, _id: 0 });
+      PatientID: req.user._id,
+    });
+    console.log(req.user._id + "   5555555555");
     console.log(doctorsID + "    AAA");
     const allDoctors = await Doctors.find();
     const doctors = [];
