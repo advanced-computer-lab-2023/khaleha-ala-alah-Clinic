@@ -58,10 +58,9 @@ const doctorSchema = new Schema({
     required: true,
   },
 
-  // Define a virtual field for confirmPassword
+
 },
 { timestamps: true });
-
 // Export the Doctor model
 const Doctor = mongoose.model('Doctor', doctorSchema);
 
