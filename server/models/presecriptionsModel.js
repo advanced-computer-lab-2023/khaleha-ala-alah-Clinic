@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const validator = require('validator');
+
 
 const presecriptionsSchema = new Schema({
     PatientID : {
@@ -13,7 +13,7 @@ const presecriptionsSchema = new Schema({
     },
     location : {
         type: [String],
-        default : null
+        default : [],
     },
     
 },{ timestamps: true });
