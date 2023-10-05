@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 // const familyMembers = require('./familyMemberModel');
 // const emergencyContactSchema = require('./emergencyContactModel');
+const presecriptionsSchema = require('./presecriptionsModel');
+const package = require('./packageModel');
+
 const emergencyContactSchema = new mongoose.Schema({
     fullName: {
       type: String,
@@ -44,10 +47,22 @@ const familyMemberSchema = new mongoose.Schema({
     },
     relationToPatient: {
       type: String,
-      required: true,
+      required: [true, 'Please provide the relation of your emergency contact'],
+      validate: {
+        // relation to the patient has to be restricted to wife/husband and/or children
+        validator: function (el) {
+          return el === 'wife' || el === 'husband' || el === 'children';
+        },
+        message: 'Relation to the patient has to be restricted to wife/husband and/or children',
+      },
     },
 });
 const userSchema = new mongoose.Schema({
+    userID: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     username: {
         type: String,
         required: [true, 'Please tell us your name!'],
@@ -60,7 +75,6 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: [true, 'Please provide your email'],
-        unique: true,
         lowercase: true,
         validate: [validator.isEmail, 'Please provide a valid email']
     },
@@ -77,8 +91,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please tell us your mobile number']
     },
+    package : {
+      type: package,
+    },
     presecriptions:{
-        type: String,
+        type: [presecriptionsSchema],
         default: 'No presecriptions'
     },
     EmergencyContact: emergencyContactSchema,

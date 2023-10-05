@@ -2,8 +2,26 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const validator = require('validator');
 
+
 // Define the Doctor schema
 const doctorSchema = new Schema({
+  userID: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    validator : {
+    // i want to validate that username start with Dr/
+    validator: (value) => {
+      return value.startsWith('Dr');
+    },
+    message: 'Username must start with Dr',
+  },
+  },
   Name: {
     type: String,
     required: true,
@@ -11,7 +29,6 @@ const doctorSchema = new Schema({
   Email: {
     type: String,
     required: true,
-    unique: true,
     validate: {
       validator: (value) => validator.isEmail(value),
       message: 'Invalid email address.',
@@ -34,6 +51,9 @@ const doctorSchema = new Schema({
       message: 'Password must contain at least 8 characters.',
     },
   },
+  fixedSlots: {
+    type: [Date]
+  },
   Username: {
     type: String,
     required: true,
@@ -51,6 +71,11 @@ const doctorSchema = new Schema({
     type: String,
     required: true,
   },
+  speciality: {
+    type: String,
+    required: true,
+  },
+
   // Define a virtual field for confirmPassword
   confirmPassword: {
     type: String,
@@ -63,7 +88,8 @@ const doctorSchema = new Schema({
       message: 'Passwords do not match.',
     },
   },
-}, { timestamps: true });
+},
+{ timestamps: true });
 
 
 // Create a virtual for confirmPassword that won't be stored in the database
