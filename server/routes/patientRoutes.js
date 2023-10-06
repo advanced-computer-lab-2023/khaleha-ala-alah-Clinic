@@ -17,6 +17,6 @@ router.patch("/add-family-members/:id", patientController.addFamilyMembers);
 
 router.get("/", CheckAuth, patientController.getAppointmentsDoctors);
 
-router.get("/patient-alo", patientController.getAppointmentsDoctors);
+router.get('/presecriptions', CheckAuth, patientController.getPerscriptions);
 
 module.exports = router;

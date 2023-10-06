@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 // const familyMembers = require('./familyMemberModel');
 // const emergencyContactSchema = require('./emergencyContactModel');
-const presecriptionsSchema = require('./presecriptionsModel');
-const package = require('./packageModel');
+const presecriptionsSchema = require('../presecriptionsModel');
+const package = require('../packageModel');
 
 const emergencyContactSchema = new mongoose.Schema({
     fullName: {
@@ -93,10 +93,10 @@ const userSchema = new mongoose.Schema({
     package : {
       type: package,
     },
-    // presecriptions:{
-    //     type: [presecriptionsSchema],
-    //     default:[]
-    // },
+    presecriptions:{
+        type: [presecriptionsSchema],
+        default:[]
+    },
     EmergencyContact: emergencyContactSchema,
     familyMembers: {
         type: [familyMemberSchema],

@@ -1,5 +1,5 @@
-const Patient = require("./../models/patientModel");
-const Doctors = require("./../models/doctorModel");
+const Patient = require("../models/users/patientModel");
+const Doctors = require("../models/users/doctorModel");
 const Appointments = require("./../models/appointmentModel");
 //examples
 
@@ -7,6 +7,7 @@ const Appointments = require("./../models/appointmentModel");
 // get patient and create patient written here to test add family members
 
 // get all patients
+
 exports.getAllPatients = async function (req, res) {
   try {
     const patients = await Patient.find();
@@ -81,6 +82,7 @@ exports.addFamilyMembers = async function (req, res) {
       relationToPatient: req.body.relationToPatient,
     };
 
+
     // Add the new family member to the patient's familyMembers array
     patient.familyMembers.push(newFamilyMember);
 
@@ -96,9 +98,9 @@ exports.addFamilyMembers = async function (req, res) {
     });
   }
 
-  const Patients = require("./../models/patientModel");
+  const Patients = require("../models/users/patientModel");
   const Appointments = require("./../models/appointmentModel");
-  const Doctors = require("./../models/doctorModel");
+  const Doctors = require("../models/users/doctorModel");
 
   //examples
 
@@ -201,8 +203,6 @@ exports.getAppointmentsDoctors = async function (req, res) {
     const doctorsID = await Appointments.find({
       PatientID: req.user._id,
     });
-    console.log(req.user._id + "   5555555555");
-    console.log(doctorsID + "    AAA");
     const allDoctors = await Doctors.find();
     const doctors = [];
 
@@ -214,7 +214,6 @@ exports.getAppointmentsDoctors = async function (req, res) {
         }
       }
     }
-    console.log("ALO");
     res.status(200).json({
       doctors,
     });
@@ -225,3 +224,23 @@ exports.getAppointmentsDoctors = async function (req, res) {
     });
   }
 };
+
+exports.getPerscriptions = async function (req, res) {
+  try {
+    const prescriptions = await Patient.find({
+      PatientID: req.user._id,
+    }).select({ prescription: 1, _id: 0 });
+    res.status(200).json({
+      status: "success",
+      results: prescriptions.length,
+      data: {
+        prescriptions,
+      }
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: "this route is not defined yet",
+    });
+  }
+}

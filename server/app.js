@@ -7,7 +7,6 @@ const app = express();
 const adminRouter = require("./routes/adminstratorRoutes");
 const patientRouter = require("./routes/patientRoutes");
 
-const patientRouter = require("./routes/patientRoutes");
 const doctorRouter = require("./routes/doctorRoutes");
 
 //1) middleware
