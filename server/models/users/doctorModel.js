@@ -10,18 +10,6 @@ const doctorSchema = new Schema(
       required: true,
       unique: true,
     },
-    username: {
-      type: String,
-      required: true,
-      unique: true,
-      validator: {
-        // i want to validate that username start with Dr/
-        validator: (value) => {
-          return value.startsWith("Dr");
-        },
-        message: "Username must start with Dr",
-      },
-    },
     Name: {
       type: String,
       required: true,
@@ -74,6 +62,11 @@ const doctorSchema = new Schema(
     speciality: {
       type: String,
       required: true,
+    },
+    status: {
+      type: String,
+      enum: ["accepted", "pending", "rejected"],
+      default: "pending",
     },
   },
   { timestamps: true }
