@@ -10,11 +10,11 @@ const doctorSchema = new Schema(
       required: true,
       unique: true,
     },
-    Name: {
+    name: {
       type: String,
       required: true,
     },
-    Email: {
+    email: {
       type: String,
       required: true,
       validate: {
@@ -22,16 +22,16 @@ const doctorSchema = new Schema(
         message: "Invalid email address.",
       },
     },
-    Gender: {
+    gender: {
       type: String,
       enum: ["Male", "Female", "Other"],
       required: true,
     },
-    HourlyRate: {
+    hourlyRate: {
       type: Number,
       required: true,
     },
-    Password: {
+    password: {
       type: String,
       required: true,
       validate: {
@@ -42,20 +42,20 @@ const doctorSchema = new Schema(
     fixedSlots: {
       type: [Date],
     },
-    Username: {
+    username: {
       type: String,
       required: true,
       unique: true,
     },
-    Birthdate: {
+    birthdate: {
       type: Date,
       required: true,
     },
-    Affiliation: {
+    affiliation: {
       type: String,
       required: true,
     },
-    EducationalBackground: {
+    educationalBackground: {
       type: String,
       required: true,
     },
