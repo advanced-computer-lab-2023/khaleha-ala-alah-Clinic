@@ -98,7 +98,13 @@ exports.delAdminDoctorPatient = async (req, res) => {
 };
 exports.viewPendingDoctors = async (req, res) => {
   try {
-    const pendingDoctors = await Doctor.find({ status: "pending" });
+    const pendingDoctors = await Doctor.find({ status: "pending" }).select({
+      Password: 0,
+      confirmPassword: 0,
+      _id: 0,
+      __v: 0,
+      userID: 0,
+    });
     console.log(pendingDoctors);
     res.status(200).json({
       status: "success",
