@@ -15,9 +15,12 @@ const presecriptionsSchema = new Schema({
         type: [String],
         default : [],
     },
+    summary : {
+        type: String,
+    },
+
     
 },{ timestamps: true });
 
-const presecriptions = mongoose.model('presecriptions', presecriptionsSchema);
 
-module.exports = presecriptions;
+module.exports = presecriptionsSchema;

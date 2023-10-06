@@ -1,7 +1,7 @@
-const Admin = require("./../models/adminModel");
-const Patient = require("./../models/patientModel"); // Replace with the appropriate model
-const Doctor = require("./../models/doctorModel");
-const User = require("./../models/user");
+const Admin = require("../models/users/adminModel");
+const Patient = require("../models/users/patientModel"); // Replace with the appropriate model
+const Doctor = require("../models/users/doctorModel");
+const User = require("../models/users/user");
 // const faker = require("faker");
 exports.getAllAdmins = async function (req, res) {
   try {
