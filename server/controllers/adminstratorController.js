@@ -86,7 +86,7 @@ exports.delAdminDoctorPatient = async (req, res) => {
     if (deletedCount === 0) {
       return res.status(404).json({ error: `${role} not found.` });
     }
-    const userDeleted = await User.deleteOne({ name });
+    const userDeleted = await User.deleteOne({ username: name });
     if (userDeleted.deletedCount === 0) {
       return res.status(404).json({ error: `User ${name} not found.` });
     }
@@ -94,6 +94,30 @@ exports.delAdminDoctorPatient = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal server error." });
+  }
+};
+exports.viewPendingDoctors = async (req, res) => {
+  try {
+    const pendingDoctors = await Doctor.find({ status: "pending" }).select({
+      Password: 0,
+      confirmPassword: 0,
+      _id: 0,
+      __v: 0,
+      userID: 0,
+    });
+    console.log(pendingDoctors);
+    res.status(200).json({
+      status: "success",
+      results: pendingDoctors.length,
+      data: {
+        pendingDoctors,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: "NO PENDING DOCTORS",
+    });
   }
 };
 

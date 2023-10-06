@@ -9,6 +9,6 @@ router
   .post(adminController.addAdmin)
   .delete(adminController.delAdminDoctorPatient);
 
-//router.route("/:role/:name");
+router.route("/pendingDoctors").get(adminController.viewPendingDoctors);
 
 module.exports = router;
