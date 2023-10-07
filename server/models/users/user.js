@@ -13,12 +13,6 @@ const userSchema = new Schema({
     type: String,
     required: [true, 'Please tell us your name!'],
   },
-  email: {
-    type: String,
-    required: [true, 'Please provide your email'],
-    lowercase: true,
-    validate: [validator.isEmail, 'Please provide a valid email'],
-  },
   password: {
     type: String,
     required: [true, 'Please provide a password'],
@@ -31,6 +25,10 @@ const userSchema = new Schema({
     required: true
   },
   verified :{
+    type: Boolean,
+    default: false
+  },
+  doctorApproved :{
     type: Boolean,
     default: false
   }
