@@ -3,20 +3,17 @@ const express = require("express");
 const router = express.Router();
 const patientController = require("./../controllers/patientController");
 
-// router.get('/patient-stats', patientController.createPatient);
-// add family members to patient
 
-router
-    .route('/')
-    .get(patientController.getAllPatients)
-    .post(patientController.createPatient);
-// post('/addPatient' , patientController.createPatient);
-// router.route('/addPatient').post( patientController.createPatient);
+
+// router
+//     .route('/')
+//     .get(patientController.getAllPatients)
+//     .post(patientController.createPatient);
+
+router.get('/mydoctors',CheckAuth, patientController.getMyDoctors);
 router.get("/:id", patientController.getPatients);
-router.patch("/add-family-members/:id", patientController.addFamilyMembers);
+router.patch("/add-family-members", CheckAuth ,patientController.addFamilyMembers);
+router.get('/presecriptions', CheckAuth, patientController.getPerscriptions);
 
-router.get("/", CheckAuth, patientController.getAppointmentsDoctors);
-
-router.get("/patient-alo", patientController.getAppointmentsDoctors);
 
 module.exports = router;

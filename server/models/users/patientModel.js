@@ -95,9 +95,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please tell us your mobile number"],
   },
-  SubscribedPackage: {
-    type: mongoose.Schema.Types.ObjectId, // Use ObjectId type to reference packages
-    ref: "Package",
+  package: {
+    type: package,
   },
   // presecriptions:{
   //     type: [presecriptionsSchema],

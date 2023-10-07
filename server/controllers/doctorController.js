@@ -1,6 +1,23 @@
 const Appointment = require("../models/appointmentModel");
-const patientModel = require("./../models/patientModel");
-
+const patientModel = require("../models/users/patientModel");
+const Doctor = require("../models/users/doctorModel");
+exports.getAllDoctors = async function (req, res) {
+  try {
+    const Doctors = await Doctor.find();
+    res.status(200).json({
+      status: "success",
+      results: Doctors.length,
+      data: {
+        Doctors,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: "this route is not defined yet",
+    });
+  }
+};
 exports.getAppointmentsPatients = async function (req, res) {
   try {
     console.log(req.user._id);

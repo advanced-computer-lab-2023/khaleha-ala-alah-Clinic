@@ -1,7 +1,7 @@
-const userModel = require('../models/user');
-const patientModel = require('../models/patientModel');
+const userModel = require('../models/users/user');
+const patientModel = require('../models/users/patientModel');
 const userVerificationModel = require('../models/userVerification');
-const doctorModel = require('../models/doctorModel');
+const doctorModel = require('../models/users/doctorModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { validateName,validateEmail,validatePassword,validateMobileNumber,validateGender,validateDateOfBirth,validateRole}= require('../utilities/validations');
@@ -42,11 +42,8 @@ exports.sendVerificationMail = async ({ email }) => {
   };
 
   //send OTP
-  exports.sendOTP = async (_id) => {
+  exports.sendOTP = async (email,_id) => {
     try {
-     console.log(_id);
-     const email = await userModel.findById(_id).select('email');
-     console.log(email);
      const OTP = await this.sendVerificationMail({ email });
      const salt = await bcrypt.genSalt(10);
      const hashedOtp = await bcrypt.hash(OTP.toString(), salt);
@@ -87,30 +84,30 @@ exports.registerUser = async (req, res) => {
         if(!role){
             return res.status(400).json({error : "Role not specified"});
         }
-        const {username,name, email, password,dateOfBirth } = req.body;       
-        // Validate user
+        const {username,name, email, password } = req.body;       
+        // Validate inputs
         validateName(name);validateEmail(email);validatePassword(password);
-        validateDateOfBirth(dateOfBirth);
         
         // Check if user already exists
         let user=await userModel.findOne({username});
         if(user){
             return res.status(400).json({error : "User already exists"});
         }
+        // Hash password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
+        // Create user
         user = new userModel({
           username,
           name,
-          email,
           password: hashedPassword,
           role
         });
         await user.save();
-      
 
+        // Create patient or doctor
         if (role === 'patient') {
-          const {gender,mobileNumber,emergencyName,emergencyNumber}=req.body;
+          const {dateOfBirth,gender,mobileNumber,emergencyName,emergencyNumber}=req.body;
           validateGender(gender);validateMobileNumber(mobileNumber);
           validateName(emergencyName);validateMobileNumber(emergencyName);
           const patient = new patientModel({
@@ -133,7 +130,7 @@ exports.registerUser = async (req, res) => {
             return res.status(400).json({error : "Invalid data"});
           }
         }else if(role === 'doctor'){
-          const{hourlyRate,hospital,speciality,educationalBackground}=req.body;
+          const{dateOfBirth,hourlyRate,hospital,speciality,educationalBackground}=req.body;
           const doctor = new doctorModel({
             userID: user._id,
             username,
@@ -144,6 +141,7 @@ exports.registerUser = async (req, res) => {
             hospital,
             speciality,
             educationalBackground,
+            status: 'pending',
           });
           try {
             await doctor.save();
@@ -152,9 +150,11 @@ exports.registerUser = async (req, res) => {
             return res.status(400).json({error : "Invalid data"});
           }
         }
-        await this.sendOTP(user._id);
+        //send OTP
+        await this.sendOTP(email,user._id);
+        //generate token
         const token = generateToken(user._id, user.role);
-        res.status(200).json({ message: 'User registered successfully',token:token });
+        res.status(200).json({ message: 'User registered successfully',token:token,role:user.role });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -169,13 +169,39 @@ exports.login = async (req, res) => {
       if(!user){
           return res.status(400).json({error : "User does not exists"});
       }
+      //validate password
       const validPassword = await bcrypt.compare(password, user.password);
       if(!validPassword){
           return res.status(400).json({error : "Invalid password"});
       }
+      //check if user is doctor and not approved yet
+      if(user.role === 'doctor' && !user.doctorApproved){
+        
+        let doctor=await doctorModel.findOne({userID:user._id});
+        
+        if(doctor.status === 'pending'){
+            return res.status(400).json({error : "Doctor not approved yet"});
+        }else if(doctor.status === 'rejected'){
+            return res.status(400).json({error : "Doctor rejected"});
+        }
+
+      }
+      //generate token
       const token = generateToken(user._id, user.role);
+
+      //check if user is not verified send OTP
       if(!user.verified){
-          return res.status(400).json({error : "User not verified",token:token});
+        if(user.role === 'doctor'){
+          let doctor=await doctorModel.findOne({userID:user._id});
+          email=doctor.email;
+        }else if (user.role === 'patient'){
+          let patient=await patientModel.findOne({userID:user._id});
+          email=patient.email;
+        }else{
+          return res.status(500).json({error : "internal server error"});
+        }
+        await this.sendOTP(email,user._id);
+        return res.status(400).json({error : "User not verified yet",token:token,role:user.role});
       }
       res.status(200).json({ message: 'User logged in successfully',token:token,role:user.role });
 
