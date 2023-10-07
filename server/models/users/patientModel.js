@@ -82,7 +82,7 @@ const userSchema = new mongoose.Schema({
         enum: ['Male', 'Female', 'Other'],
         required: [true, 'Please tell us your gender']
     },
-    dataOfBirth: {
+    dateOfBirth: {
         type: Date,
         //required: [true, 'Please tell us your age']
     },
