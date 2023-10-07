@@ -1,6 +1,8 @@
 const Patient = require("../models/users/patientModel");
 const Doctors = require("../models/users/doctorModel");
 const Appointments = require("./../models/appointmentModel");
+const Prescriptions = require("./../models/presecriptionsModel.js");
+
 //examples
 
 //examples -- we need api bellow to test with them
@@ -8,25 +10,26 @@ const Appointments = require("./../models/appointmentModel");
 
 // get all patients
 
-exports.getMyDoctors = async function(req,res){
-  
+exports.getMyDoctors = async function (req, res) {
   try {
     const patient = req.user._id;
-    const doctorIds = await Appointments.distinct('DoctorID', { PatientID: patient });
+    const doctorIds = await Appointments.distinct("DoctorID", {
+      PatientID: patient,
+    });
     const doctors = await Doctors.find({ userID: { $in: doctorIds } });
-    const doctorNames = doctors.map((doctor) => {doctor.name , doctor.speciality});
+    const doctorNames = doctors.map((doctor) => {
+      doctor.name, doctor.speciality;
+    });
     res.status(200).json({
       doctorNames,
     });
   } catch (err) {
-    
     res.status(500).json({
       status: "error",
       message: "this route is not defined yet",
     });
   }
-
-}
+};
 exports.getAllPatients = async function (req, res) {
   try {
     const patients = await Patient.find();
@@ -82,7 +85,7 @@ exports.createPatient = async function (req, res) {
 
 exports.addFamilyMembers = async function (req, res) {
   try {
-    const patient = await Patient.find({ userID : req.user._id});
+    const patient = await Patient.find({ userID: req.user._id });
 
     if (!patient) {
       return res.status(404).json({
@@ -100,7 +103,6 @@ exports.addFamilyMembers = async function (req, res) {
       relationToPatient: req.body.relationToPatient,
     };
 
-
     // Add the new family member to the patient's familyMembers array
     patient.familyMembers.push(newFamilyMember);
 
@@ -115,18 +117,29 @@ exports.addFamilyMembers = async function (req, res) {
       message: "Server error",
     });
   }
-}
+};
 exports.getPerscriptions = async function (req, res) {
   try {
     const prescriptions = await Patient.find({
       PatientID: req.user._id,
-    }).select({ prescription: 1, _id: 0 });
+    });
+    const allDoctors = await Doctors.find();
+    const doctors = [];
+
+    for (let i = 0; i < allDoctors.length; i++) {
+      for (let j = 0; j < doctorsID.length; j++) {
+        if (allDoctors[i]._id == doctorsID[j].DoctorID) {
+          doctors.push(allDoctors[i]);
+          break;
+        }
+      }
+    }
     res.status(200).json({
       status: "success",
       results: prescriptions.length,
       data: {
         prescriptions,
-      }
+      },
     });
   } catch (err) {
     res.status(500).json({
@@ -134,4 +147,19 @@ exports.getPerscriptions = async function (req, res) {
       message: "this route is not defined yet",
     });
   }
-}
+};
+exports.getPatientPrescribtions = async function (req, res) {
+  try {
+    const presecriptions = await Prescriptions.find({
+      PatientID: req.user._id,
+    });
+    res.status(200).json({
+      presecriptions,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: "this route is not defined yet",
+    });
+  }
+};

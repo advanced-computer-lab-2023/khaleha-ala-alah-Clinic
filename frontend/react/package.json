@@ -66,17 +66,17 @@
     "trailingComma": "none"
   },
   "devDependencies": {
+    "@craco/craco": "^7.1.0",
     "@types/history": "4.7.11",
     "@types/react-redux": "7.1.25",
     "@types/yup": "0.29.14",
+    "craco-less": "^2.1.0-alpha.0",
     "css-loader": "^6.7.3",
     "less": "^4.1.3",
     "less-loader": "^11.1.0",
-    "style-loader": "^3.3.2",
     "mini-css-extract-plugin": "^2.7.5",
     "postcss-loader": "^7.3.0",
     "prettier": "2.8.8",
-    "@craco/craco": "^7.1.0",
-    "craco-less": "^2.1.0-alpha.0"
+    "style-loader": "^3.3.2"
   }
 }
