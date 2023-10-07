@@ -1,6 +1,8 @@
 const Patient = require("./../models/patientModel");
 const Doctors = require("./../models/doctorModel");
 const Appointments = require("./../models/appointmentModel");
+const Prescriptions = require("./../models/presecriptionsModel.js");
+
 //examples
 
 //examples -- we need api bellow to test with them
@@ -201,8 +203,6 @@ exports.getAppointmentsDoctors = async function (req, res) {
     const doctorsID = await Appointments.find({
       PatientID: req.user._id,
     });
-    console.log(req.user._id + "   5555555555");
-    console.log(doctorsID + "    AAA");
     const allDoctors = await Doctors.find();
     const doctors = [];
 
@@ -214,9 +214,23 @@ exports.getAppointmentsDoctors = async function (req, res) {
         }
       }
     }
-    console.log("ALO");
     res.status(200).json({
       doctors,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: "this route is not defined yet",
+    });
+  }
+};
+exports.getPatientPrescribtions = async function (req, res) {
+  try {
+    const presecriptions = await Prescriptions.find({
+      PatientID: req.user._id,
+    });
+    res.status(200).json({
+      presecriptions,
     });
   } catch (err) {
     res.status(500).json({
