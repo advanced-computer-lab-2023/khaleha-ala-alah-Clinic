@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="doctor.css" />
+    <link rel="stylesheet" href="viewDetailsOfSelectedDoctor.css" />
     <title>Administrator Interface</title>
   </head>
   <body>
@@ -24,21 +24,32 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <div class="sidebar-buttons">
-            <a href="#">Patients</a>
-            <a href="#">Button 2</a>
-            <a href="#">Button 3</a>
-            <a href="#">Button 4</a>
-            <a href="#">Button 5</a>
-        </div>
       <div class="sidebar-buttons">
-        <a href="doctorApp.html">View Your Appointments</a>
-        <a href="searchPatient.html">Search Patient By Name</a>
+        <a href="#">Button 1</a>
+        <a href="#">Button 2</a>
         <a href="#">Button 3</a>
         <a href="#">Button 4</a>
         <a href="#">Button 5</a>
       </div>
     </div>
+    <table class="attribute-table">
+      <tr>
+        <td>Name</td>
+        <td id="name"></td>
+      </tr>
+      <tr>
+        <td>Speciality</td>
+        <td id="speciality"></td>
+      </tr>
+      <tr>
+        <td>Hospital</td>
+        <td id="hospital"></td>
+      </tr>
+      <tr>
+        <td>Educational Background</td>
+        <td id="educationalBackground"></td>
+      </tr>
+    </table>
 
     <script>
       function toggleProfileMenu() {
