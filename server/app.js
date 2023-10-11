@@ -6,7 +6,6 @@ const app = express();
 
 const adminRouter = require("./routes/adminstratorRoutes");
 const patientRouter = require("./routes/patientRoutes");
-
 //const patientRouter = require("./routes/patientRoutes");
 const doctorRouter = require("./routes/doctorRoutes");
 const packageRouter = require("./routes/packageRoutes");
@@ -23,10 +22,10 @@ app.use(cors()); // to allow all cors requests
 //2) routes
 
 app.use("/admins", adminRouter);
-
 app.use("/doctors", doctorRouter);
 app.use("/patients", patientRouter);
 app.use("/users", require("./routes/userRoute"));
 app.use("/packages", packageRouter);
+
 
 module.exports = app;
