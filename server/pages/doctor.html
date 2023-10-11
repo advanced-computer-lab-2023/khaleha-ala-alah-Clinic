@@ -1,41 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="doctor.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="doctor.css" />
     <title>Administrator Interface</title>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Navigation Bar -->
     <div class="navbar">
-        <button class="toggle-profile-button" onclick="toggleProfileMenu()">Toggle Profile Menu</button>
-        <a href="#" class="navbar-right">Home</a>
-        <a href="#" class="navbar-right">About Us</a>
+      <button class="toggle-profile-button" onclick="toggleProfileMenu()">
+        Toggle Profile Menu
+      </button>
+      <a href="#" class="navbar-right">Home</a>
+      <a href="#" class="navbar-right">About Us</a>
     </div>
 
     <!-- Profile Side Menu -->
     <div class="profile-menu" id="profileMenu">
-        <a href="#">Edit My Profile</a>
-        <a href="#">Log Out</a>
+      <a href="#">Edit My Profile</a>
+      <a href="#">Log Out</a>
     </div>
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <div class="sidebar-buttons">
-            <a href="#">Button 1</a>
-            <a href="#">Button 2</a>
-            <a href="#">Button 3</a>
-            <a href="#">Button 4</a>
-            <a href="#">Button 5</a>
-        </div>
+      <div class="sidebar-buttons">
+        <a href="doctorApp.html">View Your Appointments</a>
+        <a href="searchPatient.html">Search Patient By Name</a>
+        <a href="#">Button 3</a>
+        <a href="#">Button 4</a>
+        <a href="#">Button 5</a>
+      </div>
     </div>
 
     <script>
-        function toggleProfileMenu() {
-            var menu = document.getElementById('profileMenu');
-            menu.classList.toggle('show');
-        }
+      function toggleProfileMenu() {
+        var menu = document.getElementById("profileMenu");
+        menu.classList.toggle("show");
+      }
     </script>
-</body>
+  </body>
 </html>
