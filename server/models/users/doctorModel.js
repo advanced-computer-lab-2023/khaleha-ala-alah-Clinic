@@ -39,9 +39,27 @@ const doctorSchema = new Schema(
         message: "Password must contain at least 8 characters.",
       },
     },
-    fixedSlots: {
-      type: [Date],
-    },
+    fixedSlots: [
+      {
+        day: {
+          type: String,
+          enum: [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday",
+          ],
+          required: true,
+        },
+        hour: {
+          type: String, // You can choose an appropriate data type (e.g., Date, String) for the hour
+          required: true,
+        },
+      },
+    ],
     username: {
       type: String,
       required: true,

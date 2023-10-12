@@ -20,9 +20,11 @@ router.patch(
 
 router.get(
   "/presecriptions",
-  CheckAuth,
+  //CheckAuth,
   patientController.getPatientPrescribtions
 );
+
+router.get("/currentPatient", patientController.getCurrentPatient);
 
 router.get("/getappointments", patientController.getAppointments);
 
