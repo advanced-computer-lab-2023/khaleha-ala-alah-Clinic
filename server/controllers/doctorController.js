@@ -3,7 +3,7 @@ const patientModel = require("../models/users/patientModel");
 const Doctor = require("../models/users/doctorModel");
 exports.getAllDoctors = async function (req, res) {
   try {
-    const Doctors = await Doctor.find();
+    const Doctors = await Doctor.find({status: {$ne: 'pending'}});
     res.status(200).json({
       status: "success",
       results: Doctors.length,

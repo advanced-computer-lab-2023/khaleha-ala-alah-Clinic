@@ -7,5 +7,5 @@ router.get("/", doctorControllers.getAppointmentsPatients);
 
 router.get("/appointments", doctorControllers.getAppointments);
 
-router.route("/Alldoctors").get(doctorControllers.getAllDoctors);
+router.route("/Alldoctors").get(CheckAuth,doctorControllers.getAllDoctors);
 module.exports = router;
