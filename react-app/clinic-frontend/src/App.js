@@ -10,7 +10,5 @@ function App() {
 
   return <RegisterFamilymember />;
 
-  return <DoctorSearch />;
-
 }
 export default App;
