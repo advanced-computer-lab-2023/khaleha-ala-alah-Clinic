@@ -3,7 +3,9 @@ import "./App.css";
 import FamilyMembers from "./Components/viewFamilyMembers";
 import Appointments from "./Components/appointments";
 import Prescriptions from "./Components/prescriptions";
+import DoctorSearch from "./Components/searchDoctors";
+
 function App() {
-  return <Prescriptions />;
+  return <DoctorSearch />;
 }
 export default App;
