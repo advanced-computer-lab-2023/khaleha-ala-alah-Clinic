@@ -8,9 +8,9 @@ const { CheckAuth } = require("./../middlewares/auth");
 router.get("/pendingDoctors",CheckAuth,adminController.viewPendingDoctors);
 router
   .route("/")
-  .get(adminController.getAllAdmins)
-  .post(adminController.addAdmin)
-  .delete(adminController.delAdminDoctorPatient);
+  .get(CheckAuth,adminController.getAllAdmins)
+  .post(CheckAuth,adminController.addAdmin)
+  .delete(CheckAuth,adminController.delAdminDoctorPatient);
 
 
 module.exports = router;
