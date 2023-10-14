@@ -2,9 +2,12 @@ const Admin = require("../models/users/adminModel");
 const Patient = require("../models/users/patientModel"); // Replace with the appropriate model
 const Doctor = require("../models/users/doctorModel");
 const User = require("../models/users/user");
-// const faker = require("faker");
 exports.getAllAdmins = async function (req, res) {
   try {
+    let admin = await Admin.findOne({ userID: req.user._id });
+    if (!admin) {
+      return res.status(404).json({ error: "Admin not found." });
+    }
     const admins = await Admin.find();
     res.status(200).json({
       status: "success",
@@ -24,6 +27,10 @@ exports.getAllAdmins = async function (req, res) {
 
 exports.addAdmin = async (req, res) => {
   try {
+    let admin = await Admin.findOne({ userID: req.user._id });
+    if (!admin) {
+      return res.status(404).json({ error: "Admin not found." });
+    }
     const { username, password } = req.body;
 
     // Create a new admin user with the provided data
@@ -58,8 +65,11 @@ exports.addAdmin = async (req, res) => {
 exports.delAdminDoctorPatient = async (req, res) => {
   var { role, name } = req.body;
   name = name.trim();
-  console.log(name);
   try {
+    let admin = await Admin.findOne({ userID: req.user._id });
+    if (!admin) {
+      return res.status(404).json({ error: "Admin not found." });
+    }
     let deletedCount;
 
     if (role === "patient") {
@@ -70,8 +80,6 @@ exports.delAdminDoctorPatient = async (req, res) => {
       // Delete an admin
       console.log("admin");
       const result = await Admin.deleteOne({ username: name });
-
-      console.log(result + "hahahhahah" + object);
       deletedCount = result.deletedCount;
     } else if (role === "doctor") {
       // Delete a doctor
@@ -98,6 +106,10 @@ exports.delAdminDoctorPatient = async (req, res) => {
 };
 exports.viewPendingDoctors = async (req, res) => {
   try {
+    let admin = await Admin.findOne({ userID: req.user._id });
+    if (!admin) {
+      return res.status(404).json({ error: "Admin not found." });
+    }
     const pendingDoctors = await Doctor.find({ status: "pending" }).select({
       Password: 0,
       confirmPassword: 0,
@@ -124,6 +136,10 @@ exports.viewPendingDoctors = async (req, res) => {
 //approve and reject doctor
 exports.approveDoctor = async (req, res) => {
   try {
+    let admin = await Admin.findOne({ userID: req.user._id });
+    if (!admin) {
+      return res.status(404).json({ error: "Admin not found." });
+    }
     const{type}=req.headers;
     if(type!=="approve" && type!=="reject"){
       return res.status(400).json({ error: "Invalid type specified." });
@@ -144,5 +160,3 @@ exports.approveDoctor = async (req, res) => {
     return res.status(500).json({ error: "Internal server error." });
   }
 }
-
-// ...

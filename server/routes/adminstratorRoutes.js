@@ -2,13 +2,15 @@ const express = require("express");
 const adminController = require("./../controllers/adminstratorController");
 
 const router = express.Router();
+const { CheckAuth } = require("./../middlewares/auth");
 
+
+router.get("/pendingDoctors",CheckAuth,adminController.viewPendingDoctors);
 router
   .route("/")
   .get(adminController.getAllAdmins)
   .post(adminController.addAdmin)
   .delete(adminController.delAdminDoctorPatient);
 
-router.route("/pendingDoctors").get(adminController.viewPendingDoctors);
 
 module.exports = router;
