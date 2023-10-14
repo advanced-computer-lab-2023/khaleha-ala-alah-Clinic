@@ -2,6 +2,7 @@ const Appointment = require("../models/appointmentModel");
 const patientModel = require("../models/users/patientModel");
 const Doctor = require("../models/users/doctorModel");
 const Patient = require("../models/users/patientModel"); // Import your Patient model
+const Prescription = require("../models/presecriptionsModel"); // Import your Prescription model
 
 
 
@@ -25,7 +26,7 @@ exports.getPrescriptionsByDoctorAndPatient = async function (req, res) {
     }
 
     // Find the patient by their ID
-    const patient = await Patient.findById(patientId);
+    const patient = await Patient.findOne({userID:patientId});
 
     if (!patient) {
       return res.status(404).json({
@@ -97,8 +98,6 @@ exports.getAllDoctors = async function (req, res) {
     });
   }
 };
-<<<<<<< HEAD
-=======
 // Update the model path if necessary
 
 exports.updateDoctorEmail = async function (req, res) {
@@ -141,7 +140,6 @@ exports.updateDoctorEmail = async function (req, res) {
   }
 };
 
->>>>>>> 7ca4a18 (farahat updates)
 
 exports.getAppointmentsPatients = async function (req, res) {
   try {

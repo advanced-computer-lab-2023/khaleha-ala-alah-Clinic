@@ -3,11 +3,13 @@ const adminController = require("./../controllers/adminstratorController");
 
 const router = express.Router();
 
-router
-  .route("/")
+router.route("/")
   .get(adminController.getAllAdmins)
   .post(adminController.addAdmin)
-  .delete(adminController.delAdminDoctorPatient);
+  router
+  .delete("/delAdminDoctorPatient",adminController.delAdminDoctorPatient);
+
+router.post("/addadmin",adminController.addAdmin)  
 
 router.route("/pendingDoctors").get(adminController.viewPendingDoctors);
 

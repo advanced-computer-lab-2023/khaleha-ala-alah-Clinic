@@ -22,5 +22,5 @@ const presecriptionsSchema = new Schema({
     
 },{ timestamps: true });
 
-
+const Doctor = mongoose.model("presecription", presecriptionsSchema);
 module.exports = presecriptionsSchema;
