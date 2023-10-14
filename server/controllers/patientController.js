@@ -129,24 +129,6 @@ exports.getPatients = async function (req, res) {
   }
 };
 
-exports.getCurrentPatient = async function (req, res) {
-  try {
-    const patientID = "6527622d2075657b32b6c110"; //req.user._id;
-    const patient = await Patient.findById(patientID);
-    res.status(200).json({
-      status: "success",
-      data: {
-        user: patient,
-      },
-    });
-  } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: "this route is not defined yet",
-    });
-  }
-};
-
 exports.createPatient = async function (req, res) {
   try {
     const newPatient = await Patient.create(req.body);
@@ -233,15 +215,11 @@ exports.getPerscriptions = async function (req, res) {
 };
 exports.getPatientPrescribtions = async function (req, res) {
   try {
-    console.log();
-    const prescriptions = await Prescriptions.find({
-      PatientID: "651ee41994ed6dc1e163c4df",
+    const presecriptions = await Prescriptions.find({
+      PatientID: req.user._id,
     });
-
-    //newPresctibtion.save();
-    console.log("AAAAAA");
     res.status(200).json({
-      prescriptions,
+      presecriptions,
     });
   } catch (err) {
     res.status(500).json({
