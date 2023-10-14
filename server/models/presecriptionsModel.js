@@ -18,6 +18,10 @@ const presecriptionsSchema = new Schema(
     summary: {
       type: String,
     },
+    isFilled: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
