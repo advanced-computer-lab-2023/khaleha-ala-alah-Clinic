@@ -3,9 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="doctor.css" />
+    <link rel="stylesheet" href="viewPatients.css" />
     <title>Administrator Interface</title>
+
+    <script>
+      function displayDataInTable(dataArray) {
+        const tableBody = document.getElementById("table-body");
+
+        // Clear any existing rows in the table
+        tableBody.innerHTML = "";
+
+        // Loop through the dataArray and create a new row for each item
+        dataArray.forEach((item) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                        <td><a href="#" class="name-button">${item.fullName}</a></td>>
+                    `;
+          tableBody.appendChild(row);
+        });
+      }
+    </script>
   </head>
+
   <body>
     <!-- Navigation Bar -->
     <div class="navbar">
@@ -24,20 +43,31 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <div class="sidebar-buttons">
-            <a href="#">Patients</a>
-            <a href="#">Button 2</a>
-            <a href="#">Button 3</a>
-            <a href="#">Button 4</a>
-            <a href="#">Button 5</a>
-        </div>
       <div class="sidebar-buttons">
-        <a href="doctorApp.html">View Your Appointments</a>
-        <a href="searchPatient.html">Search Patient By Name</a>
+        <a href="#">Patients</a>
+        <a href="#">Button 2</a>
         <a href="#">Button 3</a>
         <a href="#">Button 4</a>
         <a href="#">Button 5</a>
       </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+          </tr>
+          <tr>
+            <th>Name</th>
+          </tr>
+          
+        </thead>
+        <tbody id="table-body"></tbody>
+        
+      </table>
+
     </div>
 
     <script>
