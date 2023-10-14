@@ -12,7 +12,35 @@
     </label>
     <input type="text" id="nameSearch" placeholder="Enter doctor speciality" />
     <button onclick="searchDoctorBySpeciality()">SEARCH</button>
+    <h1>Filter Doctors</h1>
+    <label for="specialityFilter">Speciality:</label>
+    <select id="specialityFilter">
+      <!-- Add options for different specialities -->
+      <option value="Cardiology">Cardiologist</option>
+      <option value="Dermatologist">Dermatologist</option>
+      <!-- Add more options as needed -->
+    </select>
 
+    <label for="dayFilter">Day:</label>
+    <select id="dayFilter">
+      <!-- Add options for different weekdays -->
+      <option value="all">ALL</option>
+      <option value="Monday">Monday</option>
+      <option value="Tuesday">Tuesday</option>
+      <!-- Add more options as needed -->
+    </select>
+
+    <label for="timeFilter">Time:</label>
+    <select id="timeFilter">
+      <!-- Generate options for time slots in half-hour intervals -->
+      <option value="all">ALL</option>
+      <option value="08:00 AM">8:00 AM</option>
+      <option value="08:30 AM">8:30 AM</option>
+      <option value="09:00 AM">9:00 AM</option>
+      <!-- Add more options as needed up to 4:00 PM -->
+    </select>
+
+    <button id="filterButton">Filter</button>
     <ul id="doctorList"></ul>
   </body>
 </html>
