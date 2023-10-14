@@ -10,6 +10,70 @@ const Prescriptions = require("./../models/presecriptionsModel.js");
 
 // get all patients
 
+
+
+exports.getDoctorDetailsByUserID = async function (req, res) {
+  try {
+    const userID = req.params.userID; // Get the doctor's userID from the request parameters
+
+    // Find the doctor by their userID
+    const doctor = await Doctor.findOne({ userID });
+
+    if (!doctor) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Doctor not found",
+      });
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        doctor,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: "error",
+      message: "Server error",
+    });
+  }
+};
+
+exports.getFamilyMembersByUserID = async function (req, res) {
+  try {
+    const userID = req.params.userID; // Get the userID from the request parameters
+
+    // Find the patient by their userID and select the familyMembers field
+    const patient = await Patient.findOne({ userID }).select('familyMembers');
+
+    if (!patient) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+
+    // Extract the family members from the patient object
+    const familyMembers = patient.familyMembers;
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        familyMembers,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: "error",
+      message: "Server error",
+    });
+  }
+};
+
+
 exports.getMyDoctors = async function (req, res) {
   try {
     const patient = req.user._id;

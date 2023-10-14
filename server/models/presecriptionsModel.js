@@ -26,4 +26,12 @@ const presecriptionsSchema = new Schema(
   { timestamps: true }
 );
 
+
+    
+},{ timestamps: true });
+
+
+
+
 module.exports = mongoose.model("Presecription", presecriptionsSchema);
+
