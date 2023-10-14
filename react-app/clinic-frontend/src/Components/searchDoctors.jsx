@@ -10,7 +10,13 @@ const DoctorSearch = () => {
   const [timeFilter, setTimeFilter] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:4000/doctors/Alldoctors")
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        "authorization": "Bearer " + localStorage.getItem("token")
+      },
+    };
+    fetch("http://localhost:4000/doctors/Alldoctors", requestOptions)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");

@@ -5,7 +5,13 @@ function FamilyMembers() {
 
   useEffect(() => {
     // Fetch data from the server's endpoint
-    fetch("http://localhost:4000/patients/currentPatient")
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        "authorization": "Bearer " + localStorage.getItem("token")
+      },
+    };
+    fetch("http://localhost:4000/patients/currentPatient", requestOptions)
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "success" && data.data.user.familyMembers) {

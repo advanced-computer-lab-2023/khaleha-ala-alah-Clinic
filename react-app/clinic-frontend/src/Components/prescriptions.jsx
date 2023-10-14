@@ -17,12 +17,18 @@ function Prescriptions() {
 
   // Function to fetch prescriptions
   const fetchPrescriptions = () => {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        "authorization": "Bearer " + localStorage.getItem("token")
+      },
+    };
     // Fetch prescriptions data from your API
-    fetch("http://localhost:4000/patients/presecriptions")
+    fetch("http://localhost:4000/patients/persecriptions", requestOptions)
       .then((response) => response.json())
       .then((data) => {
-        setPrescriptions(data.prescriptions);
-        setFilteredPrescriptions(data.prescriptions);
+        setPrescriptions(data.data.prescriptions);
+        setFilteredPrescriptions(data.data.prescriptions);
         setLoading(false);
       })
       .catch((error) => {
@@ -34,7 +40,13 @@ function Prescriptions() {
   // Function to fetch doctor data
   const fetchDoctors = () => {
     // Fetch doctor data from your API
-    fetch("http://localhost:4000/doctors/Alldoctors")
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        "authorization": "Bearer " + localStorage.getItem("token")
+      },
+    };
+    fetch("http://localhost:4000/doctors/Alldoctors", requestOptions)
       .then((response) => response.json())
       .then((data) => {
         setDoctors(data.data.Doctors);

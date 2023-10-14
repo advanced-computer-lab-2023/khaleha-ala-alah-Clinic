@@ -15,7 +15,14 @@ function Appointments() {
 
   const fetchAppointments = () => {
     // Fetch appointments data
-    fetch(`${backendUrl}/patients/getappointments`)
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        "authorization": "Bearer " + localStorage.getItem("token")
+      },
+    };
+
+    fetch(`${backendUrl}/patients/getAppointments`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
         // Handle the retrieved data here
@@ -23,7 +30,7 @@ function Appointments() {
         setFilteredAppointments(data.appointments);
 
         // Fetch doctors data
-        fetch(`${backendUrl}/patients/patientdoctors`)
+        fetch(`${backendUrl}/patients/patientdoctors`, requestOptions)
           .then((response) => response.json())
           .then((data) => {
             // Handle the retrieved data here

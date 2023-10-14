@@ -109,6 +109,7 @@ exports.createPatient = async function (req, res) {
 
 exports.addFamilyMembers = async function (req, res) {
   try {
+    console.log(req.user._id);
     const patient = await Patient.findOne({ userID: req.user._id });
     if (!patient) {
       return res.status(404).json({
@@ -125,17 +126,17 @@ exports.addFamilyMembers = async function (req, res) {
       gender: req.body.gender,
       relationToPatient: req.body.relationToPatient,
     };
+    console.log(newFamilyMember);
 
     // Add the new family member to the patient's familyMembers array
     patient.familyMembers.push(newFamilyMember);
     // Save the patient with the updated familyMembers array
     const updatedPatient = await patient.save();
-    console.log("habebe")
     res.status(201).json(updatedPatient);
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      status: "fail",
+      status: "fail1111",
       message: "Server error",
     });
   }
@@ -238,9 +239,11 @@ exports.getPatientDoctors = async function (req, res) {
 };
 exports.getAllPersecriptions = async function (req, res) {
   try{
+    console.log("ENTERED METHOD");
     const prescriptions = await Prescriptions.find({
       PatientID: req.user._id,
     });
+    console.log(prescriptions);
     res.status(200).json({
       status: "success",
       results: prescriptions.length,

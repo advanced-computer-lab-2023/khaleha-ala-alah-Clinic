@@ -14,7 +14,7 @@ router.get("/mydoctors", CheckAuth, patientController.getMyDoctors);
 
 router.patch(
   "/add-family-members",
-  // CheckAuth,
+   CheckAuth,
   patientController.addFamilyMembers
 );
 
