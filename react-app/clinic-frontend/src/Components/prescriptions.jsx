@@ -18,15 +18,16 @@ function Prescriptions() {
   // Function to fetch prescriptions
   const fetchPrescriptions = () => {
     const requestOptions = {
-      method: 'GET',
+      method: "GET",
       headers: {
-        "authorization": "Bearer " + localStorage.getItem("token")
+        authorization: "Bearer " + localStorage.getItem("token"),
       },
     };
     // Fetch prescriptions data from your API
     fetch("http://localhost:4000/patients/persecriptions", requestOptions)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         setPrescriptions(data.data.prescriptions);
         setFilteredPrescriptions(data.data.prescriptions);
         setLoading(false);
@@ -41,9 +42,9 @@ function Prescriptions() {
   const fetchDoctors = () => {
     // Fetch doctor data from your API
     const requestOptions = {
-      method: 'GET',
+      method: "GET",
       headers: {
-        "authorization": "Bearer " + localStorage.getItem("token")
+        authorization: "Bearer " + localStorage.getItem("token"),
       },
     };
     fetch("http://localhost:4000/doctors/Alldoctors", requestOptions)
@@ -85,10 +86,23 @@ function Prescriptions() {
           break;
         }
       }
-      const dateMatch = dateFilter === "" || prescription.date === dateFilter;
+      let dateMatch = false;
+      if (prescription.date) {
+        console.log(prescription.date + "<<< PRESCRIPTION DATE");
+        const formattedDate = new Date(prescription.date)
+          .toISOString()
+          .split("T")[0];
+        //date = date.toISOString();
+        console.log(formattedDate + "<<< FORMATTED DATE");
+        console.log(dateFilter + "<<< DATE FILTER");
+        dateMatch =
+          dateFilter === "" ||
+          (prescription.date && formattedDate === dateFilter);
+      }
       const doctorMatch =
         doctorFilter === "" ||
-        (doctor && doctor.name.toLowerCase().includes(doctorFilter));
+        (doctor &&
+          doctor.name.toLowerCase().includes(doctorFilter.toLowerCase()));
       const filledMatch =
         filledFilter === "all" ||
         (filledFilter === "filled" && prescription.isFilled) ||
