@@ -72,7 +72,7 @@ exports.getPatients = async function (req, res) {
 exports.getCurrentPatient = async function (req, res) {
   try {
     //const patientID = "6527622d2075657b32b6c110"; //req.user._id;
-    const patient = await Patient.findOne({userID:req.user._id});
+    const patient = await Patient.findOne({ userID: req.user._id });
     console.log(patient);
     res.status(200).json({
       status: "success",
@@ -144,6 +144,7 @@ exports.addFamilyMembers = async function (req, res) {
 exports.getPerscriptions = async function (req, res) {
   console.log("ENTERED METHOD");
   try {
+    console.log(req.user._id);
     const prescriptions = await Appointments.find({
       PatientID: req.user._id,
     });
@@ -180,7 +181,7 @@ exports.getPatientPrescribtions = async function (req, res) {
 
     //newPresctibtion.save();
     res.status(200).json({
-      data:prescriptions
+      data: prescriptions,
     });
   } catch (err) {
     res.status(500).json({
@@ -211,7 +212,9 @@ exports.getAppointments = async function (req, res) {
 exports.getPatientDoctors = async function (req, res) {
   try {
     const patient = "651ee41994ed6dc1e163c4df";
-    const doctorIds = await Appointments.find({PatientID : req.user._id}).distinct("DoctorID", {
+    const doctorIds = await Appointments.find({
+      PatientID: req.user._id,
+    }).distinct("DoctorID", {
       PatientID: patient,
     });
     //const doctors = await Doctors.find({ userID: { $in: doctorIds } });
@@ -238,7 +241,7 @@ exports.getPatientDoctors = async function (req, res) {
   }
 };
 exports.getAllPersecriptions = async function (req, res) {
-  try{
+  try {
     console.log("ENTERED METHOD");
     const prescriptions = await Prescriptions.find({
       PatientID: req.user._id,
@@ -251,12 +254,11 @@ exports.getAllPersecriptions = async function (req, res) {
         prescriptions,
       },
     });
-  }
-  catch (err) {
+  } catch (err) {
     console.log(err);
-  res.status(500).json({
-    status: "error",
-    message: "this route is not defined yet",
-  });
-}
-}
+    res.status(500).json({
+      status: "error",
+      message: "this route is not defined yet",
+    });
+  }
+};

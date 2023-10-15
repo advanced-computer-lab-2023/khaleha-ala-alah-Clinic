@@ -17,6 +17,7 @@ const presecriptionsSchema = new Schema(
     },
     summary: {
       type: String,
+      required: true,
     },
     isFilled: {
       type: Boolean,
@@ -24,6 +25,7 @@ const presecriptionsSchema = new Schema(
     },
     date: {
       type: Date,
+      required: true,
     },
   },
   { timestamps: true }
