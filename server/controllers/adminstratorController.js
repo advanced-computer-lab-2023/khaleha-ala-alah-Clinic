@@ -125,23 +125,45 @@ exports.approveDoctor = async (req, res) => {
     if (!admin) {
       return res.status(404).json({ error: "Admin not found." });
     }
-    const{type}=req.headers;
-    if(type!=="approve" && type!=="reject"){
+    const { type } = req.headers;
+    if (type !== "approve" && type !== "reject") {
       return res.status(400).json({ error: "Invalid type specified." });
     }
     const { username } = req.body;
-    let doctor=await Doctor.findOne({ username: username });
-    if(!doctor){
+    let doctor = await Doctor.findOne({ username: username });
+    if (!doctor) {
       return res.status(404).json({ error: "Doctor not found." });
     }
-    type==="approve"?doctor.status="accepted":doctor.status="rejected";
+    type === "approve"
+      ? (doctor.status = "accepted")
+      : (doctor.status = "rejected");
     await doctor.save();
-    doctorID=doctor.userID;
-    doctor=await User.findOne({ _id: doctorID });
-    type==="approve"?doctor.doctorApproved=true:doctor.doctorApproved=false;
+    doctorID = doctor.userID;
+    doctor = await User.findOne({ _id: doctorID });
+    type === "approve"
+      ? (doctor.doctorApproved = true)
+      : (doctor.doctorApproved = false);
     await doctor.save();
     return res.status(200).json({ message: `Doctor approved successfully.` });
   } catch (error) {
     return res.status(500).json({ error: "Internal server error." });
   }
-}
+};
+
+exports.getPendingDoctors = async (req, res) => {
+  try {
+    const pendingDoctors = await Doctor.find({ status: "pending" });
+    res.status(200).json({
+      status: "success",
+      results: pendingDoctors.length,
+      data: {
+        pendingDoctors,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: "NO PENDING DOCTORS",
+    });
+  }
+};
