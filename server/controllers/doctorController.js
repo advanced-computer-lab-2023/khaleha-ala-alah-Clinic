@@ -47,6 +47,23 @@ exports.getPrescriptionsByDoctorAndPatient = async function (req, res) {
     });
   }
 };
+exports.getAllPrescriptions = async function (req, res) {
+  try {
+    const prescriptions = await Prescription.find();
+    res.status(200).json({
+      status: "success",
+      results: prescriptions.length,
+      data: {
+        prescriptions,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: "this route is not defined yet",
+    });
+  }
+};
 
 
 exports.getPatientsByDoctorId = async function (req, res) {
