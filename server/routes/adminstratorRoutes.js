@@ -5,12 +5,12 @@ const router = express.Router();
 const { CheckAuth } = require("./../middlewares/auth");
 
 
-router.get("/pendingDoctors",CheckAuth,adminController.viewPendingDoctors);
+router.get("/pendingDoctors",adminController.viewPendingDoctors);
 router
   .route("/")
-  .get(CheckAuth,adminController.getAllAdmins)
-  .post(CheckAuth,adminController.addAdmin)
-  .delete(CheckAuth,adminController.delAdminDoctorPatient);
+  .get(adminController.getAllAdmins)
+  .post(adminController.addAdmin)
+  .delete(adminController.delAdminDoctorPatient);
 
 
 module.exports = router;

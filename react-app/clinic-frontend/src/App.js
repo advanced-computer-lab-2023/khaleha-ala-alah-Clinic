@@ -18,6 +18,10 @@ import DoctorProfileUpdate from "./Components/editDoctorProfile";
 import DoctorAppointments from "./Components/Appointmentsdoctor";
 import PrescriptionsDoctors from "./Components/patientdoctorhealth";
 import DoctorPatients from "./Components/viewallmypatients";
+import AddAdmin from "./Components/addAdmin";
+import DeleteUser from "./Components/deleteAdminDoctorPatiient";
+import PendingDoctors from "./Components/viewPendingDoctors";
+import HealthPackages from "./Components/packages";
 
 function App() {
   return (
@@ -39,17 +43,22 @@ function App() {
               <Route path="/prescriptions" element={<Prescriptions />} />
               <Route path="/searchDoctors" element={<DoctorSearch />} />
               <Route path="/viewAllDoctors" element={<DoctorList />} />
+             
+
+              {/* doctor routes */}
+              <Route path="/doctorhome" element={<DoctorHome />} />
               <Route path="/editDoctorProfile" element={<DoctorProfileUpdate />} />
               <Route path="/doctorAppointments" element={<DoctorAppointments />} />
               <Route path="/patientdoctorhealth" element={<PrescriptionsDoctors />} />
               <Route path="/viewallmypatients" element={<DoctorPatients />} />
 
-              {/* doctor routes */}
-              <Route path="/doctorhome" element={<DoctorHome />} />
-
 
               {/* admin routes */}
               <Route path="/adminHome" element={<AdminHome />} />
+              <Route path="/addAdmin" element={<AddAdmin />} />
+              <Route path="/deleteAdminDoctorPatient" element={<DeleteUser />} />
+              <Route path="/viewPendingDoctors" element={<PendingDoctors />} />
+              <Route path="/packages" element={<HealthPackages />} />
 
 
               {/* common routes */}

@@ -9,12 +9,18 @@ const PendingDoctors = () => {
     // Function to fetch all doctors
     const fetchAllDoctors = async () => {
       try {
-        const response = await fetch('http://localhost:4001/doctors/Alldoctors');
+        const response = await fetch('http://localhost:4000/doctors/Alldoctors',{
+          method: 'GET',
+          headers: {
+            'authorization': 'Bearer ' + localStorage.getItem('token'),          },
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
         const data = await response.json();
+        console.log(data.data.Doctors);
         setDoctors((data.data.Doctors).filter((doctor) => doctor.status === 'pending'));
+        console.log(doctors);
       } catch (err) {
         setError(err.message);
       }

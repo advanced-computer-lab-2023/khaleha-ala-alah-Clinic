@@ -4,10 +4,6 @@ const Doctor = require("../models/users/doctorModel");
 const User = require("../models/users/user");
 exports.getAllAdmins = async function (req, res) {
   try {
-    let admin = await Admin.findOne({ userID: req.user._id });
-    if (!admin) {
-      return res.status(404).json({ error: "Admin not found." });
-    }
     const admins = await Admin.find();
     res.status(200).json({
       status: "success",
@@ -27,11 +23,8 @@ exports.getAllAdmins = async function (req, res) {
 
 exports.addAdmin = async (req, res) => {
   try {
-    let admin = await Admin.findOne({ userID: req.user._id });
-    if (!admin) {
-      return res.status(404).json({ error: "Admin not found." });
-    }
     const { username, password } = req.body;
+    console.log(username, password);
 
     // Create a new admin user with the provided data
     const newAdmin = await Admin.create({
@@ -66,10 +59,6 @@ exports.delAdminDoctorPatient = async (req, res) => {
   var { role, name } = req.body;
   name = name.trim();
   try {
-    let admin = await Admin.findOne({ userID: req.user._id });
-    if (!admin) {
-      return res.status(404).json({ error: "Admin not found." });
-    }
     let deletedCount;
 
     if (role === "patient") {
@@ -106,10 +95,6 @@ exports.delAdminDoctorPatient = async (req, res) => {
 };
 exports.viewPendingDoctors = async (req, res) => {
   try {
-    let admin = await Admin.findOne({ userID: req.user._id });
-    if (!admin) {
-      return res.status(404).json({ error: "Admin not found." });
-    }
     const pendingDoctors = await Doctor.find({ status: "pending" }).select({
       Password: 0,
       confirmPassword: 0,

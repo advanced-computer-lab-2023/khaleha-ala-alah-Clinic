@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const AddAdminphramacy = () => {
+const AddAdmin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -9,7 +9,7 @@ const AddAdminphramacy = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:4001/admins/addadmin', {
+      const response = await axios.post('http://localhost:4000/admins',{
         username,
         password,
       });
@@ -48,4 +48,4 @@ const AddAdminphramacy = () => {
   );
 };
 
-export default AddAdminphramacy;
+export default AddAdmin;
