@@ -25,20 +25,20 @@ const doctorSchema = new Schema(
     gender: {
       type: String,
       enum: ["Male", "Female", "Other"],
-      required: true,
+      required: false,
     },
     hourlyRate: {
       type: Number,
       required: true,
     },
-    password: {
-      type: String,
-      required: true,
-      validate: {
-        validator: (value) => validator.isLength(value, { min: 8 }),
-        message: "Password must contain at least 8 characters.",
-      },
-    },
+    // password: {
+    //   type: String,
+    //   required: true,
+    //   validate: {
+    //     validator: (value) => validator.isLength(value, { min: 8 }),
+    //     message: "Password must contain at least 8 characters.",
+    //   },
+    // },
     fixedSlots: [
       {
         day: {

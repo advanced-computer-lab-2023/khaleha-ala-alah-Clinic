@@ -13,6 +13,11 @@ import Appointments from "./Components/appointments";
 import Prescriptions from "./Components/prescriptions";
 import DoctorSearch from "./Components/searchDoctors";
 import DoctorList from "./Components/viewAllDoctors";
+import {DoctorRegister} from "./Components/doctorRegister";
+import DoctorProfileUpdate from "./Components/editDoctorProfile";
+import DoctorAppointments from "./Components/Appointmentsdoctor";
+import PrescriptionsDoctors from "./Components/patientdoctorhealth";
+import DoctorPatients from "./Components/viewallmypatients";
 
 function App() {
   return (
@@ -22,6 +27,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/PatientRegister" element={<PatientRegister />} />
+            <Route path="/DoctorRegister" element={<DoctorRegister />} />
             
             {/* private routes */}
             <Route element={<PrivateRoute/>} >
@@ -33,6 +39,10 @@ function App() {
               <Route path="/prescriptions" element={<Prescriptions />} />
               <Route path="/searchDoctors" element={<DoctorSearch />} />
               <Route path="/viewAllDoctors" element={<DoctorList />} />
+              <Route path="/editDoctorProfile" element={<DoctorProfileUpdate />} />
+              <Route path="/doctorAppointments" element={<DoctorAppointments />} />
+              <Route path="/patientdoctorhealth" element={<PrescriptionsDoctors />} />
+              <Route path="/viewallmypatients" element={<DoctorPatients />} />
 
               {/* doctor routes */}
               <Route path="/doctorhome" element={<DoctorHome />} />

@@ -12,7 +12,7 @@ router.patch("/update-email", CheckAuth,doctorControllers.updateDoctorEmail);
 router.get("/getPatients", CheckAuth,doctorControllers.getPatientsByDoctorId);
 
 // Add the new route to get prescriptions and patient information by doctor and patient IDs
-router.get("/:doctorId/:patientId/get-info", CheckAuth,doctorControllers.getPrescriptionsByDoctorAndPatient);
+router.get("/:doctorId/:patientId/get-info",doctorControllers.getPrescriptionsByDoctorAndPatient);
 
 // ...
 
