@@ -11,9 +11,9 @@ const DoctorSearch = () => {
 
   useEffect(() => {
     const requestOptions = {
-      method: 'GET',
+      method: "GET",
       headers: {
-        "authorization": "Bearer " + localStorage.getItem("token")
+        authorization: "Bearer " + localStorage.getItem("token"),
       },
     };
     fetch("http://localhost:4000/doctors/Alldoctors", requestOptions)
@@ -48,7 +48,7 @@ const DoctorSearch = () => {
 
   const viewDoctorDetails = (doctor) => {
     alert(
-      `Doctor Name: ${doctor.name} \nDoctor Speciality: ${doctor.speciality} \nDoctor Email: ${doctor.email} \nDoctor Gender: ${doctor.gender} \nDoctor Affiliation : ${doctor.affiliation} \nDoctor Educational Background: ${doctor.educationalBackground}`
+      `Doctor Name: ${doctor.name} \nDoctor Speciality: ${doctor.speciality} \nDoctor Email: ${doctor.email}\nDoctor Affiliation : ${doctor.affiliation} \nDoctor Educational Background: ${doctor.educationalBackground}`
     );
   };
 
@@ -62,7 +62,6 @@ const DoctorSearch = () => {
         dayFilter === "all" ||
         dayFilter === "" ||
         doctorHasAvailability(doctor, dayFilter, timeFilter);
-      console.log(specialityFilter);
       console.log(dayFilter);
       return specialityMatch && dayMatch;
     });
@@ -71,9 +70,14 @@ const DoctorSearch = () => {
   };
 
   const doctorHasAvailability = (doctor, day, time) => {
-    return doctor.fixedSlots.some(
-      (slot) => slot.day === day && slot.hour === time
-    );
+    return doctor.fixedSlots.some((slot) => {
+      return (
+        slot.day &&
+        day &&
+        slot.day.toLowerCase() === day.toLowerCase() &&
+        (slot.hour === time || time === "all" || time === "")
+      );
+    });
   };
 
   return (
@@ -105,7 +109,7 @@ const DoctorSearch = () => {
       >
         <option value="">ALL</option>
         <option value="Cardiology">Cardiologist</option>
-        <option value="Dermatologist">Dermatologist</option>
+        <option value="Dermatology">Dermatologist</option>
       </select>
 
       <label htmlFor="dayFilter">Day:</label>
@@ -126,9 +130,9 @@ const DoctorSearch = () => {
         onChange={(e) => setTimeFilter(e.target.value)}
       >
         <option value="all">ALL</option>
-        <option value="08:00 AM">8:00 AM</option>
-        <option value="08:30 AM">8:30 AM</option>
-        <option value="09:00 AM">9:00 AM</option>
+        <option value="8:00 AM">8:00 AM</option>
+        <option value="8:30 AM">8:30 AM</option>
+        <option value="9:00 AM">9:00 AM</option>
       </select>
 
       <button onClick={handleFilterClick} id="filterButton">
