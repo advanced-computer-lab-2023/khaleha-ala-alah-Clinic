@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const PendingDoctors = () => {
   const [doctors, setDoctors] = useState([]);
@@ -9,17 +9,21 @@ const PendingDoctors = () => {
     // Function to fetch all doctors
     const fetchAllDoctors = async () => {
       try {
-        const response = await fetch('http://localhost:4000/doctors/Alldoctors',{
-          method: 'GET',
-          headers: {
-            'authorization': 'Bearer ' + localStorage.getItem('token'),          },
-        });
+        const response = await fetch(
+          "http://localhost:4000/admins/getPending",
+          {
+            method: "GET",
+            headers: {
+              authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
         if (!response.ok) {
-          throw new Error('Failed to fetch data');
+          throw new Error("Failed to fetch data");
         }
         const data = await response.json();
-        console.log(data.data.Doctors);
-        setDoctors((data.data.Doctors).filter((doctor) => doctor.status === 'pending'));
+        console.log(data.data.pendingDoctors);
+        setDoctors(data.data.pendingDoctors);
         console.log(doctors);
       } catch (err) {
         setError(err.message);
@@ -30,7 +34,9 @@ const PendingDoctors = () => {
     fetchAllDoctors();
   }, []);
 
-  const pendingDoctors = doctors.filter((doctor) => doctor.status === 'pending');
+  const pendingDoctors = doctors.filter(
+    (doctor) => doctor.status === "pending"
+  );
 
   return (
     <div>
@@ -48,10 +54,10 @@ const PendingDoctors = () => {
           <h3>Selected Doctor Details</h3>
           <p>Name: {selectedDoctor.name}</p>
           <p>Email: {selectedDoctor.email}</p>
-              <p>speciality: {selectedDoctor.speciality}</p>
+          <p>speciality: {selectedDoctor.speciality}</p>
           <p>affiliation: {selectedDoctor.affiliation}</p>
-             <p>HourlyRate: {selectedDoctor.HourlyRate}</p>
-          
+          <p>HourlyRate: {selectedDoctor.hourlyRate}</p>
+
           {/* Display other doctor details as needed */}
         </div>
       )}
