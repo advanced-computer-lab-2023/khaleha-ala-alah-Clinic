@@ -200,3 +200,26 @@ exports.getAppointments = async function (req, res) {
     });
   }
 };
+exports.addAvaliableSlots = async function(req,res){
+  try{
+    //check that doctor has status accepted
+    const doctor = await Doctor.findOne({userID:req.user._id,status:'accepted'});
+    console.log(req.body + "  " + doctor);
+    if(!doctor){
+      return res.status(404).json({ error: "Doctor not found." });
+    }
+    doctor.fixedSlots.push(...req.body.fixedSlots);
+    await doctor.save();
+    res.status(200).json({
+      status: "success",
+      data: {
+        doctor,
+      },
+    });
+  }catch(err){
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+}
