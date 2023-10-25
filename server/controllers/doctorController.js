@@ -269,3 +269,40 @@ exports.scheduleFollowUpWithPatients = async function(req,res){
     }
 
 }
+exports.addNewHealthRecordForPatient = async function(req,res){
+  try{
+    const appointment = await Appointment.findOne({DoctorID : req.user._id});
+    console.log('appointment',appointment);
+    const patient = await Patient.findOne({userID:appointment.PatientID , username : req.body.username});
+    console.log('patient',patient);
+  if(!patient){
+    res.status(404).json({
+      status: "fail",
+      message: "patient is not found"
+    })
+  }
+  const  presecription= new Prescription({
+    DoctorID: req.user._id,
+    PatientID : patient.userID,
+    location: req.body.location,
+    summary: req.body.summary,
+    isFilled:req.body.isFilled,
+    date : req.body.date
+  })
+  await presecription.save();
+  res.status(200).json({
+    status: "success",
+    data: {
+      presecription,
+    },
+  });
+  }
+  catch(err){
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+  
+
+}
