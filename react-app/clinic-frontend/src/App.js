@@ -22,6 +22,9 @@ import AddAdmin from "./Components/addAdmin";
 import DeleteUser from "./Components/deleteAdminDoctorPatiient";
 import PendingDoctors from "./Components/viewPendingDoctors";
 import HealthPackages from "./Components/packages";
+import ResetPassword from "./Components/resetpassword";
+import ForgotPassword from "./Components/forgotPassword";
+
 
 function App() {
   return (
@@ -32,6 +35,8 @@ function App() {
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/PatientRegister" element={<PatientRegister />} />
             <Route path="/DoctorRegister" element={<DoctorRegister />} />
+            <Route path="/resetPassword/:token" element={<ResetPassword />} />
+            <Route path="/forgotPassword" element={<ForgotPassword />} />
             
             {/* private routes */}
             <Route element={<PrivateRoute/>} >

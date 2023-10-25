@@ -2,6 +2,7 @@ const Admin = require("../models/users/adminModel");
 const Patient = require("../models/users/patientModel"); // Replace with the appropriate model
 const Doctor = require("../models/users/doctorModel");
 const User = require("../models/users/user");
+const bcrypt = require('bcrypt');
 exports.getAllAdmins = async function (req, res) {
   try {
     const admins = await Admin.find();
@@ -19,37 +20,42 @@ exports.getAllAdmins = async function (req, res) {
     });
   }
 };
+
 // Create a new admin
-
 exports.addAdmin = async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    console.log(username, password);
-
-    // Create a new admin user with the provided data
-    const newAdmin = await Admin.create({
-      username,
-      password,
-    });
-
-    // Create a new user record with the role "admin" and email set to username@gmail.com
-    const newUser = await User.create({
-      username,
-      password,
+  try{
+    const{username,password}=req.body;
+    
+    if (!username || !password) {
+      return res.status(400).json({ error: "Enter all fields." });
+    }
+    //check if user exists
+    let user = await User.findOne({ username: username });
+    if (user) {
+      return res.status(400).json({ error: "Username already exists." });
+    }
+    //hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    //create user
+    user = new User({
+      username: username,
+      password: hashedPassword,
       role: "admin",
-      email: `${username}@gmail.com`, // Set the email as username@gmail.com
-      name: username, // Set the name to the username
+      name: username,
+      verified: true
     });
-
-    res.status(201).json({
-      status: "success",
-      data: { newAdmin: newAdmin },
+    await user.save();
+    //create admin
+    const admin = new Admin({
+      username: username,
+      userID: user._id,
     });
-  } catch (err) {
-    res.status(400).json({
-      status: "fail",
-      message: err.message,
-    });
+    await admin.save();
+    return res.status(200).json({ message: "Admin created successfully." });
+  }catch(err){
+    console.log(err);
+    return res.status(500).json({ error: "Internal server error." });
   }
 };
 

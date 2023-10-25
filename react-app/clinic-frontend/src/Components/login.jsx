@@ -72,8 +72,10 @@ export const Login = () => {
     <div className="doctorRegister">
     <Link to="/DoctorRegister">Register as a doctor</Link>
     </div>
+    <div className="forgotPassword">
+    <Link to="/forgotPassword">Forgot Password</Link>
     </div>
-    
+  </div>
     
   );
 }
