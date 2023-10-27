@@ -24,9 +24,12 @@ import PendingDoctors from "./Components/viewPendingDoctors";
 import HealthPackages from "./Components/packages";
 import ResetPassword from "./Components/resetpassword";
 import ForgotPassword from "./Components/forgotPassword";
+import NotFound from "./Components/notFound";
+import {useAuth} from "./AuthContext";
 
 
 function App() {
+  const {role}=useAuth();
   return (
     <div className="App">
           <Routes>
@@ -37,41 +40,56 @@ function App() {
             <Route path="/DoctorRegister" element={<DoctorRegister />} />
             <Route path="/resetPassword/:token" element={<ResetPassword />} />
             <Route path="/forgotPassword" element={<ForgotPassword />} />
+
+            {/* Redirect to login if no role is defined (user is not authenticated) */}
+            {role==="" && <Route path="*" element={<Navigate to="/login" />} />}
             
             {/* private routes */}
             <Route element={<PrivateRoute/>} >
               {/* patient routes */}
-              <Route path="/patientHome" element={<PatientHome />} />
-              <Route path="/familyMembers" element={<FamilyMembers />} />
-              <Route path="/registerFamilyMember" element={<RegisterFamilymember />} />
-              <Route path="/appointments" element={<Appointments />} />
-              <Route path="/prescriptions" element={<Prescriptions />} />
-              <Route path="/searchDoctors" element={<DoctorSearch />} />
-              <Route path="/viewAllDoctors" element={<DoctorList />} />
+              {role==="patient" &&(
+                <>
+                  <Route path="/patientHome" element={<PatientHome />} />
+                  <Route path="/familyMembers" element={<FamilyMembers />} />
+                  <Route path="/registerFamilyMember" element={<RegisterFamilymember />} />
+                  <Route path="/appointments" element={<Appointments />} />
+                  <Route path="/prescriptions" element={<Prescriptions />} />
+                  <Route path="/searchDoctors" element={<DoctorSearch />} />
+                  <Route path="/viewAllDoctors" element={<DoctorList />} />
+                </>              
+              )}
              
-
               {/* doctor routes */}
-              <Route path="/doctorhome" element={<DoctorHome />} />
-              <Route path="/editDoctorProfile" element={<DoctorProfileUpdate />} />
-              <Route path="/doctorAppointments" element={<DoctorAppointments />} />
-              <Route path="/patientdoctorhealth" element={<PrescriptionsDoctors />} />
-              <Route path="/viewallmypatients" element={<DoctorPatients />} />
-
+              {role==="doctor" &&(
+                <>
+                  <Route path="/doctorhome" element={<DoctorHome />} />
+                  <Route path="/editDoctorProfile" element={<DoctorProfileUpdate />} />
+                  <Route path="/doctorAppointments" element={<DoctorAppointments />} />
+                  <Route path="/patientdoctorhealth" element={<PrescriptionsDoctors />} />
+                  <Route path="/viewallmypatients" element={<DoctorPatients />} />
+                </>
+              )}
 
               {/* admin routes */}
-              <Route path="/adminHome" element={<AdminHome />} />
-              <Route path="/addAdmin" element={<AddAdmin />} />
-              <Route path="/deleteAdminDoctorPatient" element={<DeleteUser />} />
-              <Route path="/viewPendingDoctors" element={<PendingDoctors />} />
-              <Route path="/packages" element={<HealthPackages />} />
+              {role==="admin" &&(
+                <>
+                  <Route path="/adminHome" element={<AdminHome />} />
+                  <Route path="/addAdmin" element={<AddAdmin />} />
+                  <Route path="/deleteAdminDoctorPatient" element={<DeleteUser />} />
+                  <Route path="/viewPendingDoctors" element={<PendingDoctors />} />
+                  <Route path="/packages" element={<HealthPackages />} />
+                </>
+              )}
+             
 
 
               {/* common routes */}
-              <Route path="/verifyUser" element={<VerifyUser />} />
-             </Route>
+              {role==="notVerified" && <Route path="/verifyUser" element={<VerifyUser />} />}
+
+            </Route>
               
             {/* not found page */}
-            <Route path="*" element={<h1>Not Found</h1>} />
+            <Route path="*" element={<NotFound/>} />
             
           </Routes>
     </div>
