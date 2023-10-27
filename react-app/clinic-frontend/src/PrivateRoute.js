@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import {VerifyUser} from "./Components/verifyUser";
 import { useAuth } from './AuthContext';
-import { Outlet, Navigate } from 'react-router-dom';
+import { Outlet, Navigate,useNavigate } from 'react-router-dom';
 
 const PrivateRoute = () => {
   const { role } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
+  const navigate=useNavigate();
 
   useEffect(() => {
     if (role !== null) {
@@ -18,10 +20,14 @@ const PrivateRoute = () => {
 
   const allowedRoles = ['doctor', 'patient', 'admin'];
   if (role && allowedRoles.includes(role)) {
-    console.log("in private route");
     return <Outlet />;
-  } else {
-    return <Navigate to="/login" />;
+  } else if(role === "notVerified"){
+    navigate("/verifyUser");
+    return <VerifyUser />;
+  }else if(role === "notApproved"){
+    return <Navigate to="/doctorhome" />;
+  }else {
+    return <Navigate to="/" />;
   }
 };
 
