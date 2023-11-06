@@ -67,6 +67,30 @@ router.get(
   patientController.viewFamilyMemberHealthPackages
 );
 
+router.patch(
+  "/addFamilyMemberUsingEmail",
+  CheckAuth,
+  patientController.addFamilyMemberUsingEmail
+);
+
+router.patch(
+  "/addFamilyMemberUsingMobileNumber",
+  CheckAuth,
+  patientController.addFamilyMemberUsingMobileNumber
+);
+
+router.get(
+  "/getHealthCareDetails",
+  CheckAuth,
+  patientController.getHealthCareDetails
+);
+
+router.get(
+  "/getHealthCareDetailsForFamilyMember",
+  CheckAuth,
+  patientController.getHealthCareDetailsForFamilyMember
+);
+
 router.get("/:id", patientController.getPatients);
 
 module.exports = router;

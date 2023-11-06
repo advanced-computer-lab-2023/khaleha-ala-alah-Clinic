@@ -84,19 +84,21 @@ const userSchema = new mongoose.Schema({
     required: [true, "Please provide your email"],
     lowercase: true,
     validate: [validator.isEmail, "Please provide a valid email"],
+    unique: true,
   },
   gender: {
     type: String,
     enum: ["Male", "Female", "Other"],
     required: [true, "Please tell us your gender"],
   },
-  dataOfBirth: {
+  dateOfBirth: {
     type: Date,
-    //required: [true, 'Please tell us your age']
+    required: [true, "Please tell us your age"],
   },
   mobileNumber: {
     type: String,
     required: [true, "Please tell us your mobile number"],
+    unique: true,
   },
   packageName: {
     type: String,
@@ -117,6 +119,10 @@ const userSchema = new mongoose.Schema({
   selfSubscription: {
     type: Boolean,
     default: false,
+  },
+  packageEndDate: {
+    type: Date,
+    default: null,
   },
 
   EmergencyContact: emergencyContactSchema,
