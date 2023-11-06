@@ -20,6 +20,7 @@ export const DoctorRegister = () => {
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedhour, setSelectedhour] = useState("");
   const [fixedSlots, setFixedSlots] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,6 +57,11 @@ export const DoctorRegister = () => {
     updatedSlots.splice(index, 1);
     setFixedSlots(updatedSlots);
   };
+  const handleFileSelect = (e) => {
+    const files = e.target.files;
+    setSelectedFiles([...files]);
+  };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,22 +80,30 @@ export const DoctorRegister = () => {
       message.error("Please fill all the fields and add at least one slot");
       return;
     }
-    const data = {
-      username: username,
-      password: password,
-      email: email,
-      name: name,
-      birthdate: birthdate,
-      hourlyRate: hourlyRate,
-      affiliation: affiliation,
-      speciality: speciality,
-      educationalBackground: educationalBackground,
-      fixedSlots: fixedSlots,
-    };
+    const formData = new FormData();
+    formData.append("username", username);
+    formData.append("password", password);
+    formData.append("email", email);
+    formData.append("name", name);
+    formData.append("birthdate", birthdate);
+    formData.append("hourlyRate", hourlyRate);
+    formData.append("affiliation", affiliation);
+    formData.append("speciality", speciality);
+    formData.append("educationalBackground", educationalBackground);
+    formData.append("fixedSlots", JSON.stringify(fixedSlots));
+    for (let i = 0; i < selectedFiles.length; i++) {
+      formData.append("files", selectedFiles[i]);
+    }
+    console.log("FormData Content:");
+for (const [key, value] of formData.entries()) {
+  console.log(key, value);
+}
+
     await axios
-      .post("http://localhost:4000/users/register", data, {
+      .post("http://localhost:4000/users/register", formData, {
         headers: {
           role: "doctor",
+          "Content-Type": "multipart/form-data",
         },
       })
       .then(async (res) => {
@@ -258,6 +272,17 @@ export const DoctorRegister = () => {
                   </div>
                 ))}
               </div>
+              {/* upload files */}
+              <div className="input-box">
+                <span className="details">Upload File(s)</span>
+                <input
+                  type="file"
+                  name="file"
+                  accept=".pdf, .jpg, .png" // Specify allowed file types
+                  multiple // Allow multiple file selection
+                  onChange={handleFileSelect}
+                />
+            </div>
             </div>
             <div className="button">
               <input type="submit" value="Register" />

@@ -8,6 +8,7 @@ const jwt = require('jsonwebtoken');
 const { validateName,validateEmail,validatePassword,validateMobileNumber,validateGender,validateDateOfBirth,validateRole}= require('../utilities/validations');
 const nodeMailer = require('nodemailer');
 const crypto = require('crypto');
+const upload = require('../server');
 
 
 //generate token
@@ -107,7 +108,7 @@ exports.sendVerificationMail = async ({ email }) => {
      }
  }
 
-   // Register
+// Register
 exports.registerUser = async (req, res) => {
     try {
         const role=req.headers.role;
@@ -161,7 +162,14 @@ exports.registerUser = async (req, res) => {
             return res.status(400).json({error : "Invalid data"});
           }
         }else if(role === 'doctor'){
+          console.log(req.body);
           const{birthdate,hourlyRate,affiliation,speciality,educationalBackground,fixedSlots}=req.body;
+          const files=req.files;
+          if(!files){
+            return res.status(400).json({error : "Files not provided"});
+          }
+          console.log("here")
+          const Filepathes = req.files.map(file => file.id);
           const doctor = new doctorModel({
             userID: user._id,
             username,
@@ -172,8 +180,9 @@ exports.registerUser = async (req, res) => {
             affiliation,
             speciality,
             educationalBackground,
-            fixedSlots:fixedSlots,
+            fixedSlots:JSON.parse(fixedSlots),
             status: 'pending',
+            files: Filepathes,
           });
           try {
             await doctor.save();

@@ -1,6 +1,8 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const {upload}=require("./server");
+
 
 const app = express();
 
@@ -21,6 +23,15 @@ app.use(express.static(`${__dirname}/public`)); // to serve static files
 app.use(cors()); // to allow all cors requests
 
 //2) routes
+
+//save file to database
+app.post('/upload',upload.array("files",3),(req,res)=>{
+  const fileIds = req.files.map(file => file.id);
+  res.json({fileIds});
+  res.json({msg:'file uploaded successfully'});
+});
+
+
 
 app.use("/admins", adminRouter);
 
