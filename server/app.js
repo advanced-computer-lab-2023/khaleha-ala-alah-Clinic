@@ -12,6 +12,7 @@ const patientRouter = require("./routes/patientRoutes");
 //const patientRouter = require("./routes/patientRoutes");
 const doctorRouter = require("./routes/doctorRoutes");
 const packageRouter = require("./routes/packageRoutes");
+//const apiRouter = require("./routes/api");
 
 //1) middleware
 if (process.env.NODE_ENV == "development") {
@@ -34,10 +35,10 @@ app.post('/upload',upload.array("files",3),(req,res)=>{
 
 
 app.use("/admins", adminRouter);
-
 app.use("/doctors", doctorRouter);
 app.use("/patients", patientRouter);
 app.use("/users", require("./routes/userRoute"));
 app.use("/packages", packageRouter);
+app.use("/api", require("./routes/api"));
 
 module.exports = app;

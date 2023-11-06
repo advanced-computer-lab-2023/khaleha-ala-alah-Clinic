@@ -3,6 +3,9 @@ const Patient = require("../models/users/patientModel"); // Replace with the app
 const Doctor = require("../models/users/doctorModel");
 const User = require("../models/users/user");
 const bcrypt = require('bcrypt');
+const Grid = require('gridfs-stream');
+const mongoose = require('mongoose');
+
 exports.getAllAdmins = async function (req, res) {
   try {
     const admins = await Admin.find();
@@ -159,17 +162,43 @@ exports.approveDoctor = async (req, res) => {
 exports.getPendingDoctors = async (req, res) => {
   try {
     const pendingDoctors = await Doctor.find({ status: "pending" });
+    const conn = mongoose.connection;
+    const gfs = new mongoose.mongo.GridFSBucket(conn.db, { bucketName: 'uploads' });
+
+    const doctors = await Promise.all(pendingDoctors.map(async (doctor) => {
+      const downloadLinks = await Promise.all(doctor.files.map(async (file) => {
+        const attachment = await gfs.find({ _id: file }).toArray();
+        if (attachment.length > 0) {
+          const downloadLink = attachment[0].filename;
+          return downloadLink;
+        }
+        return null; 
+      }));
+
+      return {
+        name: doctor.name,
+        birthdate: doctor.birthdate,
+        affiliation: doctor.affiliation,
+        educationalBackground: doctor.educationalBackground,
+        speciality: doctor.speciality,
+        files: downloadLinks.filter(link => link !== null), // Filter out null links
+      };
+    }));
+
     res.status(200).json({
       status: "success",
       results: pendingDoctors.length,
       data: {
-        pendingDoctors,
+        pendingDoctors: doctors,
       },
     });
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       status: "error",
-      message: "NO PENDING DOCTORS",
+      message: "Error retrieving pending doctors",
     });
   }
 };
+
+

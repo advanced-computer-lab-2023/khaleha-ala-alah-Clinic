@@ -81,7 +81,7 @@ const doctorSchema = new Schema(
     files: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "uploads",
+        ref: "uploads.files",
       },
     ],
   },

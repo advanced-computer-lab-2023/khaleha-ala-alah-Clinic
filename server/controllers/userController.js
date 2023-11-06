@@ -8,7 +8,6 @@ const jwt = require('jsonwebtoken');
 const { validateName,validateEmail,validatePassword,validateMobileNumber,validateGender,validateDateOfBirth,validateRole}= require('../utilities/validations');
 const nodeMailer = require('nodemailer');
 const crypto = require('crypto');
-const upload = require('../server');
 
 
 //generate token
