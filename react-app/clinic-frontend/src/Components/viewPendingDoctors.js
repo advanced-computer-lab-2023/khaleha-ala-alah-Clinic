@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { message } from "antd";
 
 const PendingDoctors = () => {
   const [doctors, setDoctors] = useState([]);
@@ -28,6 +30,26 @@ const PendingDoctors = () => {
     fetchPendingDoctors();
   }, []);
 
+  const handleAcceptOrReject = async (username,action) => {
+    const data = {
+      username: username,
+    };
+    await axios.post(`http://localhost:4000/admins/approveOrRejectDoctor`, data, {
+      headers: {
+        authorization: "Bearer " + localStorage.getItem("token"),
+        type: action,
+      },
+    }).then((res) => {
+      message.success(res.data.message);
+      
+    }
+    ).catch((err) => {
+      message.error(err.response.data.error);
+    });
+  };
+
+
+    
   return (
     <div>
       <h2>Pending Doctors</h2>
@@ -58,7 +80,26 @@ const PendingDoctors = () => {
                   </tbody>
                 </table>
               </div>
+              
             )}
+            <div>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>
+                      <button value={"approve"} onClick={(e)=>handleAcceptOrReject(doctor.username,e.target.value)}>
+                        Approve
+                      </button>
+                    </td>
+                    <td>
+                      <button value={"reject"} onClick={(e)=>handleAcceptOrReject(doctor.username,e.target.value)} >
+                        Reject
+                      </button>
+                    </td>
+                  </tr>
+                  </tbody>
+              </table>
+            </div>
           </li>
         ))}
       </ul>

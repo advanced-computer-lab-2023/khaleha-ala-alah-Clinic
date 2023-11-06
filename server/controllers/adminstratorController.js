@@ -153,7 +153,10 @@ exports.approveDoctor = async (req, res) => {
       ? (doctor.doctorApproved = true)
       : (doctor.doctorApproved = false);
     await doctor.save();
-    return res.status(200).json({ message: `Doctor approved successfully.` });
+    if(type==="approve"){
+      return res.status(200).json({ message: "Doctor approved successfully." });
+    }
+    return res.status(200).json({ message: "Doctor rejected successfully." });
   } catch (error) {
     return res.status(500).json({ error: "Internal server error." });
   }
@@ -176,6 +179,7 @@ exports.getPendingDoctors = async (req, res) => {
       }));
 
       return {
+        username: doctor.username,
         name: doctor.name,
         birthdate: doctor.birthdate,
         affiliation: doctor.affiliation,
