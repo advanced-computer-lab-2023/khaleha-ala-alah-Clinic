@@ -29,6 +29,11 @@ const emergencyContactSchema = new mongoose.Schema({
   },
 });
 const familyMemberSchema = new mongoose.Schema({
+  userID: {
+    type: String,
+    //required: true, sheel elcomment law kol el family members lazm yb2o patients
+    unique: true,
+  },
   name: {
     type: String,
     required: true,
@@ -93,18 +98,25 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please tell us your mobile number"],
   },
-  packageName:{
+  packageName: {
     type: String,
-    default : "none",
+    default: "none",
   },
   doctorsDiscount: {
     type: Number,
+    default: 0,
   },
   medicalDiscount: {
     type: Number,
+    default: 0,
   },
   familyDiscount: {
     type: Number,
+    default: 0,
+  },
+  selfSubscription: {
+    type: Boolean,
+    default: false,
   },
 
   EmergencyContact: emergencyContactSchema,

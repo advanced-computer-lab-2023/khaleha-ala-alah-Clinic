@@ -72,7 +72,7 @@ exports.getPatients = async function (req, res) {
 exports.getCurrentPatient = async function (req, res) {
   try {
     //const patientID = "6527622d2075657b32b6c110"; //req.user._id;
-    const patient = await Patient.findOne({userID:req.user._id});
+    const patient = await Patient.findOne({ userID: req.user._id });
     console.log(patient);
     res.status(200).json({
       status: "success",
@@ -180,7 +180,7 @@ exports.getPatientPrescribtions = async function (req, res) {
 
     //newPresctibtion.save();
     res.status(200).json({
-      data:prescriptions
+      data: prescriptions,
     });
   } catch (err) {
     res.status(500).json({
@@ -211,7 +211,9 @@ exports.getAppointments = async function (req, res) {
 exports.getPatientDoctors = async function (req, res) {
   try {
     const patient = "651ee41994ed6dc1e163c4df";
-    const doctorIds = await Appointments.find({PatientID : req.user._id}).distinct("DoctorID", {
+    const doctorIds = await Appointments.find({
+      PatientID: req.user._id,
+    }).distinct("DoctorID", {
       PatientID: patient,
     });
     //const doctors = await Doctors.find({ userID: { $in: doctorIds } });
@@ -238,7 +240,7 @@ exports.getPatientDoctors = async function (req, res) {
   }
 };
 exports.getAllPersecriptions = async function (req, res) {
-  try{
+  try {
     console.log("ENTERED METHOD");
     const prescriptions = await Prescriptions.find({
       PatientID: req.user._id,
@@ -251,12 +253,183 @@ exports.getAllPersecriptions = async function (req, res) {
         prescriptions,
       },
     });
-  }
-  catch (err) {
+  } catch (err) {
     console.log(err);
-  res.status(500).json({
-    status: "error",
-    message: "this route is not defined yet",
-  });
-}
-}
+    res.status(500).json({
+      status: "error",
+      message: "this route is not defined yet",
+    });
+  }
+};
+
+exports.subscribeToPackage = async function (req, res) {
+  try {
+    const patient = await Patient.findOne({ userID: req.user._id });
+    if (!patient) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+    const { packageName, doctosDiscount, medicalDiscount, familyDiscount } =
+      req.body;
+
+    if (patient.packageName != "none") {
+      return res.status(201).json({
+        packageAdded: false,
+      });
+    }
+    patient.packageName = req.body.packageName;
+    patient.doctorsDiscount = req.body.doctorsDiscount;
+    patient.medicalDiscount = req.body.medicalDiscount;
+    patient.familyDiscount = req.body.familyDiscount;
+    patient.selfSubscription = true;
+    const updatedPatient = await patient.save();
+    res.status(201).json({ packageAdded: true, updatedPatient });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: "fail1111",
+      message: "Server error",
+    });
+  }
+};
+
+exports.subscribeForFamilyMember = async function (req, res) {
+  try {
+    const { packageName, doctosDiscount, medicalDiscount, familyDiscount } =
+      req.body;
+    let familyMember = await Patient.findOne({ userID: req.query.id });
+    if (!familyMember) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+    if (familyMember.packageName != "none") {
+      return res.status(201).json({
+        packageAdded: false,
+      });
+    }
+    console.log(familyMember + " <<<<<< FAMILY MEMBER");
+    familyMember.packageName = req.body.packageName;
+    familyMember.doctorsDiscount = req.body.doctorsDiscount;
+    familyMember.medicalDiscount = req.body.medicalDiscount;
+    familyMember.familyDiscount = req.body.familyDiscount;
+    const updatedPatient = await familyMember.save();
+    res.status(201).json({ packageAdded: true, updatedPatient });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: "fail1111",
+      message: "Server error",
+    });
+  }
+};
+
+exports.viewCurrentHealthPackage = async function (req, res) {
+  try {
+    const patient = await Patient.findOne({ userID: req.user._id });
+    if (!patient) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+    res.status(201).json(
+      (data = {
+        packageName: patient.packageName,
+        doctorsDiscount: patient.doctorsDiscount,
+        medicalDiscount: patient.medicalDiscount,
+        familyDiscount: patient.familyDiscount,
+      })
+    );
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: "fail1111",
+      message: "Server error",
+    });
+  }
+};
+
+exports.viewFamilyMemberHealthPackages = async function (req, res) {
+  try {
+    let familyMember = await Patient.findOne({ userID: req.query.id });
+    if (!familyMember) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+    res.status(201).json(
+      (data = {
+        packageName: familyMember.packageName,
+        doctorsDiscount: familyMember.doctorsDiscount,
+        medicalDiscount: familyMember.medicalDiscount,
+        familyDiscount: familyMember.familyDiscount,
+      })
+    );
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: "fail1111",
+      message: "Server error",
+    });
+  }
+};
+
+exports.cancelHealthPackage = async function (req, res) {
+  try {
+    const patient = await Patient.findOne({ userID: req.user._id });
+    if (!patient) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+    patient.packageName = "none";
+    patient.doctorsDiscount = 0;
+    patient.medicalDiscount = 0;
+    patient.familyDiscount = 0;
+    patient.selfSubscription = false;
+    const updatedPatient = await patient.save();
+    res.status(201).json(updatedPatient);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: "fail1111",
+      message: "Server error",
+    });
+  }
+};
+
+exports.cancelFamilyMemberPackage = async function (req, res) {
+  try {
+    const patient = await Patient.findOne({ userID: req.query.id });
+    if (!patient) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+    if (patient.selfSubscription) {
+      return res.status(201).json({
+        packageDeleted: false,
+      });
+    }
+    patient.packageName = "none";
+    patient.doctorsDiscount = 0;
+    patient.medicalDiscount = 0;
+    patient.familyDiscount = 0;
+    patient.selfSubscription = false;
+    const updatedPatient = await patient.save();
+    res.status(201).json({ packageDeleted: true, updatedPatient });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: "fail1111",
+      message: "Server error",
+    });
+  }
+};
