@@ -25,6 +25,7 @@ import HealthPackages from "./Components/packages";
 import ResetPassword from "./Components/resetpassword";
 import ForgotPassword from "./Components/forgotPassword";
 import NotFound from "./Components/notFound";
+import NotApproved from "./Components/notApproved";
 import {useAuth} from "./AuthContext";
 
 
@@ -85,6 +86,7 @@ function App() {
 
               {/* common routes */}
               {role==="notVerified" && <Route path="/verifyUser" element={<VerifyUser />} />}
+              {role==="notApproved" && <Route path="/notApproved" element={<NotApproved />} />}
 
             </Route>
               

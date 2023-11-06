@@ -101,6 +101,13 @@ exports.sendVerificationMail = async ({ email }) => {
          }
          await userVerificationModel.deleteOne({ userId: userID });
          await userModel.updateOne({ _id:userID}, { verified: true });
+         if(decoded.role === 'doctor'){
+          const doctor= await doctorModel.findOne({userID:userID});
+          const status=doctor.status;
+          if(status === 'pending'){
+            return res.status(200).json({ message: 'User verified successfully',role:"notApproved"});
+          }
+         }
          res.status(200).json({ message: 'User verified successfully',role:decoded.role});
      } catch (err) {
          res.status(500).json({ error: err.message });
@@ -215,18 +222,7 @@ exports.login = async (req, res) => {
       if(!validPassword){
           return res.status(400).json({error : "Invalid password"});
       }
-      //check if user is doctor and not approved yet
-      if(user.role === 'doctor' && !user.doctorApproved){
-        
-        let doctor=await doctorModel.findOne({userID:user._id});
-        
-        if(doctor.status === 'pending'){
-            return res.status(400).json({error : "Doctor not approved yet"});
-        }else if(doctor.status === 'rejected'){
-            return res.status(400).json({error : "Doctor rejected"});
-        }
-
-      }
+      
       //check if user is not verified send OTP
       //generate token
       const token = generateToken(user._id, user.role);
@@ -244,6 +240,18 @@ exports.login = async (req, res) => {
         }
         await this.sendOTP(email,user._id);
         return res.status(400).json({error : "User not verified yet",token:token,role:user.role});
+      }
+      //check if user is doctor and not approved yet
+      if(user.role === 'doctor' && !user.doctorApproved){
+        
+        let doctor=await doctorModel.findOne({userID:user._id});
+        
+        if(doctor.status === 'pending'){
+            return res.status(400).json({error : "Doctor not approved yet",token:token,role:user.role});
+        }else if(doctor.status === 'rejected'){
+            return res.status(400).json({error : "Doctor rejected",token:token,role:user.role});
+        }
+
       }
       res.status(200).json({ message: 'User logged in successfully',token:token,role:user.role });
 

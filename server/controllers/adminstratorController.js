@@ -5,6 +5,8 @@ const User = require("../models/users/user");
 const bcrypt = require('bcrypt');
 const Grid = require('gridfs-stream');
 const mongoose = require('mongoose');
+const { sendEmail } = require("../utilities/emails");
+const user = require("../models/users/user");
 
 exports.getAllAdmins = async function (req, res) {
   try {
@@ -143,6 +145,7 @@ exports.approveDoctor = async (req, res) => {
     if (!doctor) {
       return res.status(404).json({ error: "Doctor not found." });
     }
+    const email=doctor.email;
     type === "approve"
       ? (doctor.status = "accepted")
       : (doctor.status = "rejected");
@@ -153,6 +156,17 @@ exports.approveDoctor = async (req, res) => {
       ? (doctor.doctorApproved = true)
       : (doctor.doctorApproved = false);
     await doctor.save();
+    //send email
+    const subject=type==="approve"?"Doctor Approved":"Doctor Rejected";
+    const html=type==="approve"?"<h1>Congratulations! Your account has been approved.</h1>":"<h1>Sorry! Your account has been rejected.</h1>";
+    sendEmail(email,subject,html);
+
+    //delete if rejected
+    if(type==="reject"){
+      await user.deleteOne({username:username});
+      await Doctor.deleteOne({username:username});
+    }
+
     if(type==="approve"){
       return res.status(200).json({ message: "Doctor approved successfully." });
     }
