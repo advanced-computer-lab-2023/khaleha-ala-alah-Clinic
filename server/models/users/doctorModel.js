@@ -31,14 +31,6 @@ const doctorSchema = new Schema(
       type: Number,
       required: true,
     },
-    // password: {
-    //   type: String,
-    //   required: true,
-    //   validate: {
-    //     validator: (value) => validator.isLength(value, { min: 8 }),
-    //     message: "Password must contain at least 8 characters.",
-    //   },
-    // },
     fixedSlots: [
       {
         day: {
@@ -58,6 +50,10 @@ const doctorSchema = new Schema(
           type: String, // You can choose an appropriate data type (e.g., Date, String) for the hour
           required: true,
         },
+        //   timedAt : {
+        //     type: Date,
+        //     required: true,
+        // }
       },
     ],
     username: {
@@ -86,6 +82,12 @@ const doctorSchema = new Schema(
       enum: ["accepted", "pending", "rejected"],
       default: "pending",
     },
+    files: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "uploads.files",
+      },
+    ],
   },
   { timestamps: true }
 );

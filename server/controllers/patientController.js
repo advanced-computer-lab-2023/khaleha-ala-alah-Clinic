@@ -304,12 +304,13 @@ exports.subscribeForFamilyMember = async function (req, res) {
       req.body;
     let familyMember = await Patient.findOne({ userID: req.query.id });
     if (!familyMember) {
-      return res.status(404).json({
+            return res.status(404).json({
         status: "fail",
         message: "Patient not found",
       });
     }
-    if (familyMember.packageName != "none") {
+    
+        if (familyMember.packageName != "none") {
       return res.status(201).json({
         packageAdded: false,
       });
@@ -333,17 +334,17 @@ exports.subscribeForFamilyMember = async function (req, res) {
     });
   }
 };
-
+      
 exports.viewCurrentHealthPackage = async function (req, res) {
   try {
     const patient = await Patient.findOne({ userID: req.user._id });
-    if (!patient) {
+        if (!patient) {
       return res.status(404).json({
         status: "fail",
         message: "Patient not found",
       });
     }
-    res.status(201).json(
+     res.status(201).json(
       (data = {
         packageName: patient.packageName,
         doctorsDiscount: patient.doctorsDiscount,
@@ -446,7 +447,7 @@ exports.cancelFamilyMemberPackage = async function (req, res) {
 exports.addFamilyMemberUsingEmail = async function (req, res) {
   try {
     const patient = await Patient.findOne({ userID: req.user._id });
-    if (!patient) {
+        if (!patient) {
       return res.status(404).json({
         status: "fail",
         message: "Patient not found",
@@ -637,6 +638,362 @@ exports.getHealthCareDetailsForFamilyMember = async function (req, res) {
     res.status(500).json({
       status: "fail",
       message: "Server error",
+        });
+  }
+};
+    
+      
+exports.GetDoctorAppointments = async function (req, res) {
+  try {
+    //const doctor = "651f16c855b8273fedf03c93";
+    const appointments = await Appointments.find({
+      DoctorID: req.params.id,
+    });
+    console.log("enter");
+    //console.log(appointments);
+    res.status(200).json({
+      status: "success",
+      data: {
+        Appointments: appointments,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+};
+// get appointments of selected doctor
+// exports.getAvailableAppointmentsOfDoctor = async function (req, res) {
+//   try {
+//     const doctor = req.body.id;
+//     const appointments = await Appointments.find({
+//       DoctorID: doctor,
+//       PatientID: null,
+//     });
+//     res.status(200).json({
+//       appointments,
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json({
+//       status: "error",
+//       message: err.message,
+//     });
+//   }
+// };
+exports.viewDoctorAppointmentsForMonth = async function (req, res) {
+  try {
+    const patient = await Patient.findOne({ userID: req.user._id });
+    if (!patient) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+
+
+
+    const { doctorID } = req.params; // Get doctorID from route parameters
+
+    // Find the selected doctor by their ID
+    const doctor = await Doctors.findOne({ userID: doctorID });
+
+    if (!doctor) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "Doctor not found" });
+    }
+
+    const currentDate = new Date(); // Get the current date
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1; // Month is 0-based
+
+    // Generate a list of time slots for the current month
+    const startDate = new Date(currentYear, currentMonth - 1, 1); // current month is 0-based
+    const endDate = new Date(currentYear, currentMonth + 2, 0);
+    // const endDate = new Date(year, currentMonth - 1, 7);
+
+    const availableTimeSlots = [];
+
+    for (const slot of doctor.fixedSlots) {
+      const currentDay = new Date(startDate);
+      while (currentDay <= endDate) {
+        if (currentDay.getDay() === getDayIndex(slot.day)) {
+          // Parse the time from "9:45 AM" format to 24-hour format
+          const timeParts = slot.hour.split(" ");
+          const time = timeParts[0];
+          const isPM = timeParts[1] === "PM";
+          let [hours, minutes] = time.split(":").map(Number);
+
+          if (isPM && hours !== 12) {
+            hours += 12;
+          } else if (!isPM && hours === 12) {
+            hours = 0; // Midnight (12:00 AM) is represented as 0 in 24-hour format
+          }
+
+          const appointmentTime = new Date(
+            currentDay.getFullYear(),
+            currentDay.getMonth(),
+            currentDay.getDate(),
+            hours,
+            minutes,
+            0
+          );
+          if (appointmentTime >= currentDate) {
+            const isBooked = await isAppointmentBooked(
+              doctorID,
+              appointmentTime
+            );
+            if (!isBooked) {
+              availableTimeSlots.push(appointmentTime);
+            }
+          }
+        }
+        currentDay.setDate(currentDay.getDate() + 1);
+      }
+    }
+
+    // Sort the availableTimeSlots array by date
+    availableTimeSlots.sort((a, b) => a - b);
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        //doctor: doctor,
+        availableAppointments: availableTimeSlots,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+};
+
+// Helper function to check if a given appointment time is booked
+async function isAppointmentBooked(doctorID, appointmentTime) {
+  const appointment = await Appointments.findOne({
+    DoctorID: doctorID,
+    timedAt: appointmentTime,
+  });
+  return !!appointment;
+}
+
+// Helper function to get the day index from the day name
+function getDayIndex(dayName) {
+  const daysOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  return daysOfWeek.indexOf(dayName);
+}
+//select an appointment date and time for myself
+exports.SelectAppointmentPatient = async function (req, res) {
+  try {
+    const { doctorID, selectedDateTime } = req.params;
+
+    // Ensure they have the required permissions
+    const patient = await Patient.findOne({ userID: req.user._id });
+
+    if (!patient) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+   
+
+    // Check if the selected date and time are available for the doctor
+    if (!doctorID || !selectedDateTime) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Doctor ID and selected date/time are required.",
+      });
+    }
+
+    const doctor = await Doctors.findOne({ userID: doctorID });
+    if (!doctor) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Doctor not found.",
+      });
+    }
+
+    // Get the doctor's available time slots
+    const availableTimeSlots = doctor.fixedSlots;
+
+    // Check if the selected date and time match any of the available time slots
+    const isTimeSlotAvailable = availableTimeSlots.some((slot) => {
+      const slotDay = slot.day;
+      const slotTime = slot.hour;
+
+      // Convert the selectedDateTime to match the format in the slots
+      const selectedTime = new Date(selectedDateTime);
+      const selectedDay = selectedTime.toLocaleDateString("en-US", {
+        weekday: "long",
+      });
+      const selectedHour = selectedTime.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+      });
+
+      return slotDay === selectedDay && slotTime === selectedHour;
+    });
+
+    if (!isTimeSlotAvailable) {
+      return res.status(400).json({
+        status: "fail",
+        message:
+          "Selected date and time are not within the doctor's available time slots.",
+      });
+    }
+
+    // Check if the selected appointment time is already booked
+    const isAppointmentBooked = await Appointments.findOne({
+      DoctorID: doctorID,
+      timedAt: new Date(selectedDateTime),
+    });
+
+    if (isAppointmentBooked) {
+      return res.status(400).json({
+        status: "fail",
+        message:
+          "Selected date and time are already booked by another patient.",
+      });
+    }
+
+    // Create a new appointment
+    const appointment = new Appointments({
+      PatientID: req.user._id, // Assuming you have patient information in req.user
+      DoctorID: doctorID,
+      timedAt: new Date(selectedDateTime),
+    });
+
+    // Save the appointment to the database
+    await appointment.save();
+
+    res.status(200).json({
+      status: "success",
+      message: "Appointment scheduled successfully.",
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+};
+//select an appointment date and time for a family member                 //------------------------------not tested-------------------
+exports.SelectAppointmentFamilyMember = async function (req, res) {
+  try {
+    const { doctorID, selectedDateTime, FamilyMember } = req.params;
+
+    // Ensure they have the required permissions
+    const patient = await Patient.findOne({ userID: req.user._id });
+
+    if (!patient) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+    
+
+    // Check if the selected date and time are available for the doctor
+    if (!doctorID || !selectedDateTime) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Doctor ID and selected date/time are required.",
+      });
+    }
+
+    const doctor = await Doctors.findOne({ userID: doctorID });
+    if (!doctor) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Doctor not found.",
+      });
+    }
+
+    // Get the doctor's available time slots
+    const availableTimeSlots = doctor.fixedSlots;
+
+    // Check if the selected date and time match any of the available time slots
+    const isTimeSlotAvailable = availableTimeSlots.some((slot) => {
+      const slotDay = slot.day;
+      const slotTime = slot.hour;
+
+      // Convert the selectedDateTime to match the format in the slots
+      const selectedTime = new Date(selectedDateTime);
+      const selectedDay = selectedTime.toLocaleDateString("en-US", {
+        weekday: "long",
+      });
+      const selectedHour = selectedTime.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+      });
+
+      return slotDay === selectedDay && slotTime === selectedHour;
+    });
+
+    if (!isTimeSlotAvailable) {
+      return res.status(400).json({
+        status: "fail",
+        message:
+          "Selected date and time are not within the doctor's available time slots.",
+      });
+    }
+
+    // Check if the selected appointment time is already booked
+    const isAppointmentBooked = await Appointments.findOne({
+      DoctorID: doctorID,
+      timedAt: new Date(selectedDateTime),
+    });
+
+    if (isAppointmentBooked) {
+      return res.status(400).json({
+        status: "fail",
+        message:
+          "Selected date and time are already booked by another patient.",
+      });
+    }
+
+    const isFamilyMemberPatient = await Patient.findOne({
+      userID: FamilyMember,
+    });
+    if (!isFamilyMemberPatient) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Selected family member is not a patient.",
+      });
+    }
+
+    // Create a new appointment
+    const appointment = new Appointments({
+      PatientID: FamilyMember,
+      DoctorID: doctorID,
+      timedAt: new Date(selectedDateTime),
+    });
+
+    // Save the appointment to the database
+    await appointment.save();
+
+    res.status(200).json({
+      status: "success",
+      message: "Appointment scheduled successfully.",
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
     });
   }
 };
