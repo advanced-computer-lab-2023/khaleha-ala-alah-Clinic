@@ -109,11 +109,11 @@ exports.viewPendingDoctors = async (req, res) => {
     const pendingDoctors = await Doctor.find({ status: "pending" }).select({
       Password: 0,
       confirmPassword: 0,
-      _id: 0,
+      _id: 1,
       __v: 0,
       userID: 0,
     });
-    console.log(pendingDoctors);
+    //console.log(pendingDoctors);
     res.status(200).json({
       status: "success",
       results: pendingDoctors.length,
@@ -130,21 +130,83 @@ exports.viewPendingDoctors = async (req, res) => {
 };
 
 //approve and reject doctor
-exports.approveDoctor = async (req, res) => {
+// exports.approveDoctor = async (req, res) => {
+//   try {
+//     let admin = await Admin.findOne({ userID: req.user._id });
+//     if (!admin) {
+//       return res.status(404).json({ error: "Admin not found." });
+//     }
+//     const { type } = req.headers;
+//     if (type !== "approve" && type !== "reject") {
+//       return res.status(400).json({ error: "Invalid type specified." });
+//     }
+//     const { username } = req.body;
+//     let doctor = await Doctor.findOne({ username: username });
+//     if (!doctor) {
+//       return res.status(404).json({ error: "Doctor not found." });
+//     }
+//     type === "approve"
+//       ? (doctor.status = "accepted")
+//       : (doctor.status = "rejected");
+//     await doctor.save();
+//     doctorID = doctor.userID;
+//     doctor = await User.findOne({ _id: doctorID });
+//     type === "approve"
+//       ? (doctor.doctorApproved = true)
+//       : (doctor.doctorApproved = false);
+//     await doctor.save();
+//     return res.status(200).json({ message: `Doctor approved successfully.` });
+//   } catch (error) {
+//     return res.status(500).json({ error: "Internal server error." });
+//   }
+// };
+// accept and reject doctor request to join platform
+exports.AcceptRejectDoctor = async (req, res) => {
+  const doctorId = req.body.doctorId;
+  const action = req.body.action;
+
   try {
-    let admin = await Admin.findOne({ userID: req.user._id });
-    if (!admin) {
-      return res.status(404).json({ error: "Admin not found." });
-    }
-    const { type } = req.headers;
-    if (type !== "approve" && type !== "reject") {
-      return res.status(400).json({ error: "Invalid type specified." });
-    }
-    const { username } = req.body;
-    let doctor = await Doctor.findOne({ username: username });
+    // let admin = await Admin.findOne({ userID: req.user._id });
+    // if (!admin) {
+    //   return res.status(404).json({ error: "Admin not found." });
+    // }
+    const doctor = await Doctor.findById(doctorId);
+
     if (!doctor) {
-      return res.status(404).json({ error: "Doctor not found." });
+      return res.status(404).json({ message: "Doctor not found." });
     }
+
+    if (doctor.status !== "pending") {
+      return res.status(400).json({
+        message:
+          "Doctor request is not in pending status and cannot be processed.",
+      });
+    }
+
+    if (action === "accept") {
+      // Update the doctor's status to "accepted"
+      doctor.status = "accepted";
+      // Set the user's "doctorApproved" field to true
+      const user = await User.findOne({ _id: doctor.userID });
+      if (user) {
+        user.doctorApproved = true;
+        await user.save();
+      }
+    } else if (action === "reject") {
+      // Update the doctor's status to "rejected"
+      doctor.status = "rejected";
+    } else {
+      return res.status(400).json({ message: "Invalid action." });
+    }
+
+    await doctor.save();
+
+    return res.json({ message: `Doctor request ${action}ed.` });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err.message,
+    });
     //delete from gfs if rejected
     if(type==="reject"){
       gfs = new mongoose.mongo.GridFSBucket(mongoose.connection.db, { bucketName: 'uploads' });
