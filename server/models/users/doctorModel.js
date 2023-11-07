@@ -58,6 +58,10 @@ const doctorSchema = new Schema(
           type: String, // You can choose an appropriate data type (e.g., Date, String) for the hour
           required: true,
         },
+        //   timedAt : {
+        //     type: Date,
+        //     required: true,
+        // }
       },
     ],
     username: {
