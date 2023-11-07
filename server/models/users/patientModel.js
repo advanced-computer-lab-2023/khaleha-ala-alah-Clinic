@@ -93,14 +93,20 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please tell us your mobile number"],
   },
-  package: {
-    type: mongoose.Schema.Types.ObjectId, // Use ObjectId type to reference packages
-    ref: "Package",
+  packageName:{
+    type: String,
+    default : "none",
   },
-  // presecriptions:{
-  //     type: [presecriptionsSchema],
-  //     default:[]
-  // },
+  doctorsDiscount: {
+    type: Number,
+  },
+  medicalDiscount: {
+    type: Number,
+  },
+  familyDiscount: {
+    type: Number,
+  },
+
   EmergencyContact: emergencyContactSchema,
   familyMembers: {
     type: [familyMemberSchema],

@@ -4,9 +4,6 @@ const Doctor = require("../models/users/doctorModel");
 const Patient = require("../models/users/patientModel"); // Import your Patient model
 const Prescription = require("../models/presecriptionsModel"); // Import your Prescription model
 
-
-
-
 exports.getPrescriptionsByDoctorAndPatient = async function (req, res) {
   try {
     const doctorId = req.params.doctorId; // Get the doctor ID from the request parameters
@@ -50,14 +47,31 @@ exports.getPrescriptionsByDoctorAndPatient = async function (req, res) {
     });
   }
 };
+exports.getAllPrescriptions = async function (req, res) {
+  try {
+    const prescriptions = await Prescription.find();
+    res.status(200).json({
+      status: "success",
+      results: prescriptions.length,
+      data: {
+        prescriptions,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: "this route is not defined yet",
+    });
+  }
+};
 
 
 exports.getPatientsByDoctorId = async function (req, res) {
   try {
-    const doctorId = req.params.doctorId; // Get the doctor ID from the request parameters
+     // Get the doctor ID from the request parameters
 
     // Find all appointments with the given doctor ID
-    const appointments = await Appointment.find({ DoctorID: doctorId });
+    const appointments = await Appointment.find({ DoctorID: req.user._id });
 
     // Extract unique patient IDs from the appointments
     const patientIds = [...new Set(appointments.map((appointment) => appointment.PatientID))];
@@ -78,12 +92,12 @@ exports.getPatientsByDoctorId = async function (req, res) {
       message: "Server error",
     });
   }
-};
+}
 
 
 exports.getAllDoctors = async function (req, res) {
   try {
-    const Doctors = await Doctor.find();
+    const Doctors = await Doctor.find({status: {$ne: 'pending'}});
     res.status(200).json({
       status: "success",
       results: Doctors.length,
@@ -102,7 +116,7 @@ exports.getAllDoctors = async function (req, res) {
 
 exports.updateDoctorEmail = async function (req, res) {
   try {
-    const userId = req.params.userID; // Assuming you pass the user's ID as a parameter
+     // Assuming you pass the user's ID as a parameter
     const newEmail = req.body.email; // Assuming you send the new email in the request body
     const newhourlyRate = req.body.hourlyRate;
     const newaffiliation = req.body.affiliation;
@@ -110,7 +124,7 @@ exports.updateDoctorEmail = async function (req, res) {
 
     // Update the doctor's email in the database
     const updatedDoctor = await Doctor.findOneAndUpdate(
-      { userID: userId },
+      { userID: req.user._id },
       { email: newEmail ,
         hourlyRate : newhourlyRate ,
         affiliation : newaffiliation
@@ -138,15 +152,13 @@ exports.updateDoctorEmail = async function (req, res) {
       message: "Internal server error.",
     });
   }
-};
-
-
+}
 exports.getAppointmentsPatients = async function (req, res) {
   try {
     //console.log(req.user._id);
-    let doctor = "651f16c855b8273fedf03c93";
+    //let doctor = "651f16c855b8273fedf03c93";
     const patientsID = await Appointment.find({
-      DoctorID: doctor,
+      DoctorID: req.user._id,
     }).select({ PatientID: 1, _id: 0 });
     console.log(patientsID);
     const allPatients = await patientModel.find();
@@ -173,9 +185,9 @@ exports.getAppointmentsPatients = async function (req, res) {
 
 exports.getAppointments = async function (req, res) {
   try {
-    const doctor = "651f16c855b8273fedf03c93";
+    //const doctor = "651f16c855b8273fedf03c93";
     const appointments = await Appointment.find({
-      DoctorID: doctor,
+      DoctorID: req.user._id,
     });
     console.log(appointments);
     res.status(200).json({

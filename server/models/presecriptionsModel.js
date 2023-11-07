@@ -22,16 +22,11 @@ const presecriptionsSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    date: {
+      type: Date,
+    },
   },
   { timestamps: true }
 );
 
-
-    
-},{ timestamps: true });
-
-
-
-
 module.exports = mongoose.model("Presecription", presecriptionsSchema);
-

@@ -1,27 +1,20 @@
 const express = require("express");
 const router = express.Router();
+const doctorControllers = require("../controllers/doctorController");
+const { CheckAuth } = require("../middlewares/auth");
 
-const doctorControllers = require("./../controllers/doctorController");
+router.get("/", CheckAuth,doctorControllers.getAppointmentsPatients);
 
-const { CheckAuth } = require("./../middlewares/auth");
+router.get("/appointments", CheckAuth,doctorControllers.getAppointments);
 
-router.get("/", doctorControllers.getAppointmentsPatients);
-
-router.get("/appointments", doctorControllers.getAppointments);
-
-router.get("/Alldoctors", doctorControllers.getAllDoctors); // Changed to GET
-router.put("/:userID/update-email", doctorControllers.updateDoctorEmail);
-router.get("/:doctorId/getPatients", doctorControllers.getPatientsByDoctorId);
-
-
-
-
-
+router.get("/Alldoctors", CheckAuth,doctorControllers.getAllDoctors); // Changed to GET
+router.patch("/update-email", CheckAuth,doctorControllers.updateDoctorEmail);
+router.get("/getPatients", CheckAuth,doctorControllers.getPatientsByDoctorId);
+router.get("/allPrescriptions", doctorControllers.getAllPrescriptions);
 
 // Add the new route to get prescriptions and patient information by doctor and patient IDs
-router.get("/:doctorId/:patientId/get-info", doctorControllers.getPrescriptionsByDoctorAndPatient);
+router.get("/:doctorId/:patientId/get-info",doctorControllers.getPrescriptionsByDoctorAndPatient);
 
 // ...
 
 module.exports = router;
-
