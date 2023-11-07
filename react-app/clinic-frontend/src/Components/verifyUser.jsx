@@ -32,6 +32,8 @@ export const VerifyUser = () => {
                 window.location.replace("/doctorHome");
               }else if(role==="admin"){
                 window.location.replace("/adminHome");
+              }else if(role==="notApproved"){
+                window.location.replace("/notApproved");
               }
         }).catch((err) => {
             console.log(err);
