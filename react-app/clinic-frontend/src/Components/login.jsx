@@ -23,6 +23,12 @@ export const Login = () => {
           case "admin":
             navigate("/adminHome");
             break;
+          case "notVerified":
+            navigate("/verifyUser");
+            break;
+          case "notApproved":
+          navigate("/notApproved");
+            break;
           default:
             navigate("/"); 
         }
@@ -52,9 +58,19 @@ export const Login = () => {
               }else if(role==="admin"){
                 window.location.replace("/adminHome");
               }
-        }).catch((err) => {
-            console.log(err);
-            message.error("Login Failed");
+        }).catch(async (err) => {
+            console.log(err.response.data.error);
+            if(err.response.data.error==="User not verified yet"){
+              await localStorage.setItem("token",err.response.data.token);
+              message.error("User not verified yet");
+              window.location.replace("/verifyUser");
+            }else if(err.response.data.error==="Doctor not approved yet"){
+              await localStorage.setItem("token",err.response.data.token);
+              message.error("Doctor not approved yet");
+              window.location.replace("/notApproved");
+            }else{
+              message.error("Invalid Credentials");
+            }
         })        
     }
   return (
@@ -72,8 +88,10 @@ export const Login = () => {
     <div className="doctorRegister">
     <Link to="/DoctorRegister">Register as a doctor</Link>
     </div>
+    <div className="forgotPassword">
+    <Link to="/forgotPassword">Forgot Password</Link>
     </div>
-    
+  </div>
     
   );
 }

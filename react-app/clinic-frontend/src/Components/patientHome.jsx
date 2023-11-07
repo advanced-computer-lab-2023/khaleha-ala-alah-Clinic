@@ -3,6 +3,10 @@ import "./patient.css";
 import { Link } from "react-router-dom";
 
 export const PatientHome = () => {
+    const logut = () => {
+        localStorage.clear();
+        window.location.href = "/";
+    }
     return(
         <div className="patientHome">
             <div>
@@ -36,6 +40,9 @@ export const PatientHome = () => {
             <Link to="/viewAllDoctors" className="sidebar-button">
                  View All Doctors
             </Link>
+            <button className="sidebar-button" id="profileButton" onClick={logut}>
+                Logout
+            </button>
 
 
           
