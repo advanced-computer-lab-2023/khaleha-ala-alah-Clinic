@@ -145,7 +145,18 @@ exports.approveDoctor = async (req, res) => {
     if (!doctor) {
       return res.status(404).json({ error: "Doctor not found." });
     }
+    //delete from gfs if rejected
+    if(type==="reject"){
+      gfs = new mongoose.mongo.GridFSBucket(mongoose.connection.db, { bucketName: 'uploads' });
+      const files=doctor.files;
+      files.forEach(async (file)=>{
+        await gfs.delete(file);
+      });
+      
+    }
     const email=doctor.email;
+
+    //update status
     type === "approve"
       ? (doctor.status = "accepted")
       : (doctor.status = "rejected");
@@ -156,26 +167,26 @@ exports.approveDoctor = async (req, res) => {
       ? (doctor.doctorApproved = true)
       : (doctor.doctorApproved = false);
     await doctor.save();
+
     //send email
     const subject=type==="approve"?"Doctor Approved":"Doctor Rejected";
     const html=type==="approve"?"<h1>Congratulations! Your account has been approved.</h1>":"<h1>Sorry! Your account has been rejected.</h1>";
     sendEmail(email,subject,html);
 
-    //delete if rejected
-    if(type==="reject"){
-      await user.deleteOne({username:username});
-      await Doctor.deleteOne({username:username});
-    }
-
     if(type==="approve"){
       return res.status(200).json({ message: "Doctor approved successfully." });
-    }
+    }else{
+    //delete from user and doctor
+    await user.deleteOne({username:username});
+    await Doctor.deleteOne({username:username});
     return res.status(200).json({ message: "Doctor rejected successfully." });
+    }
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: "Internal server error." });
   }
 };
-
+//view pending doctors
 exports.getPendingDoctors = async (req, res) => {
   try {
     const pendingDoctors = await Doctor.find({ status: "pending" });
@@ -199,7 +210,7 @@ exports.getPendingDoctors = async (req, res) => {
         affiliation: doctor.affiliation,
         educationalBackground: doctor.educationalBackground,
         speciality: doctor.speciality,
-        files: downloadLinks.filter(link => link !== null), // Filter out null links
+        files: downloadLinks.filter(link => link !== null),
       };
     }));
 

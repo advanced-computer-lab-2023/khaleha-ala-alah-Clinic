@@ -41,6 +41,10 @@ const PendingDoctors = () => {
       },
     }).then((res) => {
       message.success(res.data.message);
+      // Remove the doctor from the list of pending doctors
+      setDoctors((currentDoctors) =>
+        currentDoctors.filter((doctor) => doctor.username !== username)
+      );
       
     }
     ).catch((err) => {
