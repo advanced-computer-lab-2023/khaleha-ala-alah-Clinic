@@ -66,7 +66,12 @@ export const Login = () => {
       <input type="password"  name="password" value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="*****"  />
       <button type="submit">Login</button>
     </form>
-    <Link to="/patientRegister">Register</Link>
+    <div className="patientRegister">
+    <Link to="/patientRegister">Register as a patient</Link>
+    </div>
+    <div className="doctorRegister">
+    <Link to="/DoctorRegister">Register as a doctor</Link>
+    </div>
     </div>
     
     

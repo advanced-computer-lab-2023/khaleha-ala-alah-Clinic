@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="patientProfileforDoctor.css" />
+    <title>Administrator Interface</title>
+  </head>
+
+  <body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+      <button class="toggle-profile-button" onclick="toggleProfileMenu()">
+        Toggle Profile Menu
+      </button>
+      <a href="#" class="navbar-right">Home</a>
+      <a href="#" class="navbar-right">About Us</a>
+    </div>
+
+    <!-- Profile Side Menu -->
+    <div class="profile-menu" id="profileMenu">
+      <a href="#">Edit My Profile</a>
+      <a href="#">Log Out</a>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-buttons">
+        <a href="#">Patients</a>
+        <a href="#">Button 2</a>
+        <a href="#">Button 3</a>
+        <a href="#">Button 4</a>
+        <a href="#">Button 5</a>
+      </div>
+    </div>
+    <!-- Add this table within the <body> tag of your HTML document -->
+    <table class="attribute-table">
+      <tr>
+        <td>Name</td>
+        <td id="name"></td>
+      </tr>
+      <tr>
+        <td>Username</td>
+        <td id="username"></td>
+      </tr>
+      <tr>
+        <td>Birthdate</td>
+        <td id="birthdate"></td>
+      </tr>
+      <tr>
+        <td>Mobile Number</td>
+        <td id="mobileNumber"></td>
+      </tr>
+      <tr>
+        <td>Relation</td>
+        <td id="relation"></td>
+      </tr>
+      <tr>
+        <td>Health Records</td>
+        <td id="healthRecords"></td>
+      </tr>
+
+    </table>
+
+    <script>
+      function toggleProfileMenu() {
+        var menu = document.getElementById("profileMenu");
+        menu.classList.toggle("show");
+      }
+    </script>
+  </body>
+</html>

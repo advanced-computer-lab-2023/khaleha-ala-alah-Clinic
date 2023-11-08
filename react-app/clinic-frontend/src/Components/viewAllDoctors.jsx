@@ -21,9 +21,15 @@ const DoctorList = () => {
     // Function to fetch the list of doctors
     const fetchDoctors = async () => {
       try {
+        const requestOptions = {
+          method: 'GET',
+          headers: {
+            "authorization": "Bearer " + localStorage.getItem("token")
+          },
+        };
         const response = await fetch(
           "http://localhost:4000/doctors/Alldoctors"
-        );
+        , requestOptions);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }

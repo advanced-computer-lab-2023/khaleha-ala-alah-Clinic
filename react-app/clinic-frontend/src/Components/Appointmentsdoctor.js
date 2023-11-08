@@ -9,7 +9,12 @@ const DoctorAppointments = () => {
   // Function to fetch all appointments of a doctor
   const fetchAppointments = async () => {
     try {
-      const response = await fetch('http://localhost:4001/doctors/appointments');
+      const response = await fetch('http://localhost:4000/doctors/appointments',{
+        method: 'GET',
+        headers: {
+          'authorization': 'Bearer ' + localStorage.getItem('token'),
+        }
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch appointments');
       }

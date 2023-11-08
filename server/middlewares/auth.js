@@ -11,7 +11,7 @@ const CheckAuth = async (req, res, next) => {
     token = token.split(" ")[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
-    await checkUser(req.user._id);
+    //await checkUser(req.user._id);
     next();
   } catch (error) {
     res.status(400).json({ error: error.message });
