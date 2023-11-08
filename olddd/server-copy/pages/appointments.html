@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View your appointments</title>
+    <script src="appointments.js"></script>
+  </head>
+  <body>
+    <label for="dateFilter">Filter by Date:</label>
+    <input type="date" id="dateFilter" />
+
+    <label for="statusFilter">Filter by Status:</label>
+    <select id="statusFilter">
+      <option value="all">All</option>
+      <option value="confirmed">Finished</option>
+      <option value="pending">Pending</option>
+    </select>
+
+    <button onclick="filterAppointments()">Filter</button>
+
+    <ul id="appointmentsList"></ul>
+  </body>
+</html>

@@ -204,17 +204,11 @@ exports.addAvaliableSlots = async function(req,res){
   try{
     //check that doctor has status accepted
     const doctor = await Doctor.findOne({userID:req.user._id,status:'accepted'});
+    console.log(req.body + "  " + doctor);
     if(!doctor){
       return res.status(404).json({ error: "Doctor not found." });
     }
-    for(j=0 ; j<req.body.fixedSlots.length;j++){
-      for(i =0 ; i<doctor.fixedSlots.length ; i++ ){
-        if(doctor.fixedSlots[i].day == req.body.fixedSlots[j].day && doctor.fixedSlots[i].hour == req.body.fixedSlots[j].hour){
-          return res.status(404).json({ error: "this slot is already exist" });
-       }
-      }
-      doctor.fixedSlots.push(req.body.fixedSlots[j]);
-     }
+    doctor.fixedSlots.push(...req.body.fixedSlots);
     await doctor.save();
     res.status(200).json({
       status: "success",
@@ -223,6 +217,85 @@ exports.addAvaliableSlots = async function(req,res){
       },
     });
   }catch(err){
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+}
+exports.scheduleFollowUpWithPatients = async function(req,res){
+  try{
+    const doctor = await Doctor.findOne({userID:req.user._id,status:'accepted'});
+  const patient = await Patient.findOne({username:req.body.username});
+  if(!patient){
+    res.status(404).json({
+      status: "fail",
+      message: "patient is not found"
+    })
+  }
+  if(!doctor){
+    res.status(404).json({
+      status: "fail",
+      message: "this feature can not be accessed with this doctor"
+    })
+  }
+  const requestedDate = new Date(req.body.date);
+  const currentDate = new Date();
+  if (requestedDate <= currentDate) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Scheduled date must be in the future',
+    });
+  }
+    const appointment = new Appointment({
+      DoctorID: doctor.userID,
+      PatientID : patient.userID,
+      timedAt: req.body.date,
+    })
+    await appointment.save();
+    res.status(200).json({
+      status: "success",
+      data: {
+        appointment,
+      },
+    });
+
+  }
+    catch(err){
+      res.status(500).json({
+        status: "error",
+        message: err.message,
+      });
+    }
+
+}
+exports.addNewHealthRecordForPatient = async function(req,res){
+  try{
+    const appointment = await Appointment.findOne({DoctorID : req.user._id});
+    const patient = await Patient.findOne({userID:appointment.PatientID , username : req.body.username});
+  if(!patient){
+    res.status(404).json({
+      status: "fail",
+      message: "patient is not found"
+    })
+  }
+  const  presecription= new Prescription({
+    DoctorID: req.user._id,
+    PatientID : patient.userID,
+    location: req.body.location,
+    summary: req.body.summary,
+    isFilled:req.body.isFilled,
+    date : req.body.date
+  })
+  await presecription.save();
+  res.status(200).json({
+    status: "success",
+    data: {
+      presecription,
+    },
+  });
+  }
+  catch(err){
     res.status(500).json({
       status: "error",
       message: err.message,
