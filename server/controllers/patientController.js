@@ -1,7 +1,7 @@
 const Patient = require("../models/users/patientModel");
 const Doctors = require("../models/users/doctorModel");
-const Appointments = require("../models/appointmentModel");
-const Prescriptions = require("../models/presecriptionsModel.js");
+const Appointments = require("./../models/appointmentModel");
+const Prescriptions = require("./../models/presecriptionsModel.js");
 
 //examples
 
@@ -261,6 +261,388 @@ exports.getAllPersecriptions = async function (req, res) {
     });
   }
 };
+
+exports.subscribeToPackage = async function (req, res) {
+  try {
+    const patient = await Patient.findOne({ userID: req.user._id });
+    if (!patient) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+    const { packageName, doctosDiscount, medicalDiscount, familyDiscount } =
+      req.body;
+
+    if (patient.packageName != "none") {
+      return res.status(201).json({
+        packageAdded: false,
+      });
+    }
+    patient.packageName = req.body.packageName;
+    patient.doctorsDiscount = req.body.doctorsDiscount;
+    patient.medicalDiscount = req.body.medicalDiscount;
+    patient.familyDiscount = req.body.familyDiscount;
+    patient.selfSubscription = true;
+    patient.packageEndDate = new Date().setFullYear(
+      new Date().getFullYear() + 1
+    );
+    const updatedPatient = await patient.save();
+    res.status(201).json({ packageAdded: true, updatedPatient });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: "fail1111",
+      message: "Server error",
+    });
+  }
+};
+
+exports.subscribeForFamilyMember = async function (req, res) {
+  try {
+    const { packageName, doctosDiscount, medicalDiscount, familyDiscount } =
+      req.body;
+    let familyMember = await Patient.findOne({ userID: req.query.id });
+    if (!familyMember) {
+            return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+    
+        if (familyMember.packageName != "none") {
+      return res.status(201).json({
+        packageAdded: false,
+      });
+    }
+    console.log(familyMember + " <<<<<< FAMILY MEMBER");
+    familyMember.packageName = req.body.packageName;
+    familyMember.doctorsDiscount = req.body.doctorsDiscount;
+    familyMember.medicalDiscount = req.body.medicalDiscount;
+    familyMember.familyDiscount = req.body.familyDiscount;
+    familyMember.packageEndDate = new Date().setFullYear(
+      new Date().getFullYear() + 1
+    );
+
+    const updatedPatient = await familyMember.save();
+    res.status(201).json({ packageAdded: true, updatedPatient });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: "fail1111",
+      message: "Server error",
+    });
+  }
+};
+      
+exports.viewCurrentHealthPackage = async function (req, res) {
+  try {
+    const patient = await Patient.findOne({ userID: req.user._id });
+        if (!patient) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+     res.status(201).json(
+      (data = {
+        packageName: patient.packageName,
+        doctorsDiscount: patient.doctorsDiscount,
+        medicalDiscount: patient.medicalDiscount,
+        familyDiscount: patient.familyDiscount,
+      })
+    );
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: "fail1111",
+      message: "Server error",
+    });
+  }
+};
+
+exports.viewFamilyMemberHealthPackages = async function (req, res) {
+  try {
+    let familyMember = await Patient.findOne({ userID: req.query.id });
+    if (!familyMember) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+    res.status(201).json(
+      (data = {
+        packageName: familyMember.packageName,
+        doctorsDiscount: familyMember.doctorsDiscount,
+        medicalDiscount: familyMember.medicalDiscount,
+        familyDiscount: familyMember.familyDiscount,
+      })
+    );
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: "fail1111",
+      message: "Server error",
+    });
+  }
+};
+
+exports.cancelHealthPackage = async function (req, res) {
+  try {
+    const patient = await Patient.findOne({ userID: req.user._id });
+    if (!patient) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+    patient.packageName = "none";
+    patient.doctorsDiscount = 0;
+    patient.medicalDiscount = 0;
+    patient.familyDiscount = 0;
+    patient.selfSubscription = false;
+    patient.packageEndDate = new Date();
+    const updatedPatient = await patient.save();
+    res.status(201).json(updatedPatient);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: "fail1111",
+      message: "Server error",
+    });
+  }
+};
+
+exports.cancelFamilyMemberPackage = async function (req, res) {
+  try {
+    const patient = await Patient.findOne({ userID: req.query.id });
+    if (!patient) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+    if (patient.selfSubscription) {
+      return res.status(201).json({
+        packageDeleted: false,
+      });
+    }
+    patient.packageName = "none";
+    patient.doctorsDiscount = 0;
+    patient.medicalDiscount = 0;
+    patient.familyDiscount = 0;
+    patient.selfSubscription = false;
+    patient.packageEndDate = new Date();
+    const updatedPatient = await patient.save();
+    res.status(201).json({ packageDeleted: true, updatedPatient });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: "fail1111",
+      message: "Server error",
+    });
+  }
+};
+
+exports.addFamilyMemberUsingEmail = async function (req, res) {
+  try {
+    const patient = await Patient.findOne({ userID: req.user._id });
+        if (!patient) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+    const familyMember = await Patient.findOne({ email: req.body.email });
+    if (!familyMember || familyMember.userID == req.user._id) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Family member not found",
+      });
+    }
+    let familyMemberAge =
+      new Date().getFullYear() -
+      new Date(familyMember.dateOfBirth).getFullYear();
+    console.log(
+      familyMember.dateOfBirth + "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< DOB"
+    );
+    const today = new Date();
+    const m = today.getMonth() - familyMember.dateOfBirth.getMonth();
+    if (
+      m < 0 ||
+      (m === 0 && today.getDate() < familyMember.dateOfBirth.getDate())
+    ) {
+      familyMemberAge--;
+    }
+    console.log(familyMemberAge + "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< AGE");
+    const newFamilyMember = {
+      name: familyMember.name,
+      nationalID: familyMember.userID,
+      age: familyMemberAge,
+      gender: familyMember.gender,
+      relationToPatient: req.body.relationToPatient,
+      userID: familyMember.userID,
+    };
+    console.log(newFamilyMember);
+    for (let i = 0; i < patient.familyMembers.length; i++) {
+      if (patient.familyMembers[i].userID == familyMember.userID) {
+        return res.status(404).json({
+          status: "fail",
+          message: "Family member already exists",
+        });
+      }
+    }
+    patient.familyMembers.push(newFamilyMember);
+    const updatedPatient = await patient.save();
+    res.status(201).json({ updatedPatient });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: "fail1111",
+      message: "Server error",
+    });
+  }
+};
+
+exports.addFamilyMemberUsingMobileNumber = async function (req, res) {
+  try {
+    const patient = await Patient.findOne({ userID: req.user._id });
+    if (!patient) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+    const familyMember = await Patient.findOne({
+      mobileNumber: req.body.mobileNumber,
+    });
+    if (!familyMember || familyMember.userID == req.user._id) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Family member not found",
+      });
+    }
+    let familyMemberAge =
+      new Date().getFullYear() -
+      new Date(familyMember.dateOfBirth).getFullYear();
+    const today = new Date();
+
+    const m = today.getMonth() - familyMember.dateOfBirth.getMonth();
+    if (
+      m < 0 ||
+      (m === 0 && today.getDate() < familyMember.dateOfBirth.getDate())
+    ) {
+      familyMemberAge--;
+    }
+    console.log(
+      familyMember.dateOfBirth + "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< DOB"
+    );
+    console.log(familyMemberAge + "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< AGE");
+    const newFamilyMember = {
+      name: familyMember.name,
+      nationalID: familyMember.userID,
+      age: familyMemberAge,
+      gender: familyMember.gender,
+      relationToPatient: req.body.relationToPatient,
+      userID: familyMember.userID,
+    };
+    console.log(newFamilyMember);
+    for (let i = 0; i < patient.familyMembers.length; i++) {
+      if (patient.familyMembers[i].userID == familyMember.userID) {
+        return res.status(404).json({
+          status: "fail",
+          message: "Family member already exists",
+        });
+      }
+    }
+
+    patient.familyMembers.push(newFamilyMember);
+    const updatedPatient = await patient.save();
+    res.status(201).json({ updatedPatient });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: "fail1111",
+      message: "Server error",
+    });
+  }
+};
+
+exports.getHealthCareDetails = async function (req, res) {
+  try {
+    const patient = await Patient.findOne({ userID: req.user._id });
+    if (!patient) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+    let status = "";
+    if (patient.packageName === "none" && patient.packageEndDate === null) {
+      status = "Not Subscribed";
+    } else if (
+      patient.packageName === "none" &&
+      patient.packageEndDate !== null
+    ) {
+      status = "Ended";
+    } else {
+      status = "Subscribed";
+    }
+    let packageEndDate = patient.packageEndDate;
+    res.status(201).json({
+      status: "success",
+      data: {
+        status,
+        packageEndDate,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: "fail",
+      message: "Server error",
+    });
+  }
+};
+
+exports.getHealthCareDetailsForFamilyMember = async function (req, res) {
+  try {
+    const patient = await Patient.findOne({ userID: req.query.id });
+    if (!patient) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+    let status = "";
+    if (patient.packageName === "none" && patient.packageEndDate === null) {
+      status = "Not Subscribed";
+    } else if (
+      patient.packageName === "none" &&
+      patient.packageEndDate !== null
+    ) {
+      status = "Ended";
+    } else {
+      status = "Subscribed";
+    }
+    let packageEndDate = patient.packageEndDate;
+    res.status(201).json({
+      status: "success",
+      data: {
+        status,
+        packageEndDate,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: "fail",
+      message: "Server error",
+        });
+  }
+};
+    
+      
 exports.GetDoctorAppointments = async function (req, res) {
   try {
     //const doctor = "651f16c855b8273fedf03c93";
@@ -304,13 +686,15 @@ exports.GetDoctorAppointments = async function (req, res) {
 exports.viewDoctorAppointmentsForMonth = async function (req, res) {
   try {
     const patient = await Patient.findOne({ userID: req.user._id });
-
     if (!patient) {
       return res.status(404).json({
         status: "fail",
         message: "Patient not found",
       });
     }
+
+
+
     const { doctorID } = req.params; // Get doctorID from route parameters
 
     // Find the selected doctor by their ID
@@ -425,6 +809,7 @@ exports.SelectAppointmentPatient = async function (req, res) {
         message: "Patient not found",
       });
     }
+   
 
     // Check if the selected date and time are available for the doctor
     if (!doctorID || !selectedDateTime) {
@@ -520,6 +905,7 @@ exports.SelectAppointmentFamilyMember = async function (req, res) {
         message: "Patient not found",
       });
     }
+    
 
     // Check if the selected date and time are available for the doctor
     if (!doctorID || !selectedDateTime) {

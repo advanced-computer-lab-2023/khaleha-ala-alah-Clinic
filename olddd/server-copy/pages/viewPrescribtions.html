@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prescriptions Viewer</title>
+  </head>
+  <body>
+    <h1>Prescriptions</h1>
+
+    <!-- Filter options -->
+    <label for="dateFilter">Filter by Date:</label>
+    <input type="date" id="dateFilter" />
+
+    <label for="doctorFilter">Filter by Doctor:</label>
+    <input type="text" id="doctorFilter" placeholder="Enter doctor's name" />
+
+    <label for="filledFilter">Filter by Filled/Unfilled:</label>
+    <select id="filledFilter">
+      <option value="all">All</option>
+      <option value="filled">Filled</option>
+      <option value="unfilled">Unfilled</option>
+    </select>
+
+    <button id="filterButton">Apply Filter</button>
+
+    <ul id="prescriptionList">
+      <!-- Prescription items will be dynamically added here -->
+    </ul>
+
+    <script src="prescribtions.js"></script>
+  </body>
+</html>

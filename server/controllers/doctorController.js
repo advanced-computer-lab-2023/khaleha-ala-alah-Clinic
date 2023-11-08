@@ -200,3 +200,32 @@ exports.getAppointments = async function (req, res) {
     });
   }
 };
+exports.addAvaliableSlots = async function(req,res){
+  try{
+    //check that doctor has status accepted
+    const doctor = await Doctor.findOne({userID:req.user._id,status:'accepted'});
+    if(!doctor){
+      return res.status(404).json({ error: "Doctor not found." });
+    }
+    for(j=0 ; j<req.body.fixedSlots.length;j++){
+      for(i =0 ; i<doctor.fixedSlots.length ; i++ ){
+        if(doctor.fixedSlots[i].day == req.body.fixedSlots[j].day && doctor.fixedSlots[i].hour == req.body.fixedSlots[j].hour){
+          return res.status(404).json({ error: "this slot is already exist" });
+       }
+      }
+      doctor.fixedSlots.push(req.body.fixedSlots[j]);
+     }
+    await doctor.save();
+    res.status(200).json({
+      status: "success",
+      data: {
+        doctor,
+      },
+    });
+  }catch(err){
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+}

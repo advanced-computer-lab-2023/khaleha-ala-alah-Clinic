@@ -33,6 +33,9 @@ export const PatientHome = () => {
             <Link to="/searchDoctors" className="sidebar-button">
                  Search Doctors
             </Link>
+            <Link to="/viewAllDoctors" className="sidebar-button">
+                 View All Doctors
+            </Link>
 
 
           

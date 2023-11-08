@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const Prescriptions = ({ doctorId, patientId }) => {
+const PrescriptionsDoctors = ({ doctorId, patientId }) => {
   const [prescriptions, setPrescriptions] = useState([]);
   const [patient, setPatient] = useState({});
   const [error, setError] = useState(null);
@@ -8,7 +8,9 @@ const Prescriptions = ({ doctorId, patientId }) => {
   // Function to fetch prescriptions for a specific doctor and patient
   const fetchPrescriptions = async () => {
     try {
-      const response = await fetch('http://localhost:4001/doctors/651f16c855b8273fedf03c93/651ee41994ed6dc1e163c4df/get-info');
+      const response = await fetch('http://localhost:4000/doctors/651f16c855b8273fedf03c93/651ee41994ed6dc1e163c4df/get-info',{
+        method: 'GET'
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch prescriptions');
       }
@@ -44,4 +46,4 @@ const Prescriptions = ({ doctorId, patientId }) => {
   );
 };
 
-export default Prescriptions;
+export default PrescriptionsDoctors;
