@@ -3,6 +3,7 @@ const Patient = require("../models/users/patientModel"); // Replace with the app
 const Doctor = require("../models/users/doctorModel");
 const User = require("../models/users/user");
 const bcrypt = require("bcrypt");
+const Grid = require("gridfs-stream");
 const mongoose = require("mongoose");
 const { sendEmail } = require("../utilities/emails");
 const user = require("../models/users/user");
