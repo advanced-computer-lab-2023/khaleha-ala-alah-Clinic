@@ -200,3 +200,80 @@ exports.getAppointments = async function (req, res) {
     });
   }
 };
+exports.addAvaliableSlots = async function(req,res){
+  try{
+    //check that doctor has status accepted
+    const doctor = await Doctor.findOne({userID:req.user._id,status:'accepted'});
+    console.log(req.body + "  " + doctor);
+    if(!doctor){
+      return res.status(404).json({ error: "Doctor not found." });
+    }
+    doctor.fixedSlots.push(...req.body.fixedSlots);
+    await doctor.save();
+    res.status(200).json({
+      status: "success",
+      data: {
+        doctor,
+      },
+    });
+  }catch(err){
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+}
+exports.scheduleFollowUpWithPatients = async function(req,res){
+  try{
+    // we need make frontend validation that appear to doctor only his fixedslots
+    const doctor = await Doctor.findOne({userID:req.user._id,status:'accepted'});
+    const patient = await Patient.findOne({username:req.body.username});
+    const appointmentCheck = await Appointment.find({DoctorID :req.user._id,timedAt:req.body.date})
+    if(appointmentCheck){
+      res.status(404).json({
+        status: "fail",
+        message: "this slot is already taken by another patient"
+      })
+    }
+  if(!patient){
+    res.status(404).json({
+      status: "fail",
+      message: "patient is not found"
+    })
+  }
+  if(!doctor){
+    res.status(404).json({
+      status: "fail",
+      message: "this feature can not be accessed with this doctor"
+    })
+  }
+  const requestedDate = new Date(req.body.date);
+  const currentDate = new Date();
+  if (requestedDate <= currentDate) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Scheduled date must be in the future',
+    });
+  }
+  const appointment = new Appointment({
+      DoctorID: doctor.userID,
+      PatientID : patient.userID,
+      timedAt: req.body.date,
+    })
+    await appointment.save();
+    res.status(200).json({
+      status: "success",
+      data: {
+        appointment,
+      },
+    });
+
+  }
+    catch(err){
+      res.status(500).json({
+        status: "error",
+        message: err.message,
+      });
+    }
+
+}
