@@ -58,6 +58,10 @@ const doctorSchema = new Schema(
           type: String, // You can choose an appropriate data type (e.g., Date, String) for the hour
           required: true,
         },
+        //   timedAt : {
+        //     type: Date,
+        //     required: true,
+        // }
       },
     ],
     username: {
@@ -86,6 +90,12 @@ const doctorSchema = new Schema(
       enum: ["accepted", "pending", "rejected"],
       default: "pending",
     },
+    files: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "uploads.files",
+      },
+    ],
   },
   { timestamps: true }
 );
