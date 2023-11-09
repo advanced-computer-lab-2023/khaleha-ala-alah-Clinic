@@ -30,6 +30,8 @@ import NotFound from "./Components/notFound";
 import Bookpage from "./Components/Book";
 import NotApproved from "./Components/notApproved";
 import {useAuth} from "./AuthContext";
+import ContractPage from "./Components/Contract";
+import  StripePaymentButton  from "./Components/Checkout";
 
 
 function App() {
@@ -38,7 +40,9 @@ function App() {
     <div className="App">
           <Routes>
             {/* public routes */}
+           
             <Route path="/login" element={<Login />} />
+              
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/PatientRegister" element={<PatientRegister />} />
             <Route path="/DoctorRegister" element={<DoctorRegister />} />
@@ -53,6 +57,10 @@ function App() {
               {/* patient routes */}
               {role==="patient" &&(
                 <>
+
+<Route path="/packages" element={<StripePaymentButton amount={100} />} />
+
+
                   <Route path="/patientHome" element={<PatientHome />} />
                   <Route path="/familyMembers" element={<FamilyMembers />} />
                   <Route path="/registerFamilyMember" element={<RegisterFamilymember />} />
