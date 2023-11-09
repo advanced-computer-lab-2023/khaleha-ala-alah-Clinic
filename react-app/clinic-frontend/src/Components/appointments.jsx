@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
-const backendUrl = "http://localhost:4000";
+import React, { useState, useEffect } from 'react';
+import PackageCard from '../Elements/packageCard.jsx'; // Adjust the path accordingly
+import '../Elements/packageCard.css';
+
+const backendUrl = 'http://localhost:4000';
 
 function Appointments() {
   const [appointments, setAppointments] = useState([]);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
   const [doctors, setDoctors] = useState([]);
-  const [dateFilter, setDateFilter] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [dateFilter, setDateFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
 
   useEffect(() => {
     // Fetch data when the component mounts
@@ -18,27 +21,25 @@ function Appointments() {
     const requestOptions = {
       method: 'GET',
       headers: {
-        "authorization": "Bearer " + localStorage.getItem("token")
+        authorization: 'Bearer ' + localStorage.getItem('token'),
       },
     };
 
     fetch(`${backendUrl}/patients/getAppointments`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
-        // Handle the retrieved data here
         setAppointments(data.appointments);
         setFilteredAppointments(data.appointments);
-
-        // Fetch doctors data
-        fetch(`${backendUrl}/patients/patientdoctors`, requestOptions)
-          .then((response) => response.json())
-          .then((data) => {
-            // Handle the retrieved data here
-            setDoctors(data.doctors);
-          })
-          .catch((error) => console.error("Error fetching doctors:", error));
       })
-      .catch((error) => console.error("Error fetching appointments:", error));
+      .catch((error) => console.error('Error fetching appointments:', error));
+
+    // Fetch doctors data
+    fetch(`${backendUrl}/patients/patientdoctors`, requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        setDoctors(data.doctors);
+      })
+      .catch((error) => console.error('Error fetching doctors:', error));
   };
 
   // Define the filterAppointments function to apply filters
@@ -46,26 +47,31 @@ function Appointments() {
     const filteredAppointments = appointments.filter((appointment) => {
       const formattedAppointmentDate = new Date(appointment.timedAt)
         .toISOString()
-        .split("T")[0]; // Convert to 'YYYY-MM-DD'
+        .split('T')[0]; // Convert to 'YYYY-MM-DD'
 
       // Check if the appointment date matches the date filter
       const dateFilterPassed =
-        dateFilter === "" || formattedAppointmentDate === dateFilter;
+        dateFilter === '' || formattedAppointmentDate === dateFilter;
 
-      let status = "confirmed";
+      let status = 'confirmed';
       if (appointment.timedAt > Date.now()) {
-        status = "pending";
+        status = 'pending';
       }
 
       // Check if the appointment status matches the status filter
       const statusFilterPassed =
-        statusFilter === "all" || status === statusFilter;
+        statusFilter === 'all' || status === statusFilter;
 
       return dateFilterPassed && statusFilterPassed;
     });
 
     // Update the state with filtered appointments
     setFilteredAppointments(filteredAppointments);
+  };
+
+  const viewDoctorDetails = (doctor) => {
+    // Your code to view doctor details
+    console.log('View Doctor Details:', doctor);
   };
 
   return (
@@ -92,23 +98,20 @@ function Appointments() {
 
       <button onClick={filterAppointments}>Filter</button>
 
-      <ul id="appointmentsList">
+      <div className="AppPack">
         {filteredAppointments.map((appointment, index) => (
-          <li key={index}>
-            {
-              <div>
-                <p>Date: {new Date(appointment.timedAt).toDateString()}</p>
-                <p>Name: {doctors[index] ? doctors[index].name : "N/A"}</p>
-                <p>
-                  Speciality:
-                  {doctors[index] ? doctors[index].speciality : "N/A"}{" "}
-                </p>
-                <p>Email:{doctors[index] ? doctors[index].email : "N/A"} </p>
-              </div>
-            }
-          </li>
+          <PackageCard
+            key={index}
+            name="Appointment"
+            details={[
+              { label: <span style={{ fontWeight: 'bold' }}>Date: </span>, value: new Date(appointment.timedAt).toDateString() },
+              { label: <span style={{ fontWeight: 'bold' }}>Doctor's Name: </span>, value: doctors[index] ? doctors[index].name : 'N/A' },
+              { label: <span style={{ fontWeight: 'bold' }}>Doctor's Speciality: </span>, value: doctors[index] ? doctors[index].speciality : 'N/A' },
+              { label: <span style={{ fontWeight: 'bold' }}>Doctor's Email: </span>, value: doctors[index] ? doctors[index].email : 'N/A' },
+            ]}
+          />
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

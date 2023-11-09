@@ -27,6 +27,7 @@ import PackagesPage from "./Components/packagesPage";
 import ResetPassword from "./Components/resetpassword";
 import ForgotPassword from "./Components/forgotPassword";
 import NotFound from "./Components/notFound";
+import Bookpage from "./Components/Book";
 import NotApproved from "./Components/notApproved";
 import {useAuth} from "./AuthContext";
 
@@ -43,7 +44,7 @@ function App() {
             <Route path="/DoctorRegister" element={<DoctorRegister />} />
             <Route path="/resetPassword/:token" element={<ResetPassword />} />
             <Route path="/forgotPassword" element={<ForgotPassword />} />
-
+            <Route path="/bookAppointment" element={<Bookpage />} />
             {/* Redirect to login if no role is defined (user is not authenticated) */}
             {role==="" && <Route path="*" element={<Navigate to="/login" />} />}
             
