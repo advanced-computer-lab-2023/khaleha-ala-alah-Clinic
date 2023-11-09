@@ -5,7 +5,7 @@
   padding: 20px; /* Increased padding for a larger card */
   margin: 16px;
   text-align: center;
-  width: 270px; /* Set a fixed width for larger cards */
+  width: 320px; /* Set a fixed width for larger cards */
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* Optional: Adds a subtle shadow */
   min-height: 43vh;
 }
@@ -35,14 +35,14 @@
   background-color: #022b3a; /* Darker blue when hovering */
 }
 
-.App {
+.AppPack {
   display: flex;
   flex-wrap: wrap; /* Allows cards to wrap to the next line */
   justify-content: flex-start; /* Aligns cards to the start of the container */
   align-items: flex-start; /* Aligns cards to the top of the container */
   background-color: #fbfdf7; /* Lightest color for the app background */
   padding: 16px; /* Optional: Adds some space inside the container */
-  min-height: 100vh; /* Ensures the container takes up at least the full height of the viewport */
+  height:80vh;
   overflow-x: hidden;
   min-width: 96.8vw;
 }
@@ -67,4 +67,8 @@
   min-width: fit-content;
   flex: 0 1 auto;
   margin-bottom: 0;
+}
+
+.bold-text {
+  font-weight: bold;
 }

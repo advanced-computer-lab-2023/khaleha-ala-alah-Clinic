@@ -1,9 +1,9 @@
-import PackageCard from "./packageCard";
-import "./packageCard.css"; // Assuming you have a CSS file for styling
+import PackageCard from "../Elements/packageCard";
+import "../Elements/packageCard.css"; // Assuming you have a CSS file for styling
 
 const PackagesPage = () => {
   return (
-    <div className="App">
+    <div className="AppPack">
       <PackageCard
         name="GOLD"
         details={[
