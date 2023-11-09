@@ -1,12 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const doctorControllers = require("./../controllers/doctorController");
-const { CheckAuth } = require("./../middlewares/auth");
-
+const doctorControllers = require("../controllers/doctorController");
+const { CheckAuth } = require("../middlewares/auth");
+const {upload}=require("../server");
 router.get("/", CheckAuth,doctorControllers.getAppointmentsPatients);
 
 router.get("/appointments", CheckAuth,doctorControllers.getAppointments);
-
+router.patch('/addAvaliableSlots', CheckAuth,doctorControllers.addAvaliableSlots);
+router.post("/scheduleFollowUpPatient/:patientID/:selectedDateTime", CheckAuth,doctorControllers.scheduleFollowUpWithPatients);
+router.post("/addHealthRecord", upload.array("files",3),doctorControllers.addNewHealthRecordForPatient);
 router.get("/Alldoctors", CheckAuth,doctorControllers.getAllDoctors); // Changed to GET
 router.patch("/update-email", CheckAuth,doctorControllers.updateDoctorEmail);
 router.get("/getPatients", CheckAuth,doctorControllers.getPatientsByDoctorId);
