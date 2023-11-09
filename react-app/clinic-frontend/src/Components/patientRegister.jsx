@@ -17,6 +17,7 @@ export const PatientRegister = () => {
   const [mobileNumber, setMobileNumber] = useState("");
   const [emergencyName, setEmergencyName] = useState("");
   const [emergencyNumber, setEmergencyNumber] = useState("");
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,6 +37,10 @@ export const PatientRegister = () => {
       }
     }
   }, [role, navigate]);
+  const handleFileSelect = (e) => {
+    const files = e.target.files;
+    setSelectedFiles([...files]);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,21 +58,35 @@ export const PatientRegister = () => {
       message.error("Please fill all the fields");
       return;
     }
-    const data = {
-      username: username,
-      password: password,
-      email: email,
-      name: name,
-      dateOfBirth: dateOfBirth,
-      gender: gender,
-      mobileNumber: mobileNumber,
-      emergencyName: emergencyName,
-      emergencyNumber: emergencyNumber,
-    };
+    // const data = {
+    //   username: username,
+    //   password: password,
+    //   email: email,
+    //   name: name,
+    //   dateOfBirth: dateOfBirth,
+    //   gender: gender,
+    //   mobileNumber: mobileNumber,
+    //   emergencyName: emergencyName,
+    //   emergencyNumber: emergencyNumber,
+    // };
+    const data = new FormData();
+    data.append("username", username);
+    data.append("password", password);
+    data.append("email", email);
+    data.append("name", name);
+    data.append("dateOfBirth", dateOfBirth);
+    data.append("gender",gender);
+    data.append("mobileNumber", mobileNumber);
+    data.append("emergencyName", emergencyName);
+    data.append("emergencyNumber", emergencyNumber);
+    for (let i = 0; i < selectedFiles.length; i++) {
+      data.append("files", selectedFiles[i]);
+    }
     await axios
       .post("http://localhost:4000/users/register", data, {
         headers: {
           role: "patient",
+          "Content-Type": "multipart/form-data",
         },
       })
       .then(async (res) => {
@@ -192,6 +211,17 @@ export const PatientRegister = () => {
                   placeholder="Mobile Number"
                 />
               </div>
+              {/* upload files */}
+              <div className="input-box">
+                <span className="details">Upload File(s)</span>
+                <input
+                  type="file"
+                  name="file"
+                  accept=".pdf, .jpg, .png" // Specify allowed file types
+                  multiple // Allow multiple file selection
+                  onChange={handleFileSelect}
+                />
+            </div>
             </div>
             <div className="button">
               <input type="submit" value="Register" />
