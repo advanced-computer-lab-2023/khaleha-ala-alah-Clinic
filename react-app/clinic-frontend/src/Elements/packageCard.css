@@ -42,7 +42,8 @@
   align-items: flex-start; /* Aligns cards to the top of the container */
   background-color: #fbfdf7; /* Lightest color for the app background */
   padding: 16px; /* Optional: Adds some space inside the container */
-  height:80vh;
+  margin-top: 30px;
+  height:100vh;
   overflow-x: hidden;
   min-width: 96.8vw;
 }
