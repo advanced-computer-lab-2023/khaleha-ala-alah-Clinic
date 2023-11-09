@@ -35,6 +35,8 @@ import FamilyMemberPackages from "./Components/familyMembersPackages";
 import FamilyMemberDetails from "./Components/familyMemberDetails";
 import SubscribeToFamilyMemberPackage from "./Components/subscribeToFamilyMemberPackage";
 import { useAuth } from "./AuthContext";
+import ContractPage from "./Components/Contract";
+import StripePaymentButton from "./Components/Checkout";
 
 function App() {
   const { role } = useAuth();
@@ -42,7 +44,9 @@ function App() {
     <div className="App">
       <Routes>
         {/* public routes */}
+
         <Route path="/login" element={<Login />} />
+
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/PatientRegister" element={<PatientRegister />} />
         <Route path="/DoctorRegister" element={<DoctorRegister />} />
@@ -131,6 +135,49 @@ function App() {
         <Route path="/bookAppointment" element={<Bookpage />} />
         {/* Redirect to login if no role is defined (user is not authenticated) */}
         {role === "" && <Route path="*" element={<Navigate to="/login" />} />}
+
+        {/* private routes */}
+        <Route element={<PrivateRoute />} />
+        {/* patient routes */}
+        {role === "patient" && (
+          <>
+            <Route
+              path="/packages"
+              element={<StripePaymentButton amount={100} />}
+            />
+
+            <Route path="/patientHome" element={<PatientHome />} />
+            <Route path="/familyMembers" element={<FamilyMembers />} />
+            <Route
+              path="/registerFamilyMember"
+              element={<RegisterFamilymember />}
+            />
+            <Route path="/appointments" element={<Appointments />} />
+            <Route path="/prescriptions" element={<Prescriptions />} />
+            <Route path="/searchDoctors" element={<DoctorSearch />} />
+            <Route path="/viewAllDoctors" element={<DoctorList />} />
+          </>
+        )}
+
+        {/* doctor routes */}
+        {role === "doctor" && (
+          <>
+            <Route path="/doctorhome" element={<DoctorHome />} />
+            <Route
+              path="/editDoctorProfile"
+              element={<DoctorProfileUpdate />}
+            />
+            <Route
+              path="/doctorAppointments"
+              element={<DoctorAppointments />}
+            />
+            <Route
+              path="/patientdoctorhealth"
+              element={<PrescriptionsDoctors />}
+            />
+            <Route path="/viewallmypatients" element={<DoctorPatients />} />
+          </>
+        )}
 
         {/* private routes */}
         <Route element={<PrivateRoute />}>

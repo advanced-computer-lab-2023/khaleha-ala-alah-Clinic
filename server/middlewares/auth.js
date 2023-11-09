@@ -9,11 +9,13 @@ const CheckAuth = async (req, res, next) => {
       return res.status(401).json({ error: "No token, authorization denied" });
     }
     token = token.split(" ")[1];
+    console.log(token)
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
     await checkUser(req.user._id);
     next();
   } catch (error) {
+    console.log("error        "+error)
     res.status(400).json({ error: error.message });
   }
 };

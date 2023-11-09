@@ -108,7 +108,17 @@ export const PatientHome = () => {
           <img src={viewdoctors} alt="ViewAllDoctors" />
           View All Doctors
         </Link>
-
+        <Link
+          to="/Packages"
+          style={linkButtonStyle}
+          className={`sidebar-button ${
+            activeButton === "Packages" ? "active" : ""
+          }`}
+          onClick={() => handleButtonClick("ViewAllDoctors")}
+        >
+      
+          Packages
+        </Link>
         {/* You can add more buttons following the same pattern */}
       </div>
       <div className="background-overlay"></div>

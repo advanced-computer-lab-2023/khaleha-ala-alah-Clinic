@@ -69,6 +69,9 @@ exports.getPatients = async function (req, res) {
   }
 };
 
+
+
+
 exports.getCurrentPatient = async function (req, res) {
   try {
     //const patientID = "6527622d2075657b32b6c110"; //req.user._id;
