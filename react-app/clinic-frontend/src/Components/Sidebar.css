@@ -1,0 +1,179 @@
+.sidebar {
+  width: 250px;
+  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+
+
+.background-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+  z-index: 0; /* Keep the image below the buttons */
+}
+.background-overlay {
+    background: linear-gradient(180deg, rgba(2, 43, 58, 0.7), rgba(31, 122, 140, 0.7));
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    z-index: 1; /* Keep the overlay below the buttons */
+  }
+  
+  /* Sidebar header style */
+  .sidebar-header {
+    padding: 20px;
+    text-align: center;
+    background: #022b3a;
+    color: #fff;
+    border-top-right-radius: 30px;
+  }
+  
+  
+  
+  /* Sidebar buttons container */
+  .buttons-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    position: relative;
+    z-index: 2; 
+    width: 245px;
+    align-items: left;
+    margin-left: 40px;
+  }
+  
+  /* Sidebar buttons style */
+  .sidebar-button {
+    padding: 10px;
+    background: transparent;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+    border-radius: 20px;
+    font-size: medium;
+    align-items: center;
+  }
+  
+  /* Hover effect for buttons */
+  .sidebar-button:hover {
+    background: #1f7a8c;
+  }
+  
+  /* Active button style */
+  .sidebar-button.active {
+    background: #1f7a8c;
+  }
+  
+  /* Sub-buttons container */
+  .sub-buttons {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 3px;
+    font-size: small;
+  }
+  
+  /* Sub-button style */
+  .sub-buttons button {
+    padding: 5px;
+    background: transparent;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+    border-radius: 20px;
+  }
+  
+  /* Hover effect for sub-buttons */
+  .sub-buttons button:hover {
+    background: #Bfdbf7;
+    color: black;
+  }
+  
+  .user-profile {
+    display: flex;
+    align-items: center;
+    z-index: 2;
+  }
+  
+  .user-photo {
+    width: 40px; /* Set the desired width for the user photo */
+    height: 40px; /* Set the desired height for the user photo */
+    border-radius: 50%; /* Create a circular user photo */
+  }
+  
+  .user-name {
+    color: white; /* Set the text color for the username */
+    font-weight: bold;
+    font-size: 16px; /* Set the font size for the username */
+  }
+
+  .user-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    position: relative;
+  }
+  
+  .user-photo {
+    width: 50px; /* Set the desired width for the user photo */
+    height: 50px; /* Set the desired height for the user photo */
+    border-radius: 50%; /* Create a circular user photo */
+  }
+  
+  .user-info {
+    text-align: center;
+  }
+  
+  .user-name {
+    color: #fff; /* Set the text color for the username */
+    font-weight: bold;
+    font-size: 20px; /* Set the font size for the username */
+    margin-top: 10px;
+  }
+  
+  .user-email {
+    color: #fff; /* Set the text color for the email */
+    font-size: 14px; /* Set the font size for the email */
+  }
+
+/* Separator style */
+.separator {
+    border: #1f7a8c; /* Remove default border */
+    height: 2px; /* Set the height of the separator line */
+    background: #e1e5f2; /* Set the background color of the separator line */
+    margin-top: -2px;
+    width: 200px;
+    align-self: center;
+    z-index: 2;
+  }
+  
+  /* CSS for the image within the link button */
+.sidebar-button img {
+    margin-bottom: -7px;
+    width: 25px; /* Adjust the width as needed */
+    height: 25px; /* Adjust the height as needed */
+    margin-right: 8px; /* Optional: Add some spacing between the image and the text */
+  }
+  
