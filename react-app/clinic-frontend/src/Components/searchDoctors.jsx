@@ -1,35 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import PackageCard from '../Elements/packageCard.jsx'; // Adjust the path accordingly
-import '../Elements/packageCard.css';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import PackageCard from "../Elements/packageCard.jsx"; // Adjust the path accordingly
+import "../Elements/packageCard.css";
+import { useNavigate } from "react-router-dom";
 
 const DoctorSearch = () => {
   const [allDoctors, setAllDoctors] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
-  const [nameSearchValue, setNameSearchValue] = useState('');
-  const [specialitySearchValue, setSpecialitySearchValue] = useState('');
-  const [specialityFilter, setSpecialityFilter] = useState('');
-  const [dayFilter, setDayFilter] = useState('');
-  const [timeFilter, setTimeFilter] = useState('');
+  const [nameSearchValue, setNameSearchValue] = useState("");
+  const [specialitySearchValue, setSpecialitySearchValue] = useState("");
+  const [specialityFilter, setSpecialityFilter] = useState("");
+  const [dayFilter, setDayFilter] = useState("");
+  const [timeFilter, setTimeFilter] = useState("");
 
   const navigate = useNavigate();
 
-  const navigateToBook = () => {
-    navigate('/bookAppointment');
+  const navigateToBook = (doctor) => {
+    navigate("/bookAppointment", { state: { doctor } });
   };
 
   useEffect(() => {
     const requestOptions = {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        Authorization: "Bearer " + localStorage.getItem("token"),
       },
     };
 
-    fetch('http://localhost:4000/doctors/Alldoctors', requestOptions)
+    fetch("http://localhost:4000/doctors/Alldoctors", requestOptions)
       .then((response) => {
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         return response.json();
       })
@@ -37,7 +37,7 @@ const DoctorSearch = () => {
         setAllDoctors(data.data.Doctors);
       })
       .catch((error) => {
-        console.error('There was a problem with the fetch operation:', error);
+        console.error("There was a problem with the fetch operation:", error);
       });
   }, []);
 
@@ -45,11 +45,11 @@ const DoctorSearch = () => {
     const doctors = allDoctors.filter((doctor) => {
       return (
         (doctor.name.toLowerCase().includes(nameSearchValue.toLowerCase()) ||
-          nameSearchValue === '') &&
+          nameSearchValue === "") &&
         (doctor.speciality
           .toLowerCase()
           .includes(specialitySearchValue.toLowerCase()) ||
-          specialitySearchValue === '')
+          specialitySearchValue === "")
       );
     });
 
@@ -65,12 +65,12 @@ const DoctorSearch = () => {
   const handleFilterClick = () => {
     const filteredDoctors = searchResults.filter((doctor) => {
       const specialityMatch =
-        specialityFilter === 'all' ||
-        specialityFilter === '' ||
+        specialityFilter === "all" ||
+        specialityFilter === "" ||
         doctor.speciality === specialityFilter;
       const dayMatch =
-        dayFilter === 'all' ||
-        dayFilter === '' ||
+        dayFilter === "all" ||
+        dayFilter === "" ||
         doctorHasAvailability(doctor, dayFilter, timeFilter);
       console.log(specialityFilter);
       console.log(dayFilter);
@@ -152,14 +152,18 @@ const DoctorSearch = () => {
             key={index}
             name="Doctor"
             details={[
-              { label: 'Name', value: doctor.name },
+              { label: "Name", value: doctor.name },
               { label: "Doctor's Speciality", value: doctor.speciality },
               // Add other details as needed
             ]}
             buttonsDetails={[
               {
-                text: 'View Details',
-                onClick: () => {navigateToBook()},
+                text: "View Details",
+                onClick: () => {
+                  console.log(doctor);
+                  console.log("----------------------------------------");
+                  navigateToBook(doctor);
+                },
               },
               // Add other buttons as needed
             ]}
