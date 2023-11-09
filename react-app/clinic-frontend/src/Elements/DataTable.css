@@ -20,7 +20,7 @@
   
   /* Apply styles to the table */
   table {
-    width: 100%;
+    width: 1476px;
     border-collapse: collapse;
     border-spacing: 0;
     background-color: var(--primary-bg);
@@ -53,10 +53,7 @@
   }
   
   /* Apply hover effect for rows except the first one */
-  tr:not(:first-child):hover {
-    background-color: var(--row-hover-bg);
-  }
-  
+
   td {
     padding: 12px;
     border-bottom: 1px solid var(--border-color);

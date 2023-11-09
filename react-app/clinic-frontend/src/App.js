@@ -35,7 +35,7 @@ import  StripePaymentButton  from "./Components/Checkout";
 
 
 function App() {
-  const {role}=useAuth();
+  const { role } = useAuth();
   return (
     <div className="App">
           <Routes>
@@ -82,29 +82,70 @@ function App() {
                 </>
               )}
 
-              {/* admin routes */}
-              {role==="admin" &&(
-                <>
-                  <Route path="/adminHome" element={<AdminHome />} />
-                  <Route path="/addAdmin" element={<AddAdmin />} />
-                  <Route path="/deleteAdminDoctorPatient" element={<DeleteUser />} />
-                  <Route path="/viewPendingDoctors" element={<PendingDoctors />} />
-                  <Route path="/packages" element={<HealthPackages />} />
-                </>
-              )}
-             
+        {/* private routes */}
+        <Route element={<PrivateRoute />}>
+          {/* patient routes */}
+          {role === "patient" && (
+            <>
+              <Route path="/patientHome" element={<PatientHome />} />
+              <Route path="/familyMembers" element={<FamilyMembers />} />
+              <Route
+                path="/registerFamilyMember"
+                element={<RegisterFamilymember />}
+              />
+              <Route path="/appointments" element={<Appointments />} />
+              <Route path="/prescriptions" element={<Prescriptions />} />
+              <Route path="/searchDoctors" element={<DoctorSearch />} />
+              <Route path="/viewAllDoctors" element={<DoctorList />} />
+            </>
+          )}
 
+          {/* doctor routes */}
+          {role === "doctor" && (
+            <>
+              <Route path="/doctorhome" element={<DoctorHome />} />
+              <Route
+                path="/editDoctorProfile"
+                element={<DoctorProfileUpdate />}
+              />
+              <Route
+                path="/doctorAppointments"
+                element={<DoctorAppointments />}
+              />
+              <Route
+                path="/patientdoctorhealth"
+                element={<PrescriptionsDoctors />}
+              />
+              <Route path="/viewallmypatients" element={<DoctorPatients />} />
+            </>
+          )}
 
-              {/* common routes */}
-              {role==="notVerified" && <Route path="/verifyUser" element={<VerifyUser />} />}
-              {role==="notApproved" && <Route path="/notApproved" element={<NotApproved />} />}
+          {/* admin routes */}
+          {role === "admin" && (
+            <>
+              <Route path="/adminHome" element={<AdminHome />} />
+              <Route path="/addAdmin" element={<AddAdmin />} />
+              <Route
+                path="/deleteAdminDoctorPatient"
+                element={<DeleteUser />}
+              />
+              <Route path="/viewPendingDoctors" element={<PendingDoctors />} />
+              <Route path="/packages" element={<HealthPackages />} />
+            </>
+          )}
 
-            </Route>
-              
-            {/* not found page */}
-            <Route path="*" element={<NotFound/>} />
-            
-          </Routes>
+          {/* common routes */}
+          {role === "notVerified" && (
+            <Route path="/verifyUser" element={<VerifyUser />} />
+          )}
+          {role === "notApproved" && (
+            <Route path="/notApproved" element={<NotApproved />} />
+          )}
+        </Route>
+
+        {/* not found page */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </div>
   );
 }
