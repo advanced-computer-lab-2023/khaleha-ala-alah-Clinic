@@ -1,13 +1,13 @@
-import React from "react";
-import "./packageCard.css"; // Assuming you have a CSS file for styling
-
 const PackageCard = ({
   name,
   details = [], // details is an array of objects with 'label' and 'value' keys
   buttonsDetails = [],
+  onclick,
 }) => {
   return (
-    <div className="package-card">
+    <div className="package-card family-member-card" onClick={() => onclick()}>
+      {" "}
+      {/* Corrected onClick */}
       <h2 className="package-name">{name}</h2>
       {details.map(
         (detail, index) =>

@@ -1,6 +1,13 @@
-import React from 'react';
+import React from "react";
+import "./ConfirmationDialog.css";
 
-const ConfirmationDialog = ({ message, onConfirm, onCancel, confirmLabel, cancelLabel }) => {
+const ConfirmationDialog = ({
+  message,
+  onConfirm,
+  onCancel,
+  confirmLabel,
+  cancelLabel,
+}) => {
   return (
     <div className="confirmation-backdrop">
       <div className="confirmation-dialog">

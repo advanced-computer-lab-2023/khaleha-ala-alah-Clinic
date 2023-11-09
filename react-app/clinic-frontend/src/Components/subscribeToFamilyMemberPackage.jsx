@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import PackageCard from "./packageCard";
 import "./packageCard.css"; // Assuming you have a CSS file for styling
+import { useLocation } from "react-router-dom";
 
 const PackagesPage = () => {
   const [packages, setPackages] = useState([]);
+  const location = useLocation();
+  const familyMember = location.state?.familyMember;
 
   useEffect(() => {
     // Define the function that fetches the packages
@@ -47,10 +50,11 @@ const PackagesPage = () => {
       }),
     };
     console.log(medicalDiscount, doctorsDiscount, familyDiscount, name);
+    console.log(familyMember);
 
     try {
       const response = await fetch(
-        "http://localhost:4000/patients/subscribeToPackage",
+        `http://localhost:4000/patients/subscribeForFamilyMember?id=${familyMember.userID}`,
         requestOptions
       );
       if (!response.ok) {
