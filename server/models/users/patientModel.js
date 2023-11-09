@@ -130,6 +130,12 @@ const userSchema = new mongoose.Schema({
     type: [familyMemberSchema],
     default: [],
   },
+  files: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "uploads.files",
+    },
+  ],
 });
 
 const Patient = mongoose.model("Patient", userSchema);
