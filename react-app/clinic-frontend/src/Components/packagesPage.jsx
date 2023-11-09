@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import PackageCard from "./packageCard";
-import "./packageCard.css"; // Assuming you have a CSS file for styling
+import PackageCard from "../Elements/packageCard";
+import "../Elements/packageCard.css"; // Assuming you have a CSS file for styling
 
 const PackagesPage = () => {
   const [packages, setPackages] = useState([]);

@@ -712,7 +712,7 @@ exports.viewDoctorAppointmentsForMonth = async function (req, res) {
 
     // Generate a list of time slots for the current month
     const startDate = new Date(currentYear, currentMonth - 1, 1); // current month is 0-based
-    const endDate = new Date(currentYear, currentMonth + 2, 0);
+    const endDate = new Date(currentYear, currentMonth , 0);
     // const endDate = new Date(year, currentMonth - 1, 7);
 
     const availableTimeSlots = [];
