@@ -1,8 +1,16 @@
 const { CheckAuth } = require("../middlewares/auth");
 const express = require("express");
 const router = express.Router();
+
 const patientController = require("./../controllers/patientController");
 const Prescriptions = require("./../models/presecriptionsModel.js");
+const payForPackage = require('../controllers/paymentController');
+
+
+router.post('/save-stripe-token', CheckAuth,
+ payForPackage
+);
+
 router
   .route("/")
   .get(CheckAuth, patientController.getAllPatients)
@@ -112,5 +120,7 @@ router.post(
   CheckAuth,
   patientController.SelectAppointmentFamilyMember
 );
+
+
 
 module.exports = router;
