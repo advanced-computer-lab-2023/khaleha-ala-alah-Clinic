@@ -200,3 +200,154 @@ exports.getAppointments = async function (req, res) {
     });
   }
 };
+
+exports.addAvaliableSlots = async function(req,res){
+  try{
+    //check that doctor has status accepted
+    const doctor = await Doctor.findOne({userID:req.user._id,status:'accepted'});
+    console.log(req.body + "  " + doctor);
+    if(!doctor){
+      return res.status(404).json({ error: "Doctor not found." });
+    }
+    doctor.fixedSlots.push(...req.body.fixedSlots);
+    await doctor.save();
+    res.status(200).json({
+      status: "success",
+      data: {
+        doctor,
+      },
+    });
+  }catch(err){
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+}
+exports.scheduleFollowUpWithPatients = async function(req,res){
+    try {
+      const { patientID, selectedDateTime } = req.params;
+      console.log(req.params);
+  
+      // Ensure they have the required permissions
+      const doctor = await Doctor.findOne({ userID: req.user._id });
+  
+      if (!doctor) {
+        return res.status(404).json({
+          status: "fail",
+          message: "doctor not found",
+        });
+      }
+     
+      console.log(patientID ,selectedDateTime );
+      // Check if the selected date and time are available for the doctor
+      if (!patientID || !selectedDateTime) {
+        return res.status(400).json({
+          status: "fail",
+          message: "Patient ID and selected date/time are required.",
+        });
+      }
+  
+      const patient = await Patient.findOne({ userID: patientID });
+      if (!patient) {
+        return res.status(404).json({
+          status: "fail",
+          message: "patient not found.",
+        });
+      }
+  
+      // Get the doctor's available time slots
+      const availableTimeSlots = doctor.fixedSlots;
+  
+      // Check if the selected date and time match any of the available time slots
+      const isTimeSlotAvailable = availableTimeSlots.some((slot) => {
+        const slotDay = slot.day;
+        const slotTime = slot.hour;
+        
+  
+        // Convert the selectedDateTime to match the format in the slots
+        const selectedTime = new Date(selectedDateTime);
+        const selectedDay = selectedTime.toLocaleDateString("en-US", {
+          weekday: "long",
+        });
+        const selectedHour = selectedTime.toLocaleTimeString("en-US", {
+          hour: "numeric",
+          minute: "numeric",
+        });
+        console.log("slotDay:-- " + slotDay + "selectedDay:- " + selectedDay + " selectedHour:-  " + selectedHour + " slothour:- " + slotTime);
+        console.log(slotDay === selectedDay && slotTime === selectedHour);
+        return slotDay === selectedDay && slotTime === selectedHour;
+      });
+      if (!isTimeSlotAvailable) {
+        return res.status(400).json({
+          status: "fail",
+          message:
+            "Selected date and time are not within the doctor's available time slots.",
+        });
+      }
+  
+      // Check if the selected appointment time is already booked
+      const isAppointmentBooked = await Appointment.findOne({
+        DoctorID: req.user._id,
+        timedAt: new Date(selectedDateTime),
+      });
+  
+      if (isAppointmentBooked) {
+        return res.status(400).json({
+          status: "fail",
+          message:
+            "Selected date and time are already booked by another patient.",
+        });
+      }
+  
+      // Create a new appointment
+      const appointment = new Appointment({
+        PatientID: patientID, // Assuming you have patient information in req.user
+        DoctorID: req.user._id,
+        timedAt: new Date(selectedDateTime),
+      });
+  
+      // Save the appointment to the database
+      await appointment.save();
+  
+      res.status(200).json({
+        status: "success",
+        message: "Appointment scheduled successfully.",
+      });
+    } catch (err) {
+      res.status(500).json({
+        status: "error",
+        message: err.message,
+      });
+    }
+}
+exports.addNewHealthRecordForPatient = async function(req,res){
+  try{
+    const appointment = await Appointment.findOne({DoctorID : req.user._id});
+    const patient = await Patient.findOne({username: req.body.username});
+  if(!patient){
+    res.status(404).json({
+      status: "fail",
+      message: "patient is not found"
+    })
+  }
+  const files = req.files;
+      let Filepathes = [];
+      if(files){
+        Filepathes = req.files.map((file) => file.id);
+      }
+  patient.files.push(Filepathes);
+  await patient.save();
+  res.status(200).json({
+    status: "success",
+    message: "file upload successfully "
+  });
+  }
+  catch(err){
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+
+}
