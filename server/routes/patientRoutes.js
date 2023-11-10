@@ -7,14 +7,14 @@ const Prescriptions = require("./../models/presecriptionsModel.js");
 const payForPackage = require('../controllers/paymentController');
 
 
-router.post('/save-stripe-token', CheckAuth,
- payForPackage
-);
 
 router
   .route("/")
   .get(CheckAuth, patientController.getAllPatients)
   .post(patientController.createPatient);
+
+
+router.post('/save-stripe-token', CheckAuth,payForPackage);
 
 router.get("/patientdoctors", CheckAuth, patientController.getPatientDoctors);
 

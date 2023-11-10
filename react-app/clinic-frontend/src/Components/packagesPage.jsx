@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import PackageCard from "../Elements/packageCard";
 import "../Elements/packageCard.css"; // Assuming you have a CSS file for styling
+import { useNavigate } from 'react-router-dom';
 
 const PackagesPage = () => {
+  const navigate = useNavigate();
   const [packages, setPackages] = useState([]);
 
   useEffect(() => {
@@ -16,6 +18,7 @@ const PackagesPage = () => {
         }
         // Parse the JSON response
         const data = await response.json();
+        console.log("dataaaaa:------ " + data);
         // Update the state with the fetched packages
         setPackages(data.data.packages);
       } catch (error) {
@@ -31,8 +34,10 @@ const PackagesPage = () => {
     medicalDiscount,
     doctorsDiscount,
     familyDiscount,
-    name
+    name,
+    price
   ) => {
+    navigate('/checkout', { state: { amount: price } });
     const requestOptions = {
       method: "PATCH",
       headers: {
@@ -105,7 +110,8 @@ const PackagesPage = () => {
                   packageItem.medicalDiscount,
                   packageItem.doctorsDiscount,
                   packageItem.familyDiscount,
-                  packageItem.name
+                  packageItem.name,
+                  packageItem.price
                 ),
             },
           ]}
