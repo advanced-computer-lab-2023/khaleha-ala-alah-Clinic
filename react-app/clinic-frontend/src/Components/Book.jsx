@@ -74,7 +74,7 @@ const Book = () => {
           <option value={selectedDoctor.userID}>{selectedDoctor.name}</option>
           {/* You can add more options for available doctors if needed */}
         </select>
-        <div className="AppPack">
+        <div className="AppointmentPack">
           {loading ? ( // Render a loading message when loading is true
             <p>Loading appointments...</p>
           ) : (

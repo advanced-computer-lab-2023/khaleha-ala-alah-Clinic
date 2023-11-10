@@ -52,6 +52,45 @@ exports.getAllPatients = async function (req, res) {
   }
 };
 
+exports.getFamilyMemberPatients = async function (req, res) {
+  try {
+    const patient = await Patient.findOne({ userID: req.user._id });
+    if (!patient) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+
+    const familyMembers = patient.familyMembers;
+    const familyMemberPatients = [];
+    const PatientFamilyMembers = [];
+
+    for (const member of familyMembers) {
+      const familyMemberPatient = await Patient.findOne({
+        userID: member.userID,
+      });
+      if (familyMemberPatient) {
+        familyMemberPatients.push(familyMemberPatient);
+        PatientFamilyMembers.push(member);
+      }
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        patientFamilyMembers: familyMemberPatients,
+        familyMembers: PatientFamilyMembers,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+};
+
 exports.getPatients = async function (req, res) {
   try {
     const patient = await Patient.findById(req.params.id);

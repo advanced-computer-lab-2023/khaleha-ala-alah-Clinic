@@ -58,7 +58,7 @@ const FamilyMembersPackages = () => {
   }, []);
 
   return (
-    <div className="AppPack">
+    <div className="famPack">
       {isLoading ? (
         <div>Loading...</div>
       ) : (

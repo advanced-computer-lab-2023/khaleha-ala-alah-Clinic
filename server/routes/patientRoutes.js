@@ -55,6 +55,12 @@ router.patch(
   patientController.subscribeForFamilyMember
 );
 
+router.get(
+  "/getFamilyMembersPatients",
+  CheckAuth,
+  patientController.getFamilyMemberPatients
+);
+
 router.patch(
   "/unsubscribeFromPackage",
   CheckAuth,
