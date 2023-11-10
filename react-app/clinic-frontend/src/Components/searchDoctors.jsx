@@ -146,7 +146,7 @@ const DoctorSearch = () => {
           Filter
         </button>
       </div>
-      <div className="AppPack">
+      <div className="AppSearch">
         {searchResults.map((doctor, index) => (
           <PackageCard
             key={index}

@@ -113,7 +113,7 @@ function Appointments() {
         <button onClick={filterAppointments}>Filter</button>
       </div>
 
-    <div className="AppPack">
+    <div className="ApppointmentsShownPack">
       {loading ? (
         <div className="loader"></div>
       ) : (

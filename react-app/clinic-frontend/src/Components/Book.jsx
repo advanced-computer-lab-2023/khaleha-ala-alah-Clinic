@@ -69,11 +69,6 @@ const Book = () => {
         </div>
       </div>
       <div className="slots-container">
-        <select>
-          <option value="">Select a Doctor</option>
-          <option value={selectedDoctor.userID}>{selectedDoctor.name}</option>
-          {/* You can add more options for available doctors if needed */}
-        </select>
         <div className="AppointmentPack">
           {loading ? ( // Render a loading message when loading is true
             <p>Loading appointments...</p>
