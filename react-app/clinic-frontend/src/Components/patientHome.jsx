@@ -143,7 +143,7 @@ export const PatientHome = () => {
                 View All Doctors
               </Link>
               <Link
-                to="/Packages"
+                to="/managePackages"
                 style={linkButtonStyle}
                 className={`sidebar-button ${
                   activeButton === "Packages" ? "active" : ""
