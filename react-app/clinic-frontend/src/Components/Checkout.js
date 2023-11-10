@@ -1,9 +1,12 @@
 import React from 'react';
 import StripeCheckout from 'react-stripe-checkout';
-
+import { useLocation } from 'react-router-dom';
 const StripePaymentButton = ({ amount }) => {
+  const location = useLocation();
+  const amount22 = location.state?.amount; 
   const onToken = (token) => {
     console.log(token);
+    console.log('amounttt ++ ' + amount22);
     fetch('http://localhost:4000/patients/save-stripe-token', {
       headers: {
         "Authorization": "Bearer " + localStorage.getItem("token"),
@@ -12,11 +15,12 @@ const StripePaymentButton = ({ amount }) => {
       method: 'POST',
       body: JSON.stringify({
         token: token,
-        amount: amount,
+        amount: amount22,
       }),
     })
-    .then(response => response.json())
-    .then(data => {
+    .then(response =>  response.json())
+    .then(async data => {
+      console.log(data);
       alert(`Payment successful! Email: ${data.email}`);
       // You may want to perform additional actions on successful payment
     })

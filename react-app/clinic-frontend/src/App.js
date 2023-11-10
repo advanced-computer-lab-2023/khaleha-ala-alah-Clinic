@@ -78,10 +78,12 @@ function App() {
                 path="/familyMemberPackages"
                 element={<FamilyMemberPackages />}
               />
+              <Route path="/checkout" element={<StripePaymentButton />} />
               <Route
                 path="/subscribeToFamilyMemberPackage"
                 element={<SubscribeToFamilyMemberPackage />}
               />
+
               <Route
                 path="/familyMemberDetails"
                 element={<FamilyMemberDetails />}
