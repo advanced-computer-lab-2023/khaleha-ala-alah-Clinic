@@ -37,6 +37,9 @@ import SubscribeToFamilyMemberPackage from "./Components/subscribeToFamilyMember
 import { useAuth } from "./AuthContext";
 import ContractPage from "./Components/Contract";
 import StripePaymentButton from "./Components/Checkout";
+import AddFamilyMemberPage from "./Components/addFamilyMember.jsx";
+import AddFamilyEmail from "./Components/addFamilyMemberEmail.jsx";
+import AddFamilyMemberPhone from "./Components/addFamilyMemberPhone.jsx";
 
 function App() {
   const { role } = useAuth();
@@ -85,8 +88,16 @@ function App() {
               />
 
               <Route
-                path="/familyMemberDetails"
-                element={<FamilyMemberDetails />}
+                path="/addFamilyMemberUsingEmail"
+                element={<AddFamilyEmail />}
+              />
+              <Route
+                path="/addFamilyMemberUsingPhone"
+                element={<AddFamilyMemberPhone />}
+              />
+              <Route
+                path="/addFamilyMember"
+                element={<AddFamilyMemberPage />}
               />
             </>
           )}

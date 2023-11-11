@@ -108,7 +108,7 @@ export const PatientHome = () => {
               </Link>
 
               <Link
-                to="/registerFamilyMember"
+                to="/addFamilyMember"
                 style={linkButtonStyle}
                 className={`sidebar-button ${
                   activeButton === "RegisterFamilyMember" ? "active" : ""
