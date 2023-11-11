@@ -66,26 +66,27 @@ function Appointments() {
 
   const filterAppointments = () => {
     const filteredAppointments = appointments.filter((appointment) => {
-      const formattedAppointmentDate = new Date(appointment.timedAt)
-        .toISOString()
-        .split("T")[0];
-
-      const dateFilterPassed =
-        dateFilter === "" || formattedAppointmentDate === dateFilter;
-
+      const appointmentDate = new Date(appointment.timedAt);
+      const currentDate = new Date();
+  
+      // Check if the appointment date is in the past
+      const isOldDate = appointmentDate < currentDate;
+  
+      // Determine the status of the appointment
       let status = "confirmed";
-      if (appointment.timedAt > Date.now()) {
+      if (appointment.timedAt > currentDate.getTime()) {
         status = "pending";
       }
-
-      const statusFilterPassed =
-        statusFilter === "all" || status === statusFilter;
-
-      return dateFilterPassed && statusFilterPassed;
+  
+      // Check if the status is 'confirmed' and the date is old
+      const statusFilterPassed = 
+        (statusFilter === "all" || (status === statusFilter && status === "confirmed" && isOldDate));
+  
+      return statusFilterPassed;
     });
-
+  
     setFilteredAppointments(filteredAppointments);
-  };
+};
 
   return (
     <div className="Appointments-container">

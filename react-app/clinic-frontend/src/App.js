@@ -40,6 +40,7 @@ import StripePaymentButton from "./Components/Checkout";
 import AddFamilyMemberPage from "./Components/addFamilyMember.jsx";
 import AddFamilyEmail from "./Components/addFamilyMemberEmail.jsx";
 import AddFamilyMemberPhone from "./Components/addFamilyMemberPhone.jsx";
+import './App.css';
 
 function App() {
   const { role } = useAuth();
