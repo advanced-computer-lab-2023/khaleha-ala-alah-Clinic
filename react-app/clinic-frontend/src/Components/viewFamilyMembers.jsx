@@ -1,7 +1,26 @@
 import React, { useState, useEffect } from "react";
+import DataTable from "../Elements/DataTable.jsx";
+import './viewFamilyMembers.css';
 
 function FamilyMembers() {
   const [familyMembers, setFamilyMembers] = useState([]);
+
+  
+  const FamilyMemberColumns = [
+    { key: "name", title: "Name" },
+    { key: "nationalID", title: "National ID" },
+    { key: "age", title: "Age" },
+    { key: "gender", title: "Gender" },
+    { key: "relation", title: "Relation" },
+  ];
+
+  const FamilyMembers = familyMembers.map((familyMember, index) => ({
+    name: familyMember ? familyMember.name : "N/A",
+    nationalID: familyMember ? familyMember.nationalID : "N/A",
+    age: familyMember? familyMember.age : "N/A",
+    gender: familyMember? familyMember.gender : "N/A",
+    relation: familyMember ? familyMember.relationToPatient : "N/A",
+  }));
 
   useEffect(() => {
     // Fetch data from the server's endpoint
@@ -23,8 +42,8 @@ function FamilyMembers() {
 
   return (
     <div>
-      <h2>Family Members</h2>
-      <ul>
+      <h1>Family Members</h1>
+      {/* <ul>
         {familyMembers.map((familyMember, index) => (
           <li key={index}>
             <p>Name: {familyMember.name}</p>
@@ -34,7 +53,15 @@ function FamilyMembers() {
             <p>Relation: {familyMember.relationToPatient}</p>
           </li>
         ))}
-      </ul>
+      </ul> */}
+
+        <div className="FamilyMemberTable">
+          <DataTable
+            data={FamilyMembers}
+            columns={FamilyMemberColumns}
+          />
+        </div>
+
     </div>
   );
 }
