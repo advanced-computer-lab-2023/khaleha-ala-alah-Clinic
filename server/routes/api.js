@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require('mongoose');
 
-
+//download file by name
 router.get('/files/:filename/download', async (req, res) => {
     const filename = req.params.filename;
     // Connect GridFS and mongo

@@ -6,6 +6,7 @@ import "./familyMembercard.css";
 import FamilyMemberDetails from "./familyMemberDetails";
 import SubscribeToFamilyMemberPackage from "./subscribeToFamilyMemberPackage";
 import { useNavigate } from "react-router-dom";
+import LoadingPage from "./LoadingPage";
 
 const formatDate = (dateString) => {
   const options = { day: "numeric", month: "long", year: "numeric" };
@@ -58,11 +59,13 @@ const FamilyMembersPackages = () => {
   }, []);
 
   return (
-    <div className="famPack">
+    <>
       {isLoading ? (
-        <div>Loading...</div>
+        <div>
+          <LoadingPage />
+        </div>
       ) : (
-        <>
+        <div className="famPack">
           {patientFamilyMembers.map((familyMember, i) => (
             <PackageCard
               className="familyMemberCard"
@@ -115,9 +118,9 @@ const FamilyMembersPackages = () => {
               ]} // Adjust based on the actual structure of your package data
             />
           ))}
-        </>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

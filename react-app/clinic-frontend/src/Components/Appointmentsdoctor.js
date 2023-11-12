@@ -1,22 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const DoctorAppointments = () => {
   const [appointments, setAppointments] = useState([]);
-  const [dateFilter, setDateFilter] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [dateFilter, setDateFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [error, setError] = useState(null);
 
   // Function to fetch all appointments of a doctor
   const fetchAppointments = async () => {
     try {
-      const response = await fetch('http://localhost:4000/doctors/appointments',{
-        method: 'GET',
-        headers: {
-          'authorization': 'Bearer ' + localStorage.getItem('token'),
+      const response = await fetch(
+        "http://localhost:4000/doctors/appointments",
+        {
+          method: "GET",
+          headers: {
+            authorization: "Bearer " + localStorage.getItem("token"),
+          },
         }
-      });
+      );
       if (!response.ok) {
-        throw new Error('Failed to fetch appointments');
+        throw new Error("Failed to fetch appointments");
       }
       const data = await response.json();
       setAppointments(data.appointments);
@@ -33,11 +36,18 @@ const DoctorAppointments = () => {
   // Function to filter appointments based on date and status
   const filterAppointments = () => {
     const filtered = appointments.filter((appointment) => {
-      const appointmentDate = new Date(appointment.timedAt).toISOString().split('T')[0];
-      const status = appointment.timedAt > Date.now() ? 'pending' : 'confirmed';
+      const appointmentDate = new Date(appointment.timedAt)
+        .toISOString()
+        .split("T")[0];
+      const status = appointment.timedAt > Date.now() ? "pending" : "confirmed";
 
-      const dateFilterPassed = dateFilter === '' || appointmentDate === dateFilter;
-      const statusFilterPassed = statusFilter === 'all' || status === statusFilter;
+      const dateFilterPassed =
+        dateFilter === "" || appointmentDate === dateFilter;
+      const statusFilterPassed =
+        statusFilter === "all" ||
+        status === statusFilter ||
+        (statusFilter === "rescheduled" && appointment.isRescheduled) ||
+        (statusFilter === "cancelled" && appointment.isCancelled);
 
       return dateFilterPassed && statusFilterPassed;
     });
@@ -58,16 +68,23 @@ const DoctorAppointments = () => {
           onChange={(e) => setDateFilter(e.target.value)}
         />
         <label>Status Filter:</label>
-        <select id="statusFilter" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+        <select
+          id="statusFilter"
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+        >
           <option value="all">All</option>
           <option value="confirmed">Confirmed</option>
           <option value="pending">Pending</option>
+          <option value="rescheduled">Rescheduled</option>
+          <option value="cancelled">Cancelled</option>
         </select>
       </div>
       <ul>
         {filterAppointments().map((appointment) => (
           <li key={appointment.id}>
-            {new Date(appointment.timedAt).toLocaleString()}: {appointment.status}
+            {new Date(appointment.timedAt).toLocaleString()}:{" "}
+            {appointment.status}
           </li>
         ))}
       </ul>
