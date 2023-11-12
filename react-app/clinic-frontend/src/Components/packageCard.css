@@ -37,27 +37,28 @@
 
 .AppSearch {
   display: flex;
-    flex-wrap: wrap; /* Allows cards to wrap to the next line */
-    justify-content: flex-start; /* Aligns cards to the start of the container */
-    align-items: flex-start; /* Aligns cards to the top of the container */
-    padding: 16px; /* Optional: Adds some space inside the container */
-    height:80vh;
-    overflow-x: hidden;
-    min-width: 96.8vw;
-    background-color: #e1e5f2;
+  flex-wrap: wrap; /* Allows cards to wrap to the next line */
+  justify-content: flex-start; /* Aligns cards to the start of the container */
+  align-items: flex-start; /* Aligns cards to the top of the container */
+  padding: 16px; /* Optional: Adds some space inside the container */
+  height: 80vh;
+  overflow-x: hidden;
+  min-width: 96.8vw;
+  background-color: #e1e5f2;
 }
 
-.ApppointmentsShownPack{
+.ApppointmentsShownPack {
   display: flex;
-    flex-wrap: wrap; /* Allows cards to wrap to the next line */
-    justify-content: flex-start; /* Aligns cards to the start of the container */
-    align-items: flex-start; /* Aligns cards to the top of the container */
-    padding: 16px; /* Optional: Adds some space inside the container */
-    height:80vh;
-    overflow-x: hidden;
-    min-width: 96.8vw;
-    margin-top: 30px;
-    background-color: #e1e5f2;
+  flex-wrap: wrap; /* Allows cards to wrap to the next line */
+  justify-content: flex-start; /* Aligns cards to the start of the container */
+  align-items: flex-start; /* Aligns cards to the top of the container */
+  padding: 16px; /* Optional: Adds some space inside the container */
+  height: 80vh;
+  overflow-x: hidden;
+  min-width: 96.8vw;
+  width: 100vw;
+  margin-top: 30px;
+  background-color: #e1e5f2;
 }
 
 .package-buttons {
