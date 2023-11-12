@@ -15,12 +15,31 @@ function Appointments() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [loading, setLoading] = useState(true); // Add loading state
 
+  const getDoctorName = (appointment) => {
+    const doctor = doctors.find(
+      (doctor) => doctor.userID === appointment.DoctorID
+    );
+    return doctor ? doctor.name : "N/A";
+  };
+  const getDoctorSpeciality = (appointment) => {
+    const doctor = doctors.find(
+      (doctor) => doctor.userID === appointment.DoctorID
+    );
+    return doctor ? doctor.speciality : "N/A";
+  };
+  const getDoctorEmail = (appointment) => {
+    const doctor = doctors.find(
+      (doctor) => doctor.userID === appointment.DoctorID
+    );
+    return doctor ? doctor.email : "N/A";
+  };
+
   const appointmentsforPatient = filteredAppointments.map(
     (appointment, index) => ({
       date: new Date(appointment.timedAt).toDateString(),
-      doctor: doctors[index] ? doctors[index].name : "N/A",
-      speciality: doctors[index] ? doctors[index].speciality : "N/A",
-      email: doctors[index] ? doctors[index].email : "N/A",
+      doctor: getDoctorName(appointment),
+      speciality: getDoctorSpeciality(appointment),
+      email: getDoctorEmail(appointment),
     })
   );
 
