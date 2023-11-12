@@ -126,8 +126,13 @@ const DoctorSearch = () => {
           onChange={(e) => setDayFilter(e.target.value)}
         >
           <option value="all">ALL</option>
+          <option value="Saturday">Saturday</option>
+          <option value="Sunday">Sunday</option>
           <option value="Monday">Monday</option>
           <option value="Tuesday">Tuesday</option>
+          <option value="Wednesday">Wednesday</option>
+          <option value="Thursday">Thursday</option>
+          <option value="Friday">Friday</option>
         </select>
 
         <label htmlFor="timeFilter">Time:</label>
@@ -137,9 +142,15 @@ const DoctorSearch = () => {
           onChange={(e) => setTimeFilter(e.target.value)}
         >
           <option value="all">ALL</option>
-          <option value="08:00 AM">8:00 AM</option>
-          <option value="08:30 AM">8:30 AM</option>
-          <option value="09:00 AM">9:00 AM</option>
+          <option value="08:00 AM">08:00 AM</option>
+          <option value="09:00 AM">09:00 AM</option>
+          <option value="10:00 AM">10:00 AM</option>
+          <option value="11:00 AM">11:00 AM</option>
+          <option value="12:00 PM">12:00 PM</option>
+          <option value="01:00 PM">01:00 PM</option>
+          <option value="02:00 PM">02:00 PM</option>
+          <option value="03:00 PM">03:00 PM</option>
+          <option value="04:00 PM">04:00 PM</option>
         </select>
 
         <button onClick={handleFilterClick} id="filterButton">
