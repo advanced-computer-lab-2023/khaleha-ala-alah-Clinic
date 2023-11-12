@@ -102,7 +102,10 @@ function Appointments() {
 
       // Check if the appointment status matches the status filter
       const statusFilterPassed =
-        statusFilter === "all" || status === statusFilter;
+        statusFilter === "all" ||
+        status === statusFilter ||
+        (statusFilter === "rescheduled" && appointment.isRescheduled) ||
+        (statusFilter === "cancelled" && appointment.isCancelled);
 
       return dateFilterPassed && statusFilterPassed;
     });
@@ -131,6 +134,8 @@ function Appointments() {
         <option value="all">All</option>
         <option value="confirmed">Finished</option>
         <option value="pending">Pending</option>
+        <option value="rescheduled">Rescheduled</option>
+        <option value="cancelled">Cancelled</option>
       </select>
 
       <button onClick={filterAppointments}>Filter</button>
