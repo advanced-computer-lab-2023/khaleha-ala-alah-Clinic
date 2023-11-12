@@ -139,7 +139,7 @@ function Appointments() {
         {loading ? (
           <LoadingPage />
         ) : (
-          <div className="AppointmentsTable">
+          <div className="AppointmentsTable" style={{ width: 92 + "vw" }}>
             <DataTable
               data={appointmentsforPatient}
               columns={appointmentsColumns}

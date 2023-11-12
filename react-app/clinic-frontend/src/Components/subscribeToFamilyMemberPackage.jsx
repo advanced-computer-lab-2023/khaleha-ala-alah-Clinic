@@ -69,7 +69,7 @@ const PackagesPage = () => {
   };
 
   return (
-    <div className="AppPack">
+    <div className="AppPackages">
       {packages.map((packageItem) => (
         <PackageCard
           //key={packageItem.id} // Use a unique key for each child, like an ID

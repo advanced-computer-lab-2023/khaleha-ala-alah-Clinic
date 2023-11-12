@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PackageCard from "../Elements/packageCard";
 import "../Elements/packageCard.css"; // Assuming you have a CSS file for styling
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const PackagesPage = () => {
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const PackagesPage = () => {
     name,
     price
   ) => {
-    navigate('/checkout', { state: { amount: price } });
+    navigate("/checkout", { state: { amount: price } });
     const requestOptions = {
       method: "PATCH",
       headers: {
@@ -70,7 +70,7 @@ const PackagesPage = () => {
   };
 
   return (
-    <div className="AppPack">
+    <div className="AppPackages">
       {packages.map((packageItem) => (
         <PackageCard
           //key={packageItem.id} // Use a unique key for each child, like an ID
