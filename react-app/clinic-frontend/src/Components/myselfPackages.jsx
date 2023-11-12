@@ -4,6 +4,7 @@ import PackageSubscriptionComponent from "./packagesPage";
 import PackageDetails from "./packageDetails";
 import ConfirmationDialog from "../Elements/ConfirmationDialog.jsx";
 //import "../Elements/ConfirmationDialog.css";
+import LoadingPage from "./LoadingPage.jsx";
 
 import { useNavigate } from "react-router-dom";
 
@@ -79,7 +80,11 @@ const MyselfPackages = () => {
     setShowConfirmationDialog(true);
   };
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <LoadingPage />
+      </div>
+    );
   }
 
   if (!currentPatient) {
