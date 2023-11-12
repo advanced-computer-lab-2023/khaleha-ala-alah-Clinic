@@ -3,6 +3,8 @@ const patientModel = require("../models/users/patientModel");
 const Doctor = require("../models/users/doctorModel");
 const Patient = require("../models/users/patientModel"); // Import your Patient model
 const Prescription = require("../models/presecriptionsModel"); // Import your Prescription model
+const mongoose = require("mongoose");
+const { promises } = require("nodemailer/lib/xoauth2");
 
 exports.getPrescriptionsByDoctorAndPatient = async function (req, res) {
   try {
@@ -68,6 +70,10 @@ exports.getAllPrescriptions = async function (req, res) {
 
 exports.getPatientsByDoctorId = async function (req, res) {
   try {
+    const conn = mongoose.connection;
+    const gfs = new mongoose.mongo.GridFSBucket(conn.db, {
+      bucketName: "uploads",
+    });
      // Get the doctor ID from the request parameters
 
     // Find all appointments with the given doctor ID
@@ -79,10 +85,46 @@ exports.getPatientsByDoctorId = async function (req, res) {
     // Find patients with the extracted patient IDs
     const patients = await Patient.find({ userID: { $in: patientIds } });
 
+    //get files names
+    const patientWithFiles=await Promise.all(
+      patients.map(async (patient)=>{
+        const downloadLinks = await Promise.all(
+          patient.files.map(async (file) => {
+            const attachment = await gfs.find({ _id: file }).toArray();
+            if (attachment.length > 0) {
+              const downloadLink = attachment[0].filename;
+              return downloadLink;
+            }
+            return null;
+          })
+        );
+        return {
+          _id: patient._id,
+          userID: patient.userID,
+          username: patient.username,
+          name: patient.name,
+          email: patient.email,
+          gender:patient.gender,
+          dateOfBirth:patient.dateOfBirth,
+          mobileNumber:patient.mobileNumber,
+          packageName:patient.packageName,
+          doctorsDiscount:patient.doctorsDiscount,
+          medicalDiscount:patient.medicalDiscount,
+          familyDiscount:patient.familyDiscount,
+          selfSubscription:patient.selfSubscription,
+          packageEndDate:patient.packageEndDate,
+          files: downloadLinks.filter((link) => link !== null),
+          familyMembers:patient.familyMembers,
+          __v: patient.__v,
+        }
+     })
+    );
+    
+
     res.status(200).json({
       status: "success",
       data: {
-        patients,
+        patients: patientWithFiles,
       },
     });
   } catch (error) {
@@ -160,7 +202,7 @@ exports.getAppointmentsPatients = async function (req, res) {
     const patientsID = await Appointment.find({
       DoctorID: req.user._id,
     }).select({ PatientID: 1, _id: 0 });
-    console.log(patientsID);
+    // console.log(patientsID);
     const allPatients = await patientModel.find();
     const patients = [];
 
@@ -189,7 +231,7 @@ exports.getAppointments = async function (req, res) {
     const appointments = await Appointment.find({
       DoctorID: req.user._id,
     });
-    console.log(appointments);
+    // console.log(appointments);
     res.status(200).json({
       appointments,
     });
@@ -205,7 +247,7 @@ exports.addAvaliableSlots = async function(req,res){
   try{
     //check that doctor has status accepted
     const doctor = await Doctor.findOne({userID:req.user._id,status:'accepted'});
-    console.log(req.body + "  " + doctor);
+    // console.log(req.body + "  " + doctor);
     if(!doctor){
       return res.status(404).json({ error: "Doctor not found." });
     }
@@ -227,7 +269,7 @@ exports.addAvaliableSlots = async function(req,res){
 exports.scheduleFollowUpWithPatients = async function(req,res){
     try {
       const { patientID, selectedDateTime } = req.params;
-      console.log(req.params);
+      // console.log(req.params);
   
       // Ensure they have the required permissions
       const doctor = await Doctor.findOne({ userID: req.user._id });
@@ -239,7 +281,7 @@ exports.scheduleFollowUpWithPatients = async function(req,res){
         });
       }
      
-      console.log(patientID ,selectedDateTime );
+      // console.log(patientID ,selectedDateTime );
       // Check if the selected date and time are available for the doctor
       if (!patientID || !selectedDateTime) {
         return res.status(400).json({
@@ -274,8 +316,8 @@ exports.scheduleFollowUpWithPatients = async function(req,res){
           hour: "numeric",
           minute: "numeric",
         });
-        console.log("slotDay:-- " + slotDay + "selectedDay:- " + selectedDay + " selectedHour:-  " + selectedHour + " slothour:- " + slotTime);
-        console.log(slotDay === selectedDay && slotTime === selectedHour);
+        // console.log("slotDay:-- " + slotDay + "selectedDay:- " + selectedDay + " selectedHour:-  " + selectedHour + " slothour:- " + slotTime);
+        // console.log(slotDay === selectedDay && slotTime === selectedHour);
         return slotDay === selectedDay && slotTime === selectedHour;
       });
       if (!isTimeSlotAvailable) {
