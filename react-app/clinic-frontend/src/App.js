@@ -31,6 +31,7 @@ import Bookpage from "./Components/Book";
 import NotApproved from "./Components/notApproved";
 import PackagesManagment from "./Components/packageManagmentPage";
 import MyselfPackages from "./Components/myselfPackages";
+import FollowUpScheduler from './Components/FollowUpScheduler.jsx';
 import FamilyMemberPackages from "./Components/familyMembersPackages";
 import FamilyMemberDetails from "./Components/familyMemberDetails";
 import SubscribeToFamilyMemberPackage from "./Components/subscribeToFamilyMemberPackage";
@@ -41,6 +42,8 @@ import AddFamilyMemberPage from "./Components/addFamilyMember.jsx";
 import AddFamilyEmail from "./Components/addFamilyMemberEmail.jsx";
 import AddFamilyMemberPhone from "./Components/addFamilyMemberPhone.jsx";
 import "./App.css";
+
+
 
 function App() {
   const { role } = useAuth();
@@ -56,6 +59,7 @@ function App() {
         <Route path="/DoctorRegister" element={<DoctorRegister />} />
         <Route path="/resetPassword/:token" element={<ResetPassword />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route path="/follow-up-scheduler" element={<FollowUpScheduler />} />
 
         {/* Redirect to login if no role is defined (user is not authenticated) */}
         {role === "" && <Route path="*" element={<Navigate to="/login" />} />}

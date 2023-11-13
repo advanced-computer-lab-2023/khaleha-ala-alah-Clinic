@@ -267,9 +267,11 @@ exports.addAvaliableSlots = async function(req,res){
   }
 }
 exports.scheduleFollowUpWithPatients = async function(req,res){
-    try {
-      const { patientID, selectedDateTime } = req.params;
-      // console.log(req.params);
+      try {
+        console.log("here")
+        const { patientID, selectedDateTime } = req.params; // Use req.body instead of req.params
+
+
   
       // Ensure they have the required permissions
       const doctor = await Doctor.findOne({ userID: req.user._id });
@@ -281,7 +283,7 @@ exports.scheduleFollowUpWithPatients = async function(req,res){
         });
       }
      
-      // console.log(patientID ,selectedDateTime );
+
       // Check if the selected date and time are available for the doctor
       if (!patientID || !selectedDateTime) {
         return res.status(400).json({

@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 const DoctorPatients = ({ doctorId }) => {
+  const navigate = useNavigate();
   const [patients, setPatients] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState([]);
   const [searchName, setSearchName] = useState("");
-  const [appointments, setAppointments] = useState([]); // State to store doctor's appointments
+  const [appointments, setAppointments] = useState([]);
   const [error, setError] = useState(null);
-  const [prescriptions, setPrescriptions] = useState([]); // State to store prescriptions
+  const [prescriptions, setPrescriptions] = useState([]);
 
   useEffect(() => {
-    // Fetch the doctor's patients and appointments
     const fetchDoctorData = async () => {
       try {
         const patientsResponse = await fetch(
@@ -26,7 +28,7 @@ const DoctorPatients = ({ doctorId }) => {
         }
         const patientsData = await patientsResponse.json();
         setPatients(patientsData.data.patients);
-        setFilteredPatients(patientsData.data.patients); // Initialize filtered patients with all patients
+        setFilteredPatients(patientsData.data.patients);
 
         const appointmentsResponse = await fetch(
           `http://localhost:4000/doctors/appointments`,
@@ -41,9 +43,7 @@ const DoctorPatients = ({ doctorId }) => {
           throw new Error("Failed to fetch appointments");
         }
         const appointmentsData = await appointmentsResponse.json();
-        console.log(appointmentsData.appointments);
         setAppointments(appointmentsData.appointments);
-        console.log(appointments);
       } catch (err) {
         setError(err.message);
       }
@@ -62,55 +62,52 @@ const DoctorPatients = ({ doctorId }) => {
         });
     };
 
-    // Call the fetch function when the component mounts
     fetchDoctorData();
   }, [doctorId]);
 
   console.log(patients);
 
   const viewPatientDetails = (patient) => {
-    let myprescriptions = [];
+    let myPrescriptions = prescriptions.filter(
+      (prescription) => prescription.PatientID === patient.userID
+    );
 
-    for (let i = 0; i < prescriptions.length; i++) {
-      if (prescriptions[i].PatientID === patient.userID) {
-        myprescriptions.push(prescriptions[i]);
-      }
-    }
-    console.log(myprescriptions);
-    let s = "";
+    let s = myPrescriptions
+      .map(
+        (prescription, index) =>
+          `Prescription number ${index + 1} summary: ${prescription.summary}`
+      )
+      .join("\n");
 
-    for (let i = 0; i < myprescriptions.length; i++) {
-      s += `Prescription number : ${i + 1} summary : ${
-        myprescriptions[i].summary
-      }\n`;
-    }
     alert(
-      `Patient Name : ${patient.name} \nPatient Email : ${patient.email}\nPatient Gender : ${patient.gender}\nHealth records : ${s}`
+      `Patient Name: ${patient.name}\nPatient Email: ${patient.email}\nPatient Gender: ${patient.gender}\nHealth Records: ${s}`
     );
   };
-  // Function to handle search input change
+
   const handleSearchChange = (e) => {
     setSearchName(e.target.value);
 
-    // Filter patients based on the search input
     const filtered = patients.filter((patient) =>
       patient.name.toLowerCase().includes(e.target.value.toLowerCase())
     );
 
-    // Further filter by upcoming appointments
     const now = new Date();
-    const upcomingPatients = filtered.filter((patient) => {
-      return appointments.some((appointment) => {
-        const appointmentDate = new Date(appointment.timedAt);
-        return appointmentDate > now && appointment.PatientID === patient._id;
-      });
-    });
+    const upcomingPatients = filtered.filter((patient) =>
+      appointments.some(
+        (appointment) =>
+          new Date(appointment.timedAt) > now &&
+          appointment.PatientID === patient._id
+      )
+    );
 
     setFilteredPatients(upcomingPatients);
   };
 
   return (
     <div>
+      <button onClick={() => navigate("/follow-up-scheduler")}>
+        Schedule a Follow-Up
+      </button>
       <h2>Doctor's Patients</h2>
       {error && <p>Error: {error}</p>}
       <input
@@ -142,7 +139,6 @@ const DoctorPatients = ({ doctorId }) => {
             <button onClick={() => viewPatientDetails(patient)}>
               View Details
             </button>
-            {/* Include other patient details */}
           </li>
         ))}
       </ul>
