@@ -38,9 +38,11 @@ import SubscribeToFamilyMemberPackage from "./Components/subscribeToFamilyMember
 import { useAuth } from "./AuthContext";
 import ContractPage from "./Components/Contract";
 import StripePaymentButton from "./Components/Checkout";
+import StripePaymentButtonFF from "./Components/CheckoutFamilyMemberPaackage"
 import AddFamilyMemberPage from "./Components/addFamilyMember.jsx";
 import AddFamilyEmail from "./Components/addFamilyMemberEmail.jsx";
 import AddFamilyMemberPhone from "./Components/addFamilyMemberPhone.jsx";
+
 import "./App.css";
 
 
@@ -91,10 +93,14 @@ function App() {
                 element={<FamilyMemberDetails />}
               />
               <Route path="/checkout" element={<StripePaymentButton />} />
+             
+
               <Route
                 path="/subscribeToFamilyMemberPackage"
                 element={<SubscribeToFamilyMemberPackage />}
               />
+
+              <Route path="/CheckoutFamilyMemberPaackage" element={<StripePaymentButtonFF />} />  
 
               <Route
                 path="/addFamilyMemberUsingEmail"

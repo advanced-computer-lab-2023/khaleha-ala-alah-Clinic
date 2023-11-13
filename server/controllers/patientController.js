@@ -359,6 +359,7 @@ exports.subscribeForFamilyMember = async function (req, res) {
     familyMember.doctorsDiscount = req.body.doctorsDiscount;
     familyMember.medicalDiscount = req.body.medicalDiscount;
     familyMember.familyDiscount = req.body.familyDiscount;
+    familyMember.selfSubscription = true;
     familyMember.packageEndDate = new Date().setFullYear(
       new Date().getFullYear() + 1
     );
@@ -461,11 +462,13 @@ exports.cancelFamilyMemberPackage = async function (req, res) {
         message: "Patient not found",
       });
     }
-    if (patient.selfSubscription) {
-      return res.status(201).json({
-        packageDeleted: false,
-      });
-    }
+    console.log(patient);
+    console.log(patient.selfSubscription);
+    // if (patient.selfSubscription) {
+    //   return res.status(201).json({
+    //     packageDeleted: false,
+    //   });
+    // }
     patient.packageName = "none";
     patient.doctorsDiscount = 0;
     patient.medicalDiscount = 0;
