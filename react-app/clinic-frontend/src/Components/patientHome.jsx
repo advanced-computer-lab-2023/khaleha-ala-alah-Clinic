@@ -66,10 +66,6 @@ export const PatientHome = () => {
 
   const [activeButton, setActiveButton] = useState(null);
 
-  const linkButtonStyle = {
-    textDecoration: "none", // Remove underline
-  };
-
   const slides = [
     {
       image: doctors,
