@@ -12,10 +12,10 @@ import viewfm from "../Images/fammember.png";
 import healthpackages from "../Images/packages.png";
 import chatdoctor from "../Images/chat.png";
 
-
 import ImageCarousel from "../Elements/ImageCarousel";
 import ServiceItem from "../Elements/ServiceItem";
 import NavBar from "../Elements/NavBar";
+import LoadingPage from "./LoadingPage.jsx";
 
 import familymember from "../Images/FamilyMember.jpg";
 import appointments from "../Images/appointments.jpg";
@@ -23,7 +23,6 @@ import packages from "../Images/Packages.jpg";
 import doctors from "../Images/SearchDoctor.jpg";
 import chat from "../Images/VideoChat.jpg";
 import medicine from "../Images/BuyMedicine.jpg";
-
 
 import { useEffect } from "react";
 import axios from "axios";
@@ -111,86 +110,85 @@ export const PatientHome = () => {
     // Add more slides as needed
   ];
 
-
-
   return (
     <div>
       {isLoading ? (
-        <div>Loading...</div>
+        <div>
+          <LoadingPage />
+        </div>
       ) : (
         <div>
-      <NavBar />
-      {
-        <div className="all-containers">
-          <div className="carousel-container">
-            <ImageCarousel slides={slides} />
-          </div>
+          <NavBar />
+          {
+            <div className="all-containers">
+              <div className="carousel-container">
+                <ImageCarousel slides={slides} />
+              </div>
 
-          <div className="titleofPAGE">
-            <h1> What are our services? </h1>
-          </div>
-          <div className="services-container">
-            <ServiceItem
-              imgSrc={searchdoctor}
-              title="Search For Doctors"
-              description="Discover doctors by specialty or name to find your ideal healthcare match"
-              navigateTo="/searchDoctors"
-            />
-            ,
-            <ServiceItem
-              imgSrc={viewdoctor}
-              title="View All Doctors"
-              description="Explore profiles and expertise of all our available medical practitioners"
-              navigateTo="/viewAllDoctors"
-           />
-            ,
-            <ServiceItem
-              imgSrc={pres}
-              title="Prescriptions"
-              description="Show your medications prescribed online quickly and securely"
-              navigateTo="/prescriptions"
-            />
-            ,
-            <ServiceItem
-              imgSrc={makeappointment}
-              title="Make Appointments"
-              description="Schedule a consultation with your preferred doctor anytime"
-              navigateTo="/appointments"
-            />
-            ,
-            <ServiceItem
-              imgSrc={healthpackages}
-              title="Health Packages"
-              description="Choose from tailored health plans for comprehensive care solutions"
-              navigateTo="/managePackages"
-            />
-            ,
-            <ServiceItem
-              imgSrc={viewfm}
-              title="Family Members"
-              description="Access and manage your family's health profiles all in one place"
-              navigateTo="/familyMembers"
-            />
-            ,
-            <ServiceItem
-              imgSrc={addfm}
-              title="Add Family Member"
-              description="Easily add relatives to your account for coordinated health management"
-              navigateTo="/addFamilyMember"
-            />
-            ,
-            <ServiceItem
-              imgSrc={chatdoctor}
-              title="Chat with Doctor"
-              description="Connect with your doctor for instant advice through secure messaging. SOON"
-            />
-            ,
-          </div>
+              <div className="titleofPAGE">
+                <h1> What are our services? </h1>
+              </div>
+              <div className="services-container">
+                <ServiceItem
+                  imgSrc={searchdoctor}
+                  title="Search For Doctors"
+                  description="Discover doctors by specialty or name to find your ideal healthcare match"
+                  navigateTo="/searchDoctors"
+                />
+                ,
+                <ServiceItem
+                  imgSrc={viewdoctor}
+                  title="View All Doctors"
+                  description="Explore profiles and expertise of all our available medical practitioners"
+                  navigateTo="/viewAllDoctors"
+                />
+                ,
+                <ServiceItem
+                  imgSrc={pres}
+                  title="Prescriptions"
+                  description="Show your medications prescribed online quickly and securely"
+                  navigateTo="/prescriptions"
+                />
+                ,
+                <ServiceItem
+                  imgSrc={makeappointment}
+                  title="Make Appointments"
+                  description="Schedule a consultation with your preferred doctor anytime"
+                  navigateTo="/appointments"
+                />
+                ,
+                <ServiceItem
+                  imgSrc={healthpackages}
+                  title="Health Packages"
+                  description="Choose from tailored health plans for comprehensive care solutions"
+                  navigateTo="/managePackages"
+                />
+                ,
+                <ServiceItem
+                  imgSrc={viewfm}
+                  title="Family Members"
+                  description="Access and manage your family's health profiles all in one place"
+                  navigateTo="/familyMembers"
+                />
+                ,
+                <ServiceItem
+                  imgSrc={addfm}
+                  title="Add Family Member"
+                  description="Easily add relatives to your account for coordinated health management"
+                  navigateTo="/addFamilyMember"
+                />
+                ,
+                <ServiceItem
+                  imgSrc={chatdoctor}
+                  title="Chat with Doctor"
+                  description="Connect with your doctor for instant advice through secure messaging. SOON"
+                />
+                ,
+              </div>
+            </div>
+          }
         </div>
-      }
-    </div>
       )}
     </div>
   );
 };
-

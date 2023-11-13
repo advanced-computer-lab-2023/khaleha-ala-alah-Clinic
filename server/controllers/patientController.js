@@ -359,7 +359,7 @@ exports.subscribeForFamilyMember = async function (req, res) {
     familyMember.doctorsDiscount = req.body.doctorsDiscount;
     familyMember.medicalDiscount = req.body.medicalDiscount;
     familyMember.familyDiscount = req.body.familyDiscount;
-    familyMember.selfSubscription = true;
+    familyMember.selfSubscription = false;
     familyMember.packageEndDate = new Date().setFullYear(
       new Date().getFullYear() + 1
     );

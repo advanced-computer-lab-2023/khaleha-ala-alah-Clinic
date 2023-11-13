@@ -92,13 +92,14 @@ const PackageDetails = () => {
                 : patient.familyDiscount}
               %
             </p>
-            <button
-              className="unsubscribe-button"
-              onClick={() => setShowConfirmationDialog(true)}
-            >
-              Unsubscribe
-            </button>
-
+            {patient.selfSubscription === false ? (
+              <button
+                className="unsubscribe-button"
+                onClick={() => setShowConfirmationDialog(true)}
+              >
+                Unsubscribe
+              </button>
+            ) : null}
             {showConfirmationDialog && (
               <ConfirmationDialog
                 message="Are you sure you want to unsubscribe?"
