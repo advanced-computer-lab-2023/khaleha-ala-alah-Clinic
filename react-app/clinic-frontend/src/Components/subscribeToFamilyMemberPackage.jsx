@@ -4,13 +4,15 @@ import "./packageCard.css"; // Assuming you have a CSS file for styling
 import { useLocation } from "react-router-dom";
 //import { set } from "mongoose";
 import LoadingPage from "./LoadingPage";
-
+import { useNavigate } from 'react-router-dom';
 const PackagesPage = () => {
   const [packages, setPackages] = useState([]);
   const [currentPatient, setCurrentPatient] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Add loading state
   const location = useLocation();
+  const navigate = useNavigate();
   const familyMember = location.state?.familyMember;
+
 
   useEffect(() => {
     // Define the function that fetches the packages
@@ -65,38 +67,11 @@ const PackagesPage = () => {
     medicalDiscount,
     doctorsDiscount,
     familyDiscount,
-    name
+    name,
+    price
   ) => {
-    const requestOptions = {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: "Bearer " + localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        medicalDiscount: medicalDiscount,
-        doctorsDiscount: doctorsDiscount,
-        familyDiscount: familyDiscount,
-        packageName: name,
-      }),
-    };
-    console.log(medicalDiscount, doctorsDiscount, familyDiscount, name);
-    console.log(familyMember);
-
-    try {
-      const response = await fetch(
-        `http://localhost:4000/patients/subscribeForFamilyMember?id=${familyMember.userID}`,
-        requestOptions
-      );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
-      console.log("Subscription successful:", data);
-      // Handle any post-subscription logic here
-    } catch (error) {
-      console.error("Failed to subscribe:", error);
-    }
+    navigate('/CheckoutFamilyMemberPaackage',{state:{familyMember : familyMember ,amount: price , MedicalDiscount : medicalDiscount , DoctorsDiscount:doctorsDiscount , 
+      FamilyDiscount:familyDiscount ,Name:name }})
   };
 
   return (
@@ -168,7 +143,8 @@ const PackagesPage = () => {
                       packageItem.medicalDiscount,
                       packageItem.doctorsDiscount,
                       packageItem.familyDiscount,
-                      packageItem.name
+                      packageItem.name,
+                      packageItem.price
                     ),
                 },
               ]}
