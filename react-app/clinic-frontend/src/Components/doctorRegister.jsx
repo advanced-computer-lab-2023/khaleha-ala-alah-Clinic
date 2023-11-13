@@ -47,6 +47,15 @@ export const DoctorRegister = () => {
       return;
     }
     const newSlot = { day: selectedDay, hour: selectedhour };
+    for (let i = 0; i < fixedSlots.length; i++) {
+      if (
+        fixedSlots[i].day === newSlot.day &&
+        fixedSlots[i].hour === newSlot.hour
+      ) {
+        message.error("This slot already exists");
+        return;
+      }
+    }
     setFixedSlots([...fixedSlots, newSlot]);
     setSelectedDay("");
     setSelectedhour("");
@@ -61,7 +70,6 @@ export const DoctorRegister = () => {
     const files = e.target.files;
     setSelectedFiles([...files]);
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -95,9 +103,9 @@ export const DoctorRegister = () => {
       formData.append("files", selectedFiles[i]);
     }
     console.log("FormData Content:");
-for (const [key, value] of formData.entries()) {
-  console.log(key, value);
-}
+    for (const [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
 
     await axios
       .post("http://localhost:4000/users/register", formData, {
@@ -227,8 +235,13 @@ for (const [key, value] of formData.entries()) {
                   className="select"
                 >
                   <option value="">Select day</option>
+                  <option value="Saturday">Saturday</option>
+                  <option value="Sunday">Sunday</option>
                   <option value="Monday">Monday</option>
                   <option value="Tuesday">Tuesday</option>
+                  <option value="Wednesday">Wednesday</option>
+                  <option value="Thursday">Thursday</option>
+                  <option value="Friday">Friday</option>
                   {/* Add more day options as needed */}
                 </select>
               </div>
@@ -246,6 +259,13 @@ for (const [key, value] of formData.entries()) {
                   <option value="">Select hour</option>
                   <option value="09:00 AM">09:00 AM</option>
                   <option value="10:00 AM">10:00 AM</option>
+                  <option value="11:00 AM">11:00 AM</option>
+                  <option value="12:00 PM">12:00 PM</option>
+                  <option value="01:00 PM">01:00 PM</option>
+                  <option value="02:00 PM">02:00 PM</option>
+                  <option value="03:00 PM">03:00 PM</option>
+                  <option value="04:00 PM">04:00 PM</option>
+
                   {/* Add more hour options as needed */}
                 </select>
               </div>
@@ -261,7 +281,9 @@ for (const [key, value] of formData.entries()) {
               <div className="fixed-slots">
                 {fixedSlots.map((slot, index) => (
                   <div key={index} className="fixed-slot">
-                    <span>{slot.day} - {slot.hour}</span>
+                    <span>
+                      {slot.day} - {slot.hour}
+                    </span>
                     <button
                       type="button"
                       className="remove-slot-button"
@@ -282,7 +304,7 @@ for (const [key, value] of formData.entries()) {
                   multiple // Allow multiple file selection
                   onChange={handleFileSelect}
                 />
-            </div>
+              </div>
             </div>
             <div className="button">
               <input type="submit" value="Register" />
