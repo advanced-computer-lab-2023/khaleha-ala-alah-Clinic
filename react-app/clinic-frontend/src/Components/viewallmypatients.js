@@ -65,6 +65,8 @@ const DoctorPatients = ({ doctorId }) => {
     fetchDoctorData();
   }, [doctorId]);
 
+  console.log(patients);
+
   const viewPatientDetails = (patient) => {
     let myPrescriptions = prescriptions.filter(
       (prescription) => prescription.PatientID === patient.userID
@@ -121,6 +123,19 @@ const DoctorPatients = ({ doctorId }) => {
             <br />
             <strong>Email:</strong> {patient.email}
             <br />
+            <strong>Health records:</strong>
+            <ul>
+              {patient.files.map((file, index) => (
+                <li key={index}>
+                  <a
+                    href={`http://localhost:4000/api/files/${file}/download`}
+                    download
+                  >
+                    {file}
+                  </a>
+                </li>
+              ))}
+            </ul>
             <button onClick={() => viewPatientDetails(patient)}>
               View Details
             </button>

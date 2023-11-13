@@ -10,6 +10,7 @@ import addfamilyimg from "../Images/addfmpatient.png";
 import viewdoctors from "../Images/viewdoctorpatient.png";
 import searchdoctor from "../Images/searchdoctor.png";
 import familymember from "../Images/fammember.png";
+import packages from "../Images/packages.png"
 import { useEffect } from "react";
 import axios from "axios";
 
@@ -150,6 +151,7 @@ export const PatientHome = () => {
                 }`}
                 onClick={() => handleButtonClick("ViewAllDoctors")}
               >
+                <img src={packages} alt="" />
                 Packages
               </Link>
               {/* You can add more buttons following the same pattern */}

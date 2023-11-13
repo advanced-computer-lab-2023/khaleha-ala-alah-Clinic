@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PackageCard from "../Elements/packageCard";
 import "../Elements/packageCard.css"; // Assuming you have a CSS file for styling
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const PackagesPage = () => {
   const navigate = useNavigate();
@@ -37,40 +37,12 @@ const PackagesPage = () => {
     name,
     price
   ) => {
-    navigate('/checkout', { state: { amount: price } });
-    const requestOptions = {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: "Bearer " + localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        medicalDiscount: medicalDiscount,
-        doctorsDiscount: doctorsDiscount,
-        familyDiscount: familyDiscount,
-        packageName: name,
-      }),
-    };
-    console.log(medicalDiscount, doctorsDiscount, familyDiscount, name);
-
-    try {
-      const response = await fetch(
-        "http://localhost:4000/patients/subscribeToPackage",
-        requestOptions
-      );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
-      console.log("Subscription successful:", data);
-      // Handle any post-subscription logic here
-    } catch (error) {
-      console.error("Failed to subscribe:", error);
-    }
+    navigate('/checkout', { state: { amount: price , MedicalDiscount : medicalDiscount , DoctorsDiscount:doctorsDiscount , 
+    FamilyDiscount:familyDiscount ,Name:name } });  
   };
 
   return (
-    <div className="AppPack">
+    <div className="AppPackages">
       {packages.map((packageItem) => (
         <PackageCard
           //key={packageItem.id} // Use a unique key for each child, like an ID

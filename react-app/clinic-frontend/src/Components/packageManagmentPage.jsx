@@ -3,6 +3,7 @@ import "./packageManagment.css"; // Your CSS file for styling
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import LoadingPage from "./LoadingPage";
 
 const formatDate = (dateString) => {
   const options = { day: "numeric", month: "long", year: "numeric" };
@@ -44,11 +45,13 @@ const ManagePackages = () => {
     getCurrentPatient();
   }, []);
   return (
-    <div className="manage-packages">
+    <>
       {isLoading ? (
-        <div>Loading... </div>
+        <div>
+          <LoadingPage />
+        </div>
       ) : (
-        <>
+        <div className="manage-packages">
           <h1 className="title">Manage Packages For</h1>
 
           <div className="card" onClick={() => navigateTo("/myselfPackages")}>
@@ -71,9 +74,9 @@ const ManagePackages = () => {
               packagesgpjfioghprehvpioerhverhogvheovheriohtvoiwhetois...
             </p>
           </div>
-        </>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 
