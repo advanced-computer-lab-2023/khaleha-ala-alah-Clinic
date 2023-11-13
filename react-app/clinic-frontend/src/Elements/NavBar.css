@@ -1,0 +1,60 @@
+.navbar {
+    background-color: #004350;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border: 2px solid #638593; /* Border color */
+    border-radius: 8px;
+  }
+  
+  .navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    height: 60px;
+  }
+  .navbar-logo {
+    text-align: center; /* Centers the logo in the div */
+    padding: 10px; /* Adds some space around the logo */
+    /* Add more styling as needed */
+}
+
+.navbar-logo img {
+    max-width: 150px; /* Adjusts the width of the logo */
+    max-height: 70px; /* Adjusts the height of the logo */
+    /* Add more styling as needed */
+}
+
+/* Responsive design: Adjust logo size for smaller screens */
+@media (max-width: 768px) {
+    .navbar-logo img {
+        max-width: 50px;
+        max-height: 25px;
+    }
+}
+  
+  .navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Space between items */
+  }
+  
+  .navbar-link {
+    text-decoration: none;
+    color: white; /* Adjust color as needed */
+    font-size: 18px; /* Adjust font size as needed */
+    cursor: pointer;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  
+  .navbar-link:hover {
+    text-decoration: underline;
+  }
+  
+  .navbar-right {
+    display: flex;
+    align-items: center;
+  }
+  
