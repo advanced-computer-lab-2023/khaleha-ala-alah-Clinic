@@ -42,7 +42,7 @@ import StripePaymentButtonFF from "./Components/CheckoutFamilyMemberPaackage"
 import AddFamilyMemberPage from "./Components/addFamilyMember.jsx";
 import AddFamilyEmail from "./Components/addFamilyMemberEmail.jsx";
 import AddFamilyMemberPhone from "./Components/addFamilyMemberPhone.jsx";
-
+import AppointmentCheckout from "./Components/appointmentCheckout"
 import "./App.css";
 
 
@@ -101,7 +101,7 @@ function App() {
               />
 
               <Route path="/CheckoutFamilyMemberPaackage" element={<StripePaymentButtonFF />} />  
-
+              <Route path="/appointmentCheckout" element={< AppointmentCheckout />} />  
               <Route
                 path="/addFamilyMemberUsingEmail"
                 element={<AddFamilyEmail />}
