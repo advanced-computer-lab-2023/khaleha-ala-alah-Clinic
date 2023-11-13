@@ -58,6 +58,7 @@ const StripePaymentButton = ({familyMember,amount ,medicalDiscount,doctorsDiscou
         }
         const data = await response.json();
         console.log("Subscription successful:", data);
+        navigate("/familyMemberPackages");
         // Handle any post-subscription logic here
       } catch (error) {
         console.error("Failed to subscribe:", error);
