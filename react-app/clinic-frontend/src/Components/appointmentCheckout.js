@@ -2,7 +2,7 @@ import React from 'react';
 import StripeCheckout from 'react-stripe-checkout';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-const StripePaymentButton = ({Date,Doctor}) => {
+const StripePaymentButton = () => {
   const navigate = useNavigate();
   const location = useLocation();
 //   const amount22 = location.state?.amount; 
