@@ -3,8 +3,10 @@ import "../Elements/NavBar.css"; // Link to the CSS file for styles
 import logopng from "../Images/logooo.png";
 import settingsIcon from "../Images/settings.png";
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const NavBar = () => {
+  const navigate = useNavigate();
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
   const toggleDropdown = () => {
@@ -14,6 +16,10 @@ const NavBar = () => {
   const handleLogout = () => {
     localStorage.clear();
     window.location.href = "/";
+  };
+
+  const handlePassword = () => {
+    navigate('/changePassword');
   };
 
   return (
@@ -37,6 +43,7 @@ const NavBar = () => {
           {dropdownVisible && (
             <div className="dropdown-menu">
               <button className="dropdown-item">My Account</button>
+              <button className="dropdown-item" onClick={handlePassword}>Change Password</button>
               <button className="dropdown-item" onClick={handleLogout}>Log Out</button>
             </div>
           )}

@@ -31,7 +31,7 @@ import Bookpage from "./Components/Book";
 import NotApproved from "./Components/notApproved";
 import PackagesManagment from "./Components/packageManagmentPage";
 import MyselfPackages from "./Components/myselfPackages";
-import FollowUpScheduler from "./Components/FollowUpScheduler.jsx";
+import FollowUpScheduler from './Components/FollowUpScheduler.jsx';
 import AvailableSlotsForm from "./Components/AvailableSlotsForm.jsx";
 import FamilyMemberPackages from "./Components/familyMembersPackages";
 import FamilyMemberDetails from "./Components/familyMemberDetails";
@@ -49,6 +49,8 @@ import HealthRecordForm from "./Components/HealthRecordForm";
 
 
 import "./App.css";
+import ChangePasswordForm from "./Components/changePassword.jsx";
+
 
 function App() {
   const { role } = useAuth();
@@ -121,6 +123,7 @@ function App() {
                 path="/addFamilyMember"
                 element={<AddFamilyMemberPage />}
               />
+              <Route path="/changePassword" element={<ChangePasswordForm />} />
             </>
           )}
 
@@ -145,6 +148,7 @@ function App() {
                 element={<HealthRecordForm />}
               />
               <Route path="/viewallmypatients" element={<DoctorPatients />} />
+              <Route path="/changePassword" element={<ChangePasswordForm />} />
               <Route
                 path="/follow-up-scheduler"
                 element={<FollowUpScheduler />}
@@ -164,6 +168,7 @@ function App() {
               />
               <Route path="/viewPendingDoctors" element={<PendingDoctors />} />
               <Route path="/packages" element={<HealthPackages />} />
+              <Route path="/changePassword" element={<ChangePasswordForm />} />
             </>
           )}
 

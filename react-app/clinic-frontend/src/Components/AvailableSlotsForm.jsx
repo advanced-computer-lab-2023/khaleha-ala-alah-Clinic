@@ -97,6 +97,16 @@ const AvailableSlotsForm = () => {
           </select>
         </label>
         <br />
+        <label>
+          Time:    
+          <input type="text" value={hours} onChange={handleHoursChange} pattern="[0-9]{0,2}" />:
+          <input type="text" value={minutes} onChange={handleMinutesChange} pattern="[0-9]{0,2}" />
+        </label>
+        <select value={period} onChange={handlePeriodChange}>
+          <option value="am">AM</option>
+          <option value="pm">PM</option>
+        </select>
+        <br />
         <button type="submit">Add Available Slots</button>
       </form>
       <p>{statusMessage}</p>
