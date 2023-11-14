@@ -31,21 +31,20 @@ import Bookpage from "./Components/Book";
 import NotApproved from "./Components/notApproved";
 import PackagesManagment from "./Components/packageManagmentPage";
 import MyselfPackages from "./Components/myselfPackages";
-import FollowUpScheduler from './Components/FollowUpScheduler.jsx';
+import FollowUpScheduler from "./Components/FollowUpScheduler.jsx";
+import AvailableSlotsForm from "./Components/AvailableSlotsForm.jsx";
 import FamilyMemberPackages from "./Components/familyMembersPackages";
 import FamilyMemberDetails from "./Components/familyMemberDetails";
 import SubscribeToFamilyMemberPackage from "./Components/subscribeToFamilyMemberPackage";
 import { useAuth } from "./AuthContext";
 import ContractPage from "./Components/Contract";
 import StripePaymentButton from "./Components/Checkout";
-import StripePaymentButtonFF from "./Components/CheckoutFamilyMemberPaackage"
+import StripePaymentButtonFF from "./Components/CheckoutFamilyMemberPaackage";
 import AddFamilyMemberPage from "./Components/addFamilyMember.jsx";
 import AddFamilyEmail from "./Components/addFamilyMemberEmail.jsx";
 import AddFamilyMemberPhone from "./Components/addFamilyMemberPhone.jsx";
-import AppointmentCheckout from "./Components/appointmentCheckout"
+import AppointmentCheckout from "./Components/appointmentCheckout";
 import "./App.css";
-
-
 
 function App() {
   const { role } = useAuth();
@@ -61,7 +60,6 @@ function App() {
         <Route path="/DoctorRegister" element={<DoctorRegister />} />
         <Route path="/resetPassword/:token" element={<ResetPassword />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
-        <Route path="/follow-up-scheduler" element={<FollowUpScheduler />} />
 
         {/* Redirect to login if no role is defined (user is not authenticated) */}
         {role === "" && <Route path="*" element={<Navigate to="/login" />} />}
@@ -93,15 +91,20 @@ function App() {
                 element={<FamilyMemberDetails />}
               />
               <Route path="/checkout" element={<StripePaymentButton />} />
-             
 
               <Route
                 path="/subscribeToFamilyMemberPackage"
                 element={<SubscribeToFamilyMemberPackage />}
               />
 
-              <Route path="/CheckoutFamilyMemberPaackage" element={<StripePaymentButtonFF />} />  
-              <Route path="/appointmentCheckout" element={< AppointmentCheckout />} />  
+              <Route
+                path="/CheckoutFamilyMemberPaackage"
+                element={<StripePaymentButtonFF />}
+              />
+              <Route
+                path="/appointmentCheckout"
+                element={<AppointmentCheckout />}
+              />
               <Route
                 path="/addFamilyMemberUsingEmail"
                 element={<AddFamilyEmail />}
@@ -134,6 +137,11 @@ function App() {
                 element={<PrescriptionsDoctors />}
               />
               <Route path="/viewallmypatients" element={<DoctorPatients />} />
+              <Route
+                path="/follow-up-scheduler"
+                element={<FollowUpScheduler />}
+              />
+              <Route path="/available-slots" element={<AvailableSlotsForm />} />
             </>
           )}
 
@@ -204,6 +212,11 @@ function App() {
               element={<PrescriptionsDoctors />}
             />
             <Route path="/viewallmypatients" element={<DoctorPatients />} />
+            <Route
+              path="/follow-up-scheduler"
+              element={<FollowUpScheduler />}
+            />
+            <Route path="/available-slots" element={<AvailableSlotsForm />} />
           </>
         )}
 
@@ -242,6 +255,11 @@ function App() {
                 element={<PrescriptionsDoctors />}
               />
               <Route path="/viewallmypatients" element={<DoctorPatients />} />
+              <Route
+                path="/follow-up-scheduler"
+                element={<FollowUpScheduler />}
+              />
+              <Route path="/available-slots" element={<AvailableSlotsForm />} />
             </>
           )}
 
