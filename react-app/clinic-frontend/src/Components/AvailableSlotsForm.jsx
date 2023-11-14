@@ -1,14 +1,12 @@
-// AvailableSlotsForm.jsx
-
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 
 const AvailableSlotsForm = () => {
-  const [day, setDay] = useState('');
-  const [hours, setHours] = useState('');
-  const [minutes, setMinutes] = useState('');
-  const [period, setPeriod] = useState('am'); // Default to 'am'
-  const [statusMessage, setStatusMessage] = useState('');
+  const [day, setDay] = useState("");
+  const [hours, setHours] = useState("");
+  const [minutes, setMinutes] = useState("");
+  const [period, setPeriod] = useState("am"); // Default to 'am'
+  const [statusMessage, setStatusMessage] = useState("");
 
   const handleDayChange = (e) => {
     setDay(e.target.value);
@@ -16,8 +14,6 @@ const AvailableSlotsForm = () => {
 
   const handleHoursChange = (e) => {
     const value = e.target.value;
-
-    // Use a regular expression to allow only two numeric characters
     if (/^[0-9]{0,2}$/.test(value)) {
       setHours(value);
     }
@@ -25,8 +21,6 @@ const AvailableSlotsForm = () => {
 
   const handleMinutesChange = (e) => {
     const value = e.target.value;
-
-    // Use a regular expression to allow only two numeric characters
     if (/^[0-9]{0,2}$/.test(value)) {
       setMinutes(value);
     }
@@ -39,19 +33,26 @@ const AvailableSlotsForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const formattedHour = `${hours}:${minutes.padStart(
+      2,
+      "0"
+    )} ${period.toUpperCase()}`;
+
     try {
       const response = await axios.patch(
-        'http://localhost:4000/doctors/addAvaliableSlots', 
-        { fixedSlots: [{ day, hour: `${hours}:${minutes} ${period}` }] },
+        "http://localhost:4000/doctors/addAvaliableSlots",
+        { fixedSlots: [{ day, hour: formattedHour }] },
+
         {
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
-
-      setStatusMessage(response.data.message);
+      //console.log(response.status);
+      console.log(response.data);
+      setStatusMessage("slot added successfully");
     } catch (error) {
       setStatusMessage(`Error adding available slots: ${error.message}`);
     }
@@ -72,6 +73,27 @@ const AvailableSlotsForm = () => {
             <option value="Friday">Friday</option>
             <option value="Saturday">Saturday</option>
             <option value="Sunday">Sunday</option>
+          </select>
+        </label>
+        <br />
+        <label>
+          Time:
+          <input
+            type="text"
+            value={hours}
+            onChange={handleHoursChange}
+            pattern="[0-9]{0,2}"
+          />
+          :
+          <input
+            type="text"
+            value={minutes}
+            onChange={handleMinutesChange}
+            pattern="[0-9]{0,2}"
+          />
+          <select value={period} onChange={handlePeriodChange}>
+            <option value="am">AM</option>
+            <option value="pm">PM</option>
           </select>
         </label>
         <br />

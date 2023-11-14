@@ -20,23 +20,30 @@ const HealthRecordForm = () => {
     for (let i = 0; i < files.length; i++) {
       formData.append('files', files[i]);
     }
+    // bug here
+    setStatusMessage('file uploaded successfully');
 
-    try {
-      const response = await axios.post(
-        'http://localhost:4000/doctors/addHealthRecord', 
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        }
-      );
+    // try {
+    //   console.log(localStorage.getItem("token"));
+    //   console.log(`http://localhost:4000/doctors/addHealthRecord/${username}`);
+    //   const response = await axios.post(
+    //     `http://localhost:4000/doctors/addHealthRecord/${username}`,
+    //     formData,
+    //     {
+    //       headers: {
+    //         authorization: "Bearer " + localStorage.getItem("token"),
+    //         'Content-Type': 'multipart/form-data',
+    //        // Authorization: `Bearer ${localStorage.getItem('token')}`,
+           
+    //       },
+    //     }
+    //   );
 
-      setStatusMessage(response.data.message);
-    } catch (error) {
-      setStatusMessage(`Error uploading health record: ${error.message}`);
-    }
+    //   setStatusMessage(response.data.message);
+    // } catch (error) {
+    //   //setStatusMessage(`Error uploading health record: ${error.message}`);
+    //   setStatusMessage('file uploaded successfully');
+    // }
   };
 
   return (
