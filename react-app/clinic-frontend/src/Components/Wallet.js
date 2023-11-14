@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Wallet = ({ userID }) => {
-    userID =  '652b512450d1b797fa0a42ef';
+    userID =  '651f027139c907c160a30acd';
   const [walletAmount, setWalletAmount] = useState(0);
    const [topUpAmount, setTopUpAmount] = useState('');
 

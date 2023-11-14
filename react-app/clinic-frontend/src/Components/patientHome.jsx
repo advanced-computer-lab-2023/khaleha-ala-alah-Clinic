@@ -26,6 +26,7 @@ import medicine from "../Images/BuyMedicine.jpg";
 
 import { useEffect } from "react";
 import axios from "axios";
+import Wallet from "./Wallet.js";
 
 export const PatientHome = () => {
   const logut = () => {
@@ -111,9 +112,11 @@ export const PatientHome = () => {
       {isLoading ? (
         <div>
           <LoadingPage />
+    
         </div>
       ) : (
         <div>
+            
           <NavBar />
           {
             <div className="all-containers">
@@ -130,6 +133,12 @@ export const PatientHome = () => {
                   title="Search For Doctors"
                   description="Discover doctors by specialty or name to find your ideal healthcare match"
                   navigateTo="/searchDoctors"
+                />
+                 <ServiceItem
+                  
+                  title="wallet"
+                  description="check your wallet"
+                  navigateTo="/wallet"
                 />
                 ,
                 <ServiceItem
