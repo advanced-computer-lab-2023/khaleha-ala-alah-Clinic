@@ -122,7 +122,7 @@ const StripePaymentButton = ({familyMember,amount ,medicalDiscount,doctorsDiscou
       stripeKey="pk_test_51LYdhJF0BL68bZ9bNouUaO2Cutn6GjQUDsc7Q1JQRXRAZd4mSRqV3d5G3On4SlM44iWnXlorkDELEGGVF7nBgGpX00buYL644E"
     />
         <button onClick={() => handlePayment("651f027139c907c160a30acd",(amount*100))}>
-        Pay with Card
+        Pay with wallet
       </button>
     </div>
     

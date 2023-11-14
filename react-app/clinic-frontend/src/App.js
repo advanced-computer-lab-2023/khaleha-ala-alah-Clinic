@@ -71,6 +71,7 @@ function App() {
         <Route path="/PatientRegister" element={<PatientRegister />} />
         <Route path="/DoctorRegister" element={<DoctorRegister />} />
         <Route path="/resetPassword/:token" element={<ResetPassword />} />
+          <Route path="/CheckoutFamilyMemberPaackage" element={<StripePaymentButtonFF />} />  
            <Route path="/wallet" element={<Wallet />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
 
@@ -114,7 +115,7 @@ function App() {
               />
 
 
-              <Route path="/CheckoutFamilyMemberPaackage" element={<StripePaymentButtonFF />} />  
+            
               <Route path="/appointmentCheckout" element={< PaymentMethod />} />  
 
               {/* <Route
