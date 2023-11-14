@@ -45,6 +45,12 @@ import AddFamilyEmail from "./Components/addFamilyMemberEmail.jsx";
 import AddFamilyMemberPhone from "./Components/addFamilyMemberPhone.jsx";
 
 import AppointmentCheckout from "./Components/appointmentCheckout"
+import "./App.css";
+import Wallet from './Components/Wallet.js'
+import PaymentMethod from "./Components/choose-to-pay.js";
+
+
+import AppointmentCheckout from "./Components/appointmentCheckout"
 import HealthRecordForm from "./Components/HealthRecordForm";
 
 
@@ -60,11 +66,12 @@ function App() {
         {/* public routes */}
 
         <Route path="/login" element={<Login />} />
-
+     <Route path="/paymentMethod" element={<PaymentMethod />} />
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/PatientRegister" element={<PatientRegister />} />
         <Route path="/DoctorRegister" element={<DoctorRegister />} />
         <Route path="/resetPassword/:token" element={<ResetPassword />} />
+           <Route path="/wallet" element={<Wallet />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
 
         {/* Redirect to login if no role is defined (user is not authenticated) */}
@@ -75,12 +82,15 @@ function App() {
           {/* patient routes */}
           {role === "patient" && (
             <>
+            
               <Route path="/patientHome" element={<PatientHome />} />
               <Route path="/familyMembers" element={<FamilyMembers />} />
               <Route
                 path="/registerFamilyMember"
                 element={<RegisterFamilymember />}
               />
+                  
+                   <Route path="/appointment-book" element={<AppointmentCheckout />} />
               <Route path="/appointments" element={<Appointments />} />
               <Route path="/prescriptions" element={<Prescriptions />} />
               <Route path="/searchDoctors" element={<DoctorSearch />} />
@@ -103,14 +113,15 @@ function App() {
                 element={<SubscribeToFamilyMemberPackage />}
               />
 
-              <Route
-                path="/CheckoutFamilyMemberPaackage"
-                element={<StripePaymentButtonFF />}
-              />
-              <Route
+
+              <Route path="/CheckoutFamilyMemberPaackage" element={<StripePaymentButtonFF />} />  
+              <Route path="/appointmentCheckout" element={< PaymentMethod />} />  
+
+              {/* <Route
                 path="/appointmentCheckout"
                 element={<AppointmentCheckout />}
-              />
+              /> */}
+
               <Route
                 path="/addFamilyMemberUsingEmail"
                 element={<AddFamilyEmail />}
