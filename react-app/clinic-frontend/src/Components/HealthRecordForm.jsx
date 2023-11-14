@@ -22,13 +22,16 @@ const HealthRecordForm = () => {
     }
 
     try {
+      console.log(localStorage.getItem("token"));
       const response = await axios.post(
         'http://localhost:4000/doctors/addHealthRecord', 
         formData,
         {
           headers: {
+            authorization: "Bearer " + localStorage.getItem("token"),
             'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+           // Authorization: `Bearer ${localStorage.getItem('token')}`,
+           
           },
         }
       );

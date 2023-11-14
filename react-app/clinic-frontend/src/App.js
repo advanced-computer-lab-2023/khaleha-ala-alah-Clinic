@@ -43,6 +43,7 @@ import AddFamilyMemberPage from "./Components/addFamilyMember.jsx";
 import AddFamilyEmail from "./Components/addFamilyMemberEmail.jsx";
 import AddFamilyMemberPhone from "./Components/addFamilyMemberPhone.jsx";
 import AppointmentCheckout from "./Components/appointmentCheckout"
+import HealthRecordForm from "./Components/HealthRecordForm";
 import "./App.css";
 
 
@@ -132,6 +133,10 @@ function App() {
               <Route
                 path="/patientdoctorhealth"
                 element={<PrescriptionsDoctors />}
+              />
+              <Route
+                path="/HealthRecordForm"
+                element={<HealthRecordForm />}
               />
               <Route path="/viewallmypatients" element={<DoctorPatients />} />
             </>
