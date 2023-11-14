@@ -14,6 +14,7 @@ function Appointments() {
   const [dateFilter, setDateFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [loading, setLoading] = useState(true); // Add loading state
+  const [patientFamilyMember, setPatientFamilyMember] = useState([]);
 
   const getDoctorName = (appointment) => {
     const doctor = doctors.find(
