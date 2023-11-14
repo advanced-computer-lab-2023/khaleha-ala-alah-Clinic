@@ -10,6 +10,75 @@ const Prescriptions = require("./../models/presecriptionsModel.js");
 
 // get all patients
 
+
+const Wallet = require('../models/wallet');
+exports.getAmountInWallet = async (req, res) => {
+  try {
+    const userID = req.params.userID.trim(); 
+  
+    const userWallet = await Wallet.findOne({ userID });
+
+    if (userWallet) {
+      // Retrieve the current amount in the wallet
+      const amountInWallet = userWallet.amount;
+
+      // Send the amount in the wallet as a response
+      res.json({ success: true, amountInWallet });
+    } else {
+      // Send an error response if user wallet not found
+      res.status(404).json({ success: false, message: 'User wallet not found' });
+    }
+  } catch (error) {
+    // Send an error response
+    res.status(500).json({ success: false, message: 'Error retrieving amount from wallet', error: error.message });
+  }
+};
+// Function to add amount to the wallet or create a new wallet if not available
+exports.addAmountToWallet = async (req, res) => {
+  try {
+    const { userID, amount } = req.body;
+    let userWallet = await Wallet.findOne({ userID });
+
+    if (!userWallet) {
+      // User wallet not found, create a new wallet
+      userWallet = new Wallet({ userID });
+    }
+
+    // Add amount to the wallet
+    await userWallet.addAmount(amount);
+
+    // Send a success response
+    res.json({ success: true, message: 'Amount added to wallet successfully' });
+  } catch (error) {
+    // Send an error response
+    res.status(500).json({ success: false, message: 'Error adding amount to wallet', error: error.message });
+  }
+};
+
+// Function to remove amount from the wallet
+exports.removeAmountFromWallet = async (req, res) => {
+  try {
+    const { userID, amount } = req.body;
+    const userWallet = await Wallet.findOne({ userID });
+
+    if (userWallet) {
+      // Attempt to remove amount (throws error if insufficient funds)
+      await userWallet.removeAmount(amount);
+
+      // Send a success response
+      res.json({ success: true, message: 'Amount removed from wallet successfully' });
+    } else {
+      // Send an error response if user wallet not found
+      res.status(404).json({ success: false, message: 'User wallet not found' });
+    }
+  } catch (error) {
+    // Send an error response
+    res.status(500).json({ success: false, message: 'Error removing amount from wallet', error: error.message });
+  }
+};
+
+
+
 exports.getMyDoctors = async function (req, res) {
   try {
     const patient = req.user._id;

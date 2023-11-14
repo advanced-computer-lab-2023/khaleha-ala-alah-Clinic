@@ -13,6 +13,9 @@ router
   .get(CheckAuth, patientController.getAllPatients)
   .post(patientController.createPatient);
 
+router.post('/add-amount-Wallet',patientController.addAmountToWallet);
+router.post('/remove-from-wallet',patientController.removeAmountFromWallet);
+router.get('/amount-wallet/:userID', patientController.getAmountInWallet);
 
 router.post('/save-stripe-token', CheckAuth,payForPackage);
 

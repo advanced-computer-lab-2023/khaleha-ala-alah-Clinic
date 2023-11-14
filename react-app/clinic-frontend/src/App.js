@@ -50,7 +50,7 @@ import Wallet from './Components/Wallet.js'
 import PaymentMethod from "./Components/choose-to-pay.js";
 
 
-import AppointmentCheckout from "./Components/appointmentCheckout"
+
 import HealthRecordForm from "./Components/HealthRecordForm";
 
 
