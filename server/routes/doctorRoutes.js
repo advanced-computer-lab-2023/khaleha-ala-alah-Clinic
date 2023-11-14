@@ -8,7 +8,8 @@ router.get("/", CheckAuth,doctorControllers.getAppointmentsPatients);
 router.get("/appointments", CheckAuth,doctorControllers.getAppointments);
 router.patch('/addAvaliableSlots', CheckAuth,doctorControllers.addAvaliableSlots);
 router.post("/scheduleFollowUpPatient/:patientID/:selectedDateTime", CheckAuth,doctorControllers.scheduleFollowUpWithPatients);
-router.post("/addHealthRecord",CheckAuth,upload.array("files",3),doctorControllers.addNewHealthRecordForPatient);
+router.post("/addHealthRecord/:username",CheckAuth,doctorControllers.addNewHealthRecordForPatient);
+// upload.array("files",1)
 router.get("/Alldoctors", CheckAuth,doctorControllers.getAllDoctors); // Changed to GET
 router.patch("/update-email", CheckAuth,doctorControllers.updateDoctorEmail);
 router.get("/getPatients", CheckAuth,doctorControllers.getPatientsByDoctorId);
