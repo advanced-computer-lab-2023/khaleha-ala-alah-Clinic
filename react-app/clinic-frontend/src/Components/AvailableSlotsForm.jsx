@@ -4,20 +4,45 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const AvailableSlotsForm = () => {
-  const [slots, setSlots] = useState('');
+  const [day, setDay] = useState('');
+  const [hours, setHours] = useState('');
+  const [minutes, setMinutes] = useState('');
+  const [period, setPeriod] = useState('am'); // Default to 'am'
   const [statusMessage, setStatusMessage] = useState('');
 
-  const handleSlotsChange = (e) => {
-    setSlots(e.target.value);
+  const handleDayChange = (e) => {
+    setDay(e.target.value);
+  };
+
+  const handleHoursChange = (e) => {
+    const value = e.target.value;
+
+    // Use a regular expression to allow only two numeric characters
+    if (/^[0-9]{0,2}$/.test(value)) {
+      setHours(value);
+    }
+  };
+
+  const handleMinutesChange = (e) => {
+    const value = e.target.value;
+
+    // Use a regular expression to allow only two numeric characters
+    if (/^[0-9]{0,2}$/.test(value)) {
+      setMinutes(value);
+    }
+  };
+
+  const handlePeriodChange = (e) => {
+    setPeriod(e.target.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
+      const response = await axios.patch(
         'http://localhost:4000/doctors/addAvaliableSlots', 
-        { fixedSlots: JSON.parse(slots) },
+        { fixedSlots: [{ day, hour: `${hours}:${minutes} ${period}` }] },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -37,9 +62,28 @@ const AvailableSlotsForm = () => {
       <h1>Available Slots Form</h1>
       <form onSubmit={handleSubmit}>
         <label>
-          Available Slots:    
-          <textarea value={slots} onChange={handleSlotsChange} />
+          Day:
+          <select value={day} onChange={handleDayChange}>
+            <option value="">Select a day</option>
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
+            <option value="Sunday">Sunday</option>
+          </select>
         </label>
+        <br />
+        <label>
+          Time:    
+          <input type="text" value={hours} onChange={handleHoursChange} pattern="[0-9]{0,2}" />:
+          <input type="text" value={minutes} onChange={handleMinutesChange} pattern="[0-9]{0,2}" />
+        </label>
+        <select value={period} onChange={handlePeriodChange}>
+          <option value="am">AM</option>
+          <option value="pm">PM</option>
+        </select>
         <br />
         <button type="submit">Add Available Slots</button>
       </form>

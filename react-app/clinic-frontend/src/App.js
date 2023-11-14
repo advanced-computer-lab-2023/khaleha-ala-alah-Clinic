@@ -32,6 +32,7 @@ import NotApproved from "./Components/notApproved";
 import PackagesManagment from "./Components/packageManagmentPage";
 import MyselfPackages from "./Components/myselfPackages";
 import FollowUpScheduler from './Components/FollowUpScheduler.jsx';
+import AvailableSlotsForm from "./Components/AvailableSlotsForm.jsx";
 import FamilyMemberPackages from "./Components/familyMembersPackages";
 import FamilyMemberDetails from "./Components/familyMemberDetails";
 import SubscribeToFamilyMemberPackage from "./Components/subscribeToFamilyMemberPackage";
@@ -44,7 +45,7 @@ import AddFamilyEmail from "./Components/addFamilyMemberEmail.jsx";
 import AddFamilyMemberPhone from "./Components/addFamilyMemberPhone.jsx";
 import AppointmentCheckout from "./Components/appointmentCheckout"
 import "./App.css";
-
+import ChangePasswordForm from "./Components/changePassword.jsx";
 
 
 function App() {
@@ -61,7 +62,7 @@ function App() {
         <Route path="/DoctorRegister" element={<DoctorRegister />} />
         <Route path="/resetPassword/:token" element={<ResetPassword />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
-        <Route path="/follow-up-scheduler" element={<FollowUpScheduler />} />
+        
 
         {/* Redirect to login if no role is defined (user is not authenticated) */}
         {role === "" && <Route path="*" element={<Navigate to="/login" />} />}
@@ -114,6 +115,7 @@ function App() {
                 path="/addFamilyMember"
                 element={<AddFamilyMemberPage />}
               />
+              <Route path="/changePassword" element={<ChangePasswordForm />} />
             </>
           )}
 
@@ -134,6 +136,9 @@ function App() {
                 element={<PrescriptionsDoctors />}
               />
               <Route path="/viewallmypatients" element={<DoctorPatients />} />
+              <Route path="/follow-up-scheduler" element={<FollowUpScheduler />} />
+              <Route path="/AvailableSlotsForm" element={<AvailableSlotsForm />} />
+              <Route path="/changePassword" element={<ChangePasswordForm />} />
             </>
           )}
 
@@ -148,6 +153,7 @@ function App() {
               />
               <Route path="/viewPendingDoctors" element={<PendingDoctors />} />
               <Route path="/packages" element={<HealthPackages />} />
+              <Route path="/changePassword" element={<ChangePasswordForm />} />
             </>
           )}
 
