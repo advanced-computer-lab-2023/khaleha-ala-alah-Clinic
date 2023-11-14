@@ -2,6 +2,12 @@ const Admin = require("../models/users/adminModel");
 const Patient = require("../models/users/patientModel"); // Replace with the appropriate model
 const Doctor = require("../models/users/doctorModel");
 const User = require("../models/users/user");
+const bcrypt = require("bcrypt");
+const Grid = require("gridfs-stream");
+const mongoose = require("mongoose");
+const { sendEmail } = require("../utilities/emails");
+const user = require("../models/users/user");
+
 exports.getAllAdmins = async function (req, res) {
   try {
     const admins = await Admin.find();
@@ -19,37 +25,42 @@ exports.getAllAdmins = async function (req, res) {
     });
   }
 };
-// Create a new admin
 
+// Create a new admin
 exports.addAdmin = async (req, res) => {
   try {
     const { username, password } = req.body;
-    console.log(username, password);
 
-    // Create a new admin user with the provided data
-    const newAdmin = await Admin.create({
-      username,
-      password,
-    });
-
-    // Create a new user record with the role "admin" and email set to username@gmail.com
-    const newUser = await User.create({
-      username,
-      password,
+    if (!username || !password) {
+      return res.status(400).json({ error: "Enter all fields." });
+    }
+    //check if user exists
+    let user = await User.findOne({ username: username });
+    if (user) {
+      return res.status(400).json({ error: "Username already exists." });
+    }
+    //hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    //create user
+    user = new User({
+      username: username,
+      password: hashedPassword,
       role: "admin",
-      email: `${username}@gmail.com`, // Set the email as username@gmail.com
-      name: username, // Set the name to the username
+      name: username,
+      verified: true,
     });
-
-    res.status(201).json({
-      status: "success",
-      data: { newAdmin: newAdmin },
+    await user.save();
+    //create admin
+    const admin = new Admin({
+      username: username,
+      userID: user._id,
     });
+    await admin.save();
+    return res.status(200).json({ message: "Admin created successfully." });
   } catch (err) {
-    res.status(400).json({
-      status: "fail",
-      message: err.message,
-    });
+    console.log(err);
+    return res.status(500).json({ error: "Internal server error." });
   }
 };
 
@@ -134,6 +145,19 @@ exports.approveDoctor = async (req, res) => {
     if (!doctor) {
       return res.status(404).json({ error: "Doctor not found." });
     }
+    //delete from gfs if rejected
+    if (type === "reject") {
+      gfs = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+        bucketName: "uploads",
+      });
+      const files = doctor.files;
+      files.forEach(async (file) => {
+        await gfs.delete(file);
+      });
+    }
+    const email = doctor.email;
+
+    //update status
     type === "approve"
       ? (doctor.status = "accepted")
       : (doctor.status = "rejected");
@@ -144,26 +168,74 @@ exports.approveDoctor = async (req, res) => {
       ? (doctor.doctorApproved = true)
       : (doctor.doctorApproved = false);
     await doctor.save();
-    return res.status(200).json({ message: `Doctor approved successfully.` });
+
+    //send email
+    const subject = type === "approve" ? "Doctor Approved" : "Doctor Rejected";
+    const html =
+      type === "approve"
+        ? "<h1>Congratulations! Your account has been approved.</h1>"
+        : "<h1>Sorry! Your account has been rejected.</h1>";
+    sendEmail(email, subject, html);
+
+    if (type === "approve") {
+      return res.status(200).json({ message: "Doctor approved successfully." });
+    } else {
+      //delete from user and doctor
+      await user.deleteOne({ username: username });
+      await Doctor.deleteOne({ username: username });
+      return res.status(200).json({ message: "Doctor rejected successfully." });
+    }
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: "Internal server error." });
   }
 };
-
+//view pending doctors
 exports.getPendingDoctors = async (req, res) => {
   try {
     const pendingDoctors = await Doctor.find({ status: "pending" });
+    const conn = mongoose.connection;
+    const gfs = new mongoose.mongo.GridFSBucket(conn.db, {
+      bucketName: "uploads",
+    });
+
+    const doctors = await Promise.all(
+      pendingDoctors.map(async (doctor) => {
+        const downloadLinks = await Promise.all(
+          doctor.files.map(async (file) => {
+            const attachment = await gfs.find({ _id: file }).toArray();
+            if (attachment.length > 0) {
+              const downloadLink = attachment[0].filename;
+              return downloadLink;
+            }
+            return null;
+          })
+        );
+
+        return {
+          username: doctor.username,
+          name: doctor.name,
+          birthdate: doctor.birthdate,
+          affiliation: doctor.affiliation,
+          educationalBackground: doctor.educationalBackground,
+          speciality: doctor.speciality,
+          files: downloadLinks.filter((link) => link !== null),
+        };
+      })
+    );
+
     res.status(200).json({
       status: "success",
       results: pendingDoctors.length,
       data: {
-        pendingDoctors,
+        pendingDoctors: doctors,
       },
     });
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       status: "error",
-      message: "NO PENDING DOCTORS",
+      message: "Error retrieving pending doctors",
     });
   }
 };

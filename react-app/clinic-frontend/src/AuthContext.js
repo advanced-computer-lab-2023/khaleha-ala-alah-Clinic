@@ -22,7 +22,13 @@ export const AuthProvider = ({ children }) => {
             });
             setRole(res.data.role);
           } catch (error) {
-            setRole("");
+            if(error.response.data.error === "User not verified yet"){
+              setRole("notVerified");
+            }else if(error.response.data.error === "Doctor not approved yet"){
+              setRole("notApproved");
+            }else{
+              setRole("");
+            }
           }
         } else {
           setRole("");

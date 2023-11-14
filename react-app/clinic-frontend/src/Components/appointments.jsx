@@ -1,4 +1,10 @@
 import React, { useState, useEffect } from "react";
+import PackageCard from "../Elements/packageCard.jsx";
+import "./appointments.css";
+import DataTable from "../Elements/DataTable.jsx";
+import "../Elements/DataTable.css";
+import LoadingPage from "./LoadingPage.jsx";
+
 const backendUrl = "http://localhost:4000";
 
 function Appointments() {
@@ -7,6 +13,43 @@ function Appointments() {
   const [doctors, setDoctors] = useState([]);
   const [dateFilter, setDateFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [loading, setLoading] = useState(true); // Add loading state
+  const [patientFamilyMember, setPatientFamilyMember] = useState([]);
+
+  const getDoctorName = (appointment) => {
+    const doctor = doctors.find(
+      (doctor) => doctor.userID === appointment.DoctorID
+    );
+    return doctor ? doctor.name : "N/A";
+  };
+  const getDoctorSpeciality = (appointment) => {
+    const doctor = doctors.find(
+      (doctor) => doctor.userID === appointment.DoctorID
+    );
+    return doctor ? doctor.speciality : "N/A";
+  };
+  const getDoctorEmail = (appointment) => {
+    const doctor = doctors.find(
+      (doctor) => doctor.userID === appointment.DoctorID
+    );
+    return doctor ? doctor.email : "N/A";
+  };
+
+  const appointmentsforPatient = filteredAppointments.map(
+    (appointment, index) => ({
+      date: new Date(appointment.timedAt).toDateString(),
+      doctor: getDoctorName(appointment),
+      speciality: getDoctorSpeciality(appointment),
+      email: getDoctorEmail(appointment),
+    })
+  );
+
+  const appointmentsColumns = [
+    { key: "date", title: "Date" },
+    { key: "doctor", title: "Doctor" },
+    { key: "speciality", title: "Doctor's Speciality" },
+    { key: "email", title: "Doctor's Email" },
+  ];
 
   useEffect(() => {
     // Fetch data when the component mounts
@@ -15,30 +58,41 @@ function Appointments() {
 
   const fetchAppointments = () => {
     // Fetch appointments data
-    const requestOptions = {
-      method: 'GET',
+    fetch(`${backendUrl}/patients/getappointments`, {
       headers: {
-        "authorization": "Bearer " + localStorage.getItem("token")
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json", // Specify the content type if needed
       },
-    };
-
-    fetch(`${backendUrl}/patients/getAppointments`, requestOptions)
+    })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data.appointments);
         // Handle the retrieved data here
         setAppointments(data.appointments);
         setFilteredAppointments(data.appointments);
 
         // Fetch doctors data
-        fetch(`${backendUrl}/patients/patientdoctors`, requestOptions)
+        fetch(`${backendUrl}/patients/patientdoctors`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json", // Specify the content type if needed
+          },
+        })
           .then((response) => response.json())
           .then((data) => {
             // Handle the retrieved data here
             setDoctors(data.doctors);
+
+            // Set loading to false once both appointments and doctors data are fetched
+            setLoading(false);
           })
           .catch((error) => console.error("Error fetching doctors:", error));
       })
-      .catch((error) => console.error("Error fetching appointments:", error));
+      .catch((error) => {
+        console.error("Error fetching appointments:", error);
+        // Set loading to false in case of an error
+        setLoading(false);
+      });
   };
 
   // Define the filterAppointments function to apply filters
@@ -48,18 +102,30 @@ function Appointments() {
         .toISOString()
         .split("T")[0]; // Convert to 'YYYY-MM-DD'
 
+      const dateNow = new Date(Date.now()).toISOString().split("T")[0];
+
       // Check if the appointment date matches the date filter
       const dateFilterPassed =
         dateFilter === "" || formattedAppointmentDate === dateFilter;
 
+      console.log(
+        appointment.timedAt,
+        new Date(Date.now()).toISOString().split("T")[0]
+      );
+      console.log(
+        appointment.timedAt > new Date(Date.now()).toISOString().split("T")[0]
+      );
       let status = "confirmed";
-      if (appointment.timedAt > Date.now()) {
+      if (appointment.timedAt > dateNow) {
         status = "pending";
       }
 
       // Check if the appointment status matches the status filter
       const statusFilterPassed =
-        statusFilter === "all" || status === statusFilter;
+        statusFilter === "all" ||
+        status === statusFilter ||
+        (statusFilter === "rescheduled" && appointment.isRescheduled) ||
+        (statusFilter === "cancelled" && appointment.isCancelled);
 
       return dateFilterPassed && statusFilterPassed;
     });
@@ -88,27 +154,24 @@ function Appointments() {
         <option value="all">All</option>
         <option value="confirmed">Finished</option>
         <option value="pending">Pending</option>
+        <option value="rescheduled">Rescheduled</option>
+        <option value="cancelled">Cancelled</option>
       </select>
 
       <button onClick={filterAppointments}>Filter</button>
 
-      <ul id="appointmentsList">
-        {filteredAppointments.map((appointment, index) => (
-          <li key={index}>
-            {
-              <div>
-                <p>Date: {new Date(appointment.timedAt).toDateString()}</p>
-                <p>Name: {doctors[index] ? doctors[index].name : "N/A"}</p>
-                <p>
-                  Speciality:
-                  {doctors[index] ? doctors[index].speciality : "N/A"}{" "}
-                </p>
-                <p>Email:{doctors[index] ? doctors[index].email : "N/A"} </p>
-              </div>
-            }
-          </li>
-        ))}
-      </ul>
+      <div className="ApppointmentsShownPack">
+        {loading ? (
+          <LoadingPage />
+        ) : (
+          <div className="AppointmentsTable" style={{ width: 92 + "vw" }}>
+            <DataTable
+              data={appointmentsforPatient}
+              columns={appointmentsColumns}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
