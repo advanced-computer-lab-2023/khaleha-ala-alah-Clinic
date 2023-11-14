@@ -106,7 +106,7 @@ function App() {
                 path="/familyMemberDetails"
                 element={<FamilyMemberDetails />}
               />
-              <Route path="/checkout" element={<StripePaymentButton />} />
+              <Route path="/checkout" element={<PaymentMethod />} />
 
               <Route
                 path="/subscribeToFamilyMemberPackage"

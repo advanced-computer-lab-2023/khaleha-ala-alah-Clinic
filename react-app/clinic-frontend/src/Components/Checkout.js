@@ -10,6 +10,41 @@ const StripePaymentButton = ({ amount ,medicalDiscount,doctorsDiscount,familyDis
   const  doctorsDiscount22 = location.state?.DoctorsDiscount;
   const familyDiscount22 = location.state?.FamilyDiscount;
   const name22 = location.state?.Name;
+   const REMOVE_FROM_WALLET_API = 'http://localhost:4000/patients/remove-from-wallet';
+  const handlePayment = async (userID, amount) => {
+    try {
+      // Assuming you have the userID and amount needed for the payment
+      const userIDParam = userID;
+      const amountParam = amount; // Replace with the actual amount to remove
+
+      // Make API call to remove amount from the wallet
+      const response = await fetch(REMOVE_FROM_WALLET_API, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userID: userIDParam,
+          amount: amountParam,
+        }),
+      });
+
+      const result = await response.json();
+
+      // Check if the API call was successful
+      if (response.ok) {
+        // Payment successful, show success alert or perform other actions
+        alert('Payment successful!');
+      } else {
+        // Payment failed, show error alert or handle accordingly
+        alert('Payment failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('An error occurred during payment:', error);
+      // Handle error (show error alert or perform other actions)
+      alert('An error occurred during payment. Please try again.');
+    }
+  };
   const onToken = (token) => {
     console.log(token);
     console.log('amounttt ++ ' + amount22);
@@ -71,7 +106,8 @@ const StripePaymentButton = ({ amount ,medicalDiscount,doctorsDiscount,familyDis
   };
 
   return (
-    <StripeCheckout
+    <div>
+ <StripeCheckout
       token={onToken}
       onClose={onCancel}
       name="Package Subscription"
@@ -79,6 +115,14 @@ const StripePaymentButton = ({ amount ,medicalDiscount,doctorsDiscount,familyDis
       amount={amount * 100} // Convert amount to cents
       stripeKey="pk_test_51LYdhJF0BL68bZ9bNouUaO2Cutn6GjQUDsc7Q1JQRXRAZd4mSRqV3d5G3On4SlM44iWnXlorkDELEGGVF7nBgGpX00buYL644E"
     />
+ 
+      <button onClick={() => handlePayment("651f027139c907c160a30acd",(amount*100))}>
+        Pay with Card
+      </button>
+    </div>
+   
+
+
   );
 };
 
