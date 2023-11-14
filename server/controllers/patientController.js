@@ -906,6 +906,7 @@ exports.SelectAppointmentPatient = async function (req, res) {
     const isAppointmentBooked = await Appointments.findOne({
       DoctorID: doctorID,
       timedAt: new Date(selectedDateTime),
+      isCancelled: false,
     });
 
     if (isAppointmentBooked) {

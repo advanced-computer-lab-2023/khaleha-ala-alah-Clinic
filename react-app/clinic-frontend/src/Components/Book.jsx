@@ -5,10 +5,13 @@ import AppointmentCard from "../Elements/AppointmentCard.jsx";
 import { useLocation } from "react-router-dom";
 import "../Elements/AppointmentCard.css";
 import LoadingPage from "./LoadingPage.jsx";
-
+import { useNavigate } from 'react-router-dom';
 const backendUrl = "http://localhost:4000";
 
+
+
 const Book = () => {
+  const navigate = useNavigate();
   const [availableAppointments, setAvailableAppointments] = useState([]);
   const [loading, setLoading] = useState(true); // Add a loading state for appointments
   const [isLoading, setIsLoading] = useState(true); // Add a loading state for CurrentPatient
@@ -44,6 +47,7 @@ const Book = () => {
           setLoading(false); // Set loading to false when data is retrieved
         });
     }
+    
 
     const fetchCurrentPatient = async () => {
       try {
@@ -75,6 +79,13 @@ const Book = () => {
     // Call the function
     fetchCurrentPatient();
   }, [selectedDoctor]);
+
+  const handleCheckout = async (
+    doctor,
+    date
+  ) => {
+    navigate('/appointmentCheckout',{state:{Doctor:doctor , Date: date}})
+  };
 
   return (
     <>
@@ -154,7 +165,15 @@ const Book = () => {
                       ]}
                       buttonsDetails={[
                         {
-                          text: "Book Now!",
+                          text: 'Book Now!',
+                          
+                          onClick: () =>
+                            
+                            handleCheckout(
+                            selectedDoctor,
+                            date
+                            ),
+                          
                           // Handle the click event for booking here
                           // You can add an event handler for booking appointments
                         },
