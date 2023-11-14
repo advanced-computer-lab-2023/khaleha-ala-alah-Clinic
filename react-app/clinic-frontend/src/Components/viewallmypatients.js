@@ -66,6 +66,9 @@ const DoctorPatients = ({ doctorId }) => {
   }, [doctorId]);
 
   console.log(patients);
+  const addHealthRecord = (patient) => {
+    navigate('/HealthRecordForm');
+  }
 
   const viewPatientDetails = (patient) => {
     let myPrescriptions = prescriptions.filter(
@@ -138,6 +141,9 @@ const DoctorPatients = ({ doctorId }) => {
             </ul>
             <button onClick={() => viewPatientDetails(patient)}>
               View Details
+            </button>
+            <button onClick={() => addHealthRecord(patient)}>
+              Add Record Health
             </button>
           </li>
         ))}

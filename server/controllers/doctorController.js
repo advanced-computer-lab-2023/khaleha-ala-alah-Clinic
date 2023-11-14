@@ -367,8 +367,12 @@ exports.scheduleFollowUpWithPatients = async function(req,res){
 }
 exports.addNewHealthRecordForPatient = async function(req,res){
   try{
+    console.log("hahahahahaah"+req.user);
+    console.log(req.body);
+    console.log(req.user._id);
+    console.log(req.params);
     const appointment = await Appointment.findOne({DoctorID : req.user._id});
-    const patient = await Patient.findOne({username: req.body.username});
+    const patient = await Patient.findOne({username: req.params.username});
   if(!patient){
     res.status(404).json({
       status: "fail",

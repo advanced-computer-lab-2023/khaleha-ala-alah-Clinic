@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../AuthContext";
 import "./patientRegister.css";
+import ContractComponent from "./Contract";
 
 export const DoctorRegister = () => {
   const { role } = useAuth();
@@ -21,6 +22,8 @@ export const DoctorRegister = () => {
   const [selectedhour, setSelectedhour] = useState("");
   const [fixedSlots, setFixedSlots] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [agreedToContract, setAgreedToContract] = useState(false); 
+  const [showContract, setShowContract] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,6 +44,9 @@ export const DoctorRegister = () => {
     }
   }, [role, navigate]);
 
+  const closeContract = () => {
+    setShowContract(false);
+  };
   const handleAddSlot = () => {
     if (!selectedDay || !selectedhour) {
       message.error("Please select a day and hour for the slot");
@@ -73,6 +79,10 @@ export const DoctorRegister = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!agreedToContract) {
+      message.error("Please agree to the contract before registering.");
+      return;
+    }
     if (
       !name ||
       !username ||
@@ -102,10 +112,7 @@ export const DoctorRegister = () => {
     for (let i = 0; i < selectedFiles.length; i++) {
       formData.append("files", selectedFiles[i]);
     }
-    console.log("FormData Content:");
-    for (const [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
+  
 
     await axios
       .post("http://localhost:4000/users/register", formData, {
@@ -310,6 +317,60 @@ export const DoctorRegister = () => {
               <input type="submit" value="Register" />
             </div>
           </form>
+          <div className="input-box">
+              <label>
+              <button onClick={() => setShowContract(!showContract)}>
+                View Contract
+              </button>
+                <input
+                  type="checkbox"
+                  checked={agreedToContract}
+                  onChange={() => {
+                    setAgreedToContract(!agreedToContract);
+                  }}
+                />
+                I agree to the terms of the contract
+              </label>
+              
+            </div>
+
+            { showContract && (
+              <div className="contract-container">
+                <h1 className="contract-title">Employment Contract</h1>
+                <pre className="contract-text">
+                  {`
+                    EMPLOYMENT CONTRACT AGREEMENT
+
+                    THIS EMPLOYMENT CONTRACT (the "Contract") is made and entered into by and between [Hospital Name], a [Type of Entity] ("Employer"), and [Employee Name] ("Employee") collectively referred to as the "Parties."
+
+                    1. POSITION AND RESPONSIBILITIES:
+                    1.1 Employee agrees to be employed as a [Position] and will perform the following responsibilities: [List of Responsibilities].
+                    1.2 Employee will report directly to [Supervisor's Name] and collaborate with other team members.
+
+                    2. SALARY AND BENEFITS:
+                    2.1 Employer agrees to pay Employee a monthly salary of $10,000, payable on the [Payment Schedule].
+                    2.2 Employee will be eligible for health benefits, retirement plans, and other benefits as outlined in the employee handbook.
+
+                    3. DURATION OF EMPLOYMENT:
+                    3.1 The term of this Contract shall commence on [Start Date] and continue for a period of 12 months, terminating on [End Date].
+                    3.2 Either party may terminate this Contract with a notice period of [Notice Period] days for any reason.
+
+                    ...
+
+                    10. ACCEPTANCE:
+                    10.1 Employee may accept or reject this Contract by clicking the respective buttons below.
+                    10.2 By accepting this Contract, Employee acknowledges understanding and agrees to abide by the terms and conditions outlined herein.
+                  `}
+                </pre>
+                <div className="button-container">
+                  <button className="close-button" onClick={closeContract}>
+                    close
+                  </button>
+                  
+                </div>
+              </div>
+            )}
+          
         </div>
         <Link to="/login">Already have an account</Link>
       </div>
