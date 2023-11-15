@@ -8,7 +8,7 @@ import LoadingPage from "./LoadingPage.jsx";
 import { useNavigate } from "react-router-dom";
 const backendUrl = "http://localhost:4000";
 
-const Book = () => {
+const   Book = () => {
   const navigate = useNavigate();
   const [availableAppointments, setAvailableAppointments] = useState([]);
   const [loading, setLoading] = useState(true); // Add a loading state for appointments
