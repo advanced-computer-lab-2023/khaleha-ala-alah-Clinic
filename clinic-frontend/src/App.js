@@ -53,7 +53,7 @@ import PaymentMethodSubscriptionFamily from "./Components/choose-to-pay-familyPa
 
 import HealthRecordForm from "./Components/HealthRecordForm";
 
-
+import DoctorWallet from "./Components/doctorWallet.js"
 import "./App.css";
 import ChangePasswordForm from "./Components/changePassword.jsx";
 
@@ -64,8 +64,9 @@ function App() {
     <div className="App">
       <Routes>
         {/* public routes */}
-
+ 
         <Route path="/login" element={<Login />} />
+    
      <Route path="/paymentMethod" element={<PaymentMethod />} />
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/PatientRegister" element={<PatientRegister />} />
@@ -143,6 +144,7 @@ function App() {
           {/* doctor routes */}
           {role === "doctor" && (
             <>
+             <Route path="/DoctorWallet" element={<DoctorWallet />} />
               <Route path="/doctorhome" element={<DoctorHome />} />
               <Route
                 path="/editDoctorProfile"

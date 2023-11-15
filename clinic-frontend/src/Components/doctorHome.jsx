@@ -81,6 +81,12 @@ export const DoctorHome = () => {
               description="Schedule a consultation with your patients anytime"
               navigateTo="/doctorAppointments"
             />
+                <ServiceItem
+             
+              title="wallet"
+              description="check your wallet"
+              navigateTo="/DoctorWallet"
+            />
             ,
             <ServiceItem
               imgSrc={healthrecord}

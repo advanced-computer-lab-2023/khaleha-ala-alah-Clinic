@@ -62,6 +62,7 @@ const REMOVE_FROM_WALLET_API = 'http://localhost:4000/patients/remove-from-walle
       //navigate("/appointment-book", { state: { Doctor, Date } });
       console.log("hello world" + doctor + Date);
       console.log(doctor);
+      
       navigate("/appointmentCheckout", {
       state: { Doctor: doctor, Date: date,selectedOption : selectedOption},
       });

@@ -22,10 +22,19 @@ const PaymentMethodSubscription = ({ amount ,medicalDiscount,doctorsDiscount,fam
 const REMOVE_FROM_WALLET_API = 'http://localhost:4000/patients/remove-from-wallet';
   const handlePayment = async (userID, amount) => {
     try {
+
       // Assuming you have the userID and amount needed for the payment
       const userIDParam = userID;
       const amountParam = amount; // Replace with the actual amount to remove
-
+ const response1= await fetch(
+          "http://localhost:4000/patients/subscribeToPackage",
+      
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        console.log("Subscription successful:", data);
       // Make API call to remove amount from the wallet
       const response = await fetch(REMOVE_FROM_WALLET_API, {
         method: 'POST',
@@ -61,6 +70,7 @@ const REMOVE_FROM_WALLET_API = 'http://localhost:4000/patients/remove-from-walle
       // Use the userID and amount from your state or another source
       const userID = "651f027139c907c160a30acd";
       const amount = 100;
+
       // Call the handlePayment function with the userID and amount
       handlePayment(userID, amount);
     } else if (paymentOption === "card") {
