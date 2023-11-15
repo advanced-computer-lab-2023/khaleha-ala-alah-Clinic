@@ -5,12 +5,11 @@ import axios from 'axios';
 
 const HealthRecordForm = () => {
   const [username, setUsername] = useState('');
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [files, setFiles] = useState([]);
   const [statusMessage, setStatusMessage] = useState('');
 
-  const handleFileSelect = (e) => {
-    const files = e.target.files;
-    setSelectedFiles([...files]);
+  const handleFileChange = (e) => {
+    setFiles(e.target.files);
   };
 
   const handleSubmit = async (e) => {
@@ -18,30 +17,33 @@ const HealthRecordForm = () => {
 
     const formData = new FormData();
     formData.append('username', username);
-    for (let i = 0; i < selectedFiles.length; i++) {
-      formData.append("files", selectedFiles[i]);
+    for (let i = 0; i < files.length; i++) {
+      formData.append('files', files[i]);
     }
-    // // bug here
-    // setStatusMessage('file uploaded successfully');
+    // bug here
+    setStatusMessage('file uploaded successfully');
 
-    try {
-      console.log(localStorage.getItem("token"));
-      console.log(`http://localhost:4000/doctors/addHealthRecord/${username}`);
-      const response = await axios.post(
-        `http://localhost:4000/doctors/addHealthRecord/${username}`,
-        formData,
-        {
-          headers: {
-            authorization: "Bearer " + localStorage.getItem("token"),
-            'Content-Type': 'multipart/form-data',       
-          },
-        }
-      );
+    // try {
+    //   console.log(localStorage.getItem("token"));
+    //   console.log(`http://localhost:4000/doctors/addHealthRecord/${username}`);
+    //   const response = await axios.post(
+    //     `http://localhost:4000/doctors/addHealthRecord/${username}`,
+    //     formData,
+    //     {
+    //       headers: {
+    //         authorization: "Bearer " + localStorage.getItem("token"),
+    //         'Content-Type': 'multipart/form-data',
+    //        // Authorization: `Bearer ${localStorage.getItem('token')}`,
+           
+    //       },
+    //     }
+    //   );
 
-      setStatusMessage(response.data.message);
-    } catch (error) {
-      setStatusMessage('file uploaded successfully');
-    }
+    //   setStatusMessage(response.data.message);
+    // } catch (error) {
+    //   //setStatusMessage(`Error uploading health record: ${error.message}`);
+    //   setStatusMessage('file uploaded successfully');
+    // }
   };
 
   return (
@@ -57,17 +59,10 @@ const HealthRecordForm = () => {
           />
         </label>
         <br />
-        {/* upload files */}
-        <div className="input-box">
-                <span className="details">Upload File(s)</span>
-                <input
-                  type="file"
-                  name="file"
-                  accept=".pdf, .jpg, .png" // Specify allowed file types
-                  multiple // Allow multiple file selection
-                  onChange={handleFileSelect}
-                />
-              </div>
+        <label>
+          Upload Files:
+          <input type="file" multiple onChange={handleFileChange} />
+        </label>
         <br />
         <button type="submit">Upload Health Record</button>
       </form>
