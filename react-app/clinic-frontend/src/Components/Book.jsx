@@ -113,10 +113,15 @@ const Book = () => {
     fetchCurrentPatient();
   }, [selectedDoctor]);
 
-  const handleCheckout = async (doctor, date) => {
-    navigate("/appointmentCheckout", {
-      state: { Doctor: doctor, Date: date, selectedOption: selectedOption },
-    });
+  const handleCheckout = async (Doctor, date) => {
+    console.log("hwhwhwhwh");
+    console.log(Doctor);
+    navigate('/choose-to-pay',{
+      state: { Doctor: Doctor, Date: date,selectedOption: selectedOption },
+    })
+    // navigate("/appointmentCheckout", {
+    //   state: { Doctor: doctor, Date: date, selectedOption: selectedOption },
+    // });
   };
 
   return (
@@ -216,7 +221,7 @@ const Book = () => {
                         {
                           text: "Book Now!",
 
-                          onClick: () => handleCheckout(selectedDoctor, date),
+                          onClick: () => handleCheckout(selectedDoctor, date,selectedOption),
 
                           // Handle the click event for booking here
                           // You can add an event handler for booking appointments

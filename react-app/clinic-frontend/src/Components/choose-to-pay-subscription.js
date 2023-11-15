@@ -3,16 +3,22 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const PaymentMethod = () => {
+const PaymentMethodSubscription = ({ amount ,medicalDiscount,doctorsDiscount,familyDiscount,name}) => {
   const navigate = useNavigate();
   const location = useLocation();
   //const { Doctor, Date } = location.state || {};
-  const doctor = location.state?.Doctor;
-  const date = location.state?.Date;
-  const amount22 = doctor.hourlyRate;
-  const selectedOption = location.state?.selectedOption;
-  console.log("selectedOption");
-  console.log(selectedOption);
+//   const doctor = location.state?.Doctor;
+//   const date = location.state?.Date;
+//   const amount22 = doctor.hourlyRate;
+//   const selectedOption = location.state?.selectedOption;
+//   console.log("selectedOption");
+//   console.log(selectedOption);
+  const amount22 = location.state?.amount; 
+  const medicalDiscount22 = location.state?.MedicalDiscount;
+  const  doctorsDiscount22 = location.state?.DoctorsDiscount;
+  const familyDiscount22 = location.state?.FamilyDiscount;
+  const name22 = location.state?.Name;
+
 const REMOVE_FROM_WALLET_API = 'http://localhost:4000/patients/remove-from-wallet';
   const handlePayment = async (userID, amount) => {
     try {
@@ -60,11 +66,10 @@ const REMOVE_FROM_WALLET_API = 'http://localhost:4000/patients/remove-from-walle
     } else if (paymentOption === "card") {
       // Navigate to card payment page with Doctor and Date values
       //navigate("/appointment-book", { state: { Doctor, Date } });
-      console.log("hello world" + doctor + Date);
-      console.log(doctor);
-      navigate("/appointmentCheckout", {
-      state: { Doctor: doctor, Date: date,selectedOption : selectedOption},
-      });
+    //   console.log("hello world" + doctor + Date);
+    //   console.log(doctor);
+      navigate('/checkout', { state: { amount: amount22 , MedicalDiscount : medicalDiscount22 , DoctorsDiscount:doctorsDiscount22 , 
+    FamilyDiscount:familyDiscount22 ,Name:name22 } });
     }
   };
 
@@ -81,4 +86,4 @@ const REMOVE_FROM_WALLET_API = 'http://localhost:4000/patients/remove-from-walle
   );
 };
 
-export default PaymentMethod;
+export default PaymentMethodSubscription;

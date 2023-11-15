@@ -13,9 +13,14 @@ const StripePaymentButton = () => {
   //   const name22 = location.state?.Name;
   //   const familyMember22 = location.state?.familyMember
   //   console.log(location);
+
   const doctor = location.state?.Doctor;
   const date = location.state?.Date;
   const selectedOption = location.state?.selectedOption;
+  console.log("docccccc");
+  console.log(doctor);
+  console.log("selectedAppointment");
+  console.log(selectedOption);
   const amount22 = doctor.hourlyRate;
   const onToken = (token) => {
     console.log(token);
@@ -60,6 +65,7 @@ const StripePaymentButton = () => {
             if (data.status == "success") {
               // Handle success (e.g., show a success message or redirect)
               console.log("Appointment booked successfully");
+              navigate('/patientHome');
             } else {
               console.error("Failed to book appointment");
             }

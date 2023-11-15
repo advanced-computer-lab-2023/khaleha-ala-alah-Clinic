@@ -2,10 +2,16 @@ import React, { useState, useEffect } from "react";
 import PackageCard from "../Elements/packageCard";
 import "../Elements/packageCard.css"; // Assuming you have a CSS file for styling
 import { useNavigate } from "react-router-dom";
-
+import { useLocation } from 'react-router-dom';
 const PackagesPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [packages, setPackages] = useState([]);
+  const amount22 = location.state?.amount; 
+  const medicalDiscount22 = location.state?.MedicalDiscount;
+  const  doctorsDiscount22 = location.state?.DoctorsDiscount;
+  const familyDiscount22 = location.state?.FamilyDiscount;
+  const name22 = location.state?.Name;
 
   useEffect(() => {
     // Define the function that fetches the packages
@@ -37,8 +43,10 @@ const PackagesPage = () => {
     name,
     price
   ) => {
-    navigate('/checkout', { state: { amount: price , MedicalDiscount : medicalDiscount , DoctorsDiscount:doctorsDiscount , 
-    FamilyDiscount:familyDiscount ,Name:name } });  
+    // navigate('/checkout', { state: { amount: price , MedicalDiscount : medicalDiscount , DoctorsDiscount:doctorsDiscount , 
+    // FamilyDiscount:familyDiscount ,Name:name } }); 
+    navigate('/choose-to-pay-subscription', { state: { amount: price , MedicalDiscount : medicalDiscount , DoctorsDiscount:doctorsDiscount , 
+      FamilyDiscount:familyDiscount ,Name:name } }); 
   };
 
   return (

@@ -38,6 +38,7 @@ import FamilyMemberDetails from "./Components/familyMemberDetails";
 import SubscribeToFamilyMemberPackage from "./Components/subscribeToFamilyMemberPackage";
 import { useAuth } from "./AuthContext";
 import ContractPage from "./Components/Contract";
+import PaymentMethodSubscription from "./Components/choose-to-pay-subscription"
 import StripePaymentButton from "./Components/Checkout";
 import StripePaymentButtonFF from "./Components/CheckoutFamilyMemberPaackage";
 import AddFamilyMemberPage from "./Components/addFamilyMember.jsx";
@@ -48,8 +49,7 @@ import AppointmentCheckout from "./Components/appointmentCheckout"
 import "./App.css";
 import Wallet from './Components/Wallet.js'
 import PaymentMethod from "./Components/choose-to-pay.js";
-
-
+import PaymentMethodSubscriptionFamily from "./Components/choose-to-pay-familyPackage"
 
 import HealthRecordForm from "./Components/HealthRecordForm";
 
@@ -112,15 +112,17 @@ function App() {
                 path="/subscribeToFamilyMemberPackage"
                 element={<SubscribeToFamilyMemberPackage />}
               />
+              
 
-
+              <Route path="/choose-to-pay-subscription" element={<PaymentMethodSubscription />} /> 
               <Route path="/CheckoutFamilyMemberPaackage" element={<StripePaymentButtonFF />} />  
-              <Route path="/appointmentCheckout" element={< PaymentMethod />} />  
-
-              {/* <Route
+              <Route path="/choose-to-pay" element={< PaymentMethod />} />  
+              
+              <Route path="/choose-to-pay-familyPackage" element={<PaymentMethodSubscriptionFamily />} />  
+              <Route
                 path="/appointmentCheckout"
                 element={<AppointmentCheckout />}
-              /> */}
+              />
 
               <Route
                 path="/addFamilyMemberUsingEmail"

@@ -70,8 +70,10 @@ const PackagesPage = () => {
     name,
     price
   ) => {
-    navigate('/CheckoutFamilyMemberPaackage',{state:{familyMember : familyMember ,amount: price , MedicalDiscount : medicalDiscount , DoctorsDiscount:doctorsDiscount , 
+    navigate('/choose-to-pay-familyPackage',{state:{familyMember : familyMember ,amount: price , MedicalDiscount : medicalDiscount , DoctorsDiscount:doctorsDiscount , 
       FamilyDiscount:familyDiscount ,Name:name }})
+    // navigate('/CheckoutFamilyMemberPaackage',{state:{familyMember : familyMember ,amount: price , MedicalDiscount : medicalDiscount , DoctorsDiscount:doctorsDiscount , 
+    //   FamilyDiscount:familyDiscount ,Name:name }})
   };
 
   return (
