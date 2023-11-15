@@ -346,7 +346,6 @@ exports.changePassword = async (req, res) => {
     return res.status(500).json({ error: "internal server error" });
   }
 };
-
 //forget password
 exports.forgotPassword = async (req, res) => {
   try {
