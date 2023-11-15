@@ -207,7 +207,7 @@ exports.registerUser = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
-
+//test
 // Login
 exports.login = async (req, res) => {
   try {
