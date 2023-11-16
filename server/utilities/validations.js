@@ -14,11 +14,19 @@ const validateEmail = (email) => {
 }
 
 const validatePassword = (password) => {
-    if (!password || password.length < 6) {
-        throw new Error('Password must be at least 6 characters long');
+    if (!password || password.length < 8) {
+        throw new Error('Password must be at least 8 characters long');
+    }
+    // Check if the password contains at least one capital letter
+    if (!/[A-Z]/.test(password)) {
+        throw new Error('Password must contain at least one capital letter');
+    }
+    // Check if the password contains at least one digit
+    if (!/\d/.test(password)) {
+        throw new Error('Password must contain at least one digit');
     }
     return password;
-}
+};
 const validateMobileNumber = (mobileNumber) => {
     if (!mobileNumber) {
         throw new Error('Mobile number must be at least 10 characters long');

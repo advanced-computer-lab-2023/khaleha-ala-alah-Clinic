@@ -324,7 +324,11 @@ exports.changePassword = async (req, res) => {
     const userID = req.user._id;
     const { oldPassword, newPassword } = req.body;
     //validate password
-    validatePassword(newPassword);
+    try {
+      validatePassword(newPassword);
+    } catch (error) {
+      return res.status(400).json({ error: error.message });
+    }
     //check if user exists
     let user = await userModel.findOne({ _id: userID });
     if (!user) {

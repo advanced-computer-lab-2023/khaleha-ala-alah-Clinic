@@ -79,7 +79,7 @@ const REMOVE_FROM_WALLET_API = 'http://localhost:4000/patients/remove-from-walle
   const handlePaymentSelection = (paymentOption) => {
     if (paymentOption === "wallet") {
       // Use the userID and amount from your state or another source
-      const userID = "651f027139c907c160a30acd";
+      const userID = "651ee41994ed6dc1e163c4df";
       const amount = 100;
       
       // Call the handlePayment function with the userID and amount
