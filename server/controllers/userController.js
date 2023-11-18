@@ -166,6 +166,11 @@ exports.registerUser = async (req, res) => {
         emergencyName,
         emergencyNumber,
       } = req.body;
+      const files = req.files;
+      let Filepathes = [];
+      if(files){
+        Filepathes = req.files.map((file) => file.id);
+      }
       validateGender(gender);
       validateMobileNumber(mobileNumber);
       validateName(emergencyName);
@@ -182,6 +187,7 @@ exports.registerUser = async (req, res) => {
           name: emergencyName,
           number: emergencyNumber,
         },
+        files: Filepathes,
       });
       try {
         await patient.save();
@@ -204,7 +210,6 @@ exports.registerUser = async (req, res) => {
       if (!files) {
         return res.status(400).json({ error: "Files not provided" });
       }
-      console.log("here");
       const Filepathes = req.files.map((file) => file.id);
       const doctor = new doctorModel({
         userID: user._id,
@@ -319,7 +324,11 @@ exports.changePassword = async (req, res) => {
     const userID = req.user._id;
     const { oldPassword, newPassword } = req.body;
     //validate password
-    validatePassword(newPassword);
+    try {
+      validatePassword(newPassword);
+    } catch (error) {
+      return res.status(400).json({ error: error.message });
+    }
     //check if user exists
     let user = await userModel.findOne({ _id: userID });
     if (!user) {

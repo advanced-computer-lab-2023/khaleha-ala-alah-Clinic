@@ -31,14 +31,6 @@ const doctorSchema = new Schema(
       type: Number,
       required: true,
     },
-    // password: {
-    //   type: String,
-    //   required: true,
-    //   validate: {
-    //     validator: (value) => validator.isLength(value, { min: 8 }),
-    //     message: "Password must contain at least 8 characters.",
-    //   },
-    // },
     fixedSlots: [
       {
         day: {

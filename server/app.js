@@ -26,10 +26,12 @@ app.use(cors()); // to allow all cors requests
 //2) routes
 
 //save file to database
-app.post('/upload',upload.array("files",3),(req,res)=>{
+app.post('/upload', upload.array("files", 3), (req, res) => {
   const fileIds = req.files.map(file => file.id);
-  res.json({fileIds});
-  res.json({msg:'file uploaded successfully'});
+  res.json({
+    fileIds: fileIds,
+    msg: 'file uploaded successfully'
+  });
 });
 
 

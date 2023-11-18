@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const packageController = require("../controllers/packageController");
+const packageController = require("./../controllers/packageController");
 
-const { CheckAuth } = require("../middlewares/auth");
+const { CheckAuth } = require("./../middlewares/auth");
 
 router.get("/", packageController.getAllPackages);
 router.post("/createPackage", packageController.addPackage);
