@@ -4,6 +4,10 @@ const mongoose = require('mongoose');
 const {GridFsStorage} = require('multer-gridfs-storage');
 const multer = require('multer');
 const dotenv = require('dotenv');
+// const socketIO = require('socket.io');
+
+const socket = require('./utilities/sockets/socketio');
+const cors = require('cors');
 
 dotenv.config({path: './config.env'});
 const DB = process.env.DATABASE.replace('<DATABASE_PASSWORD>',process.env.DATABASE_PASSWORD);
@@ -45,8 +49,25 @@ exports.upload = multer({storage});
 
 //4) start server
 const app = require('./app');
+app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000', // Allow only the React app to access
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Adjust the methods as per your needs
+    allowedHeaders: ['Content-Type', 'Authorization'], // Adjust headers as per your needs
+}));
 const port = process.env.PORT || 3000;
+const server = require('http').createServer(app);
+//const io = socketIO(server);
+const io = socket.init(server);
 
-app.listen(port,()=>{
+// Socket.io connection
+io.on('connection', (socket) => {
+    console.log('hahahaha +   a user connected');
+
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+});
+server.listen(port,()=>{
     console.log(`app is running on ${port}....`);
 })

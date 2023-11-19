@@ -50,12 +50,13 @@ import "./App.css";
 import Wallet from './Components/Wallet.js'
 import PaymentMethod from "./Components/choose-to-pay.js";
 import PaymentMethodSubscriptionFamily from "./Components/choose-to-pay-familyPackage"
-
 import HealthRecordForm from "./Components/HealthRecordForm";
-
+import {Notification} from "./Components/notification";
 import DoctorWallet from "./Components/doctorWallet.js"
 import "./App.css";
 import ChangePasswordForm from "./Components/changePassword.jsx";
+
+
 
 
 function App() {
@@ -138,6 +139,8 @@ function App() {
                 element={<AddFamilyMemberPage />}
               />
               <Route path="/changePassword" element={<ChangePasswordForm />} />
+              <Route path="/notification" element={<Notification />} />
+              
             </>
           )}
 
@@ -169,6 +172,7 @@ function App() {
                 element={<FollowUpScheduler />}
               />
               <Route path="/available-slots" element={<AvailableSlotsForm />} />
+              <Route path="/notification" element={<Notification />} />
             </>
           )}
 
@@ -184,6 +188,7 @@ function App() {
               <Route path="/viewPendingDoctors" element={<PendingDoctors />} />
               <Route path="/packages" element={<HealthPackages />} />
               <Route path="/changePassword" element={<ChangePasswordForm />} />
+              <Route path="/notification" element={<Notification />} />
             </>
           )}
 
