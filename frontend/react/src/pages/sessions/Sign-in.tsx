@@ -5,6 +5,7 @@ import { LoginOutlined } from '@ant-design/icons/lib';
 import { useForm } from 'antd/es/form/Form';
 import PublicLayout from '../../layout/public/Public';
 import { useNavigateHome } from '../../utils/use-navigate-home';
+import axios from 'axios';
 
 const SignIn = () => {
   const [form] = useForm();
@@ -13,7 +14,44 @@ const SignIn = () => {
   const login = () => {
     form
       .validateFields()
-      .then(() => navigateHome())
+      .then(async (values) => {
+        console.log(values);
+        const data = {
+          username: values.login,
+          password: values.password
+        };
+        console.log(data);
+        await axios
+          .post('http://localhost:4000/users/login', data)
+          .then(async (res) => {
+            const token = res.data.token;
+            const role = res.data.role;
+            await localStorage.setItem('token', token);
+            //message.success('Login Successfull');
+            console.log('aaaa');
+            if (role === 'patient') {
+              window.location.replace('/patientHome');
+            } else if (role === 'doctor') {
+              window.location.replace('/doctorHome');
+            } else if (role === 'admin') {
+              window.location.replace('/adminHome');
+            }
+          })
+          .catch(async (err) => {
+            console.log(err.response.data.error);
+            if (err.response.data.error === 'User not verified yet') {
+              await localStorage.setItem('token', err.response.data.token);
+              //message.error('User not verified yet');
+              window.location.replace('/verifyUser');
+            } else if (err.response.data.error === 'Doctor not approved yet') {
+              await localStorage.setItem('token', err.response.data.token);
+              //message.error('Doctor not approved yet');
+              window.location.replace('/notApproved');
+            } else {
+              // message.error('Invalid Credentials');
+            }
+          });
+      })
       .catch(() => null);
   };
 
@@ -25,7 +63,7 @@ const SignIn = () => {
 
       <Form form={form} layout='vertical' className='mb-4'>
         <Form.Item name='login' rules={[{ required: true, message: <></> }]}>
-          <Input placeholder='Login' />
+          <Input placeholder='Username' />
         </Form.Item>
         <Form.Item name='password' rules={[{ required: true, message: <></> }]}>
           <Input placeholder='Password' type='password' />
