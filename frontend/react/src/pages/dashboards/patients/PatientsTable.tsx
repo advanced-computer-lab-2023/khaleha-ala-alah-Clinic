@@ -14,21 +14,6 @@ type Props = {
   onDeletePatient?: (id: string) => void;
 };
 
-type PatientsImgProps = {
-  img: string;
-};
-
-const PatientImg = ({ img }: PatientsImgProps) => {
-  const isData = img.startsWith('data:image');
-  const isWithPath = img.startsWith('http');
-
-  if (isData || isWithPath) {
-    return <Avatar size={40} src={img} />;
-  }
-
-  return <Avatar size={40} src={`${window.location.origin}/${img}`} />;
-};
-
 const PatientsTable = ({
   patients,
   onEditPatient = () => null,
@@ -63,12 +48,6 @@ const PatientsTable = ({
   );
 
   const columns: ColumnProps<IPatient>[] = [
-    {
-      key: 'img',
-      title: 'Photo',
-      dataIndex: 'img',
-      render: (img) => <PatientImg img={img} />
-    },
     {
       key: 'name',
       dataIndex: 'name',
@@ -148,26 +127,12 @@ const PatientsTable = ({
   return (
     <>
       <Table
-        pagination={pagination}
+        //pagination={pagination}
         className='accent-header'
         rowKey='id'
         dataSource={patients}
         columns={columns}
       />
-
-      <Modal
-        open={visibility}
-        footer={null}
-        onCancel={closeModal}
-        title={<h3 className='title'>Add patient</h3>}
-      >
-        <PatientForm
-          submitText='Update patient'
-          onCancel={closeModal}
-          onSubmit={onEditPatient}
-          patient={patient}
-        />
-      </Modal>
     </>
   );
 };

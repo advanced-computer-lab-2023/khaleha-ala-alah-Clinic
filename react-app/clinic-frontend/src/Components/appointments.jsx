@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import PackageCard from "../Elements/packageCard.jsx";
-import "./appointments.css";
-import DataTable from "../Elements/DataTable.jsx";
-import "../Elements/DataTable.css";
+//import "./appointments.module.css";
+import styles from "./appointments.module.css";
+
+import { Table, Button, Tag } from "antd";
+import { useNavigate } from "react-router-dom";
+
 import LoadingPage from "./LoadingPage.jsx";
+import { useLayoutEffect } from "react";
 
 const backendUrl = "http://localhost:4000";
 
@@ -15,12 +18,23 @@ function Appointments() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [loading, setLoading] = useState(true); // Add loading state
   const [patientFamilyMember, setPatientFamilyMember] = useState([]);
+  const navigate = useNavigate();
 
   const getDoctorName = (appointment) => {
     const doctor = doctors.find(
       (doctor) => doctor.userID === appointment.DoctorID
     );
     return doctor ? doctor.name : "N/A";
+  };
+  const getDoctorAffilation = (appointment) => {
+    const doctor = doctors.find(
+      (doctor) => doctor.userID === appointment.DoctorID
+    );
+    console.log(doctor);
+    console.log("^^^^^ doctor");
+    return doctor && doctor.affiliation
+      ? doctor.affiliation
+      : "Not Yet Available";
   };
   const getDoctorSpeciality = (appointment) => {
     const doctor = doctors.find(
@@ -41,15 +55,16 @@ function Appointments() {
       doctor: getDoctorName(appointment),
       speciality: getDoctorSpeciality(appointment),
       email: getDoctorEmail(appointment),
+      affiliation: getDoctorAffilation(appointment),
     })
   );
 
-  const appointmentsColumns = [
-    { key: "date", title: "Date" },
-    { key: "doctor", title: "Doctor" },
-    { key: "speciality", title: "Doctor's Speciality" },
-    { key: "email", title: "Doctor's Email" },
-  ];
+  //const appointmentsColumns = [
+  //  { key: "date", title: "Date" },
+  // { key: "doctor", title: "Doctor" },
+  // { key: "speciality", title: "Doctor's Speciality" },
+  // { key: "email", title: "Doctor's Email" },
+  //];
 
   useEffect(() => {
     // Fetch data when the component mounts
@@ -95,6 +110,75 @@ function Appointments() {
       });
   };
 
+  const CustomHeader = ({ title }) => (
+    <th style={{ backgroundColor: "blue", color: "white" }}>{title}</th>
+  );
+
+  const appointmentsColumns = [
+    // Define columns similar to PatientsTable
+    // Example column:
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      className: styles.tableHeader, // Apply custom header style
+
+      // Add sorter or other properties as needed
+    },
+    {
+      title: "Doctor Name",
+      dataIndex: "doctor",
+      key: "doctor",
+      className: styles.tableHeader, // Apply custom header style
+
+      // Add sorter or other properties as needed
+    },
+    {
+      title: "Doctor Speciality",
+      dataIndex: "speciality",
+      key: "speciality",
+      className: styles.tableHeader, // Apply custom header style
+
+      // Add sorter or other properties as needed
+    },
+    {
+      title: "Doctor Email",
+      dataIndex: "email",
+      key: "email",
+      className: styles.tableHeader, // Apply custom header style
+
+      // Add sorter or other properties as needed
+    },
+    {
+      title: "Doctor Affiliation",
+      dataIndex: "affiliation",
+      key: "affiliation",
+      className: styles.tableHeader, // Apply custom header style
+
+      // Add sorter or other properties as needed
+    },
+    // ... other columns
+    /*{
+      title: "Actions",
+      key: "actions",
+      render: (text, record) => (
+        <div className="buttons-list nowrap">
+          { Replace these actions as per your requirement }
+          <Button shape="circle" onClick={() => navigate("/some-route")}>
+            <span className="icofont icofont-external-link" />
+          </Button>
+          <Button shape="circle" type="primary">
+            <span className="icofont icofont-edit-alt" />
+          </Button>
+          <Button shape="circle" danger>
+            <span className="icofont icofont-ui-delete" />
+          </Button>
+        </div>
+      ),
+    },
+    */
+  ];
+
   // Define the filterAppointments function to apply filters
   const filterAppointments = () => {
     const filteredAppointments = appointments.filter((appointment) => {
@@ -135,43 +219,49 @@ function Appointments() {
   };
 
   return (
-    <div>
-      <h1>View Your Appointments</h1>
-      <label htmlFor="dateFilter">Filter by Date:</label>
-      <input
-        type="date"
-        id="dateFilter"
-        value={dateFilter}
-        onChange={(e) => setDateFilter(e.target.value)}
-      />
+    <div className={styles.Container}>
+      {loading ? (
+        <LoadingPage />
+      ) : (
+        <div>
+          <h1>View Your Appointments</h1>
+          <label htmlFor="dateFilter">Filter by Date:</label>
+          <input
+            type="date"
+            id="dateFilter"
+            value={dateFilter}
+            onChange={(e) => setDateFilter(e.target.value)}
+          />
 
-      <label htmlFor="statusFilter">Filter by Status:</label>
-      <select
-        id="statusFilter"
-        value={statusFilter}
-        onChange={(e) => setStatusFilter(e.target.value)}
-      >
-        <option value="all">All</option>
-        <option value="confirmed">Finished</option>
-        <option value="pending">Pending</option>
-        <option value="rescheduled">Rescheduled</option>
-        <option value="cancelled">Cancelled</option>
-      </select>
+          <label htmlFor="statusFilter">Filter by Status:</label>
+          <select
+            id="statusFilter"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option value="all">All</option>
+            <option value="confirmed">Finished</option>
+            <option value="pending">Pending</option>
+            <option value="rescheduled">Rescheduled</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
 
-      <button onClick={filterAppointments}>Filter</button>
+          <button onClick={filterAppointments}>Filter</button>
 
-      <div className="ApppointmentsShownPack">
-        {loading ? (
-          <LoadingPage />
-        ) : (
-          <div className="AppointmentsTable" style={{ width: 92 + "vw" }}>
-            <DataTable
-              data={appointmentsforPatient}
-              columns={appointmentsColumns}
-            />
+          <div>
+            <div style={{ width: 92 + "vw" }}>
+              <Table
+                dataSource={appointmentsforPatient}
+                columns={appointmentsColumns}
+                rowKey="id" // Ensure you have a unique key for each row
+                pagination={{ pageSize: 7 }} // Adjust pagination as needed
+                rowClassName={styles.tableRow}
+                // Add any other props as per your requirement
+              />
+            </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
