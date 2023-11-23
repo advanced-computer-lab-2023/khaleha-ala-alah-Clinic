@@ -104,13 +104,17 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
                       ? styles.dropdownItemSelected
                       : styles.dropdownItem
                   }
-                  onClick={() => handleSectionClick("home", "/")}
+                  onClick={(e) =>
+                    handleSectionClick(e, "home", "/familyMembers")
+                  }
                 >
                   View Your Family Members
                 </div>{" "}
                 <div
                   className={styles.dropdownItem}
-                  onClick={() => handleSectionClick("about", "/about")}
+                  onClick={(e) =>
+                    handleSectionClick(e, "about", "/registerFamilyMember")
+                  }
                 >
                   Add Family Member Using National ID
                 </div>{" "}
@@ -128,7 +132,9 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
                 </div>{" "}
                 <div
                   className={styles.dropdownItem}
-                  onClick={() => handleSectionClick("about", "/about")}
+                  onClick={(e) =>
+                    handleSectionClick(e, "about", "/addFamilyMemberUsingPhone")
+                  }
                 >
                   Add Family Member Using Phone Number
                 </div>{" "}
@@ -165,30 +171,6 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
                   }
                 >
                   View Your Appointments
-                </div>{" "}
-                <div
-                  className={styles.dropdownItem}
-                  onClick={() => handleSectionClick("about", "/about")}
-                >
-                  Add Family Member Using National ID
-                </div>{" "}
-                <div
-                  className={styles.dropdownItem}
-                  onClick={(e) =>
-                    handleSectionClick(
-                      e,
-                      "AddFamilyMember",
-                      "/addFamilyMemberUsingEmail"
-                    )
-                  }
-                >
-                  Add Family Member Using Email
-                </div>{" "}
-                <div
-                  className={styles.dropdownItem}
-                  onClick={() => handleSectionClick("about", "/about")}
-                >
-                  Add Family Member Using Phone Number
                 </div>{" "}
               </div>
             )}

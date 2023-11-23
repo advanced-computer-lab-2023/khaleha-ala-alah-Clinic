@@ -4,7 +4,20 @@ import styles from "./table.module.css";
 
 import { Table, Button, Tag } from "antd";
 
-const Tables = ({ columns, data }) => {
+const Tables = ({
+  columns,
+  data,
+  clickable = false,
+  onRowClick = () => {
+    console.log("CLICKED");
+  },
+}) => {
+  const rowProps = {
+    onClick: (record) => {
+      onRowClick(record); // Call the onRowClick function with the clicked record
+    },
+  };
+
   return (
     <div style={{ width: 92 + "vw" }}>
       <Table
@@ -12,7 +25,10 @@ const Tables = ({ columns, data }) => {
         columns={columns}
         rowKey="id" // Ensure you have a unique key for each row
         pagination={{ pageSize: 7 }} // Adjust pagination as needed
-        rowClassName={styles.tableRow}
+        rowClassName={clickable ? styles.tableRowClickable : styles.tableRow}
+        onRow={(_, rowIndex) => ({
+          ...rowProps,
+        })}
         // Add any other props as per your requirement
       />
     </div>

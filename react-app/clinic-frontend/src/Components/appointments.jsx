@@ -4,6 +4,9 @@ import styles from "./appointments.module.css";
 
 import Table from "./table.jsx";
 import { useNavigate } from "react-router-dom";
+import { Input, Button, Space, Menu } from "antd";
+import { SearchOutlined } from "@ant-design/icons"; // Import SearchOutlined
+import Highlighter from "react-highlight-words";
 
 import LoadingPage from "./LoadingPage.jsx";
 import { useLayoutEffect } from "react";
@@ -19,6 +22,8 @@ function Appointments() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [loading, setLoading] = useState(true); // Add loading state
   const [patientFamilyMember, setPatientFamilyMember] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+
   const navigate = useNavigate();
 
   const getDoctorName = (appointment) => {
@@ -140,10 +145,64 @@ function Appointments() {
       title: "Doctor Speciality",
       dataIndex: "speciality",
       key: "speciality",
-      className: styles.tableHeader, // Apply custom header style
-      sorter: (a, b) => a.speciality.localeCompare(b.speciality), // Sort alphabetically
-
-      // Add sorter or other properties as needed
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => (
+        <div style={{ padding: 8 }}>
+          <Menu
+            mode="vertical"
+            selectedKeys={selectedKeys}
+            multiple={true}
+            onClick={(e) => {
+              setSelectedKeys([e.key]);
+              confirm();
+            }}
+          >
+            <Menu.Item key="cardio">Cardio</Menu.Item>
+            <Menu.Item key="dermatology">Dermatology</Menu.Item>
+            <Menu.Item key="orthopedics">Orthopedics</Menu.Item>
+            {/* Add more specialties as needed */}
+          </Menu>
+          <Button
+            type="primary"
+            onClick={() => confirm()}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => {
+              clearFilters();
+              setFilteredData([]); // Reset filtered data
+            }}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Reset
+          </Button>
+        </div>
+      ),
+      filterIcon: (filtered) => (
+        <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+      ),
+      onFilter: (value, record) =>
+        record.speciality.toLowerCase().includes(value.toLowerCase()),
+      render: (text) =>
+        filteredData.length > 0 ? (
+          <Highlighter
+            highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+            searchWords={[filteredData]}
+            autoEscape
+            textToHighlight={text}
+          />
+        ) : (
+          text
+        ),
     },
     {
       title: "Doctor Email",
