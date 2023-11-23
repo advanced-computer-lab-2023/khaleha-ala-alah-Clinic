@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../AuthContext";
-import "./patientRegister.css";
 
 export const PatientRegister = () => {
   const { role } = useAuth();
