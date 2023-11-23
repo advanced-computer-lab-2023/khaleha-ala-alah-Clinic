@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 //import "./appointments.module.css";
 import styles from "./appointments.module.css";
 
-import { Table, Button, Tag } from "antd";
+import Table from "./table.jsx";
 import { useNavigate } from "react-router-dom";
 
 import LoadingPage from "./LoadingPage.jsx";
@@ -122,6 +122,7 @@ function Appointments() {
       dataIndex: "date",
       key: "date",
       className: styles.tableHeader, // Apply custom header style
+      sorter: (a, b) => new Date(a.date) - new Date(b.date),
 
       // Add sorter or other properties as needed
     },
@@ -130,6 +131,7 @@ function Appointments() {
       dataIndex: "doctor",
       key: "doctor",
       className: styles.tableHeader, // Apply custom header style
+      sorter: (a, b) => a.doctor.localeCompare(b.doctor), // Sort alphabetically
 
       // Add sorter or other properties as needed
     },
@@ -138,6 +140,7 @@ function Appointments() {
       dataIndex: "speciality",
       key: "speciality",
       className: styles.tableHeader, // Apply custom header style
+      sorter: (a, b) => a.speciality.localeCompare(b.speciality), // Sort alphabetically
 
       // Add sorter or other properties as needed
     },
@@ -146,6 +149,7 @@ function Appointments() {
       dataIndex: "email",
       key: "email",
       className: styles.tableHeader, // Apply custom header style
+      sorter: (a, b) => a.email.localeCompare(b.email), // Sort alphabetically
 
       // Add sorter or other properties as needed
     },
@@ -154,6 +158,7 @@ function Appointments() {
       dataIndex: "affiliation",
       key: "affiliation",
       className: styles.tableHeader, // Apply custom header style
+      sorter: (a, b) => a.affiliation.localeCompare(b.affiliation), // Sort alphabetically
 
       // Add sorter or other properties as needed
     },
@@ -251,12 +256,8 @@ function Appointments() {
           <div>
             <div style={{ width: 92 + "vw" }}>
               <Table
-                dataSource={appointmentsforPatient}
+                data={appointmentsforPatient}
                 columns={appointmentsColumns}
-                rowKey="id" // Ensure you have a unique key for each row
-                pagination={{ pageSize: 7 }} // Adjust pagination as needed
-                rowClassName={styles.tableRow}
-                // Add any other props as per your requirement
               />
             </div>
           </div>

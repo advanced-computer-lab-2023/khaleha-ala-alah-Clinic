@@ -5,11 +5,8 @@ import settingsIcon from "../Images/settings.png";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const NavBar = () => {
+const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
   const navigate = useNavigate();
-  const [selectedSection, setSelectedSection] = useState("home"); // Default selected section
-  const [selectedSubSection, setSelectedSubSection] =
-    useState("viewFamilyMembers"); // Default selected section
   const [hoveredSection, setHoveredSection] = useState(null);
   const [hoverTimeout, setHoverTimeout] = useState(null);
 
@@ -25,8 +22,9 @@ const NavBar = () => {
     setHoverTimeout(timeout);
   };
 
-  const handleSectionClick = (section, route) => {
-    setSelectedSection(section);
+  const handleSectionClick = (event, section, route) => {
+    event.stopPropagation();
+    //setSelectedSection(section);
     navigate(route);
   };
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -146,7 +144,13 @@ const NavBar = () => {
                 </div>{" "}
                 <div
                   className={styles.dropdownItem}
-                  onClick={() => handleSectionClick("about", "/about")}
+                  onClick={(e) =>
+                    handleSectionClick(
+                      e,
+                      "AddFamilyMember",
+                      "/addFamilyMemberUsingEmail"
+                    )
+                  }
                 >
                   Add Family Member Using Email
                 </div>{" "}

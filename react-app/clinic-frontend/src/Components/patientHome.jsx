@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import "./patientHome.css";
+//import "./patientHome.css";
+import styles from "./patientHome.module.css";
 
 import makeappointment from "../Images/appointmentpatient.png";
 import pres from "../Images/perscriptionpatient.png";
@@ -108,34 +109,31 @@ export const PatientHome = () => {
   ];
 
   return (
-    <div>
+    <div className={styles.patientHomeContainer}>
       {isLoading ? (
         <div>
           <LoadingPage />
-    
         </div>
       ) : (
         <div>
-            
-          <NavBar />
+          <NavBar selectedSection="home" />
           {
-            <div className="all-containers">
-              <div className="carousel-container">
+            <div className={styles.allContainers}>
+              <div className={styles.carouselContainer}>
                 <ImageCarousel slides={slides} />
               </div>
 
-              <div className="titleofPAGE">
+              <div className={styles.titleofPAGE}>
                 <h1> What are our services? </h1>
               </div>
-              <div className="services-container">
+              <div className={styles.servicesContainer}>
                 <ServiceItem
                   imgSrc={searchdoctor}
                   title="Search For Doctors"
                   description="Discover doctors by specialty or name to find your ideal healthcare match"
                   navigateTo="/searchDoctors"
                 />
-                 <ServiceItem
-                  
+                <ServiceItem
                   title="wallet"
                   description="check your wallet"
                   navigateTo="/wallet"

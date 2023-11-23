@@ -43,18 +43,4 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: shadow for the header */
 }
 
-.tableHeader {
-  background-color: #efeeee; /* Change to your desired header background color */
-  color: rgb(0, 0, 0); /* Change to your desired header text color */
-}
-
-:global
-  .ant-table
-  .ant-table-container
-  .ant-table-content
-  table
-  thead.ant-table-thead
-  .ant-table-cell {
-  background-color: #336cfb;
-}
 /* Additional styling if needed */

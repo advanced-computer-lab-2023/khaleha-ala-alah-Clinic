@@ -1,6 +1,6 @@
 import React from "react";
 //import "./patient.css";
-import "./patientHome.css";
+//import "./patientHome.css";
 import { Link } from "react-router-dom";
 
 import makeappointment from "../Images/appointmentpatient.png";
