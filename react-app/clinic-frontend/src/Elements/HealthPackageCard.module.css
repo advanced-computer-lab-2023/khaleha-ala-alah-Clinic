@@ -1,0 +1,100 @@
+/* HealthPackageCard.module.css */
+
+.healthCard {
+    background-color: #ffffff; /* White background */
+    border-radius: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.6); /* Subtle shadow */
+    padding: 20px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    height: 450px;
+    width: 350px; /* Responsive width */
+    max-width: 450px; /* Maximum width */
+    margin: 0 auto; /* Center card */
+    font-family: 'Arial', sans-serif; /* Font family */
+    border: 2px solid #1157a2; /* Add border: width, style, color */
+
+  }
+  
+  .healthName {
+    color: #333; /* Dark blue for the package name */
+    margin-bottom: 20px; /* Spacing below package name */
+    font-size: 30px; /* Larger font size for package name */
+    margin-top: 10px;
+  }
+  
+  .healthDetails {
+    display: block;
+    text-align: left;
+    font-size: 1em;
+    margin-bottom: 10px; /* Spacing between details */
+    color: #000000; /* Dark text color for readability */
+    margin-top: 30px;
+  }
+  
+  .healthDetails:before {
+    font-family: "Font Awesome 5 Free"; /* Assuming you're using Font Awesome */
+    font-weight: 900;
+    margin-right: 10px;
+  }
+  
+  .healthDetails.check:before {
+    content: '\f00c'; /* Font Awesome check icon */
+  }
+  
+  .healthDetails.cross:before {
+    content: '\f00d'; /* Font Awesome times icon */
+  }
+  
+  .subscribeButton {
+    background-color: #1157a2; /* Blue background for the button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 35px; /* Space above the button */
+    transition: background-color 0.3s;
+    width: 80%; /* Button width */
+    max-width: 200px; /* Maximum button width */
+  }
+  
+  .subscribeButton:hover {
+    background-color: cadetblue; /* Darker blue on hover */
+  }
+  
+  .healthButtons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px; /* Space above the button area */
+  }
+  
+  .separatorLine {
+    border: 0; /* Removes the default border */
+    height: 2px; /* Set the height of the line */
+    width: 200px;
+    background-color: #ccc; /* Choose a color for the line */
+    margin-bottom: 10px; /* Add some vertical space before and after the line */
+  }
+
+  .separatorLineContainer{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+
+  .detailRow {
+    display: flex;
+    align-items: center; /* Aligns the icon and text vertically */
+    gap: 10px; /* Adds space between the icon and text */
+  }
+  
+  .iconStyle {
+    margin-top: 12px;
+    width: 20px; /* Adjust the size of the icon */
+    height: 20px; /* Adjust the height of the icon */
+  }
+  
