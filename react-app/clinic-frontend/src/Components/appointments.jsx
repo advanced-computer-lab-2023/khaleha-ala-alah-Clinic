@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 import LoadingPage from "./LoadingPage.jsx";
 import { useLayoutEffect } from "react";
+import NavBar from "../Elements/NavBar.jsx";
 
 const backendUrl = "http://localhost:4000";
 
@@ -121,7 +122,7 @@ function Appointments() {
       title: "Date",
       dataIndex: "date",
       key: "date",
-      className: styles.tableHeader, // Apply custom header style
+      //className: styles.tableHeader, // Apply custom header style
       sorter: (a, b) => new Date(a.date) - new Date(b.date),
 
       // Add sorter or other properties as needed
@@ -229,6 +230,10 @@ function Appointments() {
         <LoadingPage />
       ) : (
         <div>
+          <NavBar
+            selectedSection={"appointments"}
+            selectedSubSection="viewAppointments"
+          />
           <h1>View Your Appointments</h1>
           <label htmlFor="dateFilter">Filter by Date:</label>
           <input

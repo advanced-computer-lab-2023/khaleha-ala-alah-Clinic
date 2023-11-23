@@ -45,7 +45,7 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
   const hasSubsections = (sectionName) => {
     // Logic to determine if a section has subsections
     // For example:
-    return sectionName === "home" || sectionName === "familyMembers"; // Assume 'home' has subsections for this example
+    return sectionName === "familyMembers" || sectionName === "appointments"; // Assume 'home' has subsections for this example
   };
   return (
     <nav className={styles.navbar}>
@@ -63,7 +63,7 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
             }
             onMouseEnter={() => handleSectionMouseEnter("home")}
             onMouseLeave={() => handleSectionMouseLeave()}
-            onClick={() => handleSectionClick("home", "/home")}
+            onClick={(e) => handleSectionClick(e, "home", "/")}
           >
             Home {hasSubsections("home") && <span>▼</span>}
             {/* Dropdown Menu */}
@@ -75,35 +75,7 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
               >
                 {/* Unique className */}
                 {/* ... dropdown items ... */}
-                <div
-                  className={styles.dropdownItem}
-                  onClick={() => handleSectionClick("about", "/about")}
-                >
-                  About Us
-                </div>{" "}
               </div>
-            )}
-          </div>
-          <div
-            className={
-              selectedSection === "notifications"
-                ? styles.navbarLinkSelected
-                : styles.navbarLinkSection
-            }
-            onMouseEnter={() => handleSectionMouseEnter("notifications")}
-            onMouseLeave={() => handleSectionMouseLeave()}
-            onClick={() =>
-              handleSectionClick("notifications", "/notifications")
-            }
-          >
-            Notifications {hasSubsections("notifications") && <span>▼</span>}
-            {/* Dropdown Menu */}
-            {hoveredSection === "notifications" && (
-              <div
-                className={styles.homeDropdownMenu}
-                onMouseEnter={() => setHoveredSection("notifications")}
-                onMouseLeave={() => setHoveredSection(null)}
-              ></div>
             )}
           </div>
           <div
@@ -114,8 +86,8 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
             }
             onMouseEnter={() => handleSectionMouseEnter("familyMembers")}
             onMouseLeave={() => handleSectionMouseLeave()}
-            onClick={() =>
-              handleSectionClick("familyMembers", "/familyMembers")
+            onClick={(e) =>
+              handleSectionClick(e, "familyMembers", "/familyMembers")
             }
           >
             Family Members {hasSubsections("familyMembers") && <span>▼</span>}
@@ -163,9 +135,64 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
               </div>
             )}
           </div>
-          <a href="#notifications" className={styles.navbarLink}>
-            Appointments
-          </a>
+
+          <div
+            className={
+              selectedSection === "appointments"
+                ? styles.navbarLinkSelected
+                : styles.navbarLinkSection
+            }
+            onMouseEnter={() => handleSectionMouseEnter("appointments")}
+            onMouseLeave={() => handleSectionMouseLeave()}
+            onClick={() => handleSectionClick("appointments", "/appointments")}
+          >
+            Appointments {hasSubsections("appointments") && <span>▼</span>}
+            {/* Dropdown Menu */}
+            {hoveredSection === "appointments" && (
+              <div
+                className={styles.homeDropdownMenu}
+                onMouseEnter={() => setHoveredSection("appointments")}
+                onMouseLeave={() => setHoveredSection(null)}
+              >
+                <div
+                  className={
+                    selectedSubSection === "viewAppointments"
+                      ? styles.dropdownItemSelected
+                      : styles.dropdownItem
+                  }
+                  onClick={(e) =>
+                    handleSectionClick(e, "home", "/appointments")
+                  }
+                >
+                  View Your Appointments
+                </div>{" "}
+                <div
+                  className={styles.dropdownItem}
+                  onClick={() => handleSectionClick("about", "/about")}
+                >
+                  Add Family Member Using National ID
+                </div>{" "}
+                <div
+                  className={styles.dropdownItem}
+                  onClick={(e) =>
+                    handleSectionClick(
+                      e,
+                      "AddFamilyMember",
+                      "/addFamilyMemberUsingEmail"
+                    )
+                  }
+                >
+                  Add Family Member Using Email
+                </div>{" "}
+                <div
+                  className={styles.dropdownItem}
+                  onClick={() => handleSectionClick("about", "/about")}
+                >
+                  Add Family Member Using Phone Number
+                </div>{" "}
+              </div>
+            )}
+          </div>
         </div>
         <div className={styles.navbarRight}>
           <a

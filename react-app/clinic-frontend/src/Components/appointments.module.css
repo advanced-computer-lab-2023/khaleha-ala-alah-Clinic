@@ -9,9 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(
-    100vh - 200px
-  ); /* Adjust height based on header/navbar height */
+  /* Adjust height based on header/navbar height */
 }
 .Appointments {
   background-color: white; /* Set the background to white */

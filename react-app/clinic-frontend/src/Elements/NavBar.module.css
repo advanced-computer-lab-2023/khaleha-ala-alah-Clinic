@@ -1,8 +1,10 @@
 .navbar {
-  background-color: #fbfbfb;
+  background-color: #f1f0f0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: sticky;
+  position: fixed;
+  width: 100vw;
   top: 0;
+  left: 0;
   z-index: 1000;
   border-radius: 8px;
 }

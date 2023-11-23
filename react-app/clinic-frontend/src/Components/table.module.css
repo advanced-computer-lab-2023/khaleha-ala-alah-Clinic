@@ -13,3 +13,6 @@
   background-color: #336cfb;
   color: white;
 }
+:global .ant-table {
+  box-shadow: 0px 18px 24px rgba(0, 0, 0, 0.12);
+}

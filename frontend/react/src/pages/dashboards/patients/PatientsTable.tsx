@@ -127,7 +127,7 @@ const PatientsTable = ({
   return (
     <>
       <Table
-        //pagination={pagination}
+        pagination={pagination}
         className='accent-header'
         rowKey='id'
         dataSource={patients}
