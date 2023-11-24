@@ -3,6 +3,7 @@ import Table from "./table.jsx";
 import styles from "./allDoctors.module.css"
 import { SearchOutlined, FilterOutlined } from "@ant-design/icons";
 import NavBar from "../Elements/NavBar.jsx";
+import Header from "../Elements/Header";
 
 
 const getSessionPrice = (doctor, currentPatient) => {
@@ -109,6 +110,7 @@ const DoctorList = () => {
 
   return (
     <div className={styles.AllDoctorsContainer}>
+      <Header />
       <NavBar/>
       <h2 className={styles.h1}>View All Doctors</h2>
 

@@ -29,6 +29,7 @@ display: flex;
 width: 100%;
 padding: 10px;
 margin-left: 5rem;
+margin-top: 8rem;
 }
 
 .headerBar2 {
@@ -83,3 +84,4 @@ background-color: #0056b3; /* Change background color on hover */
   font-size: 11pt; /* Font size for options */
   font-family: Arial, Helvetica, sans-serif;
 }
+

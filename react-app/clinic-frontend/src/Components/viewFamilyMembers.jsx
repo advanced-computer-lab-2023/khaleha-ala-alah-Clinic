@@ -4,6 +4,8 @@ import Table from "./table.jsx";
 import styles from "./viewFamilyMember.module.css"
 import NavBar from "../Elements/NavBar.jsx";
 
+import Header from "../Elements/Header";
+
 function FamilyMembers() {
   const [familyMembers, setFamilyMembers] = useState([]);
 /*
@@ -90,6 +92,7 @@ function FamilyMembers() {
 
   return (
     <div className={styles.FamilymembersContainer}>
+      <Header />
       <NavBar/>
       {/*<h1 className={styles.h1}>Welcome to our Family Member Management portal</h1>*/}
       {/* <ul>
