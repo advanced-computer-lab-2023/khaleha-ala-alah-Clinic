@@ -1,0 +1,39 @@
+.FamilymembersContainer {
+    background-color: white;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column; /* Adjust the layout to a column */
+    justify-content: center;
+    min-height: calc(100vh - 200px);
+    
+    align-items: center;
+  }
+  
+  
+  
+  /* Add a style for the table header */
+  .h1 {
+    color: rgb(68, 68, 68);
+    padding: 10px; /* Add padding to the header for better visibility */
+    font-size: 23px; /* Increase font size for the header */
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-family:'Times New Roman', Times, serif
+
+  }
+
+  .h2 {
+    color: rgb(68, 68, 68);
+    font-size: 18px; /* Increase font size for the header */
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+
+  }
+  
+  .tableHeader{
+    font-size: 14px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif
+  }
+  

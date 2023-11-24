@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Table from "./table.jsx";
 import styles from "./allDoctors.module.css"
 import { SearchOutlined, FilterOutlined } from "@ant-design/icons";
+import NavBar from "../Elements/NavBar.jsx";
 
 
 const getSessionPrice = (doctor, currentPatient) => {
@@ -108,6 +109,7 @@ const DoctorList = () => {
 
   return (
     <div className={styles.AllDoctorsContainer}>
+      <NavBar/>
       <h2 className={styles.h1}>View All Doctors</h2>
 
       {/* Header Bar */}

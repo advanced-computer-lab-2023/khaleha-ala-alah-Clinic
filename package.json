@@ -1,10 +1,7 @@
 {
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
-<<<<<<< HEAD
     "bootstrap": "^5.3.2",
-=======
->>>>>>> 729beddda5ae9046075b6908d5a453b5e3fe54fc
     "react-highlight-words": "^0.20.0"
   }
 }
