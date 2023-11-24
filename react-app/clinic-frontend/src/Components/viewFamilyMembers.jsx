@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import DataTable from "../Elements/DataTable.jsx";
-import "./viewFamilyMembers.css";
+import Table from "./table.jsx";
+import styles from "./viewFamilyMember.module.css"
+import NavBar from "../Elements/NavBar.jsx";
+
+import Header from "../Elements/Header";
 
 function FamilyMembers() {
   const [familyMembers, setFamilyMembers] = useState([]);
-
+/*
   const FamilyMemberColumns = [
     { key: "name", title: "Name" },
     { key: "nationalID", title: "National ID" },
@@ -20,7 +24,7 @@ function FamilyMembers() {
     gender: familyMember ? familyMember.gender : "N/A",
     relation: familyMember ? familyMember.relationToPatient : "N/A",
   }));
-
+*/
   useEffect(() => {
     // Fetch data from the server's endpoint
     const requestOptions = {
@@ -39,9 +43,58 @@ function FamilyMembers() {
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
+  const data = familyMembers.map(
+    (familyMember, index) => ({
+      name: familyMember.name,
+      nationalID: familyMember.nationalID,
+      gender: familyMember.gender,
+      age: familyMember.age,
+      relation: familyMember.relationToPatient
+    })
+  );
+
+  const columns = [
+    // Define columns similar to PatientsTable
+    // Example column:
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "Name",
+      className: styles.tableHeader,
+    },
+    {
+      title: "National Identification Number",
+      dataIndex: "nationalID",
+      key: "NID",
+      className: styles.tableHeader,
+    },
+    {
+      title: "Gender",
+      dataIndex: "gender",
+      key: "gender",
+      className: styles.tableHeader,
+    },
+    {
+      title: "Age",
+      dataIndex: "age",
+      key: "age",
+      className: styles.tableHeader,
+
+    },
+    {
+      title: "Relation",
+      dataIndex: "relation",
+      key: "relation",
+      className: styles.tableHeader,
+    },
+    
+  ];
+
   return (
-    <div style={{ width: 98 + "vw" }}>
-      <h1>Family Members</h1>
+    <div className={styles.FamilymembersContainer}>
+      <Header />
+      <NavBar/>
+      {/*<h1 className={styles.h1}>Welcome to our Family Member Management portal</h1>*/}
       {/* <ul>
         {familyMembers.map((familyMember, index) => (
           <li key={index}>
@@ -54,8 +107,11 @@ function FamilyMembers() {
         ))}
       </ul> */}
 
-      <div className="FamilyMemberTable">
-        <DataTable data={FamilyMembers} columns={FamilyMemberColumns} />
+      { /*<div className="FamilyMemberTable">
+            <DataTable data={FamilyMembers} columns={FamilyMemberColumns} />
+          </div>*/}
+      <div className={styles.tableWrapper}>
+        <Table data={data} columns={columns} />
       </div>
     </div>
   );

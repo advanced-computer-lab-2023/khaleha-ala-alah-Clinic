@@ -5,10 +5,11 @@
 }
 
 .carouselContainer {
+  margin-top: 112px;
   position: relative;
   gap: 20px; /* Adjust the gap between items as needed */
   justify-content: center; /* Centers the items horizontally */
-  width: auto;
+  width: 100vw;
   height: auto;
   z-index: 1;
 }
