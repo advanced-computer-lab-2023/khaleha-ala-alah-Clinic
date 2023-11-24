@@ -1,7 +1,7 @@
 .carousel {
   position: flex;
   width: 99vw; /* Half of the screen width */
-  height: 22vh;
+  height: 70vh;
   margin: auto;
 }
 
@@ -9,7 +9,7 @@
   overflow: hidden;
 }
 
-.slide {
+.slide-car {
   position: absolute;
   width: 100vw; /* Full viewport width */
   height: 70vh; /* 30% of viewport height */
@@ -23,10 +23,10 @@
   object-fit: cover; /* Cover the container while maintaining aspect ratio */
 }
 
-.slide.active {
+.slide.active-car {
   display: block;
 }
-.text-overlay {
+.text-overlay-car {
   position: absolute;
   bottom: 140px;
   left: 10px;
@@ -44,7 +44,7 @@
   border-bottom-right-radius: 20px;
 }
 
-.text-overlay h3 {
+.text-overlay-car h3 {
   margin-top: 0;
   margin-bottom: 5px;
   font-size: 20px; /* Adjust size as needed */
@@ -54,7 +54,7 @@
   font-family: "Times New Roman", Times, serif;
 }
 
-.text-overlay p {
+.text-overlay-car p {
   margin-top: 40px;
   font-size: 1em; /* Adjust size as needed */
   font-weight: normal;
@@ -66,7 +66,7 @@
 }
 
 .left-arrow,
-.right-arrow {
+.right-arrow-car {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -75,13 +75,14 @@
   cursor: pointer;
   padding: 10px;
   font-size: 24px;
+  z-index: 10000;
 }
 
 .left-arrow {
   left: 0;
 }
 
-.right-arrow {
+.right-arrow-car {
   right: 0;
 }
 

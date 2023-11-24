@@ -125,7 +125,7 @@ export const PatientHome = () => {
                 <ImageCarousel slides={slides} />
               </div>
 
-              <div className={styles.titleofPAGE}>
+              <div className={styles.titleofPAGE} style={{ marginTop: "0px" }}>
                 <h1> What are our services? </h1>
               </div>
               <div className={styles.servicesContainer}>
