@@ -62,18 +62,18 @@ const ChangePasswordForm = () => {
       {/*<h1 className={styles.heading}>Change Password</h1>*/}
       <form onSubmit={handleSubmit}>
         <label className={styles.label}>
-          Old Password:
+          Current Password
           <input
             type="password"
             value={oldPassword}
             onChange={handleOldPasswordChange}
             className={styles.input}
-            placeholder="Old Password"
+            placeholder="Current Password"
           />
         </label>
         <br />
         <label className={styles.label}>
-          New Password:
+          New Password
           <input
             type="password"
             value={newPassword}
@@ -84,7 +84,7 @@ const ChangePasswordForm = () => {
         </label>
         <br />
         <label className={styles.label}>
-          Confirm Password:
+          Confirm Password
           <input
             type="password"
             value={confirmPassword}
@@ -94,7 +94,7 @@ const ChangePasswordForm = () => {
           />
         </label>
         <br />
-        <button type="submit" className={styles.button}> Change Password</button>
+        <button type="submit" className={styles.button}>Change Password</button>
       </form>
       <p className={styles.statusMessage}>{statusMessage}</p>
     </div>
