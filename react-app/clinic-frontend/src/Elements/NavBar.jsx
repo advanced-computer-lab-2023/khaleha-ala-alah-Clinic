@@ -1,7 +1,5 @@
 import React from "react";
 import styles from "../Elements/NavBar.module.css"; // Link to the CSS file for styles
-import logopng from "../Images/logooo.png";
-import settingsIcon from "../Images/settings.png";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -50,9 +48,6 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
   return (
     <nav className={styles.navbar}>
       <div className={styles.navbarContainer}>
-        <div className={styles.navbarLogo}>
-          <img src={logopng} alt="Logo" />
-        </div>
         <div className={styles.navbarLinks}>
           {/* Example for Home section */}
           <div
@@ -175,26 +170,6 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
               </div>
             )}
           </div>
-        </div>
-        <div className={styles.navbarRight}>
-          <a
-            href="#settings"
-            className={styles.navbarLink}
-            onClick={toggleDropdown}
-          >
-            <img src={settingsIcon} alt="Settings" />
-          </a>
-          {dropdownVisible && (
-            <div className={styles.dropdownMenu}>
-              <button className={styles.dropdownItem}>My Account</button>
-              <button className={styles.dropdownItem} onClick={handlePassword}>
-                Change Password
-              </button>
-              <button className={styles.dropdownItem} onClick={handleLogout}>
-                Log Out
-              </button>
-            </div>
-          )}
         </div>
       </div>
     </nav>

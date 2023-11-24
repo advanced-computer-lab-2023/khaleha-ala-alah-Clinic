@@ -17,6 +17,7 @@ import ImageCarousel from "../Elements/ImageCarousel";
 import ServiceItem from "../Elements/ServiceItem";
 import NavBar from "../Elements/NavBar";
 import LoadingPage from "./LoadingPage.jsx";
+import Header from "../Elements/Header";
 
 import familymember from "../Images/FamilyMember.jpg";
 import appointments from "../Images/appointments.jpg";
@@ -116,6 +117,7 @@ export const PatientHome = () => {
         </div>
       ) : (
         <div>
+          <Header />
           <NavBar selectedSection="home" />
           {
             <div className={styles.allContainers}>
