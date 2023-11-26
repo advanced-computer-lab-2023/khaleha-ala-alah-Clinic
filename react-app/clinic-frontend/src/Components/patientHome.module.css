@@ -9,7 +9,6 @@
   position: relative;
   gap: 20px; /* Adjust the gap between items as needed */
   justify-content: center; /* Centers the items horizontally */
-  height: 70vh;
   width: 100vw;
   height: auto;
   z-index: 1;

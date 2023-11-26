@@ -1,9 +1,11 @@
 /* FeedbackMessage.css */
 
-.feedback-message {
+.feedbackMessage {
   position: fixed;
   top: 20px;
   left: 50%;
+  width: 18%;
+  height: 10%;
   transform: translateX(-50%);
   padding: 10px;
   border-radius: 8px;

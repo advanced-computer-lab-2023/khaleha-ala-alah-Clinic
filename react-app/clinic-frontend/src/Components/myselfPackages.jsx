@@ -7,6 +7,7 @@ import ConfirmationDialog from "../Elements/ConfirmationDialog.jsx";
 import LoadingPage from "./LoadingPage.jsx";
 
 import { useNavigate } from "react-router-dom";
+import FeedbackMessage from "./feedbackMessage.jsx";
 
 const MyselfPackages = () => {
   const navigate = useNavigate(); // Use useNavigate instead of useHistory
@@ -63,6 +64,11 @@ const MyselfPackages = () => {
       );
       console.log("Unsubscription successful:", response.data);
       setIsLoading(false);
+      <FeedbackMessage
+        type="success"
+        message="Unsubscription successful"
+        onClose={() => {}}
+      />;
       navigateTo("/managePackages");
 
       // Handle any post-unsubscription logic here, such as updating state or UI

@@ -1,10 +1,7 @@
-// FeedbackMessage.js
-
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import { useEffect } from "react";
-
-import "./FeedbackMessage.css";
+import { Alert } from "antd";
+import styles from "./feedbackMessage.module.css";
 
 const FeedbackMessage = ({ type, message, onClose }) => {
   useEffect(() => {
@@ -14,23 +11,24 @@ const FeedbackMessage = ({ type, message, onClose }) => {
 
     return () => clearTimeout(timer);
   }, [onClose]);
-  const getClassName = () => {
-    switch (type) {
-      case "success":
-        return "success-message";
-      case "error":
-        return "error-message";
-      case "warning":
-        return "warning-message";
-      default:
-        return "";
-    }
-  };
 
   return (
-    <div className={`feedback-message ${getClassName()}`}>
-      <p>{message}</p>
-    </div>
+    <Alert
+      message={
+        type == "error"
+          ? "Oh Snap!"
+          : type == "success"
+          ? "Success!"
+          : "Warning!"
+      }
+      description={message}
+      type={type}
+      onClose={onClose}
+      //closable
+      afterClose={onClose}
+      showIcon
+      className={styles.feedbackMessage}
+    />
   );
 };
 
