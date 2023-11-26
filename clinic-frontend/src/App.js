@@ -55,8 +55,7 @@ import {Notification} from "./Components/notification";
 import DoctorWallet from "./Components/doctorWallet.js"
 import "./App.css";
 import ChangePasswordForm from "./Components/changePassword.jsx";
-
-
+import VideoCall from "./Components/videoCall";
 
 
 function App() {
@@ -75,6 +74,8 @@ function App() {
         <Route path="/resetPassword/:token" element={<ResetPassword />} />
            <Route path="/wallet" element={<Wallet />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route path="/videoCall" element={<VideoCall />} />
+
 
         {/* Redirect to login if no role is defined (user is not authenticated) */}
         {role === "" && <Route path="*" element={<Navigate to="/login" />} />}
@@ -140,6 +141,7 @@ function App() {
               />
               <Route path="/changePassword" element={<ChangePasswordForm />} />
               <Route path="/notification" element={<Notification />} />
+              <Route path="/videoCall" element={<videoCall />} />
               
             </>
           )}
@@ -173,6 +175,7 @@ function App() {
               />
               <Route path="/available-slots" element={<AvailableSlotsForm />} />
               <Route path="/notification" element={<Notification />} />
+              <Route path="/videoCall" element={<videoCall />} />
             </>
           )}
 

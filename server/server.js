@@ -56,18 +56,55 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'], // Adjust headers as per your needs
 }));
 const port = process.env.PORT || 3000;
-const server = require('http').createServer(app);
+//const server = require('http').createServer(app);
 //const io = socketIO(server);
-const io = socket.init(server);
-
+//const io = socket.init(server);
+const http = require("http")
+const server = http.createServer(app)
+const io = require("socket.io")(server, {
+	cors: {
+		origin: "http://localhost:3000",
+		methods: [ "GET", "POST" ]
+	}
+})
 // Socket.io connection
-io.on('connection', (socket) => {
-    console.log('hahahaha +   a user connected');
+// io.on('connection', (socket) => {
+//     console.log('hahahaha +   a user connected');
+//     socket.emit("me" , socket.id); 
 
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
+//     socket.on('disconnect', () => {
+//         console.log('user disconnected');
+//     });
+
+//     socket.on('callUser' , (data)=>{
+//         io.to(data.userToCall).emit("callUser", {
+//             signal : data.signalData,
+//             from : data.from,
+//             name: data.name
+//         })
+//     })
+//     socket.on("answerCall",(data)=> io.to(data.to).emit("callAccepted"),data.signal);
+// });
+io.on("connection", (socket) => {
+	socket.emit("me", socket.id)
+
+	socket.on("disconnect", () => {
+		socket.broadcast.emit("callEnded")
+	})
+
+	socket.on("callUser", (data) => {
+		io.to(data.userToCall).emit("callUser", { signal: data.signalData, from: data.from, name: data.name })
+	})
+
+	socket.on("answerCall", (data) => {
+		io.to(data.to).emit("callAccepted", data.signal)
+	})
+
+    socket.on("endCall", () => {
+        socket.broadcast.emit("callEnded");
     });
-});
+})
+
 server.listen(port,()=>{
     console.log(`app is running on ${port}....`);
 })
