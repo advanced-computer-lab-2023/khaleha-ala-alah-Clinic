@@ -113,6 +113,7 @@ export const DoctorHome = () => {
               imgSrc={chatpatient}
               title="Chat with Doctor"
               description="Connect with your doctor for instant advice through secure messaging. SOON"
+              navigateTo="/chat"
             />
           </div>
         </div>

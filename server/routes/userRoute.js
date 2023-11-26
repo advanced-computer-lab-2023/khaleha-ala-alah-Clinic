@@ -13,5 +13,6 @@ router.post('/validateToken', userController.validateToken);
 router.post('/changePassword',CheckAuth, userController.changePassword);
 router.post('/forgotPassword', userController.forgotPassword);
 router.post('/resetPassword', userController.resetPassword);
+router.get('/getUsers',CheckAuth, userController.getUsers);
 
 module.exports = router;
