@@ -23,7 +23,7 @@ function Messenger() {
 
   useEffect(() => {
     getUsers();
-    socket.current = io("ws://192.168.1.5:4001");
+    socket.current = io("ws://localhost:4001");
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         sender: data.senderId,
@@ -65,7 +65,7 @@ function Messenger() {
     try {
       setLoading(true);
       setSelectedUser(users.find((user) => user.userID === userId));
-      const res = await axios.post(`http://192.168.1.5:4000/conversations`, {senderId: userID, receiverId: userId});
+      const res = await axios.post(`http://localhost:4000/conversations`, {senderId: userID, receiverId: userId});
       setConversations(res.data.conversation);
     } catch (error) {
       console.log(error);
@@ -74,7 +74,7 @@ function Messenger() {
   useEffect(() => {
     const getMessages = async () => {
       try {
-        const res = await axios.get(`http://192.168.1.5:4000/messages/${conversations._id}`);
+        const res = await axios.get(`http://localhost:4000/messages/${conversations._id}`);
         const messages = res.data.messages;
         messages.forEach((message) => {
           message.sender = message.sender === userID ? "You" : selectedUser.name;
@@ -111,7 +111,7 @@ function Messenger() {
     });
 
     try {
-      const res = axios.post(`http://192.168.1.5:4000/messages`,formData, {
+      const res = axios.post(`http://localhost:4000/messages`,formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
