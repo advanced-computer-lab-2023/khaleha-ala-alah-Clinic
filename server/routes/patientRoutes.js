@@ -127,6 +127,8 @@ router.post(
 );*/
 
 //router.get("/pre", CheckAuth, patientController.viewPrescriptions);
+
+
 router.patch(
   "/rescheduleAppointment/:appointmentID/:newDateTime",
   CheckAuth,
@@ -149,5 +151,5 @@ router.patch(
   patientController.cancelAppointment
 );
 
-// router.post('/followUpRequest' , CheckAuth , patientController.followUpRequestAppointment);
+router.post('/followUpRequest' , CheckAuth , patientController.followUpRequestAppointment);
 module.exports = router;

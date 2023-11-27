@@ -1441,7 +1441,7 @@ exports.cancelAppointment = async (req, res) => {
 
 exports.followUpRequestAppointment = async (req,res) =>{
   try{
-    const patient = Patient.findOne({userID : req.user._id});
+    const patient = await Patient.findOne({userID : req.user._id});
     if(!patient){
       return res.status(404).json({
         status: "fail",
@@ -1467,6 +1467,10 @@ exports.followUpRequestAppointment = async (req,res) =>{
       DoctorID : req.body.doctorID,
       });
     await FollowUpRequestAppointment.save();
+    res.status(200).json({
+      status: "success",
+      message: "followup request send successfully",
+    });
   }
   catch(error){
     res.status(500).json({
