@@ -4,20 +4,18 @@ const router = express.Router();
 
 const patientController = require("./../controllers/patientController");
 const Prescriptions = require("./../models/presecriptionsModel.js");
-const payForPackage = require('../controllers/paymentController');
-
-
+const payForPackage = require("../controllers/paymentController");
 
 router
   .route("/")
   .get(CheckAuth, patientController.getAllPatients)
   .post(patientController.createPatient);
 
-router.post('/add-amount-Wallet',patientController.addAmountToWallet);
-router.post('/remove-from-wallet',patientController.removeAmountFromWallet);
-router.get('/amount-wallet/:userID', patientController.getAmountInWallet);
+router.post("/add-amount-Wallet", patientController.addAmountToWallet);
+router.post("/remove-from-wallet", patientController.removeAmountFromWallet);
+router.get("/amount-wallet/:userID", patientController.getAmountInWallet);
 
-router.post('/save-stripe-token', CheckAuth,payForPackage);
+router.post("/save-stripe-token", CheckAuth, payForPackage);
 
 router.get("/patientdoctors", CheckAuth, patientController.getPatientDoctors);
 
@@ -29,17 +27,8 @@ router.patch(
   patientController.addFamilyMembers
 );
 
-// router.get(
-//   "/presecriptions",
-//   CheckAuth,
-//   patientController.getPerscriptions
-// );
 router.get("/currentPatient", CheckAuth, patientController.getCurrentPatient);
-// router.get(
-//   "/DoctorAvailableSlots",
-//   CheckAuth,
-//   patientController.getAvailableAppointmentsOfDoctor
-// );
+
 router.get("/getAppointments", CheckAuth, patientController.getAppointments);
 router.get(
   "/persecriptions",
@@ -119,6 +108,7 @@ router.get(
   CheckAuth,
   patientController.viewDoctorAppointmentsForMonth
 );
+
 router.post(
   "/SelectAppointment/:doctorID/:selectedDateTime",
   CheckAuth,
@@ -129,7 +119,33 @@ router.post(
   CheckAuth,
   patientController.SelectAppointmentFamilyMember
 );
+// router for getPatientPrescribtions
+/*router.get(
+  "/getPatientPrescribtions",
+  CheckAuth,
+  patientController.getPatientPrescribtions
+);*/
 
+//router.get("/pre", CheckAuth, patientController.viewPrescriptions);
+router.patch(
+  "/rescheduleAppointment/:appointmentID/:newDateTime",
+  CheckAuth,
+  patientController.rescheduleAppointment
+);
+router.patch(
+  "/rescheduleFamilyMemberAppointment/:appointmentID/:newDateTime/:familyMemberID",
+  CheckAuth,
+  patientController.rescheduleFamilyMemberAppointment
+);
+router.get(
+  "/viewPrescriptions",
+  CheckAuth,
+  patientController.viewPrescriptions
+);
 
-
+router.patch(
+  "/cancelAppointment/:appointmentID",
+  CheckAuth,
+  patientController.cancelAppointment
+);
 module.exports = router;

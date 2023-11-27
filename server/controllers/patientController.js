@@ -10,12 +10,11 @@ const Prescriptions = require("./../models/presecriptionsModel.js");
 
 // get all patients
 
-
-const Wallet = require('../models/wallet');
+const Wallet = require("../models/wallet");
 exports.getAmountInWallet = async (req, res) => {
   try {
-    const userID = req.params.userID.trim(); 
-  
+    const userID = req.params.userID.trim();
+
     const userWallet = await Wallet.findOne({ userID });
 
     if (userWallet) {
@@ -26,11 +25,17 @@ exports.getAmountInWallet = async (req, res) => {
       res.json({ success: true, amountInWallet });
     } else {
       // Send an error response if user wallet not found
-      res.status(404).json({ success: false, message: 'User wallet not found' });
+      res
+        .status(404)
+        .json({ success: false, message: "User wallet not found" });
     }
   } catch (error) {
     // Send an error response
-    res.status(500).json({ success: false, message: 'Error retrieving amount from wallet', error: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Error retrieving amount from wallet",
+      error: error.message,
+    });
   }
 };
 // Function to add amount to the wallet or create a new wallet if not available
@@ -48,10 +53,14 @@ exports.addAmountToWallet = async (req, res) => {
     await userWallet.addAmount(amount);
 
     // Send a success response
-    res.json({ success: true, message: 'Amount added to wallet successfully' });
+    res.json({ success: true, message: "Amount added to wallet successfully" });
   } catch (error) {
     // Send an error response
-    res.status(500).json({ success: false, message: 'Error adding amount to wallet', error: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Error adding amount to wallet",
+      error: error.message,
+    });
   }
 };
 
@@ -66,18 +75,25 @@ exports.removeAmountFromWallet = async (req, res) => {
       await userWallet.removeAmount(amount);
 
       // Send a success response
-      res.json({ success: true, message: 'Amount removed from wallet successfully' });
+      res.json({
+        success: true,
+        message: "Amount removed from wallet successfully",
+      });
     } else {
       // Send an error response if user wallet not found
-      res.status(404).json({ success: false, message: 'User wallet not found' });
+      res
+        .status(404)
+        .json({ success: false, message: "User wallet not found" });
     }
   } catch (error) {
     // Send an error response
-    res.status(500).json({ success: false, message: 'Error removing amount from wallet', error: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Error removing amount from wallet",
+      error: error.message,
+    });
   }
 };
-
-
 
 exports.getMyDoctors = async function (req, res) {
   try {
@@ -294,6 +310,44 @@ exports.getPatientPrescribtions = async function (req, res) {
     res.status(500).json({
       status: "error",
       message: "this route is not defined yet",
+    });
+  }
+};
+// view all new and old prescriptions and their statuses (filled/ not filled) as Patient can only see their own prescriptions
+exports.viewPrescriptions = async function (req, res) {
+  try {
+    const patientID = req.user._id;
+
+    const prescriptions = await Prescriptions.find({ PatientID: patientID });
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        prescriptions,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: "error",
+      message: error.message,
+    });
+  }
+};
+// get patient information from patient model
+exports.getPatient = async function (req, res) {
+  try {
+    const patient = await patient.findById(req.params.id);
+    res.status(200).json({
+      status: "success",
+      data: {
+        user: patient,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: error.message,
     });
   }
 };
@@ -820,7 +874,7 @@ exports.viewDoctorAppointmentsForMonth = async function (req, res) {
 
     // Generate a list of time slots for the current month
     const startDate = new Date(currentYear, currentMonth - 1, 1); // current month is 0-based
-    const endDate = new Date(currentYear, currentMonth, 0);
+    const endDate = new Date(currentYear, currentMonth + 1, 0);
     // const endDate = new Date(year, currentMonth - 1, 7);
 
     const availableTimeSlots = [];
@@ -1111,6 +1165,276 @@ exports.SelectAppointmentFamilyMember = async function (req, res) {
     res.status(500).json({
       status: "error",
       message: err.message,
+    });
+  }
+};
+
+//reschedule an appointment for myself
+exports.rescheduleAppointment = async function (req, res) {
+  try {
+    const { appointmentID, newDateTime } = req.params; // Get both appointmentID and newDateTime from params
+
+    // Ensure the patient is authenticated
+    const patient = await Patient.findOne({ userID: req.user._id });
+    if (!patient) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+
+    // Find the existing appointment
+    const appointment = await Appointments.findById(appointmentID);
+    if (!appointment) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Appointment not found",
+      });
+    }
+
+    // Check if the new date and time are within the doctor's available slots
+    const doctor = await Doctors.findOne({ userID: appointment.DoctorID });
+    if (!doctor) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Doctor not found",
+      });
+    }
+
+    const newAppointmentTime = new Date(newDateTime);
+
+    // Check if the new appointment time is valid and within the doctor's available slots
+    const isValidTimeSlot = doctor.fixedSlots.some((slot) => {
+      const slotDay = slot.day;
+      const slotTime = slot.hour;
+
+      // Convert the newDateTime to match the format in the slots
+      const selectedTime = new Date(newAppointmentTime);
+      const selectedDay = selectedTime.toLocaleDateString("en-US", {
+        weekday: "long",
+      });
+      const selectedHour = selectedTime.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+      });
+
+      return slotDay === selectedDay && slotTime === selectedHour;
+    });
+
+    if (!isValidTimeSlot) {
+      return res.status(400).json({
+        status: "fail",
+        message:
+          "Selected date and time are not within the doctor's available time slots.",
+      });
+    }
+
+    // Check if the new appointment time is already booked
+    const isAppointmentBooked = await Appointments.findOne({
+      DoctorID: appointment.DoctorID,
+      timedAt: newAppointmentTime,
+      isCancelled: false,
+    });
+
+    if (isAppointmentBooked) {
+      return res.status(400).json({
+        status: "fail",
+        message:
+          "Selected date and time are already booked by another patient.",
+      });
+    }
+
+    // Update the appointment time and set the isRescheduled flag to true
+    appointment.timedAt = newAppointmentTime;
+    appointment.isRescheduled = true;
+    await appointment.save();
+
+    res.status(200).json({
+      status: "success",
+      message: "Appointment rescheduled successfully.",
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+};
+
+// Reschedule an appointment for a family member
+exports.rescheduleFamilyMemberAppointment = async function (req, res) {
+  try {
+    const { appointmentID, newDateTime, familyMemberID } = req.params;
+
+    // Ensure the patient is authenticated
+    const patient = await Patient.findOne({ userID: req.user._id });
+    if (!patient) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+
+    // Check if the family member exists in the patient's family members list
+    const familyMember = patient.familyMembers.find(
+      (member) => member.userID === familyMemberID
+    );
+
+    if (!familyMember) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Family member not found",
+      });
+    }
+
+    // Find the existing appointment for the family member
+    const appointment = await Appointments.findById(appointmentID);
+    if (!appointment) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Appointment not found",
+      });
+    }
+
+    // Check if the new date and time are within the doctor's available slots
+    const doctor = await Doctors.findOne({ userID: appointment.DoctorID });
+    if (!doctor) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Doctor not found",
+      });
+    }
+
+    const newAppointmentTime = new Date(newDateTime);
+
+    // Check if the new appointment time is valid and within the doctor's available slots
+    const isValidTimeSlot = doctor.fixedSlots.some((slot) => {
+      const slotDay = slot.day;
+      const slotTime = slot.hour;
+
+      // Convert the newDateTime to match the format in the slots
+      const selectedTime = new Date(newAppointmentTime);
+      const selectedDay = selectedTime.toLocaleDateString("en-US", {
+        weekday: "long",
+      });
+      const selectedHour = selectedTime.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+      });
+
+      return slotDay === selectedDay && slotTime === selectedHour;
+    });
+
+    if (!isValidTimeSlot) {
+      return res.status(400).json({
+        status: "fail",
+        message:
+          "Selected date and time are not within the doctor's available time slots.",
+      });
+    }
+
+    // Check if the new appointment time is already booked
+    const isAppointmentBooked = await Appointments.findOne({
+      DoctorID: appointment.DoctorID,
+      timedAt: newAppointmentTime,
+      isCancelled: false,
+    });
+
+    if (isAppointmentBooked) {
+      return res.status(400).json({
+        status: "fail",
+        message:
+          "Selected date and time are already booked by another patient.",
+      });
+    }
+
+    // Update the appointment time and set the isRescheduled flag to true
+    appointment.timedAt = newAppointmentTime;
+    appointment.isRescheduled = true;
+    await appointment.save();
+
+    res.status(200).json({
+      status: "success",
+      message: "Family member's appointment rescheduled successfully.",
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+};
+
+exports.cancelAppointment = async (req, res) => {
+  try {
+    const { appointmentID } = req.params;
+
+    // Find the appointment by its ID
+    const appointment = await Appointments.findOne({ _id: appointmentID });
+
+    if (!appointment) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Appointment not found",
+      });
+    }
+
+    // Calculate the time difference between the appointment time and the current time
+    const currentTime = new Date();
+    const appointmentTime = new Date(appointment.timedAt);
+    const timeDifferenceInMinutes =
+      (appointmentTime - currentTime) / (1000 * 60); // Convert milliseconds to minutes
+
+    // Get the doctor associated with the appointment
+    const doctor = await Doctors.findOne({ userID: appointment.DoctorID });
+
+    if (!doctor) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Doctor not found",
+      });
+    }
+    // Get the patient associated with the appointment
+    const patient = await Patient.findOne({ userID: req.user._id });
+
+    if (!patient) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+    // Calculate the refund amount based on the time difference
+    let refundAmount = 0;
+    if (timeDifferenceInMinutes >= 1440) {
+      // 24 hours * 60 minutes
+      // Calculate the refund using the doctor's hourly rate and patient's discount
+      refundAmount = (doctor.hourlyRate / 2) * (1 - patient.doctorsDiscount);
+    }
+
+    //console.log("before wallet");
+    if (refundAmount > 0) {
+      await Wallet.findOneAndUpdate(
+        { userID: patient.userID },
+        { $inc: { amount: refundAmount } }
+      );
+    }
+    //console.log("Updated wallet");
+
+    // Mark the appointment as canceled
+    appointment.isCancelled = true;
+
+    // Save the updated appointment
+    await appointment.save();
+
+    res.status(200).json({
+      status: "success",
+      message: "Appointment canceled successfully",
+      refundAmount: refundAmount,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: error.message,
     });
   }
 };
