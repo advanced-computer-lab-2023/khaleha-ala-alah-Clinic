@@ -43,6 +43,8 @@ router.patch(
   CheckAuth,
   doctorControllers.cancelAppointment
 );
+router.patch('/revokeFollowUpRequest', CheckAuth , doctorControllers.revokeFollowUpRequest);
+router.patch('/acceptFollowUpRequest', CheckAuth , doctorControllers.acceptFollowUpRequest);
 // ...
 
 module.exports = router;
