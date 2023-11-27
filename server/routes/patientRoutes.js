@@ -148,4 +148,6 @@ router.patch(
   CheckAuth,
   patientController.cancelAppointment
 );
+
+// router.post('/followUpRequest' , CheckAuth , patientController.followUpRequestAppointment);
 module.exports = router;
