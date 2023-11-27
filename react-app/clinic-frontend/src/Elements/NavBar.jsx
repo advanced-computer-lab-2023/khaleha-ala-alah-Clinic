@@ -106,32 +106,16 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
                   View Your Family Members
                 </div>{" "}
                 <div
-                  className={styles.dropdownItem}
+                  className={
+                    selectedSubSection === "addFamilyMember"
+                      ? styles.dropdownItemSelected
+                      : styles.dropdownItem
+                  }
                   onClick={(e) =>
-                    handleSectionClick(e, "about", "/registerFamilyMember")
+                    handleSectionClick(e, "about", "/addFamilyMember")
                   }
                 >
-                  Add Family Member Using National ID
-                </div>{" "}
-                <div
-                  className={styles.dropdownItem}
-                  onClick={(e) =>
-                    handleSectionClick(
-                      e,
-                      "AddFamilyMember",
-                      "/addFamilyMemberUsingEmail"
-                    )
-                  }
-                >
-                  Add Family Member Using Email
-                </div>{" "}
-                <div
-                  className={styles.dropdownItem}
-                  onClick={(e) =>
-                    handleSectionClick(e, "about", "/addFamilyMemberUsingPhone")
-                  }
-                >
-                  Add Family Member Using Phone Number
+                  Add New Family Member
                 </div>{" "}
               </div>
             )}
@@ -145,7 +129,9 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
             }
             onMouseEnter={() => handleSectionMouseEnter("appointments")}
             onMouseLeave={() => handleSectionMouseLeave()}
-            onClick={() => handleSectionClick("appointments", "/appointments")}
+            onClick={(e) =>
+              handleSectionClick(e, "appointments", "/appointments")
+            }
           >
             Appointments {hasSubsections("appointments") && <span>▼</span>}
             {/* Dropdown Menu */}

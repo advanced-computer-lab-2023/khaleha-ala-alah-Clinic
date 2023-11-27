@@ -13,6 +13,7 @@ import { useLayoutEffect } from "react";
 import NavBar from "../Elements/NavBar.jsx";
 import { DatePicker, Select } from "antd";
 import { CalendarOutlined, FilterOutlined } from "@ant-design/icons"; // Import Ant Design icons
+import Header from "../Elements/Header.jsx";
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -304,47 +305,50 @@ function Appointments() {
         <LoadingPage />
       ) : (
         <div>
+          <Header />
           <NavBar
             selectedSection={"appointments"}
             selectedSubSection="viewAppointments"
           />
-          <h1 style={{ marginTop: "34px", marginBottom: "10px" }}>
-            View Your Appointments
-          </h1>
-          <div className={styles.Filters}>
-            <RangePicker
-              allowClear
-              value={dateFilter}
-              onChange={handleDateFilterChange}
-              style={{ marginRight: "16px" }}
-              suffixIcon={<CalendarOutlined />}
-            />
-            <Select
-              value={statusFilter}
-              onChange={handleStatusFilterChange}
-              style={{ width: "150px" }}
-              suffixIcon={<FilterOutlined />}
-            >
-              <Option value="all">All</Option>
-              <Option value="confirmed">Finished</Option>
-              <Option value="pending">Pending</Option>
-              <Option value="rescheduled">Rescheduled</Option>
-              <Option value="cancelled">Cancelled</Option>
-            </Select>
-            <Button
-              type="primary"
-              onClick={filterAppointments}
-              icon={<SearchOutlined />}
-            >
-              Filter
-            </Button>
-          </div>
-          <div>
-            <div style={{ width: 92 + "vw", marginTop: "10px" }}>
-              <Table
-                data={appointmentsforPatient}
-                columns={appointmentsColumns}
+          <div style={{ marginTop: "93px" }}>
+            <h1 style={{ marginTop: "34px", marginBottom: "10px" }}>
+              View Your Appointments
+            </h1>
+            <div className={styles.Filters}>
+              <RangePicker
+                allowClear
+                value={dateFilter}
+                onChange={handleDateFilterChange}
+                style={{ marginRight: "16px" }}
+                suffixIcon={<CalendarOutlined />}
               />
+              <Select
+                value={statusFilter}
+                onChange={handleStatusFilterChange}
+                style={{ width: "150px" }}
+                suffixIcon={<FilterOutlined />}
+              >
+                <Option value="all">All</Option>
+                <Option value="confirmed">Finished</Option>
+                <Option value="pending">Pending</Option>
+                <Option value="rescheduled">Rescheduled</Option>
+                <Option value="cancelled">Cancelled</Option>
+              </Select>
+              <Button
+                type="primary"
+                onClick={filterAppointments}
+                icon={<SearchOutlined />}
+              >
+                Filter
+              </Button>
+            </div>
+            <div>
+              <div style={{ width: 92 + "vw", marginTop: "10px" }}>
+                <Table
+                  data={appointmentsforPatient}
+                  columns={appointmentsColumns}
+                />
+              </div>
             </div>
           </div>
         </div>

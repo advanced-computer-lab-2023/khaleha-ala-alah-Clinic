@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../Elements/ImageCarousel.css";
+import styles from "../Elements/ImageCarousel.module.css";
 
 const ImageCarousel = ({ slides }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -13,19 +13,21 @@ const ImageCarousel = ({ slides }) => {
   };
 
   return (
-    <div className="carousel">
-      <div className="slide-container-car">
+    <div className={styles.carousel}>
+      <div className={styles.slideContainer}>
         {slides.map((slide, index) => (
           <div
             key={index}
             className={
-              index === currentSlide ? "slide active-car" : "slide-car"
+              index === currentSlide
+                ? `${styles.slide} ${styles.activeCar}`
+                : styles.slideCar
             }
           >
             {index === currentSlide && (
               <>
                 <img src={slide.image} alt="slide" />
-                <div className="text-overlay-car">
+                <div className={styles.textOverlayCar}>
                   <h3>{slide.title}</h3>
                   <p>{slide.description}</p>
                 </div>
@@ -34,7 +36,10 @@ const ImageCarousel = ({ slides }) => {
           </div>
         ))}
       </div>
-      <button onClick={nextSlide} className="right-arrow-car">
+      <button onClick={prevSlide} className={styles.leftArrow}>
+        {"<"}
+      </button>
+      <button onClick={nextSlide} className={styles.rightArrowCar}>
         {">"}
       </button>
     </div>

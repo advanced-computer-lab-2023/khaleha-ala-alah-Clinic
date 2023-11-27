@@ -5,30 +5,31 @@
   margin: auto;
 }
 
-.slide-container {
+.slideContainer {
   overflow: hidden;
 }
 
-.slide-car {
+.slideCar {
   position: absolute;
   width: 100vw; /* Full viewport width */
-  height: 70vh; /* 30% of viewport height */
+  height: 40vh; /* 30% of viewport height */
   overflow: hidden; /* Hide parts of the image that overflow the container */
   z-index: -1;
+  display: none;
 }
 
 .slide img {
   width: 100%; /* Stretch image to full width of the container */
-  height: 100%; /* Stretch image to full height of the container */
+  height: 70vh; /* Stretch image to full height of the container */
   object-fit: cover; /* Cover the container while maintaining aspect ratio */
 }
 
-.slide.active-car {
+.slide.activeCar {
   display: block;
 }
-.text-overlay-car {
+.textOverlayCar {
   position: absolute;
-  bottom: 140px;
+  bottom: 127px;
   left: 10px;
   right: 0;
   background-color: rgba(2, 43, 58, 0.4); /*Semi-transparent black background */
@@ -44,7 +45,7 @@
   border-bottom-right-radius: 20px;
 }
 
-.text-overlay-car h3 {
+.textOverlayCar h3 {
   margin-top: 0;
   margin-bottom: 5px;
   font-size: 20px; /* Adjust size as needed */
@@ -54,7 +55,7 @@
   font-family: "Times New Roman", Times, serif;
 }
 
-.text-overlay-car p {
+.textOverlayCar p {
   margin-top: 40px;
   font-size: 1em; /* Adjust size as needed */
   font-weight: normal;
@@ -65,12 +66,12 @@
     sans-serif;
 }
 
-.left-arrow,
-.right-arrow-car {
+.leftArrow,
+.rightArrowCar {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: black;
+  background-color: rgba(255, 255, 255, 0.286);
   border: none;
   cursor: pointer;
   padding: 10px;
@@ -78,11 +79,11 @@
   z-index: 10000;
 }
 
-.left-arrow {
+.leftArrow {
   left: 0;
 }
 
-.right-arrow-car {
+.rightArrowCar {
   right: 0;
 }
 

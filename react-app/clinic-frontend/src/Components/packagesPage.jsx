@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import styles from "./packagesPage.module.css";
 import Slider from "react-animated-slider";
 import horizontalCss from "react-animated-slider/build/horizontal.css";
+import NavBar from "../Elements/NavBar";
+import Header from "../Elements/Header";
 
 const PackagesPage = () => {
   const navigate = useNavigate();
@@ -14,13 +16,7 @@ const PackagesPage = () => {
   const gap = 20; // Gap between cards
 
   // States to manage animations and translateX values for old and new packages
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [oldTranslateX, setOldTranslateX] = useState(0);
-  const [newTranslateX, setNewTranslateX] = useState(0);
-
-  const handleAnimationEnd = () => {
-    setIsAnimating(false);
-  };
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Fetch packages when the component mounts
@@ -37,6 +33,8 @@ const PackagesPage = () => {
       setPackages(data.data.packages);
     } catch (error) {
       console.error("Failed to fetch packages:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -58,23 +56,6 @@ const PackagesPage = () => {
     });
   };
 
-  const handlePrev = () => {
-    const newIndex = currentIndex > 0 ? currentIndex - packagesPerPage : 0;
-    setOldTranslateX(-1 * newIndex * (cardWidth + gap));
-    setIsAnimating(true);
-    setCurrentIndex(newIndex);
-  };
-
-  const handleNext = () => {
-    const newIndex =
-      currentIndex + packagesPerPage < packages.length
-        ? currentIndex + packagesPerPage
-        : currentIndex;
-    setNewTranslateX(-1 * newIndex * (cardWidth + gap));
-    setIsAnimating(true);
-    setCurrentIndex(newIndex);
-  };
-
   const groupPackages = (packages, packagesPerSlide) => {
     const grouped = [];
     for (let i = 0; i < packages.length; i += packagesPerSlide) {
@@ -87,64 +68,68 @@ const PackagesPage = () => {
   const groupedPackages = groupPackages(packages, 3);
 
   return (
-    <div className={styles.PackagesContainerViewing}>
-      <div className={styles.ViewAllPackages}>
-        <Slider>
-          {groupedPackages.map((packageSet, index) => (
-            <div key={index} className={styles.slide}>
-              <div className={styles.packageSet}>
-                {packageSet.map((packageItem, packageIndex) => (
-                  <HealthPackageCard
-                    key={packageItem.id}
-                    name={packageItem.name}
-                    details={[
-                      {
-                        label: "Medical Discount",
-                        value: `${
-                          packageItem.medicalDiscount < 1
-                            ? packageItem.medicalDiscount * 100
-                            : packageItem.medicalDiscount
-                        }%`,
-                      },
-                      {
-                        label: "Doctor's Discount",
-                        value: `${
-                          packageItem.doctorsDiscount < 1
-                            ? packageItem.doctorsDiscount * 100
-                            : packageItem.doctorsDiscount
-                        }%`,
-                      },
-                      {
-                        label: "Family Discount",
-                        value: `${
-                          packageItem.familyDiscount < 1
-                            ? packageItem.familyDiscount * 100
-                            : packageItem.familyDiscount
-                        }%`,
-                      },
-                      { label: "Price", value: `${packageItem.price}` },
-                    ]}
-                    buttonsDetails={[
-                      {
-                        text: "Subscribe",
-                        onClick: () =>
-                          handleSubscribe(
-                            packageItem.medicalDiscount,
-                            packageItem.doctorsDiscount,
-                            packageItem.familyDiscount,
-                            packageItem.name,
-                            packageItem.price
-                          ),
-                      },
-                    ]}
-                  />
-                ))}
+    <>
+      <Header />
+      <NavBar />
+      <div className={styles.PackagesContainerViewing}>
+        <div className={styles.ViewAllPackages}>
+          <Slider>
+            {groupedPackages.map((packageSet, index) => (
+              <div key={index} className={styles.slide}>
+                <div className={styles.packageSet}>
+                  {packageSet.map((packageItem, packageIndex) => (
+                    <HealthPackageCard
+                      key={packageItem.id}
+                      name={packageItem.name}
+                      details={[
+                        {
+                          label: "Medical Discount",
+                          value: `${
+                            packageItem.medicalDiscount < 1
+                              ? packageItem.medicalDiscount * 100
+                              : packageItem.medicalDiscount
+                          }%`,
+                        },
+                        {
+                          label: "Doctor's Discount",
+                          value: `${
+                            packageItem.doctorsDiscount < 1
+                              ? packageItem.doctorsDiscount * 100
+                              : packageItem.doctorsDiscount
+                          }%`,
+                        },
+                        {
+                          label: "Family Discount",
+                          value: `${
+                            packageItem.familyDiscount < 1
+                              ? packageItem.familyDiscount * 100
+                              : packageItem.familyDiscount
+                          }%`,
+                        },
+                        { label: "Price", value: `${packageItem.price}` },
+                      ]}
+                      buttonsDetails={[
+                        {
+                          text: "Subscribe",
+                          onClick: () =>
+                            handleSubscribe(
+                              packageItem.medicalDiscount,
+                              packageItem.doctorsDiscount,
+                              packageItem.familyDiscount,
+                              packageItem.name,
+                              packageItem.price
+                            ),
+                        },
+                      ]}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
-        </Slider>
+            ))}
+          </Slider>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

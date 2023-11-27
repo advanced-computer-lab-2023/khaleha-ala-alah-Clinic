@@ -3,6 +3,8 @@ import "./packageManagment.css"; // Your CSS file for styling
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Header from "../Elements/Header";
+import NavBar from "../Elements/NavBar";
 
 const formatDate = (dateString) => {
   const options = { day: "numeric", month: "long", year: "numeric" };
@@ -25,6 +27,13 @@ const ManagePackages = () => {
         <div>Loading... </div>
       ) : (
         <>
+          <div style={{ marginBottom: "50px" }}>
+            <Header />
+            <NavBar
+              selectedSection={"familyMembers"}
+              selectedSubSection="addFamilyMember"
+            />
+          </div>
           <h1 className="title">Add Family Member Using </h1>
 
           <div

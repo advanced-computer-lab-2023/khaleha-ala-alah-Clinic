@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import DataTable from "../Elements/DataTable.jsx";
 import Table from "./table.jsx";
-import styles from "./viewFamilyMember.module.css"
+import styles from "./viewFamilyMember.module.css";
 import NavBar from "../Elements/NavBar.jsx";
+import LoadingPage from "./LoadingPage.jsx";
 
 import Header from "../Elements/Header";
 
 function FamilyMembers() {
   const [familyMembers, setFamilyMembers] = useState([]);
-/*
+  const [isLoading, setIsLoading] = useState(true);
+  /*
   const FamilyMemberColumns = [
     { key: "name", title: "Name" },
     { key: "nationalID", title: "National ID" },
@@ -39,19 +41,21 @@ function FamilyMembers() {
         if (data.status === "success" && data.data.user.familyMembers) {
           setFamilyMembers(data.data.user.familyMembers);
         }
+        setIsLoading(false);
       })
-      .catch((error) => console.error("Error fetching data:", error));
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setIsLoading(false);
+      });
   }, []);
 
-  const data = familyMembers.map(
-    (familyMember, index) => ({
-      name: familyMember.name,
-      nationalID: familyMember.nationalID,
-      gender: familyMember.gender,
-      age: familyMember.age,
-      relation: familyMember.relationToPatient
-    })
-  );
+  const data = familyMembers.map((familyMember, index) => ({
+    name: familyMember.name,
+    nationalID: familyMember.nationalID,
+    gender: familyMember.gender,
+    age: familyMember.age,
+    relation: familyMember.relationToPatient,
+  }));
 
   const columns = [
     // Define columns similar to PatientsTable
@@ -79,7 +83,6 @@ function FamilyMembers() {
       dataIndex: "age",
       key: "age",
       className: styles.tableHeader,
-
     },
     {
       title: "Relation",
@@ -87,15 +90,21 @@ function FamilyMembers() {
       key: "relation",
       className: styles.tableHeader,
     },
-    
   ];
 
   return (
-    <div className={styles.FamilymembersContainer}>
-      <Header />
-      <NavBar/>
-      {/*<h1 className={styles.h1}>Welcome to our Family Member Management portal</h1>*/}
-      {/* <ul>
+    <>
+      {isLoading ? (
+        <LoadingPage />
+      ) : (
+        <div className={styles.FamilymembersContainer}>
+          <Header />
+          <NavBar
+            selectedSection={"familyMembers"}
+            selectedSubSection="viewFamilyMembers"
+          />
+          {/*<h1 className={styles.h1}>Welcome to our Family Member Management portal</h1>*/}
+          {/* <ul>
         {familyMembers.map((familyMember, index) => (
           <li key={index}>
             <p>Name: {familyMember.name}</p>
@@ -107,13 +116,15 @@ function FamilyMembers() {
         ))}
       </ul> */}
 
-      { /*<div className="FamilyMemberTable">
+          {/*<div className="FamilyMemberTable">
             <DataTable data={FamilyMembers} columns={FamilyMemberColumns} />
           </div>*/}
-      <div className={styles.tableWrapper}>
-        <Table data={data} columns={columns} />
-      </div>
-    </div>
+          <div className={styles.tableWrapper}>
+            <Table data={data} columns={columns} />
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

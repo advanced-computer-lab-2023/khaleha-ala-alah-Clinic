@@ -2,7 +2,7 @@
   background-color: #f1f1f1;
   position: fixed;
   width: 100vw;
-  height: 7vh;
+  height: 5vh;
   top: 0;
   left: 0;
   z-index: 1000;
@@ -14,7 +14,7 @@
   justify-content: center;
   align-items: center;
   padding: 0 20px;
-  height: 60px;
+  height: 38px;
 }
 .navbarLogo {
   text-align: center; /* Centers the logo in the div */
@@ -139,5 +139,6 @@
 .homeDropdownMenu {
   position: absolute;
   top: 86%;
+  z-index: 10000000;
   /* ... other styles ... */
 }
