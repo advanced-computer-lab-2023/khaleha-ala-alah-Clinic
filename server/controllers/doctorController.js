@@ -5,6 +5,7 @@ const Patient = require("../models/users/patientModel"); // Import your Patient 
 const Prescription = require("../models/presecriptionsModel"); // Import your Prescription model
 const Wallet = require("../models/wallet");
 const mongoose = require("mongoose");
+const followUpRequestAppointment = require("./../models/followUpRequestModel");
 const { promises } = require("nodemailer/lib/xoauth2");
 
 exports.getAmountInWallet = async (req, res) => {
@@ -576,6 +577,78 @@ exports.cancelAppointment = async (req, res) => {
       status: "success",
       message: "Appointment canceled successfully",
       refundAmount: refundAmount,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: error.message,
+    });
+  }
+};
+exports.revokeFollowUpRequest = async (req, res) => {
+  try {
+    const patientID = req.body.patientID;
+    const doctor = await Doctor.findOne({ userID: req.user._id });
+
+    if (!doctor) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Doctor not found",
+      });
+    }
+
+    const FollowUpRequestAppointments = await followUpRequestAppointment.find({
+      PatientID: patientID,
+      DoctorID: req.user._id,
+      status: "Pending",
+    });
+    for (let i = 0; i < FollowUpRequestAppointments.length; i++) {
+      console.log(FollowUpRequestAppointments[i]);
+      if (FollowUpRequestAppointments[i].status == 'Pending') {
+        FollowUpRequestAppointments[i].status = 'Rejected';
+        await FollowUpRequestAppointments[i].save();
+      }
+    }
+
+    res.status(200).json({
+      status: "success",
+      message: "Follow Up Request revoked successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: error.message,
+    });
+  }
+};
+exports.acceptFollowUpRequest = async (req, res) => {
+  try {
+    const patientID = req.body.patientID;
+    const doctor = await Doctor.findOne({ userID: req.user._id });
+
+    if (!doctor) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Doctor not found",
+      });
+    }
+
+    const FollowUpRequestAppointments = await followUpRequestAppointment.find({
+      PatientID: patientID,
+      DoctorID: req.user._id,
+      status: "Pending",
+    });
+    for (let i = 0; i < FollowUpRequestAppointments.length; i++) {
+      console.log(FollowUpRequestAppointments[i]);
+      if (FollowUpRequestAppointments[i].status == 'Pending') {
+        FollowUpRequestAppointments[i].status = 'Accepted';
+        await FollowUpRequestAppointments[i].save();
+      }
+    }
+
+    res.status(200).json({
+      status: "success",
+      message: "Follow Up Request Accepted successfully",
     });
   } catch (error) {
     res.status(500).json({
