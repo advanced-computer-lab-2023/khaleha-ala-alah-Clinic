@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from "react";
 import PackageCard from "./packageCard";
-import "./packageCard.css"; // Assuming you have a CSS file for styling
+//import "./packageCard.css"; // Assuming you have a CSS file for styling
 import { useLocation } from "react-router-dom";
 //import { set } from "mongoose";
 import LoadingPage from "./LoadingPage";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+
+import styles from "./packagesPage.module.css";
+import Slider from "react-animated-slider";
+import horizontalCss from "react-animated-slider/build/horizontal.css";
+import NavBar from "../Elements/NavBar";
+import Header from "../Elements/Header";
+
+import HealthPackageCard from "../Elements/HealthPackageCard";
+
 const PackagesPage = () => {
   const [packages, setPackages] = useState([]);
   const [currentPatient, setCurrentPatient] = useState([]);
@@ -12,7 +21,6 @@ const PackagesPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const familyMember = location.state?.familyMember;
-
 
   useEffect(() => {
     // Define the function that fetches the packages
@@ -70,87 +78,99 @@ const PackagesPage = () => {
     name,
     price
   ) => {
-    navigate('/CheckoutFamilyMemberPaackage',{state:{familyMember : familyMember ,amount: price , MedicalDiscount : medicalDiscount , DoctorsDiscount:doctorsDiscount , 
-      FamilyDiscount:familyDiscount ,Name:name }})
+    navigate("/CheckoutFamilyMemberPaackage", {
+      state: {
+        familyMember: familyMember,
+        amount: price,
+        MedicalDiscount: medicalDiscount,
+        DoctorsDiscount: doctorsDiscount,
+        FamilyDiscount: familyDiscount,
+        Name: name,
+      },
+    });
   };
+
+  const groupPackages = (packages, packagesPerSlide) => {
+    const grouped = [];
+    for (let i = 0; i < packages.length; i += packagesPerSlide) {
+      grouped.push(packages.slice(i, i + packagesPerSlide));
+    }
+    console.log(grouped);
+    return grouped;
+  };
+
+  const groupedPackages = groupPackages(packages, 3);
 
   return (
     <>
       {isLoading ? (
         <LoadingPage />
       ) : (
-        <div className="AppPackages">
-          {packages.map((packageItem) => (
-            <PackageCard
-              //key={packageItem.id} // Use a unique key for each child, like an ID
-              name={packageItem.name}
-              details={[
-                {
-                  label: "Medical Discount",
-                  value: `${
-                    packageItem.medicalDiscount < 1
-                      ? packageItem.medicalDiscount * 100
-                      : packageItem.medicalDiscount
-                  }%`,
-                },
-                {
-                  label: "Doctor's Discount",
-                  value: `${
-                    packageItem.doctorsDiscount < 1
-                      ? packageItem.doctorsDiscount * 100
-                      : packageItem.doctorsDiscount
-                  }%`,
-                },
-                {
-                  label: "Family Discount",
-                  value: `${
-                    packageItem.familyDiscount < 1
-                      ? packageItem.familyDiscount * 100
-                      : packageItem.familyDiscount
-                  }%`,
-                },
-                {
-                  label: "Price",
-                  value:
-                    currentPatient.packageName === "none" ? (
-                      `${packageItem.price}`
-                    ) : (
-                      <>
-                        <span
-                          style={{
-                            textDecoration: "line-through",
-                            marginRight: "5px",
-                          }}
-                        >
-                          {`${packageItem.price}`}
-                        </span>
-                        {`${
-                          packageItem.price -
-                          packageItem.price *
-                            (currentPatient.familyDiscount < 1
-                              ? currentPatient.familyDiscount
-                              : currentPatient.familyDiscount / 100.0)
-                        }`}
-                      </>
-                    ),
-                },
-              ]} // Adjust based on the actual structure of your package data
-              buttonsDetails={[
-                {
-                  text: "Subscribe",
-                  onClick: () =>
-                    handleSubscribe(
-                      packageItem.medicalDiscount,
-                      packageItem.doctorsDiscount,
-                      packageItem.familyDiscount,
-                      packageItem.name,
-                      packageItem.price
-                    ),
-                },
-              ]}
-            />
-          ))}
-        </div>
+        <>
+          <Header />
+          <NavBar
+            selectedSection={"packages"}
+            selectedSubSection={"familyMemberPackages"}
+          />
+          <div className={styles.PackagesContainerViewing}>
+            <div className={styles.ViewAllPackages}>
+              <Slider>
+                {groupedPackages.map((packageSet, index) => (
+                  <div key={index} className={styles.slide}>
+                    <div className={styles.packageSet}>
+                      {packageSet.map((packageItem, packageIndex) => (
+                        <HealthPackageCard
+                          key={packageItem.id}
+                          name={packageItem.name}
+                          details={[
+                            {
+                              label: "Medical Discount",
+                              value: `${
+                                packageItem.medicalDiscount < 1
+                                  ? packageItem.medicalDiscount * 100
+                                  : packageItem.medicalDiscount
+                              }%`,
+                            },
+                            {
+                              label: "Doctor's Discount",
+                              value: `${
+                                packageItem.doctorsDiscount < 1
+                                  ? packageItem.doctorsDiscount * 100
+                                  : packageItem.doctorsDiscount
+                              }%`,
+                            },
+                            {
+                              label: "Family Discount",
+                              value: `${
+                                packageItem.familyDiscount < 1
+                                  ? packageItem.familyDiscount * 100
+                                  : packageItem.familyDiscount
+                              }%`,
+                            },
+                            { label: "Price", value: `${packageItem.price}` },
+                          ]}
+                          buttonsDetails={[
+                            {
+                              text: "Subscribe",
+                              onClick: () =>
+                                handleSubscribe(
+                                  packageItem.medicalDiscount,
+                                  packageItem.doctorsDiscount,
+                                  packageItem.familyDiscount,
+                                  packageItem.name,
+                                  packageItem.price
+                                ),
+                            },
+                          ]}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </Slider>
+            </div>
+          </div>
+        </>
       )}
     </>
   );

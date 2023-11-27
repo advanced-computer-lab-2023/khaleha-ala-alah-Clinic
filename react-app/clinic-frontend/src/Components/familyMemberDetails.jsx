@@ -6,6 +6,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ConfirmationDialog from "../Elements/ConfirmationDialog.jsx";
 
+import NavBar from "../Elements/NavBar";
+import Header from "../Elements/Header";
+
 import axios from "axios";
 
 const formatDate = (dateString) => {
@@ -63,6 +66,11 @@ const PackageDetails = () => {
         <div>Loading...</div>
       ) : (
         <>
+          <Header />
+          <NavBar
+            selectedSection={"packages"}
+            selectedSubSection={"familyMemberPackages"}
+          />
           <h1 className="package-details-title">Package Details</h1>
           <div className="package-details-content">
             <p>
