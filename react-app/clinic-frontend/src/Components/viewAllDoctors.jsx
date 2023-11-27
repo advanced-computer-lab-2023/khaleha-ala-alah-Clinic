@@ -29,6 +29,7 @@ const DoctorList = () => {
   const [dayFilter, setDayFilter] = useState("");
   const [timeFilter, setTimeFilter] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
     // Function to fetch the list of doctors
@@ -74,14 +75,24 @@ const DoctorList = () => {
     // Call the functions to fetch data when the component mounts
     fetchDoctors();
     fetchPatientDiscounts();
-    setIsLoading(false);
+    //setIsLoading(false);
   }, []);
-  const data = searchResults.map((doctor, index) => ({
-    Name: doctor.name,
-    Speciality: doctor.speciality,
-    SessionPrice: getSessionPrice(doctor, currentPatient),
-    DrEmail: doctor.email,
-  }));
+
+  useEffect(() => {
+    if (doctors.length > 0 && currentPatient != null) {
+      fetchData();
+    }
+  }, [doctors, currentPatient]);
+  const fetchData = () => {
+    const data = searchResults.map((doctor, index) => ({
+      Name: doctor.name,
+      Speciality: doctor.speciality,
+      SessionPrice: getSessionPrice(doctor, currentPatient),
+      DrEmail: doctor.email,
+    }));
+    setTableData(data);
+    setIsLoading(false);
+  };
 
   const columns = [
     // Define columns similar to PatientsTable
@@ -163,7 +174,7 @@ const DoctorList = () => {
       ) : (
         <div className={styles.AllDoctorsContainer}>
           <Header />
-          <NavBar />
+          <NavBar selectedSection={"viewAllDoctors"} />
           <h2 className={styles.h1}>View All Doctors</h2>
 
           {/* Header Bar */}
@@ -251,7 +262,7 @@ const DoctorList = () => {
 
           {/* Table */}
           <div className={styles.tableWrapper}>
-            <Table data={data} columns={columns} />
+            <Table data={tableData} columns={columns} />
           </div>
         </div>
       )}

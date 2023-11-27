@@ -208,6 +208,35 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
               </div>
             )}
           </div>
+          <div
+            className={
+              selectedSection === "prescriptions"
+                ? styles.navbarLinkSelected
+                : styles.navbarLinkSection
+            }
+            onMouseEnter={() => handleSectionMouseEnter("prescriptions")}
+            onMouseLeave={() => handleSectionMouseLeave()}
+            onClick={(e) =>
+              handleSectionClick(e, "prescriptions", "/prescriptions")
+            }
+          >
+            Prescriptions {hasSubsections("prescriptions") && <span>▼</span>}
+          </div>
+          <div
+            className={
+              selectedSection === "viewAllDoctors"
+                ? styles.navbarLinkSelected
+                : styles.navbarLinkSection
+            }
+            onMouseEnter={() => handleSectionMouseEnter("viewAllDoctors")}
+            onMouseLeave={() => handleSectionMouseLeave()}
+            onClick={(e) =>
+              handleSectionClick(e, "viewAllDoctors", "/viewAllDoctors")
+            }
+          >
+            View & Search Doctors{" "}
+            {hasSubsections("viewAllDoctors") && <span>▼</span>}
+          </div>
         </div>
       </div>
     </nav>

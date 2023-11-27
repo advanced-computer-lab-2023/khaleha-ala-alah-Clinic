@@ -1,4 +1,9 @@
 import React, { useState, useEffect } from "react";
+import Table from "./table.jsx";
+import OverlayWindow from "./overlayWindow.jsx";
+import Header from "../Elements/Header.jsx";
+import NavBar from "../Elements/NavBar.jsx";
+import LoadingPage from "./LoadingPage.jsx";
 
 function Prescriptions() {
   const [prescriptions, setPrescriptions] = useState([]);
@@ -8,19 +13,27 @@ function Prescriptions() {
   const [filledFilter, setFilledFilter] = useState("all");
   const [filteredPrescriptions, setFilteredPrescriptions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [message, setMessage] = useState("");
+  const [tableData, setTableData] = useState([]);
 
   // Similar to componentDidMount, fetch data when the component mounts
   useEffect(() => {
     fetchPrescriptions();
-    fetchDoctors();
+    // Removed call to fetchData here
   }, []);
 
+  useEffect(() => {
+    if (prescriptions.length > 0 && doctors.length > 0) {
+      fetchData();
+    }
+  }, [prescriptions, doctors]);
   // Function to fetch prescriptions
   const fetchPrescriptions = () => {
     const requestOptions = {
-      method: 'GET',
+      method: "GET",
       headers: {
-        "authorization": "Bearer " + localStorage.getItem("token")
+        authorization: "Bearer " + localStorage.getItem("token"),
       },
     };
     // Fetch prescriptions data from your API
@@ -29,11 +42,10 @@ function Prescriptions() {
       .then((data) => {
         setPrescriptions(data.data.prescriptions);
         setFilteredPrescriptions(data.data.prescriptions);
-        setLoading(false);
+        fetchDoctors();
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
-        setLoading(false);
       });
   };
 
@@ -41,15 +53,16 @@ function Prescriptions() {
   const fetchDoctors = () => {
     // Fetch doctor data from your API
     const requestOptions = {
-      method: 'GET',
+      method: "GET",
       headers: {
-        "authorization": "Bearer " + localStorage.getItem("token")
+        authorization: "Bearer " + localStorage.getItem("token"),
       },
     };
     fetch("http://localhost:4000/doctors/Alldoctors", requestOptions)
       .then((response) => response.json())
       .then((data) => {
         setDoctors(data.data.Doctors);
+        //fetchData();
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
@@ -99,65 +112,117 @@ function Prescriptions() {
     setFilteredPrescriptions(filtered);
   };
 
+  const columns = [
+    {
+      title: "Doctor Name",
+      dataIndex: "doctorName",
+      key: "doctorName",
+    },
+    {
+      title: "Doctor Email",
+      dataIndex: "doctorEmail",
+      key: "doctorEmail",
+    },
+    {
+      title: "Doctor Speciality",
+      dataIndex: "doctorSpeciality",
+      key: "doctorSpeciality",
+    },
+    {
+      title: "Prescription Status",
+      dataIndex: "status",
+      key: "status",
+    },
+    {
+      title: "Location",
+      dataIndex: "location",
+      key: "location",
+    },
+  ];
+
+  const fetchData = () => {
+    const data = filteredPrescriptions.map((prescription, index) => ({
+      summary: prescription.summary,
+      location: prescription.location,
+      status: prescription.isFilled ? "Filled" : "Unfilled",
+      doctorName: doctors.find((doc) => doc.userID === prescription.DoctorID)
+        ? doctors.find((doc) => doc.userID === prescription.DoctorID).name
+        : "Not Found",
+      doctorEmail: doctors.find((doc) => doc.userID === prescription.DoctorID)
+        ? doctors.find((doc) => doc.userID === prescription.DoctorID).email
+        : "Not Found",
+      doctorSpeciality: doctors.find(
+        (doc) => doc.userID === prescription.DoctorID
+      )
+        ? doctors.find((doc) => doc.userID === prescription.DoctorID).speciality
+        : "Not Found",
+    }));
+    setTableData(data);
+    setLoading(false);
+  };
+
   return (
-    <div>
-      <h1>Prescriptions</h1>
-      {/* Filter options */}
-      <label htmlFor="dateFilter">Filter by Date:</label>
-      <input
-        type="date"
-        id="dateFilter"
-        value={dateFilter}
-        onChange={(e) => setDateFilter(e.target.value)}
-      />
+    <>
+      {loading ? (
+        <LoadingPage />
+      ) : (
+        <div>
+          <Header />
+          <NavBar selectedSection={"prescriptions"} />
+          <h1>Prescriptions</h1>
+          {/* Filter options */}
+          <label htmlFor="dateFilter">Filter by Date:</label>
+          <input
+            type="date"
+            id="dateFilter"
+            value={dateFilter}
+            onChange={(e) => setDateFilter(e.target.value)}
+          />
 
-      <label htmlFor="doctorFilter">Filter by Doctor:</label>
-      <input
-        type="text"
-        id="doctorFilter"
-        placeholder="Enter doctor's name"
-        value={doctorFilter}
-        onChange={(e) => setDoctorFilter(e.target.value)}
-      />
+          <label htmlFor="doctorFilter">Filter by Doctor:</label>
+          <input
+            type="text"
+            id="doctorFilter"
+            placeholder="Enter doctor's name"
+            value={doctorFilter}
+            onChange={(e) => setDoctorFilter(e.target.value)}
+          />
 
-      <label htmlFor="filledFilter">Filter by Filled/Unfilled:</label>
-      <select
-        id="filledFilter"
-        value={filledFilter}
-        onChange={(e) => setFilledFilter(e.target.value)}
-      >
-        <option value="all">All</option>
-        <option value="filled">Filled</option>
-        <option value="unfilled">Unfilled</option>
-      </select>
+          <label htmlFor="filledFilter">Filter by Filled/Unfilled:</label>
+          <select
+            id="filledFilter"
+            value={filledFilter}
+            onChange={(e) => setFilledFilter(e.target.value)}
+          >
+            <option value="all">All</option>
+            <option value="filled">Filled</option>
+            <option value="unfilled">Unfilled</option>
+          </select>
 
-      <button onClick={handleFilterChange}>Apply Filter</button>
+          <button onClick={handleFilterChange}>Apply Filter</button>
 
-      <ul id="prescriptionList">
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          filteredPrescriptions.map((prescription, index) => (
-            <li key={index}>
-              <div>
-                <p>Summary: {prescription.summary}</p>
-                <button
-                  onClick={() =>
-                    viewPrescriptionDetails(
-                      prescription.location,
-                      prescription.DoctorID,
-                      prescription.isFilled
-                    )
-                  }
-                >
-                  Select (View Details)
-                </button>
-              </div>
-            </li>
-          ))
-        )}
-      </ul>
-    </div>
+          <>
+            <Table
+              data={tableData}
+              columns={columns}
+              clickable={true}
+              onRowClick={(record, rowIndex) => {
+                setMessage(record.summary);
+                setShowOverlay(true);
+              }}
+            />
+
+            {showOverlay && (
+              <OverlayWindow
+                message={message}
+                onCancel={() => setShowOverlay(false)}
+                cancelLabel="Close"
+              />
+            )}
+          </>
+        </div>
+      )}
+    </>
   );
 }
 

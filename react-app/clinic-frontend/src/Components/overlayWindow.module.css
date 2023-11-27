@@ -1,5 +1,5 @@
 /* ConfirmationDialog.css */
-.confirmation-backdrop {
+.confirmationBackdrop {
   position: fixed;
   top: 0;
   left: 0;
@@ -12,26 +12,28 @@
   z-index: 999; /* Make sure it appears above other content */
 }
 
-.confirmation-dialog {
+.confirmationDialog {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   padding: 20px;
   text-align: center;
   width: 300px;
+  max-height: 30vh;
+  overflow-y: auto;
 }
 
-.confirmation-message {
+.confirmationMessage {
   font-size: 16px;
   margin-bottom: 20px;
 }
 
-.confirmation-buttons {
+.confirmationButtons {
   display: flex;
   justify-content: center;
 }
 
-.confirmation-buttons button {
+.confirmationButtons button {
   margin: 0 10px;
   padding: 10px 20px;
   border: none;
@@ -39,12 +41,12 @@
   border-radius: 4px;
 }
 
-.confirmation-buttons button.confirm {
+.confirmationButtons button.confirm {
   background-color: #4caf50; /* Green color for confirmation button */
   color: #fff;
 }
 
-.confirmation-buttons button.cancel {
+.confirmationButtons button.cancel {
   background-color: #f44336; /* Red color for cancel button */
   color: #fff;
 }
