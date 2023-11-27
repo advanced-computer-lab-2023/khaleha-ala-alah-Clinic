@@ -2,7 +2,7 @@ const Patient = require("../models/users/patientModel");
 const Doctors = require("../models/users/doctorModel");
 const Appointments = require("./../models/appointmentModel");
 const Prescriptions = require("./../models/presecriptionsModel.js");
-
+const followUpRequestAppointment = require("./../models/followUpRequestModel");
 //examples
 
 //examples -- we need api bellow to test with them
@@ -1438,3 +1438,44 @@ exports.cancelAppointment = async (req, res) => {
     });
   }
 };
+
+exports.followUpRequestAppointment = async (req,res) =>{
+  try{
+    const patient = await Patient.findOne({userID : req.user._id});
+    if(!patient){
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+    const date = req.body.date;
+    if(date>Date.now()){
+      return res.status(400).json({
+        status: "fail",
+        message: "Date is invalid",
+      });
+    }
+    const appointment = await Appointments.find({ PatientID: req.user._id , DoctorID : req.body.doctorID , timedAt : req.body.date});
+    if(!appointment){
+      return res.status(404).json({
+        status: "fail",
+        message: "Appointment not found",
+      });
+    }
+    const FollowUpRequestAppointment = new followUpRequestAppointment({
+      PatientID : req.user._id,
+      DoctorID : req.body.doctorID,
+      });
+    await FollowUpRequestAppointment.save();
+    res.status(200).json({
+      status: "success",
+      message: "followup request send successfully",
+    });
+  }
+  catch(error){
+    res.status(500).json({
+      status: "error",
+      message: error.message,
+    });
+  }
+}
