@@ -70,7 +70,10 @@ const PackagesPage = () => {
   return (
     <>
       <Header />
-      <NavBar />
+      <NavBar
+        selectedSection={"packages"}
+        selectedSubSection={"yourPackages"}
+      />
       <div className={styles.PackagesContainerViewing}>
         <div className={styles.ViewAllPackages}>
           <Slider>

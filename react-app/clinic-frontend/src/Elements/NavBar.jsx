@@ -43,7 +43,11 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
   const hasSubsections = (sectionName) => {
     // Logic to determine if a section has subsections
     // For example:
-    return sectionName === "familyMembers" || sectionName === "appointments"; // Assume 'home' has subsections for this example
+    return (
+      sectionName === "familyMembers" ||
+      sectionName === "appointments" ||
+      sectionName === "packages"
+    ); // Assume 'home' has subsections for this example
   };
   return (
     <nav className={styles.navbar}>
@@ -152,6 +156,54 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
                   }
                 >
                   View Your Appointments
+                </div>{" "}
+              </div>
+            )}
+          </div>
+
+          <div
+            className={
+              selectedSection === "packages"
+                ? styles.navbarLinkSelected
+                : styles.navbarLinkSection
+            }
+            onMouseEnter={() => handleSectionMouseEnter("packages")}
+            onMouseLeave={() => handleSectionMouseLeave()}
+            onClick={(e) =>
+              handleSectionClick(e, "packages", "/managePackages")
+            }
+          >
+            Packages {hasSubsections("packages") && <span>▼</span>}
+            {/* Dropdown Menu */}
+            {hoveredSection === "packages" && (
+              <div
+                className={styles.homeDropdownMenu}
+                onMouseEnter={() => setHoveredSection("packages")}
+                onMouseLeave={() => setHoveredSection(null)}
+              >
+                <div
+                  className={
+                    selectedSubSection === "yourPackages"
+                      ? styles.dropdownItemSelected
+                      : styles.dropdownItem
+                  }
+                  onClick={(e) =>
+                    handleSectionClick(e, "home", "/myselfPackages")
+                  }
+                >
+                  Manage Your Packages
+                </div>{" "}
+                <div
+                  className={
+                    selectedSubSection === "familyMemberPackages"
+                      ? styles.dropdownItemSelected
+                      : styles.dropdownItem
+                  }
+                  onClick={(e) =>
+                    handleSectionClick(e, "home", "/familyMemberPackages")
+                  }
+                >
+                  Manage Your Family Member Packages
                 </div>{" "}
               </div>
             )}

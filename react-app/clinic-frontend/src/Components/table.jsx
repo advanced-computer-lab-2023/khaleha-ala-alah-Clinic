@@ -26,9 +26,14 @@ const Tables = ({
         rowKey="id" // Ensure you have a unique key for each row
         pagination={{ pageSize: 7 }} // Adjust pagination as needed
         rowClassName={clickable ? styles.tableRowClickable : styles.tableRow}
-        onRow={(_, rowIndex) => ({
-          ...rowProps,
-        })}
+        onRow={(record) => {
+          return {
+            onClick: () => {
+              onRowClick(record);
+            }, // click row
+            // You can add more event handlers if needed
+          };
+        }}
         // Add any other props as per your requirement
       />
     </div>

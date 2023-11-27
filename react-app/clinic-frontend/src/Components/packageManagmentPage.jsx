@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import LoadingPage from "./LoadingPage";
+import Header from "../Elements/Header";
+import NavBar from "../Elements/NavBar";
 
 const formatDate = (dateString) => {
   const options = { day: "numeric", month: "long", year: "numeric" };
@@ -51,30 +53,34 @@ const ManagePackages = () => {
           <LoadingPage />
         </div>
       ) : (
-        <div className="manage-packages">
-          <h1 className="title">Manage Packages For</h1>
+        <>
+          <Header />
+          <NavBar selectedSection={"packages"} />
+          <div className="manage-packages">
+            <h1 className="title">Manage Packages For</h1>
 
-          <div className="card" onClick={() => navigateTo("/myselfPackages")}>
-            <h2>Myself</h2>
-            <p>Description for personal packages...</p>
-            <p>Current Status : {status.status} </p>
-            {status.status === "Ended" ? (
-              <p>Package Cancel Date : {formatDate(status.packageEndDate)}</p>
-            ) : status.status === "Subscribed" ? (
-              <p>Package End Date : {formatDate(status.packageEndDate)}</p>
-            ) : null}
+            <div className="card" onClick={() => navigateTo("/myselfPackages")}>
+              <h2>Myself</h2>
+              <p>Description for personal packages...</p>
+              <p>Current Status : {status.status} </p>
+              {status.status === "Ended" ? (
+                <p>Package Cancel Date : {formatDate(status.packageEndDate)}</p>
+              ) : status.status === "Subscribed" ? (
+                <p>Package End Date : {formatDate(status.packageEndDate)}</p>
+              ) : null}
+            </div>
+            <div
+              className="card"
+              onClick={() => navigateTo("/familyMemberPackages")}
+            >
+              <h2>My Family Members</h2>
+              <p>
+                Description for family
+                packagesgpjfioghprehvpioerhverhogvheovheriohtvoiwhetois...
+              </p>
+            </div>
           </div>
-          <div
-            className="card"
-            onClick={() => navigateTo("/familyMemberPackages")}
-          >
-            <h2>My Family Members</h2>
-            <p>
-              Description for family
-              packagesgpjfioghprehvpioerhverhogvheovheriohtvoiwhetois...
-            </p>
-          </div>
-        </div>
+        </>
       )}
     </>
   );
