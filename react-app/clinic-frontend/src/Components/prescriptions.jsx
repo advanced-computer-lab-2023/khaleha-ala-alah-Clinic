@@ -4,6 +4,8 @@ import OverlayWindow from "./overlayWindow.jsx";
 import Header from "../Elements/Header.jsx";
 import NavBar from "../Elements/NavBar.jsx";
 import LoadingPage from "./LoadingPage.jsx";
+import styles from "./prescriptions.module.css";
+import { FilterOutlined } from "@ant-design/icons";
 
 function Prescriptions() {
   const [prescriptions, setPrescriptions] = useState([]);
@@ -114,6 +116,11 @@ function Prescriptions() {
 
   const columns = [
     {
+      title: "Issue Date",
+      dataIndex: "date",
+      key: "date",
+    },
+    {
       title: "Doctor Name",
       dataIndex: "doctorName",
       key: "doctorName",
@@ -156,6 +163,7 @@ function Prescriptions() {
       )
         ? doctors.find((doc) => doc.userID === prescription.DoctorID).speciality
         : "Not Found",
+      date: new Date(prescription.date).toDateString(),
     }));
     setTableData(data);
     setLoading(false);
@@ -169,57 +177,75 @@ function Prescriptions() {
         <div>
           <Header />
           <NavBar selectedSection={"prescriptions"} />
-          <h1>Prescriptions</h1>
-          {/* Filter options */}
-          <label htmlFor="dateFilter">Filter by Date:</label>
-          <input
-            type="date"
-            id="dateFilter"
-            value={dateFilter}
-            onChange={(e) => setDateFilter(e.target.value)}
-          />
+          <div className={styles.titleContainer}>
+            <h1>Prescriptions</h1>
+            <p>
+              View Your Prescriptions And Filter Them Using Date Of Issuing,
+              Doctor Name Or/And Status
+            </p>
+          </div>
 
-          <label htmlFor="doctorFilter">Filter by Doctor:</label>
-          <input
-            type="text"
-            id="doctorFilter"
-            placeholder="Enter doctor's name"
-            value={doctorFilter}
-            onChange={(e) => setDoctorFilter(e.target.value)}
-          />
-
-          <label htmlFor="filledFilter">Filter by Filled/Unfilled:</label>
-          <select
-            id="filledFilter"
-            value={filledFilter}
-            onChange={(e) => setFilledFilter(e.target.value)}
-          >
-            <option value="all">All</option>
-            <option value="filled">Filled</option>
-            <option value="unfilled">Unfilled</option>
-          </select>
-
-          <button onClick={handleFilterChange}>Apply Filter</button>
-
-          <>
-            <Table
-              data={tableData}
-              columns={columns}
-              clickable={true}
-              onRowClick={(record, rowIndex) => {
-                setMessage(record.summary);
-                setShowOverlay(true);
-              }}
-            />
-
-            {showOverlay && (
-              <OverlayWindow
-                message={message}
-                onCancel={() => setShowOverlay(false)}
-                cancelLabel="Close"
+          <div className={styles.tableContainer}>
+            <div className={styles.filterContainer}>
+              {/* Filter options */}
+              <input
+                type="date"
+                id="dateFilter"
+                value={dateFilter}
+                onChange={(e) => setDateFilter(e.target.value)}
+                className={`${styles.searchInput} ${styles.inputField}`}
               />
-            )}
-          </>
+
+              <input
+                type="text"
+                id="doctorFilter"
+                placeholder="Enter doctor's name"
+                value={doctorFilter}
+                onChange={(e) => setDoctorFilter(e.target.value)}
+                className={`${styles.searchInput} ${styles.inputField}`}
+              />
+
+              <select
+                id="filledFilter"
+                value={filledFilter}
+                onChange={(e) => setFilledFilter(e.target.value)}
+                className={`${styles.searchInput} ${styles.inputField}`}
+              >
+                <option value="all">Filled/Unfilled</option>
+                <option value="filled">Filled</option>
+                <option value="unfilled">Unfilled</option>
+              </select>
+
+              <button
+                onClick={handleFilterChange}
+                className={styles.searchButton}
+              >
+                <FilterOutlined style={{ marginRight: "4px" }} />
+                Apply Filter
+              </button>
+            </div>
+
+            <div style={{ marginTop: "20px" }}>
+              <p>Click On Any Row To Show Prescription Summary</p>
+              <Table
+                data={tableData}
+                columns={columns}
+                clickable={true}
+                onRowClick={(record, rowIndex) => {
+                  setMessage(record.summary);
+                  setShowOverlay(true);
+                }}
+              />
+            </div>
+          </div>
+
+          {showOverlay && (
+            <OverlayWindow
+              message={message}
+              onCancel={() => setShowOverlay(false)}
+              cancelLabel="Close"
+            />
+          )}
         </div>
       )}
     </>

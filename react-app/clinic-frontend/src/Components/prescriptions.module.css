@@ -1,0 +1,50 @@
+.searchInput {
+  width: 40%;
+  padding: 8px;
+  font-size: 11pt; /* Font size for the select element */
+  border: 1px solid #ccc;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  margin: 3px;
+}
+.searchButton {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 30%;
+  font-size: 12pt;
+  transition: background-color 0.3s;
+}
+
+.searchInput:hover {
+  border-color: #007bff; /* Change border color on hover */
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5); /* Add box shadow on hover */
+}
+
+.searchButton:hover {
+  background-color: #0056b3; /* Change background color on hover */
+}
+
+.titleContainer {
+  padding: 20px;
+  /* Add any additional styling here */
+}
+
+.tableContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center the content horizontally */
+  justify-content: center; /* Center the content vertically */
+  margin-top: 20px; /* Adjust as needed */
+  width: 100%; /* Adjust width as needed */
+}
+
+.filterContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* Center the content horizontally */
+  justify-content: space-between; /* Center the content vertically */
+  margin-top: 20px; /* Adjust as needed */
+  width: 100%; /* Adjust width as needed */
+}

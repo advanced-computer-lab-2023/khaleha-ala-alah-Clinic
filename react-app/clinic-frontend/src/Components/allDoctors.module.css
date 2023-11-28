@@ -44,6 +44,7 @@
   font-size: 11pt; /* Font size for the select element */
   border: 1px solid #ccc;
   transition: border-color 0.3s, box-shadow 0.3s;
+  margin: 3px;
 }
 
 .searchButton {
@@ -74,6 +75,7 @@
   color: #5e5d5d;
   font-size: 11pt; /* Font size for the select element */
   font-family: Arial, Helvetica, sans-serif;
+  margin: 3px;
 }
 
 /* Style the options within the select element */
