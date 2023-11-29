@@ -58,6 +58,8 @@ import "./App.css";
 import ChangePasswordForm from "./Components/changePassword.jsx";
 
 import Messenger from "./Components/messenger.jsx";
+import AddPrescription from "./Components/addPrescription.jsx";
+import DrViewPrescriptions from "./Components/drViewPrescriptions.jsx";
 
 
 function App() {
@@ -173,6 +175,8 @@ function App() {
                 element={<FollowUpScheduler />}
               />
               <Route path="/available-slots" element={<AvailableSlotsForm />} />
+              <Route path="/addPrescription" element={<AddPrescription />} />
+              <Route path="/ViewPrescriptions" element={<DrViewPrescriptions />} />
               <Route path="/chat" element={<Messenger />} />
             </>
           )}

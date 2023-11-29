@@ -145,6 +145,12 @@ const DoctorPatients = ({ doctorId }) => {
             <button onClick={() => addHealthRecord(patient)}>
               Add Record Health
             </button>
+            <button onClick={() => navigate("/addPrescription",{state:{patient}})}>
+              Add Prescription
+            </button>
+            <button onClick={() => navigate("/ViewPrescriptions",{state:{patient}})}>
+              view Prescriptions
+            </button>
           </li>
         ))}
       </ul>
