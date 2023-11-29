@@ -19,7 +19,8 @@
   padding: 20px;
   text-align: center;
   width: 300px;
-  max-height: 30vh;
+  min-height: 20vh;
+  max-height: 20vh;
   overflow-y: auto;
 }
 
@@ -49,4 +50,18 @@
 .confirmationButtons button.cancel {
   background-color: #f44336; /* Red color for cancel button */
   color: #fff;
+}
+
+.closeButton {
+  position: fixed;
+  top: 278px; /* Adjust as needed */
+  right: 41%; /* Adjust as needed */
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.closeButton:hover {
+  background-color: #fff;
 }

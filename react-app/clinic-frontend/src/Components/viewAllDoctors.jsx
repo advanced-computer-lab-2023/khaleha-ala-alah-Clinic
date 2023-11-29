@@ -6,18 +6,16 @@ import NavBar from "../Elements/NavBar.jsx";
 import Header from "../Elements/Header";
 import LoadingPage from "../Components/LoadingPage.jsx";
 import { useNavigate } from "react-router-dom";
+import BookOverlay from "./Book.jsx";
 
 const getSessionPrice = (doctor, currentPatient) => {
   // Replace this logic with your actual session price calculation
   // Here, I'm assuming session price is based on some fixed rate
   console.log(doctor.hourlyRate + "BBBB");
-  let fixedSessionRate = doctor.hourlyRate + 0.1 * doctor.hourlyRate;
-  console.log(fixedSessionRate + "AAAA");
-  if (currentPatient.packageName && currentPatient.packageName != "none")
-    fixedSessionRate =
-      fixedSessionRate - currentPatient.doctorsDiscount * fixedSessionRate;
-  console.log(fixedSessionRate);
-  return fixedSessionRate;
+
+  return currentPatient.doctorsDiscount
+    ? doctor.hourlyRate * (1 - currentPatient.doctorsDiscount)
+    : doctor.hourlyRate;
 };
 
 const DoctorList = () => {
@@ -31,6 +29,8 @@ const DoctorList = () => {
   const [timeFilter, setTimeFilter] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [tableData, setTableData] = useState([]);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -92,6 +92,8 @@ const DoctorList = () => {
       Speciality: doctor.speciality,
       SessionPrice: getSessionPrice(doctor, currentPatient),
       DrEmail: doctor.email,
+      affiliation: doctor.affiliation,
+      educationalBackground: doctor.educationalBackground,
     }));
     setTableData(data);
     setIsLoading(false);
@@ -116,6 +118,18 @@ const DoctorList = () => {
       title: "Email",
       dataIndex: "DrEmail",
       key: "email",
+      className: styles.tableHeader,
+    },
+    {
+      title: "Affiliation",
+      dataIndex: "affiliation",
+      key: "affiliation",
+      className: styles.tableHeader,
+    },
+    {
+      title: "Educational Background",
+      dataIndex: "educationalBackground",
+      key: "educationalBackground",
       className: styles.tableHeader,
     },
     {
@@ -270,12 +284,18 @@ const DoctorList = () => {
               columns={columns}
               clickable={true}
               onRowClick={(record, rowIndex) => {
-                navigate("/bookAppointment", {
-                  state: { doctor: record.doctor },
-                });
+                setSelectedDoctor(record.doctor);
+                setShowOverlay(true);
               }}
             />
           </div>
+          {showOverlay && (
+            <BookOverlay
+              onCancel={() => setShowOverlay(false)}
+              cancelLabel="Close"
+              doctor={selectedDoctor}
+            />
+          )}
         </div>
       )}
     </>
