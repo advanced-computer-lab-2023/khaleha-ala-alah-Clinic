@@ -12,6 +12,8 @@ import editprofile from "../Images/editprofile.png";
 import ImageCarousel from "../Elements/ImageCarousel";
 import ServiceItem from "../Elements/ServiceItem";
 import NavBar from "../Elements/NavBar";
+import Header from "../Elements/Header";
+
 
 import appointments from "../Images/appointmentwithpatient.jpg";
 import chat from "../Images/chatwithpatient.jpg";
@@ -50,6 +52,7 @@ export const DoctorHome = () => {
 
   return (
     <div>
+      <Header />
       <NavBar />
       {
         <div className="all-containers-doctorH">
@@ -87,13 +90,6 @@ export const DoctorHome = () => {
               title="Patient Health Records"
               description="view and manage detailed health records of your patients"
               navigateTo="/patientdoctorhealth"
-            />
-            ,
-            <ServiceItem
-              imgSrc={follow}
-              title="Follow-Up Scheduler"
-              description="Streamline patient follow-ups,ensuring timely and organized care appointments."
-              navigateTo="/follow-up-scheduler"
             />
             ,
             <ServiceItem

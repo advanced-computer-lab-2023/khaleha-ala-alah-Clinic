@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import styles from "./viewallmypatients.module.css";
+import Table from "./table.jsx";
+import FollowUpOverlay from "./FollowUpScheduler.jsx";
+import HealthRecordOverlay from "./ManageHealthRecords.jsx"
 
 const DoctorPatients = ({ doctorId }) => {
   const navigate = useNavigate();
@@ -10,6 +13,9 @@ const DoctorPatients = ({ doctorId }) => {
   const [appointments, setAppointments] = useState([]);
   const [error, setError] = useState(null);
   const [prescriptions, setPrescriptions] = useState([]);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [showHealthRecords, setshowHealthRecords] = useState(false);
+  const [selectedPatient , setSelectedPatient] = useState(null);
 
   useEffect(() => {
     const fetchDoctorData = async () => {
@@ -106,7 +112,83 @@ const DoctorPatients = ({ doctorId }) => {
     setFilteredPatients(upcomingPatients);
   };
 
+  
+  const data = filteredPatients.map((patient, index) => ({
+    patient: patient,
+    username: patient.username,
+    name: patient.name,
+    email: patient.email,
+    gender: patient.gender,
+    /*healthrecords:
+      Array.isArray(patient.files) && patient.files.length > 0
+        ? patient.files.map((file, fileIndex) => (
+            <a
+              key={fileIndex}
+              href={`http://localhost:4000/api/files/${file}/download`}
+              download
+            >
+              {file}
+              
+            </a>
+          ))
+        : "No Files",*/
+    action: ""
+  }));
+
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      className: styles.tableHeader,
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      className: styles.tableHeader,
+    },
+    {
+      title: "Gender",
+      dataIndex: "gender",
+      key: "gender",
+      className: styles.tableHeader,
+    },
+    {
+      title: "Action",
+      key: "action",
+      className: styles.tableHeader,
+      render: (text, record) => (
+        <div>
+          <button
+            className={styles.doctorActionButton + " " + styles.approveButton}
+            value={"approve"}
+            onClick={() => {
+              setSelectedPatient(record.patient);
+              setshowHealthRecords(true);
+            }}    
+          >
+            Manage Health Record
+          </button>
+          <button
+            className={styles.doctorActionButton + " " + styles.rejectButton}
+            value={"reject"}
+            onClick={() => {
+              setSelectedPatient(record.patient);
+              setShowOverlay(true);
+              
+            }}          
+            >
+            Schedule a follow-up
+          </button>
+        </div>
+      ),
+    },
+  ];
+
+
   return (
+    /*
     <div>
       <button onClick={() => navigate("/follow-up-scheduler")}>
         Schedule a Follow-Up
@@ -148,7 +230,33 @@ const DoctorPatients = ({ doctorId }) => {
           </li>
         ))}
       </ul>
-    </div>
+    </div>*/
+
+      <>
+        <h1>View all my Patients</h1>
+        <div className={styles.viewallpatients}>
+          <div className={styles.tableWrapper}>
+            <Table data={data} columns={columns} />
+          </div>
+
+          {showOverlay && (
+            <FollowUpOverlay
+              onCancel={() => setShowOverlay(false)}
+              cancelLabel="Close"
+              patient = {selectedPatient}
+            />
+          )}
+
+        {showHealthRecords && (
+            <HealthRecordOverlay
+              onCancel={() => setshowHealthRecords(false)}
+              cancelLabel="Close"
+              patient = {selectedPatient}
+            />
+          )}
+        </div>
+      </>
+
   );
 };
 
