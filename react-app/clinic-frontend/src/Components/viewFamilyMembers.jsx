@@ -103,22 +103,6 @@ function FamilyMembers() {
             selectedSection={"familyMembers"}
             selectedSubSection="viewFamilyMembers"
           />
-          {/*<h1 className={styles.h1}>Welcome to our Family Member Management portal</h1>*/}
-          {/* <ul>
-        {familyMembers.map((familyMember, index) => (
-          <li key={index}>
-            <p>Name: {familyMember.name}</p>
-            <p>National ID: {familyMember.nationalID}</p>
-            <p>Age: {familyMember.age}</p>
-            <p>Gender: {familyMember.gender}</p>
-            <p>Relation: {familyMember.relationToPatient}</p>
-          </li>
-        ))}
-      </ul> */}
-
-          {/*<div className="FamilyMemberTable">
-            <DataTable data={FamilyMembers} columns={FamilyMemberColumns} />
-          </div>*/}
           <div className={styles.tableWrapper}>
             <Table data={data} columns={columns} />
           </div>
