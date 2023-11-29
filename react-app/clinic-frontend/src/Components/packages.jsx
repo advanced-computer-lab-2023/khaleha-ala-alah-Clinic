@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import styles from "./packages.module.css"
 
 const HealthPackages = () => {
   const [healthPackages, setHealthPackages] = useState([]);
@@ -142,42 +143,48 @@ setSelectedID(healthPackage._id);
       <div>
         <h3>Add Health Package</h3>
         <input
+          className={styles.infoPackages}
           type="text"
           placeholder="Name"
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
         />
         <input
+          className={styles.infoPackages}
           type="number"
           placeholder="Price"
           value={formData.price}
           onChange={(e) => setFormData({ ...formData, price: parseInt(e.target.value) })}
         />
         <input
+          className={styles.infoPackages}
           type="text"
           placeholder="Description"
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
         />
         <input
+          className={styles.infoPackages}
           type="number"
           placeholder="Doctor Discount"
           value={formData.doctorDiscount}
           onChange={(e) => setFormData({ ...formData, doctorDiscount: parseInt(e.target.value) })}
         />
         <input
+          className={styles.infoPackages}
           type="number"
           placeholder="Medical Discount"
           value={formData.medicalDiscount}
           onChange={(e) => setFormData({ ...formData, medicalDiscount: parseInt(e.target.value) })}
         />
         <input
+          className={styles.infoPackages}
           type="number"
           placeholder="Family Discount"
           value={formData.familyDiscount}
           onChange={(e) => setFormData({ ...formData, familyDiscount: parseInt(e.target.value) })}
         />
-        <button onClick={handleAddHealthPackage}>Add Health Package</button>
+        <button  className={styles.addPackage} onClick={handleAddHealthPackage}>Add Health Package</button>
       </div>
       <div>
         <h3>Update Health Package</h3>

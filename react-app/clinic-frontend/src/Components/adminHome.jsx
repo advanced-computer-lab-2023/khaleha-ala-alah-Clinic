@@ -49,7 +49,7 @@ export const AdminHome = () => {
             imgSrc={healthpackages}
             title="Health Packages"
             description="Manage our system health plans for comprehensive care solutions"
-            navigateTo="/packages"
+            navigateTo="/ManagementOfPackages"
           />
         </div>
       </div>

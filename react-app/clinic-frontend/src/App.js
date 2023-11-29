@@ -48,7 +48,7 @@ import AppointmentCheckout from "./Components/appointmentCheckout"
 import "./App.css";
 import Wallet from './Components/Wallet.js'
 import PaymentMethod from "./Components/choose-to-pay.js";
-
+import PackagesManagementAdmin from "./Components/packagesManagementAdmin.jsx";
 
 
 import HealthRecordForm from "./Components/HealthRecordForm";
@@ -56,6 +56,7 @@ import HealthRecordForm from "./Components/HealthRecordForm";
 
 import "./App.css";
 import ChangePasswordForm from "./Components/changePassword.jsx";
+import ManagePackages from "./Components/packageManagmentPage";
 
 
 function App() {
@@ -180,6 +181,8 @@ function App() {
               <Route path="/viewPendingDoctors" element={<PendingDoctors />} />
               <Route path="/packages" element={<HealthPackages />} />
               <Route path="/changePassword" element={<ChangePasswordForm />} />
+              <Route path="/ManagementOfPackages" element={<PackagesManagementAdmin />} />
+
             </>
           )}
 

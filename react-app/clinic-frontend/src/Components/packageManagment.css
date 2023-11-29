@@ -5,7 +5,7 @@
   justify-content: center;
   height: 100vh;
   width: 100vw;
-  background-color: #e1e5f2; /* Light blue background */
+  background-color: #fff; /* Light blue background */
 }
 
 .title {
@@ -15,7 +15,7 @@
 
 .card {
   background-color: #ffffff; /* White background */
-  border: 2px solid #1f7a8c; /* Border color */
+  border: 2px solid #659ba6; /* Border color */
   border-radius: 8px;
   padding: 20px;
   margin: 20px;
@@ -28,6 +28,8 @@
 
 .card:hover {
   transform: scale(1.05); /* Slight scale effect on hover */
+  border-color: rgb(8, 60, 79);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7); /* Subtle shadow */
 }
 
 .card h2 {
