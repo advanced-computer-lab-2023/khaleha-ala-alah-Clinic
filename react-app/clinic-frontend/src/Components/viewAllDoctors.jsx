@@ -5,6 +5,7 @@ import { SearchOutlined, FilterOutlined } from "@ant-design/icons";
 import NavBar from "../Elements/NavBar.jsx";
 import Header from "../Elements/Header";
 import LoadingPage from "../Components/LoadingPage.jsx";
+import { useNavigate } from "react-router-dom";
 
 const getSessionPrice = (doctor, currentPatient) => {
   // Replace this logic with your actual session price calculation
@@ -30,6 +31,7 @@ const DoctorList = () => {
   const [timeFilter, setTimeFilter] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [tableData, setTableData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Function to fetch the list of doctors
@@ -85,6 +87,7 @@ const DoctorList = () => {
   }, [doctors, currentPatient]);
   const fetchData = () => {
     const data = searchResults.map((doctor, index) => ({
+      doctor: doctor,
       Name: doctor.name,
       Speciality: doctor.speciality,
       SessionPrice: getSessionPrice(doctor, currentPatient),
@@ -262,7 +265,16 @@ const DoctorList = () => {
 
           {/* Table */}
           <div className={styles.tableWrapper}>
-            <Table data={tableData} columns={columns} />
+            <Table
+              data={tableData}
+              columns={columns}
+              clickable={true}
+              onRowClick={(record, rowIndex) => {
+                navigate("/bookAppointment", {
+                  state: { doctor: record.doctor },
+                });
+              }}
+            />
           </div>
         </div>
       )}
