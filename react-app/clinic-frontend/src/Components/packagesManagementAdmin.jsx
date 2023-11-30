@@ -59,30 +59,21 @@ const PackagesManagementAdmin = () => {
 
             <div
               className="card"
-              onClick={() => navigateTo("/packages")}
+              onClick={() => navigateTo("/addPackageAdmin")}
             >
               <h2>Add Health Package</h2>
-              <p>
-              Add new health package
-              </p>
+              <p>Add new health package</p>
             </div>
-            <div
-              className="card"
-              onClick={() => navigateTo("/packages")}
-            >
+            <div className="card" onClick={() => navigateTo("/packages")}>
               <h2>Update Health Package</h2>
-              <p>
-              Update current health package
-              </p>
+              <p>Update current health package</p>
             </div>
             <div
               className="card"
-              onClick={() => navigateTo("/packages")}
+              onClick={() => navigateTo("/deletePackageAdmin")}
             >
               <h2>Delete Health Package</h2>
-              <p>
-              Delete current health package
-              </p>
+              <p>Delete current health package</p>
             </div>
           </div>
         </>

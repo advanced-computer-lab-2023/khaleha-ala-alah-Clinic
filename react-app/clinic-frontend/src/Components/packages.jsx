@@ -1,26 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import styles from "./packages.module.css"
+import React, { useState, useEffect } from "react";
+import styles from "./packages.module.css";
+import Table from "./table.jsx";
+import { Avatar, Button, Modal, Tag } from "antd";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import ConfirmationDialog from "../Elements/ConfirmationDialog.jsx";
+import EditPackageOverlay from "./editPackageAdminOverlay.jsx";
+import { PlusOutlined } from "@ant-design/icons";
+import AddPackageOverlay from "./AddHealthPackageOverlay.jsx";
 
 const HealthPackages = () => {
   const [healthPackages, setHealthPackages] = useState([]);
   const [selectedHealthPackage, setSelectedHealthPackage] = useState({});
-  const [selectedID , setSelectedID] = useState('');
+  const [selectedID, setSelectedID] = useState("");
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
-    name: '',
+    name: "",
     price: 0,
-    description: '',
-    doctorDiscount: 0,
+    description: "",
+    doctorsDiscount: 0,
     medicalDiscount: 0,
     familyDiscount: 0,
   });
+  const [showEditOverlay, setShowEditOverlay] = useState(false);
+  const [showDeleteConfirmationDialog, setShowDeleteConfirmationDialog] =
+    useState(false);
+
+  const [showAddOverlay, setShowAddOverlay] = useState(false);
 
   // Function to fetch all health packages
   const fetchAllHealthPackages = async () => {
     try {
-      const response = await fetch('http://localhost:4000/packages/');
+      const response = await fetch("http://localhost:4000/packages/");
       if (!response.ok) {
-        throw new Error('Failed to fetch data');
+        throw new Error("Failed to fetch data");
       }
       const data = await response.json();
       setHealthPackages(data.data.packages);
@@ -35,33 +47,33 @@ const HealthPackages = () => {
   }, []);
 
   const handleHealthPackageClick = (healthPackage) => {
-
-
-setSelectedID(healthPackage._id);
+    setSelectedID(healthPackage._id);
 
     setSelectedHealthPackage(healthPackage);
     setFormData({
       name: healthPackage.name,
       price: healthPackage.price,
       description: healthPackage.description,
-      doctorDiscount: healthPackage.doctorDiscount,
+      doctorsDiscount: healthPackage.doctorsDiscount,
       medicalDiscount: healthPackage.medicalDiscount,
       familyDiscount: healthPackage.familyDiscount,
     });
   };
 
   const handleAddHealthPackage = async () => {
-
     try {
-      const response = await fetch('http://localhost:4000/packages/createPackage', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "http://localhost:4000/packages/createPackage",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
       if (!response.ok) {
-        throw new Error('Failed to add health package');
+        throw new Error("Failed to add health package");
       }
       // Refresh the list of health packages after adding a new one
       fetchAllHealthPackages();
@@ -72,18 +84,21 @@ setSelectedID(healthPackage._id);
 
   const handleUpdateHealthPackage = async () => {
     try {
-        formData.id = selectedID;
-   
-      const response = await fetch('http://localhost:4000/packages/updatePackage', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      formData.id = selectedID;
+
+      const response = await fetch(
+        "http://localhost:4000/packages/updatePackage",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('Failed to update health package');
+        throw new Error("Failed to update health package");
       }
 
       // Refresh the list of health packages after updating
@@ -97,103 +112,178 @@ setSelectedID(healthPackage._id);
     // Use the selectedHealthPackage data to delete a health package
     // Make a DELETE request to the corresponding API endpoint
 
-        try {
-        formData.id = selectedID;
-   
-      const response = await fetch('http://localhost:4000/packages/deletePackage', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+    try {
+      formData.id = selectedID;
+      console.log(formData);
+
+      const response = await fetch(
+        "http://localhost:4000/packages/deletePackage",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('Failed to update health package');
+        throw new Error("Failed to update health package");
       }
 
       // Refresh the list of health packages after updating
       fetchAllHealthPackages();
+      setShowDeleteConfirmationDialog(false);
     } catch (err) {
       setError(err.message);
     }
-  
   };
 
+  const actions = (healthPackage) => (
+    <div className={styles.buttonsList}>
+      <Button
+        onClick={() => {
+          setShowEditOverlay(true);
+          setSelectedID(healthPackage.package._id);
+          setFormData({
+            name: healthPackage.name,
+            price: healthPackage.price,
+            description: healthPackage.description,
+            doctorsDiscount: healthPackage.doctorsDiscount,
+            medicalDiscount: healthPackage.medicalDiscount,
+            familyDiscount: healthPackage.familyDiscount,
+          });
+        }}
+        shape="circle"
+        type="primary"
+        icon={<EditOutlined />}
+        className={styles.editButton}
+      />
+      <Button
+        onClick={() => {
+          console.log(healthPackage.name + "<<<<<<");
+          setSelectedID(healthPackage.package._id);
+          setFormData({
+            name: healthPackage.name,
+            price: healthPackage.price,
+            description: healthPackage.description,
+            doctorsDiscount: healthPackage.doctorsDiscount,
+            medicalDiscount: healthPackage.medicalDiscount,
+            familyDiscount: healthPackage.familyDiscount,
+          });
+          setShowDeleteConfirmationDialog(true);
+        }}
+        shape="circle"
+        danger
+        icon={<DeleteOutlined />}
+        className={styles.deleteButton}
+      />
+    </div>
+  );
+
+  const data = healthPackages.map((healthPackage) => ({
+    package: healthPackage,
+    name: healthPackage.name,
+    description: healthPackage.description,
+    price: healthPackage.price,
+    doctorsDiscount: healthPackage.doctorsDiscount,
+    medicalDiscount: healthPackage.medicalDiscount,
+    familyDiscount: healthPackage.familyDiscount,
+  }));
+
+  const columns = [
+    {
+      key: "name",
+      dataIndex: "name",
+      title: "Package Name",
+    },
+    {
+      key: "description",
+      dataIndex: "description",
+      title: "Description",
+    },
+    {
+      key: "price",
+      dataIndex: "price",
+      title: "Price",
+    },
+    {
+      key: "doctorsDiscount",
+      dataIndex: "doctorsDiscount",
+      title: "Doctor Discount",
+    },
+    {
+      key: "medicalDiscount",
+      dataIndex: "medicalDiscount",
+      title: "Medical Discount",
+    },
+    {
+      key: "familyDiscount",
+      dataIndex: "familyDiscount",
+      title: "Family Discount",
+    },
+    {
+      key: "actions",
+      title: "Actions",
+      render: (_, healthPackage) => actions(healthPackage),
+    },
+  ];
+
   return (
-    <div>
+    <div className={styles.packageAdminContainer}>
       <h2>Health Packages</h2>
       {error && <p>Error: {error}</p>}
       <div>
-        <h3>Packages List</h3>
-        <ul>
-          {healthPackages.map((healthPackage) => (
-            <li key={healthPackage._id} onClick={() => handleHealthPackageClick(healthPackage)}>
-              {healthPackage.name}
-            </li>
-          ))}
-        </ul>
+        <h3 className={styles.packagesListHeading}>
+          Packages List
+          <Button
+            type="primary"
+            shape="round"
+            icon={<PlusOutlined />}
+            onClick={() => {
+              setShowAddOverlay(true);
+            }}
+            className={styles.addPackageButton}
+            style={{ marginLeft: "20px", marginBottom: "20px" }}
+          >
+            Add Health Package
+          </Button>
+        </h3>{" "}
+        <Table data={data} columns={columns} />
       </div>
-      <div>
-        <h3>Selected Health Package Details</h3>
-        <p>Name: {selectedHealthPackage.name}</p>
-        <p>Price: {selectedHealthPackage.price}</p>
-        {/* Display other health package details as needed */}
-      </div>
-      <div>
-        <h3>Add Health Package</h3>
-        <input
-          className={styles.infoPackages}
-          type="text"
-          placeholder="Name"
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+
+      {showDeleteConfirmationDialog && (
+        <ConfirmationDialog
+          message="Are you sure you want to unsubscribe?"
+          confirmLabel="Yes"
+          cancelLabel="No"
+          onConfirm={handleDeleteHealthPackage}
+          onCancel={() => setShowDeleteConfirmationDialog(false)}
         />
-        <input
-          className={styles.infoPackages}
-          type="number"
-          placeholder="Price"
-          value={formData.price}
-          onChange={(e) => setFormData({ ...formData, price: parseInt(e.target.value) })}
+      )}
+      {showEditOverlay && (
+        <EditPackageOverlay
+          id={selectedID}
+          name={formData.name}
+          price={formData.price}
+          description={formData.description}
+          doctorsDiscount={formData.doctorsDiscount}
+          medicalDiscount={formData.medicalDiscount}
+          familyDiscount={formData.familyDiscount}
+          onCancel={() => {
+            setShowEditOverlay(false);
+            fetchAllHealthPackages();
+          }}
         />
-        <input
-          className={styles.infoPackages}
-          type="text"
-          placeholder="Description"
-          value={formData.description}
-          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+      )}
+      {showAddOverlay && (
+        <AddPackageOverlay
+          onCancel={() => {
+            setShowAddOverlay(false);
+            fetchAllHealthPackages();
+          }}
         />
-        <input
-          className={styles.infoPackages}
-          type="number"
-          placeholder="Doctor Discount"
-          value={formData.doctorDiscount}
-          onChange={(e) => setFormData({ ...formData, doctorDiscount: parseInt(e.target.value) })}
-        />
-        <input
-          className={styles.infoPackages}
-          type="number"
-          placeholder="Medical Discount"
-          value={formData.medicalDiscount}
-          onChange={(e) => setFormData({ ...formData, medicalDiscount: parseInt(e.target.value) })}
-        />
-        <input
-          className={styles.infoPackages}
-          type="number"
-          placeholder="Family Discount"
-          value={formData.familyDiscount}
-          onChange={(e) => setFormData({ ...formData, familyDiscount: parseInt(e.target.value) })}
-        />
-        <button  className={styles.addPackage} onClick={handleAddHealthPackage}>Add Health Package</button>
-      </div>
-      <div>
-        <h3>Update Health Package</h3>
-        <button onClick={handleUpdateHealthPackage}>Update Health Package</button>
-      </div>
-      <div>
-        <h3>Delete Health Package</h3>
-        <button onClick={handleDeleteHealthPackage}>Delete Health Package</button>
-      </div>
+      )}
     </div>
   );
 };

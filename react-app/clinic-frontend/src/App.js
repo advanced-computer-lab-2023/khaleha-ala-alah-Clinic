@@ -31,7 +31,7 @@ import Bookpage from "./Components/Book";
 import NotApproved from "./Components/notApproved";
 import PackagesManagment from "./Components/packageManagmentPage";
 import MyselfPackages from "./Components/myselfPackages";
-import FollowUpScheduler from './Components/FollowUpScheduler.jsx';
+import FollowUpScheduler from "./Components/FollowUpScheduler.jsx";
 import AvailableSlotsForm from "./Components/AvailableSlotsForm.jsx";
 import FamilyMemberPackages from "./Components/familyMembersPackages";
 import FamilyMemberDetails from "./Components/familyMemberDetails";
@@ -44,20 +44,19 @@ import AddFamilyMemberPage from "./Components/addFamilyMember.jsx";
 import AddFamilyEmail from "./Components/addFamilyMemberEmail.jsx";
 import AddFamilyMemberPhone from "./Components/addFamilyMemberPhone.jsx";
 
-import AppointmentCheckout from "./Components/appointmentCheckout"
+import AppointmentCheckout from "./Components/appointmentCheckout";
 import "./App.css";
-import Wallet from './Components/Wallet.js'
+import Wallet from "./Components/Wallet.js";
 import PaymentMethod from "./Components/choose-to-pay.js";
 import PackagesManagementAdmin from "./Components/packagesManagementAdmin.jsx";
-
+import AddPackageAdmin from "./Components/addPackagesAdmin.jsx";
+import DeletePackageAdmin from "./Components/deletePackageAdmin.jsx";
 
 import HealthRecordForm from "./Components/HealthRecordForm";
-
 
 import "./App.css";
 import ChangePasswordForm from "./Components/changePassword.jsx";
 import ManagePackages from "./Components/packageManagmentPage";
-
 
 function App() {
   const { role } = useAuth();
@@ -67,12 +66,12 @@ function App() {
         {/* public routes */}
 
         <Route path="/login" element={<Login />} />
-     <Route path="/paymentMethod" element={<PaymentMethod />} />
+        <Route path="/paymentMethod" element={<PaymentMethod />} />
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/PatientRegister" element={<PatientRegister />} />
         <Route path="/DoctorRegister" element={<DoctorRegister />} />
         <Route path="/resetPassword/:token" element={<ResetPassword />} />
-           <Route path="/wallet" element={<Wallet />} />
+        <Route path="/wallet" element={<Wallet />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
 
         {/* Redirect to login if no role is defined (user is not authenticated) */}
@@ -83,15 +82,17 @@ function App() {
           {/* patient routes */}
           {role === "patient" && (
             <>
-            
               <Route path="/patientHome" element={<PatientHome />} />
               <Route path="/familyMembers" element={<FamilyMembers />} />
               <Route
                 path="/registerFamilyMember"
                 element={<RegisterFamilymember />}
               />
-                  
-                   <Route path="/appointment-book" element={<AppointmentCheckout />} />
+
+              <Route
+                path="/appointment-book"
+                element={<AppointmentCheckout />}
+              />
               <Route path="/appointments" element={<Appointments />} />
               <Route path="/prescriptions" element={<Prescriptions />} />
               <Route path="/searchDoctors" element={<DoctorSearch />} />
@@ -114,9 +115,11 @@ function App() {
                 element={<SubscribeToFamilyMemberPackage />}
               />
 
-
-              <Route path="/CheckoutFamilyMemberPaackage" element={<StripePaymentButtonFF />} />  
-              <Route path="/appointmentCheckout" element={< PaymentMethod />} />  
+              <Route
+                path="/CheckoutFamilyMemberPaackage"
+                element={<StripePaymentButtonFF />}
+              />
+              <Route path="/appointmentCheckout" element={<PaymentMethod />} />
 
               {/* <Route
                 path="/appointmentCheckout"
@@ -155,10 +158,7 @@ function App() {
                 path="/patientdoctorhealth"
                 element={<PrescriptionsDoctors />}
               />
-              <Route
-                path="/HealthRecordForm"
-                element={<HealthRecordForm />}
-              />
+              <Route path="/HealthRecordForm" element={<HealthRecordForm />} />
               <Route path="/viewallmypatients" element={<DoctorPatients />} />
               <Route path="/changePassword" element={<ChangePasswordForm />} />
               <Route
@@ -181,8 +181,15 @@ function App() {
               <Route path="/viewPendingDoctors" element={<PendingDoctors />} />
               <Route path="/packages" element={<HealthPackages />} />
               <Route path="/changePassword" element={<ChangePasswordForm />} />
-              <Route path="/ManagementOfPackages" element={<PackagesManagementAdmin />} />
-
+              <Route
+                path="/ManagementOfPackages"
+                element={<PackagesManagementAdmin />}
+              />
+              <Route path="/addPackageAdmin" element={<AddPackageAdmin />} />
+              <Route
+                path="/deletePackageAdmin"
+                element={<DeletePackageAdmin />}
+              />
             </>
           )}
 
