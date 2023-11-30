@@ -126,6 +126,7 @@ const Book = ({ onCancel, doctor }) => {
       onCancel();
     }
   };
+  
   return (
     <>
       <div>

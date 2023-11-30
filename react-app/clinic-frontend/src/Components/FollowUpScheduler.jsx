@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import styles from "./FollowUpScheduler.module.css";
 
-const FollowUpScheduler = () => {
-  const [patients, setPatients] = useState([]);
-  const [patientID, setPatientID] = useState("");
+const FollowUpScheduler = ({ onCancel, patient }) => {
+  //const [patientID, setPatientID] = useState("");
   const [selectedDateTime, setSelectedDateTime] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
+
+  const patientID = patient.userID;
 
   // Fetch the list of patients when the component mounts
   function convertToISOFormat(dateTimeString) {
@@ -42,28 +44,6 @@ const FollowUpScheduler = () => {
     return isoString;
   }
 
-  useEffect(() => {
-    const fetchPatients = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:4000/doctors/getPatients",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-
-        // console.log("Patients response:", response); // Log the response to the console
-        console.log(response.data.data.patients);
-        setPatients(response.data.data.patients);
-      } catch (error) {
-        console.error("Error fetching patients:", error.message);
-      }
-    };
-
-    fetchPatients();
-  }, []);
 
   const scheduleFollowUp = async () => {
     try {
@@ -80,6 +60,7 @@ const FollowUpScheduler = () => {
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json", // Specify the content type if needed
           },
         }
       );
@@ -90,43 +71,42 @@ const FollowUpScheduler = () => {
     }
   };
 
+
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onCancel();
+    }
+  };
+  
   return (
-    <div>
+      <div className={styles.confirmationBackdrop} onClick={handleBackdropClick}>
+        <div className={styles.confirmationDialog}>
       <h1>Follow-Up Scheduler</h1>
-      <form
+      <form className={styles.form}
         onSubmit={(e) => {
+          console.log(patient);
           e.preventDefault();
           scheduleFollowUp();
+          console.log(selectedDateTime)
         }}
       >
-        <label>
-          Select Patient:
-          <select
-            value={patientID}
-            onChange={(e) => setPatientID(e.target.value)}
-          >
-            <option value="">Select a patient</option>
-            {patients.map((patient) => (
-              <option key={patient.userID} value={patient.userID}>
-                {patient.name}
-              </option>
-            ))}
-          </select>
-        </label>
         <br />
-        <label>
+        <label className={styles.label}>
           Follow-Up Date and Time:
           <input
+            className={styles.input}
             type="datetime-local"
             value={selectedDateTime}
             onChange={(e) => setSelectedDateTime(e.target.value)}
           />
         </label>
         <br />
-        <button type="submit">Schedule Follow-Up</button>
+        <button className={styles.button} type="submit">Schedule Follow-Up</button>
       </form>
       <p>{statusMessage}</p>
     </div>
+    </div>
+
   );
 };
 
