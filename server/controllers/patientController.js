@@ -293,6 +293,7 @@ exports.getPatientPrescribtions = async function (req, res) {
 
     const prescriptionsWithFiles = await Promise.all(
       prescriptions.map(async (prescription) => {
+        const doctor= await Doctors.findOne({userID: prescription.doctorID});
         if (prescription.pdfFileID) {
           const file = await gfs.find({ _id: prescription.pdfFileID }).toArray();
           const fileStream = gfs.openDownloadStream(prescription.pdfFileID);
@@ -303,7 +304,7 @@ exports.getPatientPrescribtions = async function (req, res) {
             });
             fileStream.on('end', () => {
               const fileData = Buffer.concat(chunks);
-              resolve({ ...prescription.toObject(), fileData });
+              resolve({ ...prescription.toObject(), fileData, doctor });
             });
             fileStream.on('error', (error) => {
               reject(error);
