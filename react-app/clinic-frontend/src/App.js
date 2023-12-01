@@ -51,7 +51,8 @@ import PaymentMethod from "./Components/choose-to-pay.js";
 import PackagesManagementAdmin from "./Components/packagesManagementAdmin.jsx";
 import AddPackageAdmin from "./Components/addPackagesAdmin.jsx";
 import DeletePackageAdmin from "./Components/deletePackageAdmin.jsx";
-
+import AdminDeleteAdmin from "./Components/adminDeleteAdmin.jsx";
+import AdminDeleteUser from "./Components/adminDeleteUser.jsx";
 import HealthRecordForm from "./Components/HealthRecordForm";
 
 import "./App.css";
@@ -308,6 +309,8 @@ function App() {
               />
               <Route path="/viewPendingDoctors" element={<PendingDoctors />} />
               <Route path="/packages" element={<HealthPackages />} />
+              <Route path="/deleteAdmin" element={<AdminDeleteAdmin />} />
+              <Route path="/deleteUser" element={<AdminDeleteUser />} />
             </>
           )}
           {/* admin routes */}

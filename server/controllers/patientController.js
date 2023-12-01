@@ -2,6 +2,7 @@ const Patient = require("../models/users/patientModel");
 const Doctors = require("../models/users/doctorModel");
 const Appointments = require("./../models/appointmentModel");
 const Prescriptions = require("./../models/presecriptionsModel.js");
+const Admin = require("./../models/users/adminModel");
 
 //examples
 
@@ -10,12 +11,11 @@ const Prescriptions = require("./../models/presecriptionsModel.js");
 
 // get all patients
 
-
-const Wallet = require('../models/wallet');
+const Wallet = require("../models/wallet");
 exports.getAmountInWallet = async (req, res) => {
   try {
-    const userID = req.params.userID.trim(); 
-  
+    const userID = req.params.userID.trim();
+
     const userWallet = await Wallet.findOne({ userID });
 
     if (userWallet) {
@@ -26,11 +26,17 @@ exports.getAmountInWallet = async (req, res) => {
       res.json({ success: true, amountInWallet });
     } else {
       // Send an error response if user wallet not found
-      res.status(404).json({ success: false, message: 'User wallet not found' });
+      res
+        .status(404)
+        .json({ success: false, message: "User wallet not found" });
     }
   } catch (error) {
     // Send an error response
-    res.status(500).json({ success: false, message: 'Error retrieving amount from wallet', error: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Error retrieving amount from wallet",
+      error: error.message,
+    });
   }
 };
 // Function to add amount to the wallet or create a new wallet if not available
@@ -48,10 +54,14 @@ exports.addAmountToWallet = async (req, res) => {
     await userWallet.addAmount(amount);
 
     // Send a success response
-    res.json({ success: true, message: 'Amount added to wallet successfully' });
+    res.json({ success: true, message: "Amount added to wallet successfully" });
   } catch (error) {
     // Send an error response
-    res.status(500).json({ success: false, message: 'Error adding amount to wallet', error: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Error adding amount to wallet",
+      error: error.message,
+    });
   }
 };
 
@@ -66,18 +76,25 @@ exports.removeAmountFromWallet = async (req, res) => {
       await userWallet.removeAmount(amount);
 
       // Send a success response
-      res.json({ success: true, message: 'Amount removed from wallet successfully' });
+      res.json({
+        success: true,
+        message: "Amount removed from wallet successfully",
+      });
     } else {
       // Send an error response if user wallet not found
-      res.status(404).json({ success: false, message: 'User wallet not found' });
+      res
+        .status(404)
+        .json({ success: false, message: "User wallet not found" });
     }
   } catch (error) {
     // Send an error response
-    res.status(500).json({ success: false, message: 'Error removing amount from wallet', error: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Error removing amount from wallet",
+      error: error.message,
+    });
   }
 };
-
-
 
 exports.getMyDoctors = async function (req, res) {
   try {
@@ -1106,6 +1123,24 @@ exports.SelectAppointmentFamilyMember = async function (req, res) {
     res.status(200).json({
       status: "success",
       message: "Appointment scheduled successfully.",
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+};
+
+exports.viewAllPatients = async function (req, res) {
+  try {
+    const patients = await Patient.find();
+    res.status(200).json({
+      status: "success",
+      results: patients.length,
+      data: {
+        patients,
+      },
     });
   } catch (err) {
     res.status(500).json({

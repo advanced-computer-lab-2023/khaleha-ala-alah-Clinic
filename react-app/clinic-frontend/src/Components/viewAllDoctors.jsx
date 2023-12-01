@@ -85,8 +85,9 @@ const DoctorList = () => {
       fetchData();
     }
   }, [doctors, currentPatient]);
-  const fetchData = () => {
-    const data = searchResults.map((doctor, index) => ({
+
+  const fetchData = (filteredDoctors = searchResults) => {
+    const data = filteredDoctors.map((doctor, index) => ({
       doctor: doctor,
       Name: doctor.name,
       Speciality: doctor.speciality,
@@ -141,6 +142,7 @@ const DoctorList = () => {
   ];
 
   const searchDoctor = () => {
+    setIsLoading(true);
     const doctorss = doctors.filter((doctor) => {
       return (
         (doctor.name.toLowerCase().includes(nameSearchValue.toLowerCase()) ||
@@ -151,8 +153,12 @@ const DoctorList = () => {
           specialitySearchValue === "")
       );
     });
+    console.log("SEARCHED");
+    console.log(doctorss);
 
-    setSearchResults(doctorss);
+    //setSearchResults(doctorss);
+    fetchData(doctorss);
+    setIsLoading(false);
   };
   const handleFilterClick = () => {
     const filteredDoctors = searchResults.filter((doctor) => {
@@ -175,7 +181,8 @@ const DoctorList = () => {
       return specialityMatch && dayMatch;
     });
 
-    setSearchResults(filteredDoctors);
+    //setSearchResults(filteredDoctors);
+    fetchData(filteredDoctors);
   };
 
   const doctorHasAvailability = (doctor, day, time) => {

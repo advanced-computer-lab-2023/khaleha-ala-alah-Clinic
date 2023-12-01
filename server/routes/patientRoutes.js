@@ -4,20 +4,20 @@ const router = express.Router();
 
 const patientController = require("./../controllers/patientController");
 const Prescriptions = require("./../models/presecriptionsModel.js");
-const payForPackage = require('../controllers/paymentController');
-
-
+const payForPackage = require("../controllers/paymentController");
 
 router
   .route("/")
   .get(CheckAuth, patientController.getAllPatients)
   .post(patientController.createPatient);
 
-router.post('/add-amount-Wallet',patientController.addAmountToWallet);
-router.post('/remove-from-wallet',patientController.removeAmountFromWallet);
-router.get('/amount-wallet/:userID', patientController.getAmountInWallet);
+router.get("/getAllPatients", patientController.viewAllPatients);
 
-router.post('/save-stripe-token', CheckAuth,payForPackage);
+router.post("/add-amount-Wallet", patientController.addAmountToWallet);
+router.post("/remove-from-wallet", patientController.removeAmountFromWallet);
+router.get("/amount-wallet/:userID", patientController.getAmountInWallet);
+
+router.post("/save-stripe-token", CheckAuth, payForPackage);
 
 router.get("/patientdoctors", CheckAuth, patientController.getPatientDoctors);
 
@@ -129,7 +129,5 @@ router.post(
   CheckAuth,
   patientController.SelectAppointmentFamilyMember
 );
-
-
 
 module.exports = router;
