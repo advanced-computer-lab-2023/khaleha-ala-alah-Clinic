@@ -14,6 +14,10 @@ const doctorRouter = require("./routes/doctorRoutes");
 const packageRouter = require("./routes/packageRoutes");
 //const apiRouter = require("./routes/api");
 
+//2)sockets 
+const socket = require('./utilities/sockets/socketio');
+
+
 //1) middleware
 if (process.env.NODE_ENV == "development") {
   app.use(morgan("dev"));
@@ -43,5 +47,6 @@ app.use("/packages", packageRouter);
 app.use('/conversations', require('./routes/conversationsRoutes'));
 app.use('/messages', require('./routes/messagesRoutes'));
 app.use("/api", require("./routes/api"));
+app.use('/notifications', require('./routes/notficationRoutes'))
 
 module.exports = app;

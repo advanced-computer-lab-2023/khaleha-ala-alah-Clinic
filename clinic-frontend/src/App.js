@@ -50,9 +50,8 @@ import "./App.css";
 import Wallet from './Components/Wallet.js'
 import PaymentMethod from "./Components/choose-to-pay.js";
 import PaymentMethodSubscriptionFamily from "./Components/choose-to-pay-familyPackage"
-
 import HealthRecordForm from "./Components/HealthRecordForm";
-
+import {Notification} from "./Components/notification";
 import DoctorWallet from "./Components/doctorWallet.js"
 import "./App.css";
 import ChangePasswordForm from "./Components/changePassword.jsx";
@@ -60,6 +59,8 @@ import ChangePasswordForm from "./Components/changePassword.jsx";
 import Messenger from "./Components/messenger.jsx";
 import AddPrescription from "./Components/addPrescription.jsx";
 import DrViewPrescriptions from "./Components/drViewPrescriptions.jsx";
+
+
 
 
 function App() {
@@ -143,7 +144,12 @@ function App() {
               />
               <Route path="/changePassword" element={<ChangePasswordForm />} />
 
+              <Route path="/notification" element={<Notification />} />
+              
+
+
               <Route path="/chat" element={<Messenger />} />
+
             </>
           )}
 
@@ -175,9 +181,13 @@ function App() {
                 element={<FollowUpScheduler />}
               />
               <Route path="/available-slots" element={<AvailableSlotsForm />} />
+
+              <Route path="/notification" element={<Notification />} />
+
               <Route path="/addPrescription" element={<AddPrescription />} />
               <Route path="/ViewPrescriptions" element={<DrViewPrescriptions />} />
               <Route path="/chat" element={<Messenger />} />
+
             </>
           )}
 
@@ -193,6 +203,7 @@ function App() {
               <Route path="/viewPendingDoctors" element={<PendingDoctors />} />
               <Route path="/packages" element={<HealthPackages />} />
               <Route path="/changePassword" element={<ChangePasswordForm />} />
+              <Route path="/notification" element={<Notification />} />
             </>
           )}
 
