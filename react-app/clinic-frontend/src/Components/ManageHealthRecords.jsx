@@ -42,23 +42,29 @@ const ManageHealthRecords = ({ onCancel, patient }) => {
             </li>
           ))}
         </ul>
-        <button onClick={() => setShowForm(true)}>
+        <button className={styles.AddHealthRecordButton} onClick={() => setShowForm(true)}>
           Add Health Record
         </button>
 
         {showForm && (
-          <div>
-            <form onSubmit={handleSubmit}>
-              <br />
-              <label>
-                Upload Files:
-                <input type="file" multiple onChange={handleFileChange} />
-              </label>
-              <br />
-              <button type="submit">Upload</button>
-            </form>
-            <p>{statusMessage}</p>
-          </div>
+          <div className={styles.formContainer}>
+          <h1 className={styles.formTitle}>Health Record Form</h1>
+          <form onSubmit={handleSubmit}>
+            <label className={styles.formLabel}>
+              Upload Files:
+              <input
+                type="file"
+                multiple
+                onChange={handleFileChange}
+                className={styles.formFileInput}
+              />
+            </label>
+            <button type="submit" className={styles.formButton}>
+              Upload Health Record
+            </button>
+          </form>
+          <p className={styles.statusMessage}>{statusMessage}</p>
+        </div>
         )}
       </div>
     </div>

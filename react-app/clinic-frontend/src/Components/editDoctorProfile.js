@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import NavBar from "../Elements/NavBar.jsx";
+import Header from "../Elements/Header";
+
+import styles from "./editDoctorProfile.module.css"
 
 const DoctorProfileUpdate = () => {
   // Define state variables for the doctor's information
@@ -37,35 +41,43 @@ const DoctorProfileUpdate = () => {
   };
 
   return (
-    <div>
-      <h2>Update Doctor Profile</h2>
+    <div className={styles.container}>
+      <Header />
+      <NavBar/>
       {error && <p>Error: {error}</p>}
       <form onSubmit={handleUpdateProfile}>
-        <div>
-          <label>Email:</label>
+          <div>
+          <label className={styles.labelF}>Email</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className={styles.inputFields}
+            placeholder="Email"
           />
-        </div>
-        <div>
-          <label>Hourly Rate:</label>
+          
+          </div>
+       <div>
+          <label className={styles.labelF}>Hourly Rate</label>
           <input
             type="number"
             value={hourlyRate}
             onChange={(e) => setHourlyRate(e.target.value)}
+            className={styles.inputFields}
+            placeholder="Hourly rate"
           />
         </div>
         <div>
-          <label>Affiliation:</label>
+          <label className={styles.labelF}>Affiliation</label>
           <input
             type="text"
             value={affiliation}
             onChange={(e) => setAffiliation(e.target.value)}
+            className={styles.inputFields}
+            placeholder="Affiliation"
           />
         </div>
-        <button type="submit">Update Profile</button>
+        <button type="submit" className={styles.button}>Save Changes</button>
       </form>
     </div>
   );
