@@ -5,6 +5,9 @@ import Table from "./table.jsx";
 import FollowUpOverlay from "./FollowUpScheduler.jsx";
 import HealthRecordOverlay from "./ManageHealthRecords.jsx"
 
+import NavBar from "../Elements/NavBar.jsx";
+import Header from "../Elements/Header";
+
 const DoctorPatients = ({ doctorId }) => {
   const navigate = useNavigate();
   const [patients, setPatients] = useState([]);
@@ -231,9 +234,10 @@ const DoctorPatients = ({ doctorId }) => {
         ))}
       </ul>
     </div>*/
-
-      <>
-        <h1>View all my Patients</h1>
+      <div className={styles.container}>
+      <Header />
+      <NavBar/>
+        {/*<h1>View all my Patients</h1>*/}
         <div className={styles.viewallpatients}>
           <div className={styles.tableWrapper}>
             <Table data={data} columns={columns} />
@@ -255,7 +259,7 @@ const DoctorPatients = ({ doctorId }) => {
             />
           )}
         </div>
-      </>
+      </div>
 
   );
 };

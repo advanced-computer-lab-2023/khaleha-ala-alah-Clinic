@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import NavBar from "../Elements/NavBar.jsx";
+import Header from "../Elements/Header";
+
+import styles from "./avaliableSlots.module.css"
 
 const AvailableSlotsForm = () => {
   const [day, setDay] = useState("");
@@ -59,13 +63,13 @@ const AvailableSlotsForm = () => {
   };
 
   return (
-    <div>
-      <h1>Available Slots Form</h1>
+    <div className={styles.container}>
+      <Header />
+      <NavBar/>
       <form onSubmit={handleSubmit}>
-        <label>
-          Day:
-          <select value={day} onChange={handleDayChange}>
-            <option value="">Select a day</option>
+      <div>
+        <label className={styles.labelSlot} >Select Day</label>
+          <select value={day} onChange={handleDayChange} className={styles.selectDay}>
             <option value="Monday">Monday</option>
             <option value="Tuesday">Tuesday</option>
             <option value="Wednesday">Wednesday</option>
@@ -74,15 +78,17 @@ const AvailableSlotsForm = () => {
             <option value="Saturday">Saturday</option>
             <option value="Sunday">Sunday</option>
           </select>
-        </label>
-        <br />
-        <label>
-          Time:
+        
+        </div>
+        <div>
+        <label className={styles.labelSlot}> Select Time</label>
           <input
             type="text"
             value={hours}
             onChange={handleHoursChange}
             pattern="[0-9]{0,2}"
+            className={styles.input}
+            placeholder="hour"
           />
           :
           <input
@@ -90,24 +96,16 @@ const AvailableSlotsForm = () => {
             value={minutes}
             onChange={handleMinutesChange}
             pattern="[0-9]{0,2}"
+            className={styles.input}
+            placeholder="min"
           />
-          <select value={period} onChange={handlePeriodChange}>
+          <select value={period} onChange={handlePeriodChange} className={styles.select}>
             <option value="am">AM</option>
             <option value="pm">PM</option>
           </select>
-        </label>
-        <br />
-        <label>
-          Time:    
-          <input type="text" value={hours} onChange={handleHoursChange} pattern="[0-9]{0,2}" />:
-          <input type="text" value={minutes} onChange={handleMinutesChange} pattern="[0-9]{0,2}" />
-        </label>
-        <select value={period} onChange={handlePeriodChange}>
-          <option value="am">AM</option>
-          <option value="pm">PM</option>
-        </select>
-        <br />
-        <button type="submit">Add Available Slots</button>
+        
+        </div>
+        <button type="submit" className={styles.button}>Add Available Slot</button>
       </form>
       <p>{statusMessage}</p>
     </div>
