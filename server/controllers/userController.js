@@ -3,6 +3,7 @@ const patientModel = require("../models/users/patientModel");
 const userVerificationModel = require("../models/userVerification");
 const doctorModel = require("../models/users/doctorModel");
 const resetPasswordModel = require("../models/resetPassword");
+const Appointments = require("./../models/appointmentModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const {
@@ -16,6 +17,8 @@ const {
 } = require("../utilities/validations");
 const nodeMailer = require("nodemailer");
 const crypto = require("crypto");
+const exp = require("constants");
+const Appointment = require("../models/appointmentModel");
 
 //generate token
 const generateToken = (_id, role) => {
@@ -418,6 +421,31 @@ exports.resetPassword = async (req, res) => {
     return res.status(500).json({ error: "internal server error" });
   }
 };
+
+
+//get users
+exports.getUsers = async (req, res) => {
+  try {
+    const userID = req.user._id;
+    const role = req.user.role;
+    let users;
+    if(role==="patient"){
+      const doctorsID = await Appointments.distinct("DoctorID", {PatientID: userID,});
+      users=await doctorModel.find({userID:{$in:doctorsID}}).select('name username userID');
+    }else if(role==="doctor"){
+      const patientsID=await Appointments.distinct("PatientID", {DoctorID: userID,});
+      users=await patientModel.find({userID:{$in:patientsID}}).select('name username userID');
+    }else{
+      return res.status(400).json({error:"Invalid role"});
+    }
+    console.log(users);
+    return res.status(200).json({users:users,userID:userID});
+    
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: "internal server error" });
+  }
+}; 
 
 //validate token
 exports.validateToken = async (req, res) => {

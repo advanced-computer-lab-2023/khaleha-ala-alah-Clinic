@@ -1,22 +1,25 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const presecriptionsSchema = new Schema(
+const medicationSchema = new Schema({
+  medicine: {
+    type: String,
+    required: true,
+  },
+  dosage: {
+    type: String,
+  },
+});
+
+const prescriptionsSchema = new Schema(
   {
-    PatientID: {
+    patientID: {
       type: String,
       required: true,
     },
-    DoctorID: {
+    doctorID: {
       type: String,
       required: true,
-    },
-    location: {
-      type: String,
-      default: [],
-    },
-    summary: {
-      type: String,
     },
     isFilled: {
       type: Boolean,
@@ -24,9 +27,16 @@ const presecriptionsSchema = new Schema(
     },
     date: {
       type: Date,
+      default: Date.now,
+    },
+    medications: [medicationSchema],
+    pdfFileID: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'uploads.files', 
     },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Presecription", presecriptionsSchema);
+const Prescriptions = mongoose.model("Prescriptions", prescriptionsSchema);
+module.exports = Prescriptions;

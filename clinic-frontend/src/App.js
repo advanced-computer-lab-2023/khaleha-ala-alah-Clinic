@@ -56,6 +56,10 @@ import DoctorWallet from "./Components/doctorWallet.js"
 import "./App.css";
 import ChangePasswordForm from "./Components/changePassword.jsx";
 
+import Messenger from "./Components/messenger.jsx";
+import AddPrescription from "./Components/addPrescription.jsx";
+import DrViewPrescriptions from "./Components/drViewPrescriptions.jsx";
+
 
 
 
@@ -73,7 +77,7 @@ function App() {
         <Route path="/PatientRegister" element={<PatientRegister />} />
         <Route path="/DoctorRegister" element={<DoctorRegister />} />
         <Route path="/resetPassword/:token" element={<ResetPassword />} />
-           <Route path="/wallet" element={<Wallet />} />
+        <Route path="/wallet" element={<Wallet />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
 
         {/* Redirect to login if no role is defined (user is not authenticated) */}
@@ -92,7 +96,7 @@ function App() {
                 element={<RegisterFamilymember />}
               />
                   
-                   <Route path="/appointment-book" element={<AppointmentCheckout />} />
+              <Route path="/appointment-book" element={<AppointmentCheckout />} />
               <Route path="/appointments" element={<Appointments />} />
               <Route path="/prescriptions" element={<Prescriptions />} />
               <Route path="/searchDoctors" element={<DoctorSearch />} />
@@ -139,8 +143,13 @@ function App() {
                 element={<AddFamilyMemberPage />}
               />
               <Route path="/changePassword" element={<ChangePasswordForm />} />
+
               <Route path="/notification" element={<Notification />} />
               
+
+
+              <Route path="/chat" element={<Messenger />} />
+
             </>
           )}
 
@@ -172,7 +181,13 @@ function App() {
                 element={<FollowUpScheduler />}
               />
               <Route path="/available-slots" element={<AvailableSlotsForm />} />
+
               <Route path="/notification" element={<Notification />} />
+
+              <Route path="/addPrescription" element={<AddPrescription />} />
+              <Route path="/ViewPrescriptions" element={<DrViewPrescriptions />} />
+              <Route path="/chat" element={<Messenger />} />
+
             </>
           )}
 

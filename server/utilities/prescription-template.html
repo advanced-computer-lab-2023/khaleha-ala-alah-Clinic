@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prescription</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      color: #333;
+    }
+
+    header {
+      background-color: #1890ff;
+      color: #fff;
+      padding: 20px;
+    }
+
+    header img {
+      max-height: 80px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .info-section {
+      margin-top: 20px;
+    }
+
+    .left-info, .right-info {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .left-info {
+      margin-right: 50px;
+    }
+
+    .right-info {
+      margin-left: 50px;
+    }
+
+    .left-info p, .right-info p {
+      font-weight: bold;
+    }
+
+    .body {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .patient-info {
+      margin-bottom: 20px;
+      border-bottom: 2px solid #1890ff;
+      padding-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .patient-info p {
+      margin: 5px 0;
+    }
+
+    .issued-date {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 15px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #1890ff;
+      color: #fff;
+    }
+
+    footer {
+      margin-top: 20px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="[Logo URL]" alt="Clinic Logo">
+  </header>
+
+  <div class="info-section">
+    <div class="left-info">
+      <p>Dr. {{doctorName}}</p>
+      <p>Email: {{doctorEmail}}</p>
+      <p>Affiliation: {{doctorAffiliation}}</p>
+      <p>Speciality: {{doctorSpeciality}}</p>
+    </div>
+    <div class="right-info">
+      <p>Khaliha 3la Allah Clinic</p>
+      <p>Email: el7a2nii@gmail.com</p>
+    </div>
+  </div>
+
+  <div class="body">
+    <div class="patient-info">
+      <p>Patient: {{patientName}}</p>
+      <p>Gender: {{patientGender}}</p>
+      <p>Date of Birth: {{patientDateOfBirth}}</p>
+    </div>
+
+    <p class="issued-date">Issuing Date: {{issuedDate}}</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Medicine</th>
+          <th>Dosage</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#medicationsList}}
+          <tr>
+            <td>{{medicine}}</td>
+            <td>{{dosage}}</td>
+          </tr>
+        {{/medicationsList}}
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+    <p>Dr. {{doctorName}}</p>
+  </footer>
+</body>
+</html>
