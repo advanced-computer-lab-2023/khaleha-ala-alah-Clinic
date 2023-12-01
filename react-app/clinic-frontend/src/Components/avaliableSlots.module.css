@@ -8,6 +8,7 @@
     align-items: center;
   }
   
+
   .labelSlot {
     display: block;
     font-size: 13pt;
@@ -72,7 +73,7 @@
     border: none;
     padding: 10px;
     cursor: pointer;
-    width: 55%;
+    width: 60%;
     font-size: 19px;
     margin-top: 2rem;
     border-radius: 5px;

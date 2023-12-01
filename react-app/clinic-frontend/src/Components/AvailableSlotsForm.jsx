@@ -68,7 +68,7 @@ const AvailableSlotsForm = () => {
       <NavBar/>
       <form onSubmit={handleSubmit}>
       <div>
-        <label className={styles.labelSlot} >Select a Day</label>
+        <label className={styles.labelSlot} >Select Day</label>
           <select value={day} onChange={handleDayChange} className={styles.selectDay}>
             <option value="Monday">Monday</option>
             <option value="Tuesday">Tuesday</option>
@@ -81,7 +81,7 @@ const AvailableSlotsForm = () => {
         
         </div>
         <div>
-        <label className={styles.labelSlot}>Time</label>
+        <label className={styles.labelSlot}> Select Time</label>
           <input
             type="text"
             value={hours}
