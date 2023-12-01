@@ -91,7 +91,7 @@ const FollowUpScheduler = ({ onCancel, patient }) => {
         }}
       >
         <br />
-        <label className={styles.label}>
+        <label className={styles.labelFollowUp}>
           Follow-Up Date and Time:
           <input
             className={styles.input}

@@ -50,7 +50,7 @@ const ManageHealthRecords = ({ onCancel, patient }) => {
           <div>
             <form onSubmit={handleSubmit}>
               <br />
-              <label>
+              <label className={styles.labelPackage}>
                 Upload Files:
                 <input type="file" multiple onChange={handleFileChange} />
               </label>
