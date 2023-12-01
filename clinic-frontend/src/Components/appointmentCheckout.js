@@ -99,6 +99,26 @@ const StripePaymentButton = () => {
             if (data.status == "success") {
               // Handle success (e.g., show a success message or redirect)
               console.log("Appointment booked successfully");
+              try{
+                fetch('http://localhost:4000/notifications', {
+                  headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("token"),
+                    "Content-Type": "application/json",
+                  },
+                  method: 'POST',
+                  body: JSON.stringify({
+                    title: "Appointment alert",
+                    text: "You have new appointment with --should put doctor name--",
+                    userID : doctor.userID
+                  }),
+                });
+                // await axios.post('http://localhost:4000/notifications',notficationData).then(async (res)=>{
+                //   console.log('notfication is saved');
+                // })
+              }
+              catch(error){
+                console.error("notficaion is not saved yet", error);
+              }
             } else {
               console.error("Failed to book appointment");
             }
