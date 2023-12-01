@@ -28,10 +28,10 @@ router.patch("/update-email", CheckAuth, doctorControllers.updateDoctorEmail);
 router.get("/getPatients", CheckAuth, doctorControllers.getPatientsByDoctorId);
 router.get("/allPrescriptions", doctorControllers.getAllPrescriptions);
 // Add the new route to get prescriptions and patient information by doctor and patient IDs
-router.get(
-  "/:doctorId/:patientId/get-info",
-  doctorControllers.getPrescriptionsByDoctorAndPatient
-);
+router.get("/:doctorId/:patientId/get-info",doctorControllers.getPrescriptionsByDoctorAndPatient);
+router.post("/addPrescription",CheckAuth,doctorControllers.addPrescription);
+router.post("/viewPrescriptions",CheckAuth,doctorControllers.viewPatientPrescriptions);
+router.post("/updatePrescription",CheckAuth,doctorControllers.updatePatientPrescriptions);
 
 router.patch(
   "/rescheduleAppointmentPatient/:appointmentID/:newDateTime",

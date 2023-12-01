@@ -2,6 +2,8 @@ const Patient = require("../models/users/patientModel");
 const Doctors = require("../models/users/doctorModel");
 const Appointments = require("./../models/appointmentModel");
 const Prescriptions = require("./../models/presecriptionsModel.js");
+const mongoose = require("mongoose");
+
 const followUpRequestAppointment = require("./../models/followUpRequestModel");
 //examples
 
@@ -9,8 +11,13 @@ const followUpRequestAppointment = require("./../models/followUpRequestModel");
 // get patient and create patient written here to test add family members
 
 // get all patients
+const conn = mongoose.connection;
+let gfs;
+conn.once('open', () => {
+    gfs = new mongoose.mongo.GridFSBucket(conn.db, { bucketName: 'uploads' });
+});
 
-const Wallet = require("../models/wallet");
+const Wallet = require('../models/wallet');
 exports.getAmountInWallet = async (req, res) => {
   try {
     const userID = req.params.userID.trim();
@@ -299,17 +306,38 @@ exports.getPerscriptions = async function (req, res) {
 exports.getPatientPrescribtions = async function (req, res) {
   try {
     const prescriptions = await Prescriptions.find({
-      PatientID: req.user._id,
+      patientID: req.user._id,
     });
 
-    //newPresctibtion.save();
-    res.status(200).json({
-      data: prescriptions,
-    });
+    const prescriptionsWithFiles = await Promise.all(
+      prescriptions.map(async (prescription) => {
+        const doctor= await Doctors.findOne({userID: prescription.doctorID});
+        if (prescription.pdfFileID) {
+          const file = await gfs.find({ _id: prescription.pdfFileID }).toArray();
+          const fileStream = gfs.openDownloadStream(prescription.pdfFileID);
+          const chunks = [];
+          return new Promise((resolve, reject) => {
+            fileStream.on('data', (chunk) => {
+              chunks.push(chunk);
+            });
+            fileStream.on('end', () => {
+              const fileData = Buffer.concat(chunks);
+              resolve({ ...prescription.toObject(), fileData, doctor });
+            });
+            fileStream.on('error', (error) => {
+              reject(error);
+            });
+          });
+        } else {
+          return prescription.toObject();
+        }
+      })
+    );
+    return res.status(200).json({prescriptions: prescriptionsWithFiles});
   } catch (err) {
     res.status(500).json({
       status: "error",
-      message: "this route is not defined yet",
+      message: err.message,
     });
   }
 };

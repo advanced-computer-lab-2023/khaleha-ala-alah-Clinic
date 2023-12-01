@@ -7,6 +7,20 @@ const Wallet = require("../models/wallet");
 const mongoose = require("mongoose");
 const followUpRequestAppointment = require("./../models/followUpRequestModel");
 const { promises } = require("nodemailer/lib/xoauth2");
+const fs = require('fs');
+const path = require('path');
+const pdf = require('html-pdf');
+const handlebars = require('handlebars');
+const stream = require('stream');
+const moment = require('moment');
+
+
+
+const conn = mongoose.connection;
+let gfs;
+conn.once('open', () => {
+    gfs = new mongoose.mongo.GridFSBucket(conn.db, { bucketName: 'uploads' });
+});
 
 exports.getAmountInWallet = async (req, res) => {
   try {
@@ -483,7 +497,6 @@ exports.addNewHealthRecordForPatient = async function (req, res) {
 exports.rescheduleAppointment = async function (req, res) {
   try {
     const { appointmentID, newDateTime } = req.params; // Get appointmentID and newDateTime from params
-
     // Find the appointment by its ID
     const appointment = await Appointment.findById(appointmentID);
 
@@ -522,6 +535,222 @@ exports.rescheduleAppointment = async function (req, res) {
     });
   }
 };
+
+
+
+// add prescription to patient
+exports.addPrescription = async function (req, res) {
+  try {
+    const { patient, medications } = req.body;
+    const doctor = await Doctor.findOne({ userID: req.user._id });
+
+    // Read the HTML template
+    const templatePath = path.join(__dirname, '..', 'utilities', 'prescription-template.html');
+    const htmlTemplate = fs.readFileSync(templatePath, 'utf-8');
+
+    // Create a Handlebars template function
+    const templateFunction = handlebars.compile(htmlTemplate);
+
+    // Replace placeholders with actual data
+    const filledTemplate = templateFunction({
+      doctorName: doctor.name,
+      doctorEmail: doctor.email,
+      doctorAffiliation: doctor.affiliation,
+      doctorSpeciality: doctor.speciality,
+
+      patientName: patient.name,
+      patientGender:patient.gender,
+      patientDateOfBirth:moment(patient.dateOfBirth).format('DD/MM/YYYY'),
+
+      issuedDate:new Date().toLocaleDateString("en-US", {}),
+      
+      medicationsList: medications,
+    });
+
+    // Options for pdf creation
+    const pdfOptions = {
+      format: 'Letter',
+    };
+
+    // Convert HTML to PDF
+    pdf.create(filledTemplate, pdfOptions).toBuffer(async(err, pdfBuffer) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({
+          status: 'error',
+          message: err.message,
+        });
+      } else {
+         // Create a write stream for GridFS
+         const writeStream = gfs.openUploadStream('prescription.pdf', {
+          contentType: 'application/pdf',
+        });
+
+        writeStream.on('finish', () => {
+          console.log('File uploaded to GridFS');
+        });
+
+        // Pipe the PDF buffer to the write stream
+        const bufferStream = new stream.PassThrough();
+        bufferStream.end(pdfBuffer);
+        await bufferStream.pipe(writeStream);
+
+        // Save the prescription to the database
+        const prescription = new Prescription({
+          doctorID: req.user._id,
+          patientID: patient.userID,
+          medications,
+          pdfFileID: writeStream.id,
+        });
+        await prescription.save();
+       
+
+        // Set the response headers
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'inline; filename=prescription.pdf');
+
+        // Send the PDF buffer as the response
+        res.status(200).send(pdfBuffer);
+      }
+    });
+  } catch (err) {
+    console.error('Server error:', err);
+    res.status(500).json({
+      status: 'error',
+      message: 'Internal server error.',
+    });
+  }
+};
+
+//view patient prescriptions
+exports.viewPatientPrescriptions = async function (req, res) {
+  try {
+    const {patient}=req.body;
+    const doctorID = req.user._id;
+    const prescriptions = await Prescription.find({ doctorID, patientID: patient.userID });
+    const prescriptionsWithFiles = await Promise.all(
+      prescriptions.map(async (prescription) => {
+        if (prescription.pdfFileID) {
+          const file = await gfs.find({ _id: prescription.pdfFileID }).toArray();
+          const fileStream = gfs.openDownloadStream(prescription.pdfFileID);
+          const chunks = [];
+          return new Promise((resolve, reject) => {
+            fileStream.on('data', (chunk) => {
+              chunks.push(chunk);
+            });
+            fileStream.on('end', () => {
+              const fileData = Buffer.concat(chunks);
+              resolve({ ...prescription.toObject(), fileData });
+            });
+            fileStream.on('error', (error) => {
+              reject(error);
+            });
+          });
+        } else {
+          return prescription.toObject();
+        }
+      })
+    );
+    res.status(200).json({prescriptions: prescriptionsWithFiles,});
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+};
+
+//update patient prescriptions
+exports.updatePatientPrescriptions = async function (req, res) {
+  try {
+    const {prescriptionObject,medications} = req.body;
+    const prescription = await Prescription.findOne({ _id: prescriptionObject._id });
+    const patient=await Patient.findOne({userID:prescriptionObject.patientID});
+    const doctor=await Doctor.findOne({userID:prescriptionObject.doctorID});
+    if (!prescription) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Prescription not found",
+      });
+    }
+    prescription.medications = medications;
+    const pdfFileID = prescription.pdfFileID;
+    if (pdfFileID) {
+      await gfs.delete(pdfFileID);
+    }
+    // Read the HTML template
+    const templatePath = path.join(__dirname, '..', 'utilities', 'prescription-template.html');
+    const htmlTemplate = fs.readFileSync(templatePath, 'utf-8');
+
+    // Create a Handlebars template function
+    const templateFunction = handlebars.compile(htmlTemplate);
+
+    // Replace placeholders with actual data
+    const filledTemplate = templateFunction({
+      doctorName: doctor.name,
+      doctorEmail: doctor.email,
+      doctorAffiliation: doctor.affiliation,
+      doctorSpeciality: doctor.speciality,
+
+      patientName: patient.name,
+      patientGender:patient.gender,
+      patientDateOfBirth:moment(patient.dateOfBirth).format('DD/MM/YYYY'),
+
+      issuedDate:moment(prescription.date).format('DD/MM/YYYY'),
+
+      medicationsList: medications,
+      
+    });
+
+    // Options for pdf creation
+    const pdfOptions = {
+      format: 'Letter',
+    };
+
+    // Convert HTML to PDF
+    pdf.create(filledTemplate, pdfOptions).toBuffer(async(err, pdfBuffer) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({
+          status: 'error',
+          message: err.message,
+        });
+      } else {
+         // Create a write stream for GridFS
+         const writeStream = gfs.openUploadStream('prescription.pdf', {
+          contentType: 'application/pdf',
+        });
+
+        writeStream.on('finish', () => {
+          console.log('File uploaded to GridFS');
+        });
+
+        // Pipe the PDF buffer to the write stream
+        const bufferStream = new stream.PassThrough();
+        bufferStream.end(pdfBuffer);
+        await bufferStream.pipe(writeStream);
+
+        // Save the prescription to the database
+        prescription.pdfFileID = writeStream.id;
+        await prescription.save();
+      }
+    });
+    return res.status(200).json({status: "success"});
+    
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+};
+
+
+
+
+    
 // docotr cancel an appointment and patient recieves full refund
 exports.cancelAppointment = async (req, res) => {
   try {

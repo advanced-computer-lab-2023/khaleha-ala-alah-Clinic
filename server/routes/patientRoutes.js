@@ -33,7 +33,7 @@ router.get("/getAppointments", CheckAuth, patientController.getAppointments);
 router.get(
   "/persecriptions",
   CheckAuth,
-  patientController.getAllPersecriptions
+  patientController.getPatientPrescribtions
 );
 router.patch(
   "/subscribeToPackage",
