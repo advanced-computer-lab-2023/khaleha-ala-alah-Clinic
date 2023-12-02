@@ -2,30 +2,31 @@ import React, { useState, useEffect } from "react";
 import ConfirmationDialog from "../Elements/ConfirmationDialog.jsx";
 import Table from "./table.jsx";
 import { PlusOutlined } from "@ant-design/icons";
-import axios from 'axios';
+import axios from "axios";
 import { Avatar, Button, Modal, Tag } from "antd";
 import styles from "./adminDeleteDoctor.module.css";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const DeleteDoctor = () => {
   const [doctors, setAllDoctors] = useState([]);
-  const [showDeleteConfirmationDialog, setShowDeleteConfirmationDialog] = useState(false);
+  const [showDeleteConfirmationDialog, setShowDeleteConfirmationDialog] =
+    useState(false);
   const [selectedID, setSelectedID] = useState("");
-  const [result, setResult] = useState('');
-  const [role, setRole] = useState('');
-  const [username, setUsername] = useState('');
+  const [result, setResult] = useState("");
+  const [role, setRole] = useState("");
+  const [username, setUsername] = useState("");
   const [error, setError] = useState(null);
 
   const fetchAllDoctors = async () => {
     try {
-        const response = await fetch(
-            "http://localhost:4000/doctors/viewAllDoctors"
-            );
-          if (!response.ok) {
-            throw new Error("Failed to fetch data");
-          }
-          const data = await response.json();
-          setAllDoctors(data.data.Doctors);
+      const response = await fetch(
+        "http://localhost:4000/doctors/viewAllDoctors"
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      const data = await response.json();
+      setAllDoctors(data.data.Doctors);
     } catch (err) {
       //setError(err.message);
     }
@@ -35,7 +36,6 @@ const DeleteDoctor = () => {
     // Call the fetch function when the component mounts
     fetchAllDoctors();
   }, []);
-
 
   const actions = (doctors) => (
     <div className={styles.buttonsList}>
@@ -55,7 +55,6 @@ const DeleteDoctor = () => {
     </div>
   );
 
-  
   const data = doctors.map((doctors) => ({
     username: doctors.username,
     name: doctors.name,
@@ -63,7 +62,7 @@ const DeleteDoctor = () => {
     gender: doctors.gender,
     speciality: doctors.speciality,
   }));
-  
+
   const columns = [
     {
       key: "name",
@@ -76,10 +75,10 @@ const DeleteDoctor = () => {
       title: "Username",
     },
     {
-        key: "email",
-        dataIndex: "email",
-        title: "Email",
-      },
+      key: "email",
+      dataIndex: "email",
+      title: "Email",
+    },
     {
       key: "gender",
       dataIndex: "gender",
@@ -98,12 +97,13 @@ const DeleteDoctor = () => {
   ];
   const handleDelete = async () => {
     try {
-      const response = await axios.delete('http://localhost:4000/doctors/viewAllDoctors', {
-        data: { role, name: username },
+      const response = await axios.delete("http://localhost:4000/admins", {
+        data: { role: "doctor", name: username },
       });
 
       setResult(response.data.message);
       setShowDeleteConfirmationDialog(false);
+      fetchAllDoctors();
     } catch (error) {
       setResult(error.response.data.error);
     }
@@ -114,10 +114,7 @@ const DeleteDoctor = () => {
       <h2>Manage Doctors</h2>
       {error && <p>Error: {error}</p>}
       <div>
-        <h3 className={styles.packagesListHeading}>
-          Doctors List
-          
-        </h3>{" "}
+        <h3 className={styles.packagesListHeading}>Doctors List</h3>{" "}
         <Table data={data} columns={columns} />
       </div>
 
