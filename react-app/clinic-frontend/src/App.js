@@ -48,13 +48,14 @@ import AppointmentCheckout from "./Components/appointmentCheckout";
 import "./App.css";
 import Wallet from "./Components/Wallet.js";
 import PaymentMethod from "./Components/choose-to-pay.js";
-import PackagesManagementAdmin from "./Components/packagesManagementAdmin.jsx";
+import UserManagementAdmin from "./Components/UserManagementAdmin.jsx";
 import AddPackageAdmin from "./Components/addPackagesAdmin.jsx";
 import DeletePackageAdmin from "./Components/deletePackageAdmin.jsx";
 import AdminDeleteAdmin from "./Components/adminDeleteAdmin.jsx";
 import AdminDeleteUser from "./Components/adminDeleteUser.jsx";
 import HealthRecordForm from "./Components/HealthRecordForm";
-
+import AdminDeleteDoctor from "./Components/adminDeleteDoctor.jsx";
+import AdminDeletePatient from "./Components/adminDeletePatient.jsx";
 import "./App.css";
 import ChangePasswordForm from "./Components/changePassword.jsx";
 import ManagePackages from "./Components/packageManagmentPage";
@@ -183,8 +184,8 @@ function App() {
               <Route path="/packages" element={<HealthPackages />} />
               <Route path="/changePassword" element={<ChangePasswordForm />} />
               <Route
-                path="/ManagementOfPackages"
-                element={<PackagesManagementAdmin />}
+                path="/ManagementOfUsers"
+                element={<UserManagementAdmin />}
               />
               <Route path="/addPackageAdmin" element={<AddPackageAdmin />} />
               <Route
@@ -311,6 +312,9 @@ function App() {
               <Route path="/packages" element={<HealthPackages />} />
               <Route path="/deleteAdmin" element={<AdminDeleteAdmin />} />
               <Route path="/deleteUser" element={<AdminDeleteUser />} />
+              <Route path="/deleteDoctor" element={<AdminDeleteDoctor />} />
+              <Route path="/deletePatient" element={<AdminDeletePatient />} />
+
             </>
           )}
           {/* admin routes */}

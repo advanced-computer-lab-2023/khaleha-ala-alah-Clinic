@@ -6,7 +6,7 @@ import axios from "axios";
 import LoadingPage from "./LoadingPage";
 import Header from "../Elements/Header";
 import NavBar from "../Elements/NavBar";
-import styles from "./packagesManagementAdmin.module.css";
+import styles from "./UserManagementAdmin.module.css";
 
 const formatDate = (dateString) => {
   const options = { day: "numeric", month: "long", year: "numeric" };
@@ -55,25 +55,18 @@ const PackagesManagementAdmin = () => {
       ) : (
         <>
           <div className="manage-packages">
-            <h1 className="title">Manage Packages</h1>
+            <h1 className="title">User Categories</h1>
 
             <div
               className="card"
-              onClick={() => navigateTo("/addPackageAdmin")}
+              onClick={() => navigateTo("/deleteDoctor")}
             >
-              <h2>Add Health Package</h2>
-              <p>Add new health package</p>
+              <h2>Manage Doctors</h2>
+              <p>Delete any doctor</p>
             </div>
-            <div className="card" onClick={() => navigateTo("/packages")}>
-              <h2>Update Health Package</h2>
-              <p>Update current health package</p>
-            </div>
-            <div
-              className="card"
-              onClick={() => navigateTo("/deletePackageAdmin")}
-            >
-              <h2>Delete Health Package</h2>
-              <p>Delete current health package</p>
+            <div className="card" onClick={() => navigateTo("/deletePatient")}>
+              <h2>Manage Patients</h2>
+              <p>Delete any patient</p>
             </div>
           </div>
         </>

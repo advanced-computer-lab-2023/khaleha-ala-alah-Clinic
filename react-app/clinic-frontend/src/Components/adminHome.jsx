@@ -39,6 +39,13 @@ export const AdminHome = () => {
           />
           ,
           <ServiceItem
+            imgSrc={viewdoctor}
+            title="User Management"
+            description="Manage All Users"
+            navigateTo="/ManagementOfUsers"
+          />
+          ,
+          <ServiceItem
             imgSrc={pres}
             title="View Pending Doctors"
             description="Show your medications prescribed online quickly and securely"
@@ -49,7 +56,7 @@ export const AdminHome = () => {
             imgSrc={healthpackages}
             title="Health Packages"
             description="Manage our system health plans for comprehensive care solutions"
-            navigateTo="/ManagementOfPackages"
+            navigateTo="/packages"
           />
         </div>
       </div>
