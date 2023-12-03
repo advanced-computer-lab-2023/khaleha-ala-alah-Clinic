@@ -1,0 +1,71 @@
+.PackagesContainerViewing {
+  display: flex;
+  flex-direction: row; /* Align children in a row */
+  justify-content: center; /* Center children horizontally */
+  align-items: center; /* Center children vertically */
+  width: 1200px;
+  height: 500px;
+  margin: 0 auto; /* Center the container itself */
+  overflow: hidden;
+}
+
+.ViewAllPackages {
+  display: flex;
+  flex-direction: row; /* Align package cards in a row */
+  justify-content: center; /* Center package cards horizontally */
+  width: 100%; /* Ensure it takes full width of the parent */
+  gap: 20px; /* Optional: add some space between package cards */
+  transition: transform 0.5s ease, opacity 0.5s ease; /* Add transition for transform and opacity */
+}
+.HealthPackageCard {
+  flex: 0 0 calc(33.33% - 20px); /* Adjust this value based on the gap */
+  /* Other styles for your HealthPackageCard */
+}
+.leftArrowCss,
+.rightArrowCss {
+  border: none; /* Removes the default border */
+  background-color: transparent; /* No background color initially */
+  color: inherit; /* Inherit the color from the parent or set a default color */
+  cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+  padding: 10px; /* Add some padding around the arrow */
+  font-size: 20px; /* Adjust the size of the arrow */
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition for color and background color */
+  border-radius: 100%; /* Makes the background circle */
+  display: inline-flex; /* Aligns the content (arrow) to the center */
+  align-items: center; /* Aligns items vertically in the center */
+  justify-content: center; /* Aligns items horizontally in the center */
+  margin-top: 130px;
+  width: 40px; /* Set a fixed width */
+  height: 40px; /* Set a fixed height to make the button perfectly circular */
+}
+
+.leftArrowCss:hover,
+.rightArrowCss:hover {
+  color: black; /* Change color to black on hover */
+  background-color: rgba(0, 0, 0, 0.1); /* Circular background on hover */
+}
+.packageSet {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Style for the slider container */
+.sliderContainer {
+  display: flex;
+  overflow-x: hidden;
+  width: 100%; /* Adjust as needed */
+  position: relative;
+}
+
+/* Style for individual slides */
+.slide {
+  flex: 0 0 100%; /* Each slide takes full width of the container */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.5s ease; /* Smooth transition for sliding effect */
+  box-sizing: border-box;
+  padding: 20px;
+}

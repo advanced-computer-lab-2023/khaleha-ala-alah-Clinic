@@ -1,0 +1,44 @@
+/* Appointments.css */
+
+/* General styling for the entire Appointments component */
+
+.Container {
+  background-color: white;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Adjust height based on header/navbar height */
+}
+.Appointments {
+  background-color: white; /* Set the background to white */
+  padding: 20px; /* Add some padding around the content */
+  margin-top: 100px; /* Space for header and navbar */
+}
+
+/* Styling for the Appointments table container */
+.ApppointmentsShownPack {
+  max-width: 1200px; /* Max width for the table */
+  margin: 0 auto; /* Center align */
+  padding: 20px; /* Padding around the table */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Optional: add a subtle shadow for depth */
+}
+
+/* Adjust the width of the table to be full within its container */
+.ant-table {
+  width: 100%;
+  background-color: red;
+}
+
+/* Styling for the header area */
+.AppointmentsHeader {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #f8f8f8; /* Light background for the header */
+  z-index: 1000; /* Make sure the header stays on top */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: shadow for the header */
+}
+
+/* Additional styling if needed */

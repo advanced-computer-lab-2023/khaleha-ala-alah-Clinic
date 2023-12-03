@@ -1,0 +1,86 @@
+.AllDoctorsContainer {
+  background-color: white;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column; /* Adjust the layout to a column */
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 200px);
+  overflow-x: hidden;
+}
+
+/* Add a style for the table header */
+.h1 {
+  color: rgb(0, 0, 0);
+  padding: 10px; /* Add padding to the header for better visibility */
+  font-size: 25px; /* Increase font size for the header */
+}
+
+.tableHeader {
+  font-size: 14px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.headerBar {
+  display: flex;
+  width: 100%;
+  padding: 10px;
+  margin-left: 5rem;
+  margin-top: 8rem;
+}
+
+.headerBar2 {
+  display: flex;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  margin-left: 5rem;
+}
+
+.searchInput {
+  width: 20%;
+  padding: 8px;
+  font-size: 11pt; /* Font size for the select element */
+  border: 1px solid #ccc;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  margin: 3px;
+}
+
+.searchButton {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 15%;
+  font-size: 12pt;
+  transition: background-color 0.3s;
+}
+
+.searchInput:hover {
+  border-color: #007bff; /* Change border color on hover */
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5); /* Add box shadow on hover */
+}
+
+.searchButton:hover {
+  background-color: #0056b3; /* Change background color on hover */
+}
+
+.filterSelect {
+  width: 20%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  color: #5e5d5d;
+  font-size: 11pt; /* Font size for the select element */
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 3px;
+}
+
+/* Style the options within the select element */
+.filterSelect option {
+  color: #5e5d5d;
+  font-size: 11pt; /* Font size for options */
+  font-family: Arial, Helvetica, sans-serif;
+}

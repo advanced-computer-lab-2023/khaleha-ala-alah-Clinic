@@ -1,0 +1,45 @@
+.allContainers {
+  display: relative;
+  align-items: center;
+  justify-content: center;
+}
+
+.carouselContainer {
+  margin-top: 95px;
+  position: relative;
+  gap: 20px; /* Adjust the gap between items as needed */
+  justify-content: center; /* Centers the items horizontally */
+  width: 100vw;
+  height: auto;
+  z-index: 1;
+}
+
+.servicesContainer {
+  display: flex;
+  flex-wrap: wrap; /* This allows items to wrap onto the next line */
+  gap: 20px; /* Adjust the gap between items as needed */
+  justify-content: center; /* This will center the items in the container */
+  align-items: flex-start; /* Align items to the start of the cross axis */
+  align-items: center;
+  background-color: white;
+}
+
+.titleofPAGE {
+  display: flex;
+  flex-wrap: wrap; /* This allows items to wrap onto the next line */
+  gap: 20px; /* Adjust the gap between items as needed */
+  justify-content: center; /* This will center the items in the container */
+  align-items: flex-start; /* Align items to the start of the cross axis */
+  margin-top: 350px;
+  align-items: center;
+  background-color: white;
+  font-size: x-large;
+  height: 200px;
+}
+.patientHomeContainer {
+  height: 100vh;
+  width: 100vw;
+  background-color: white;
+  max-width: 100vw;
+  overflow-x: hidden;
+}

@@ -1,0 +1,38 @@
+.add-family-member-container {
+  text-align: center;
+  padding: 20px;
+  background-color: #e1e5f2;
+  border-radius: 8px;
+  margin: auto;
+  width: 380px;
+  margin-top: 50px;
+}
+
+.centered-text {
+  color: #022b3a;
+}
+
+.small-text {
+  color: #1f7a8c;
+  margin-bottom: 15px;
+}
+
+.email-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+.relation-dropdown {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.add-buttonFam {
+  background-color: #1f7a8c;
+  color: #ffffff;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
