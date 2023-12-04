@@ -42,8 +42,9 @@ function Prescriptions() {
     fetch("http://localhost:4000/patients/persecriptions", requestOptions)
       .then((response) => response.json())
       .then((data) => {
-        setPrescriptions(data.data.prescriptions);
-        setFilteredPrescriptions(data.data.prescriptions);
+        console.log(data);
+        setPrescriptions(data.prescriptions);
+        setFilteredPrescriptions(data.prescriptions);
         fetchDoctors();
       })
       .catch((error) => {
@@ -63,6 +64,7 @@ function Prescriptions() {
     fetch("http://localhost:4000/doctors/Alldoctors", requestOptions)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data.data.Doctors);
         setDoctors(data.data.Doctors);
         //fetchData();
       })
@@ -92,10 +94,10 @@ function Prescriptions() {
   // Function to handle filter changes
   const handleFilterChange = () => {
     // Implement filter logic here and update the filteredPrescriptions state
-    const filtered = prescriptions.filter((prescription) => {
+    const filtered = filteredPrescriptions.filter((prescription) => {
       let doctor = null;
       for (let i = 0; i < doctors.length; i++) {
-        if (doctors[i].userID == prescription.DoctorID) {
+        if (doctors[i].userID == prescription.doctorID) {
           doctor = doctors[i];
           break;
         }
@@ -108,10 +110,15 @@ function Prescriptions() {
         filledFilter === "all" ||
         (filledFilter === "filled" && prescription.isFilled) ||
         (filledFilter === "unfilled" && !prescription.isFilled);
+
+      console.log(dateMatch, doctorMatch, filledMatch);
+      console.log(doctorFilter);
+      console.log(doctor && doctor.name.toLowerCase().includes(doctorFilter));
       return dateMatch && doctorMatch && filledMatch;
     });
 
     setFilteredPrescriptions(filtered);
+    fetchData(filtered);
   };
 
   const columns = [
@@ -140,28 +147,24 @@ function Prescriptions() {
       dataIndex: "status",
       key: "status",
     },
-    {
-      title: "Location",
-      dataIndex: "location",
-      key: "location",
-    },
   ];
 
-  const fetchData = () => {
-    const data = filteredPrescriptions.map((prescription, index) => ({
+  const fetchData = (filter = filteredPrescriptions) => {
+    console.log(filteredPrescriptions);
+    const data = filter.map((prescription, index) => ({
+      id: prescription,
       summary: prescription.summary,
-      location: prescription.location,
       status: prescription.isFilled ? "Filled" : "Unfilled",
-      doctorName: doctors.find((doc) => doc.userID === prescription.DoctorID)
-        ? doctors.find((doc) => doc.userID === prescription.DoctorID).name
+      doctorName: doctors.find((doc) => doc.userID === prescription.doctorID)
+        ? doctors.find((doc) => doc.userID === prescription.doctorID).name
         : "Not Found",
-      doctorEmail: doctors.find((doc) => doc.userID === prescription.DoctorID)
-        ? doctors.find((doc) => doc.userID === prescription.DoctorID).email
+      doctorEmail: doctors.find((doc) => doc.userID === prescription.doctorID)
+        ? doctors.find((doc) => doc.userID === prescription.doctorID).email
         : "Not Found",
       doctorSpeciality: doctors.find(
-        (doc) => doc.userID === prescription.DoctorID
+        (doc) => doc.userID === prescription.doctorID
       )
-        ? doctors.find((doc) => doc.userID === prescription.DoctorID).speciality
+        ? doctors.find((doc) => doc.userID === prescription.doctorID).speciality
         : "Not Found",
       date: new Date(prescription.date).toDateString(),
     }));
