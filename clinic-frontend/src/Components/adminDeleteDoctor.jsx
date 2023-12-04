@@ -16,6 +16,8 @@ const DeleteDoctor = () => {
   const [role, setRole] = useState("");
   const [username, setUsername] = useState("");
   const [error, setError] = useState(null);
+  const [filteredDoctors, setFilteredDoctors] = useState([]); // New state for filtered patients
+  const [searchQuery, setSearchQuery] = useState(""); // State to store search query
 
   const fetchAllDoctors = async () => {
     try {
@@ -28,6 +30,7 @@ const DeleteDoctor = () => {
       const data = await response.json();
       console.log(data.data.doctors);
       setAllDoctors(data.data.doctors);
+      setFilteredDoctors(data.data.doctors); 
     } catch (err) {
       //setError(err.message);
     }
@@ -56,7 +59,7 @@ const DeleteDoctor = () => {
     </div>
   );
 
-  const data = doctors.map((doctors) => ({
+  const data = filteredDoctors.map((doctors) => ({
     username: doctors.username,
     name: doctors.name,
     email: doctors.email,
@@ -96,6 +99,17 @@ const DeleteDoctor = () => {
       render: (_, healthPackage) => actions(healthPackage),
     },
   ];
+
+  
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    const filtered = doctors.filter(doctors => 
+      doctors.username && doctors.username.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredDoctors(filtered);
+  };
+
   const handleDelete = async () => {
     try {
       const response = await axios.delete("http://localhost:4000/admins", {
@@ -114,6 +128,15 @@ const DeleteDoctor = () => {
     <div className={styles.packageAdminContainer}>
       <h2>Manage Doctors</h2>
       {error && <p>Error: {error}</p>}
+      <div>
+      <input
+          type="text"
+          className={styles.searchInput} // Applied CSS class
+          placeholder="Search by username..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
+        </div>
       <div>
         <h3 className={styles.packagesListHeading}>Doctors List</h3>{" "}
         <Table data={data} columns={columns} />
