@@ -44,7 +44,8 @@ import StripePaymentButtonFF from "./Components/CheckoutFamilyMemberPaackage";
 import AddFamilyMemberPage from "./Components/addFamilyMember.jsx";
 import AddFamilyEmail from "./Components/addFamilyMemberEmail.jsx";
 import AddFamilyMemberPhone from "./Components/addFamilyMemberPhone.jsx";
-
+import UserManagementAdmin from "./Components/UserManagementAdmin.jsx"
+import AdminDeleteDoctor from "./Components/adminDeleteDoctor.jsx"
 import AppointmentCheckout from "./Components/appointmentCheckout"
 import "./App.css";
 import Wallet from './Components/Wallet.js'
@@ -204,6 +205,9 @@ function App() {
               <Route path="/packages" element={<HealthPackages />} />
               <Route path="/changePassword" element={<ChangePasswordForm />} />
               <Route path="/notification" element={<Notification />} />
+              <Route path="/ManagementOfUsers" element={<UserManagementAdmin />} />
+              <Route path="/ManageDoctor" element={<AdminDeleteDoctor />} />
+
             </>
           )}
 

@@ -59,7 +59,7 @@ const PackagesManagementAdmin = () => {
 
             <div
               className="card"
-              onClick={() => navigateTo("/deleteDoctor")}
+              onClick={() => navigateTo("/ManageDoctor")}
             >
               <h2>Manage Doctors</h2>
               <p>Delete any doctor</p>
