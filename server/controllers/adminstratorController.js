@@ -81,6 +81,7 @@ exports.delAdminDoctorPatient = async (req, res) => {
       console.log("admin");
       const result = await Admin.deleteOne({ username: name });
       deletedCount = result.deletedCount;
+      console.log(deletedCount);
     } else if (role === "doctor") {
       // Delete a doctor
       // const result = await Admin.deleteOne({ username: name });
@@ -237,5 +238,22 @@ exports.getPendingDoctors = async (req, res) => {
       status: "error",
       message: "Error retrieving pending doctors",
     });
+  }
+};
+
+exports.getCurrentUserAdmin = async (req, res) => {
+  try {
+    console.log("ALO");
+    console.log(req.user._id);
+    const admin = await Admin.findOne({ userID: req.user._id });
+    if (!admin) {
+      return res.status(404).json({ error: "Admin not found." });
+    }
+    return res.status(200).json({
+      admin: admin,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error." });
   }
 };

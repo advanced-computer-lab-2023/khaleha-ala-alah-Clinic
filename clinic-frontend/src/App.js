@@ -21,7 +21,7 @@ import DoctorPatients from "./Components/viewallmypatients";
 import AddAdmin from "./Components/addAdmin";
 import DeleteUser from "./Components/deleteAdminDoctorPatiient";
 import PendingDoctors from "./Components/viewPendingDoctors";
-import HealthPackages from "./Components/packages";
+import HealthPackages from "./Components/packages.jsx";
 //import PackageCard from "./Components/packageCard.jsx";
 import PackagesPage from "./Components/packagesPage";
 import ResetPassword from "./Components/resetpassword";
@@ -61,6 +61,7 @@ import Messenger from "./Components/messenger.jsx";
 import AddPrescription from "./Components/addPrescription.jsx";
 import DrViewPrescriptions from "./Components/drViewPrescriptions.jsx";
 import AdminDeltePatient from "./Components/adminDeletePatient.jsx";
+import AdminDeleteAdmin from "./Components/adminDeleteAdmin.jsx";
 
 function App() {
   const { role } = useAuth();
@@ -203,7 +204,7 @@ function App() {
               <Route path="/addAdmin" element={<AddAdmin />} />
               <Route
                 path="/deleteAdminDoctorPatient"
-                element={<DeleteUser />}
+                element={<AdminDeleteAdmin />}
               />
               <Route path="/viewPendingDoctors" element={<PendingDoctors />} />
               <Route path="/packages" element={<HealthPackages />} />
