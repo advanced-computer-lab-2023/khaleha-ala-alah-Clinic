@@ -26,7 +26,8 @@ const DeleteDoctor = () => {
         throw new Error("Failed to fetch data");
       }
       const data = await response.json();
-      setAllDoctors(data.data.Doctors);
+      console.log(data.data.doctors);
+      setAllDoctors(data.data.doctors);
     } catch (err) {
       //setError(err.message);
     }

@@ -11,6 +11,8 @@ router
   .get(CheckAuth, patientController.getAllPatients)
   .post(patientController.createPatient);
 
+router.get("/getAllPatients", patientController.viewAllPatients);
+
 router.post("/add-amount-Wallet", patientController.addAmountToWallet);
 router.post("/remove-from-wallet", patientController.removeAmountFromWallet);
 router.get("/amount-wallet/:userID", patientController.getAmountInWallet);
@@ -128,7 +130,6 @@ router.post(
 
 //router.get("/pre", CheckAuth, patientController.viewPrescriptions);
 
-
 router.patch(
   "/rescheduleAppointment/:appointmentID/:newDateTime",
   CheckAuth,
@@ -151,5 +152,9 @@ router.patch(
   patientController.cancelAppointment
 );
 
-router.post('/followUpRequest' , CheckAuth , patientController.followUpRequestAppointment);
+router.post(
+  "/followUpRequest",
+  CheckAuth,
+  patientController.followUpRequestAppointment
+);
 module.exports = router;

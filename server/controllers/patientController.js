@@ -13,11 +13,11 @@ const followUpRequestAppointment = require("./../models/followUpRequestModel");
 // get all patients
 const conn = mongoose.connection;
 let gfs;
-conn.once('open', () => {
-    gfs = new mongoose.mongo.GridFSBucket(conn.db, { bucketName: 'uploads' });
+conn.once("open", () => {
+  gfs = new mongoose.mongo.GridFSBucket(conn.db, { bucketName: "uploads" });
 });
 
-const Wallet = require('../models/wallet');
+const Wallet = require("../models/wallet");
 exports.getAmountInWallet = async (req, res) => {
   try {
     const userID = req.params.userID.trim();
@@ -311,20 +311,22 @@ exports.getPatientPrescribtions = async function (req, res) {
 
     const prescriptionsWithFiles = await Promise.all(
       prescriptions.map(async (prescription) => {
-        const doctor= await Doctors.findOne({userID: prescription.doctorID});
+        const doctor = await Doctors.findOne({ userID: prescription.doctorID });
         if (prescription.pdfFileID) {
-          const file = await gfs.find({ _id: prescription.pdfFileID }).toArray();
+          const file = await gfs
+            .find({ _id: prescription.pdfFileID })
+            .toArray();
           const fileStream = gfs.openDownloadStream(prescription.pdfFileID);
           const chunks = [];
           return new Promise((resolve, reject) => {
-            fileStream.on('data', (chunk) => {
+            fileStream.on("data", (chunk) => {
               chunks.push(chunk);
             });
-            fileStream.on('end', () => {
+            fileStream.on("end", () => {
               const fileData = Buffer.concat(chunks);
               resolve({ ...prescription.toObject(), fileData, doctor });
             });
-            fileStream.on('error', (error) => {
+            fileStream.on("error", (error) => {
               reject(error);
             });
           });
@@ -333,7 +335,7 @@ exports.getPatientPrescribtions = async function (req, res) {
         }
       })
     );
-    return res.status(200).json({prescriptions: prescriptionsWithFiles});
+    return res.status(200).json({ prescriptions: prescriptionsWithFiles });
   } catch (err) {
     res.status(500).json({
       status: "error",
@@ -1467,43 +1469,63 @@ exports.cancelAppointment = async (req, res) => {
   }
 };
 
-exports.followUpRequestAppointment = async (req,res) =>{
-  try{
-    const patient = await Patient.findOne({userID : req.user._id});
-    if(!patient){
+exports.followUpRequestAppointment = async (req, res) => {
+  try {
+    const patient = await Patient.findOne({ userID: req.user._id });
+    if (!patient) {
       return res.status(404).json({
         status: "fail",
         message: "Patient not found",
       });
     }
     const date = req.body.date;
-    if(date>Date.now()){
+    if (date > Date.now()) {
       return res.status(400).json({
         status: "fail",
         message: "Date is invalid",
       });
     }
-    const appointment = await Appointments.find({ PatientID: req.user._id , DoctorID : req.body.doctorID , timedAt : req.body.date});
-    if(!appointment){
+    const appointment = await Appointments.find({
+      PatientID: req.user._id,
+      DoctorID: req.body.doctorID,
+      timedAt: req.body.date,
+    });
+    if (!appointment) {
       return res.status(404).json({
         status: "fail",
         message: "Appointment not found",
       });
     }
     const FollowUpRequestAppointment = new followUpRequestAppointment({
-      PatientID : req.user._id,
-      DoctorID : req.body.doctorID,
-      });
+      PatientID: req.user._id,
+      DoctorID: req.body.doctorID,
+    });
     await FollowUpRequestAppointment.save();
     res.status(200).json({
       status: "success",
       message: "followup request send successfully",
     });
-  }
-  catch(error){
+  } catch (error) {
     res.status(500).json({
       status: "error",
       message: error.message,
     });
   }
-}
+};
+
+exports.viewAllPatients = async function (req, res) {
+  try {
+    const patients = await Patient.find();
+    res.status(200).json({
+      status: "success",
+      data: {
+        patients,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+};

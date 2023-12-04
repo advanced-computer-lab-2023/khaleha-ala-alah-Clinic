@@ -13,6 +13,7 @@ const DeletePatient = () => {
         throw new Error("Failed to fetch data");
       }
       const patientData = await patientResponse.json();
+      console.log(patientData.data.patients);
       setAllPatients(patientData.data.patients);
     } catch (err) {
       //setError(err.message);

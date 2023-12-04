@@ -31,38 +31,36 @@ import Bookpage from "./Components/Book";
 import NotApproved from "./Components/notApproved";
 import PackagesManagment from "./Components/packageManagmentPage";
 import MyselfPackages from "./Components/myselfPackages";
-import FollowUpScheduler from './Components/FollowUpScheduler.jsx';
+import FollowUpScheduler from "./Components/FollowUpScheduler.jsx";
 import AvailableSlotsForm from "./Components/AvailableSlotsForm.jsx";
 import FamilyMemberPackages from "./Components/familyMembersPackages";
 import FamilyMemberDetails from "./Components/familyMemberDetails";
 import SubscribeToFamilyMemberPackage from "./Components/subscribeToFamilyMemberPackage";
 import { useAuth } from "./AuthContext";
 import ContractPage from "./Components/Contract";
-import PaymentMethodSubscription from "./Components/choose-to-pay-subscription"
+import PaymentMethodSubscription from "./Components/choose-to-pay-subscription";
 import StripePaymentButton from "./Components/Checkout";
 import StripePaymentButtonFF from "./Components/CheckoutFamilyMemberPaackage";
 import AddFamilyMemberPage from "./Components/addFamilyMember.jsx";
 import AddFamilyEmail from "./Components/addFamilyMemberEmail.jsx";
 import AddFamilyMemberPhone from "./Components/addFamilyMemberPhone.jsx";
-import UserManagementAdmin from "./Components/UserManagementAdmin.jsx"
-import AdminDeleteDoctor from "./Components/adminDeleteDoctor.jsx"
-import AppointmentCheckout from "./Components/appointmentCheckout"
+import UserManagementAdmin from "./Components/UserManagementAdmin.jsx";
+import AdminDeleteDoctor from "./Components/adminDeleteDoctor.jsx";
+import AppointmentCheckout from "./Components/appointmentCheckout";
 import "./App.css";
-import Wallet from './Components/Wallet.js'
+import Wallet from "./Components/Wallet.js";
 import PaymentMethod from "./Components/choose-to-pay.js";
-import PaymentMethodSubscriptionFamily from "./Components/choose-to-pay-familyPackage"
+import PaymentMethodSubscriptionFamily from "./Components/choose-to-pay-familyPackage";
 import HealthRecordForm from "./Components/HealthRecordForm";
-import {Notification} from "./Components/notification";
-import DoctorWallet from "./Components/doctorWallet.js"
+import { Notification } from "./Components/notification";
+import DoctorWallet from "./Components/doctorWallet.js";
 import "./App.css";
 import ChangePasswordForm from "./Components/changePassword.jsx";
 
 import Messenger from "./Components/messenger.jsx";
 import AddPrescription from "./Components/addPrescription.jsx";
 import DrViewPrescriptions from "./Components/drViewPrescriptions.jsx";
-
-
-
+import AdminDeltePatient from "./Components/adminDeletePatient.jsx";
 
 function App() {
   const { role } = useAuth();
@@ -70,10 +68,10 @@ function App() {
     <div className="App">
       <Routes>
         {/* public routes */}
- 
+
         <Route path="/login" element={<Login />} />
-    
-     <Route path="/paymentMethod" element={<PaymentMethod />} />
+
+        <Route path="/paymentMethod" element={<PaymentMethod />} />
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/PatientRegister" element={<PatientRegister />} />
         <Route path="/DoctorRegister" element={<DoctorRegister />} />
@@ -89,15 +87,17 @@ function App() {
           {/* patient routes */}
           {role === "patient" && (
             <>
-            
               <Route path="/patientHome" element={<PatientHome />} />
               <Route path="/familyMembers" element={<FamilyMembers />} />
               <Route
                 path="/registerFamilyMember"
                 element={<RegisterFamilymember />}
               />
-                  
-              <Route path="/appointment-book" element={<AppointmentCheckout />} />
+
+              <Route
+                path="/appointment-book"
+                element={<AppointmentCheckout />}
+              />
               <Route path="/appointments" element={<Appointments />} />
               <Route path="/prescriptions" element={<Prescriptions />} />
               <Route path="/searchDoctors" element={<DoctorSearch />} />
@@ -119,13 +119,21 @@ function App() {
                 path="/subscribeToFamilyMemberPackage"
                 element={<SubscribeToFamilyMemberPackage />}
               />
-              
 
-              <Route path="/choose-to-pay-subscription" element={<PaymentMethodSubscription />} /> 
-              <Route path="/CheckoutFamilyMemberPaackage" element={<StripePaymentButtonFF />} />  
-              <Route path="/choose-to-pay" element={< PaymentMethod />} />  
-              
-              <Route path="/choose-to-pay-familyPackage" element={<PaymentMethodSubscriptionFamily />} />  
+              <Route
+                path="/choose-to-pay-subscription"
+                element={<PaymentMethodSubscription />}
+              />
+              <Route
+                path="/CheckoutFamilyMemberPaackage"
+                element={<StripePaymentButtonFF />}
+              />
+              <Route path="/choose-to-pay" element={<PaymentMethod />} />
+
+              <Route
+                path="/choose-to-pay-familyPackage"
+                element={<PaymentMethodSubscriptionFamily />}
+              />
               <Route
                 path="/appointmentCheckout"
                 element={<AppointmentCheckout />}
@@ -146,18 +154,15 @@ function App() {
               <Route path="/changePassword" element={<ChangePasswordForm />} />
 
               <Route path="/notification" element={<Notification />} />
-              
-
 
               <Route path="/chat" element={<Messenger />} />
-
             </>
           )}
 
           {/* doctor routes */}
           {role === "doctor" && (
             <>
-             <Route path="/DoctorWallet" element={<DoctorWallet />} />
+              <Route path="/DoctorWallet" element={<DoctorWallet />} />
               <Route path="/doctorhome" element={<DoctorHome />} />
               <Route
                 path="/editDoctorProfile"
@@ -171,10 +176,7 @@ function App() {
                 path="/patientdoctorhealth"
                 element={<PrescriptionsDoctors />}
               />
-              <Route
-                path="/HealthRecordForm"
-                element={<HealthRecordForm />}
-              />
+              <Route path="/HealthRecordForm" element={<HealthRecordForm />} />
               <Route path="/viewallmypatients" element={<DoctorPatients />} />
               <Route path="/changePassword" element={<ChangePasswordForm />} />
               <Route
@@ -186,9 +188,11 @@ function App() {
               <Route path="/notification" element={<Notification />} />
 
               <Route path="/addPrescription" element={<AddPrescription />} />
-              <Route path="/ViewPrescriptions" element={<DrViewPrescriptions />} />
+              <Route
+                path="/ViewPrescriptions"
+                element={<DrViewPrescriptions />}
+              />
               <Route path="/chat" element={<Messenger />} />
-
             </>
           )}
 
@@ -205,9 +209,12 @@ function App() {
               <Route path="/packages" element={<HealthPackages />} />
               <Route path="/changePassword" element={<ChangePasswordForm />} />
               <Route path="/notification" element={<Notification />} />
-              <Route path="/ManagementOfUsers" element={<UserManagementAdmin />} />
+              <Route
+                path="/ManagementOfUsers"
+                element={<UserManagementAdmin />}
+              />
               <Route path="/ManageDoctor" element={<AdminDeleteDoctor />} />
-
+              <Route path="/deletepatient" element={<AdminDeltePatient />} />
             </>
           )}
 
