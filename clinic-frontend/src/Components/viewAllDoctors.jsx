@@ -11,8 +11,7 @@ import BookOverlay from "./Book.jsx";
 const getSessionPrice = (doctor, currentPatient) => {
   // Replace this logic with your actual session price calculation
   // Here, I'm assuming session price is based on some fixed rate
-  console.log(doctor.hourlyRate + "BBBB");
-
+  console.log(currentPatient);
   return currentPatient.doctorsDiscount
     ? doctor.hourlyRate * (1 - currentPatient.doctorsDiscount)
     : doctor.hourlyRate;
@@ -62,12 +61,20 @@ const DoctorList = () => {
     const fetchPatientDiscounts = async () => {
       try {
         const response = await fetch(
-          "http://localhost:4000/patients/currentPatient"
+          "http://localhost:4000/patients/currentPatient",
+          {
+            method: "GET",
+            headers: {
+              authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
+        console.log("AIRIRIRI");
+        console.log(data.user);
         setCurrentPatient(data.data.user); // Adjust the data structure as needed
       } catch (error) {
         console.error("Error fetching patient discounts:", error);
@@ -186,9 +193,12 @@ const DoctorList = () => {
   };
 
   const doctorHasAvailability = (doctor, day, time) => {
-    return doctor.fixedSlots.some(
-      (slot) => slot.day === day && slot.hour === time
-    );
+    console.log(day + " " + time + "<<<<<<<");
+    return doctor.fixedSlots.some((slot) => {
+      console.log(doctor.name);
+      console.log(slot.day + " " + slot.hour + "<<<<<<<slot");
+      return slot.day === day && slot.hour === time;
+    });
   };
 
   return (
@@ -263,15 +273,15 @@ const DoctorList = () => {
               onChange={(e) => setTimeFilter(e.target.value)}
             >
               <option value="all">ALL</option>
-              <option value="8">08:00 am</option>
-              <option value="9">09:00 am</option>
-              <option value="10">10:00 am</option>
-              <option value="11">11:00 am</option>
-              <option value="12">12:00 pm</option>
-              <option value="1">01:00 pm</option>
-              <option value="2">02:00 pm</option>
-              <option value="3">03:00 pm</option>
-              <option value="4">04:00 pm</option>
+              <option value="8:00 AM">08:00 am</option>
+              <option value="9:00 AM">09:00 am</option>
+              <option value="10:00 AM">10:00 am</option>
+              <option value="11:00 AM">11:00 am</option>
+              <option value="12:00 PM">12:00 pm</option>
+              <option value="1:00 PM">01:00 pm</option>
+              <option value="2:00 PM">02:00 pm</option>
+              <option value="3:00 PM">03:00 pm</option>
+              <option value="4:00 PM">04:00 pm</option>
             </select>
 
             <button
