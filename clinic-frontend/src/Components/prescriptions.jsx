@@ -94,7 +94,7 @@ function Prescriptions() {
   // Function to handle filter changes
   const handleFilterChange = () => {
     // Implement filter logic here and update the filteredPrescriptions state
-    const filtered = filteredPrescriptions.filter((prescription) => {
+    const filtered = prescriptions.filter((prescription) => {
       let doctor = null;
       for (let i = 0; i < doctors.length; i++) {
         if (doctors[i].userID == prescription.doctorID) {
