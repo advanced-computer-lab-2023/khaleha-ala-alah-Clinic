@@ -6,6 +6,7 @@ import NavBar from "../Elements/NavBar.jsx";
 import LoadingPage from "./LoadingPage.jsx";
 import styles from "./prescriptions.module.css";
 import { FilterOutlined } from "@ant-design/icons";
+import PrescriptionsOverlay from "./prescriptionsOverlay.jsx";
 
 function Prescriptions() {
   const [prescriptions, setPrescriptions] = useState([]);
@@ -18,6 +19,7 @@ function Prescriptions() {
   const [showOverlay, setShowOverlay] = useState(false);
   const [message, setMessage] = useState("");
   const [tableData, setTableData] = useState([]);
+  const [prescription, setPrescription] = useState([]);
 
   // Similar to componentDidMount, fetch data when the component mounts
   useEffect(() => {
@@ -152,7 +154,7 @@ function Prescriptions() {
   const fetchData = (filter = filteredPrescriptions) => {
     console.log(filteredPrescriptions);
     const data = filter.map((prescription, index) => ({
-      id: prescription,
+      prescription: prescription,
       summary: prescription.summary,
       status: prescription.isFilled ? "Filled" : "Unfilled",
       doctorName: doctors.find((doc) => doc.userID === prescription.doctorID)
@@ -235,7 +237,8 @@ function Prescriptions() {
                 columns={columns}
                 clickable={true}
                 onRowClick={(record, rowIndex) => {
-                  setMessage(record.summary);
+                  console.log(record.prescription);
+                  setPrescription(record.prescription);
                   setShowOverlay(true);
                 }}
               />
@@ -243,10 +246,12 @@ function Prescriptions() {
           </div>
 
           {showOverlay && (
-            <OverlayWindow
-              message={message}
-              onCancel={() => setShowOverlay(false)}
-              cancelLabel="Close"
+            <PrescriptionsOverlay
+              prescription={prescription}
+              onCancel={() => {
+                setShowOverlay(false);
+                fetchPrescriptions();
+              }}
             />
           )}
         </div>
