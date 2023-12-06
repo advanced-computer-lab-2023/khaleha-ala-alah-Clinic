@@ -309,6 +309,10 @@ exports.login = async (req, res) => {
           .json({ error: "Doctor rejected", token: token, role: user.role });
       }
     }
+    if(user.role === "pharmacist"){
+      return res.status(400).json({ error: "pharmacist is not able to login"});
+    }
+    
     res
       .status(200)
       .json({
