@@ -123,7 +123,7 @@ now lets register with an approved doctor the doctor will be redirected to the d
 #### this will login a user regarding his role and will generate a token for the user 
 
 
- ![App Screenshot](https://drive.google.com/uc?id=1JuoYuEltqrXlvFsREmHm6Ml222iUpnRq)
+ ![App Screenshot](https://drive.google.com/uc?id=1eRSTgZKYh2U5RBOFB_xBN_xq43zXl7Ut)
 
 
 
