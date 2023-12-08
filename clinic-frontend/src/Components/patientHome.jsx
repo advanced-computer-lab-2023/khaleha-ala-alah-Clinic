@@ -126,25 +126,27 @@ export const PatientHome = () => {
               </div>
 
               <div className={styles.titleofPAGE} style={{ marginTop: "0px" }}>
-                <h1> What are our services? </h1>
+                <h1> Discover our comprehensive healthcare services </h1>
               </div>
               <div className={styles.servicesContainer}>
                 <ServiceItem
                   imgSrc={searchdoctor}
                   title="Search For Doctors"
-                  description="Discover doctors by specialty or name to find your ideal healthcare match"
+                  description="Discover doctors by specialty or name to find your ideal match"
                   navigateTo="/searchDoctors"
                 />
+                ,
                 <ServiceItem
+                  imgSrc={searchdoctor}
                   title="wallet"
-                  description="check your wallet"
+                  description="Experience a modern clinic with our secure digital wallet "
                   navigateTo="/wallet"
                 />
                 ,
                 <ServiceItem
                   imgSrc={viewdoctor}
                   title="View All Doctors"
-                  description="Explore profiles and expertise of all our available medical practitioners"
+                  description="Explore profiles and expertise of our medical staff"
                   navigateTo="/viewAllDoctors"
                 />
                 ,
@@ -179,18 +181,42 @@ export const PatientHome = () => {
                 <ServiceItem
                   imgSrc={addfm}
                   title="Add Family Member"
-                  description="Easily add relatives to your account for coordinated health management"
+                  description="Expand your care circle by adding family members"
                   navigateTo="/addFamilyMember"
                 />
                 ,
                 <ServiceItem
                   imgSrc={chatdoctor}
                   title="Chat with Doctor"
-                  description="Connect with your doctor for instant advice through secure messaging. SOON"
+                  description="connect with our doctors through secure in-app messaging"
                 />
                 ,
               </div>
+              <div className={styles.aboutuscontainer}>
+      <h2 className ={styles.aboutuscontainerh2}>About Us</h2>
+      <p style={{
+          padding: '2rem',
+          marginLeft: '3rem',
+          fontSize: '16pt',
+          lineHeight: 1.6,
+          fontFamily: 'Arial, sans-serif',
+          fontWeight: 'bold'
+        }}>
+          At Khaleha-ala-allah Clinic, we are dedicated to providing exceptional healthcare services tailored to meet the unique needs of our patients.
+          With a commitment to excellence and a passion for wellness, our team of experienced healthcare professionals strives to 
+          deliver compassionate and comprehensive medical care.
+        </p>
+        <p style={{
+          marginTop: '2rem',
+          fontSize: '14pt',
+          lineHeight: 1.6,
+          fontFamily: 'Arial, sans-serif'
+        }}>
+          From routine check-ups to specialized medical services, we offer a range of healthcare solutions designed to promote a lifetime of optimal health. We look forward to serving you and your family with the highest standards of medical excellence.
+        </p>
+    </div>
             </div>
+            
           }
         </div>
       )}

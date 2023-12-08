@@ -93,18 +93,41 @@ export const DoctorHome = () => {
             />
             ,
             <ServiceItem
-              imgSrc={chatpatient}
+              imgSrc={makeappointment}
               title="add available slots"
-              description="Connect with your doctor for instant advice through secure messaging. SOON"
+              description="Seamlessly manage your schedule by updating available slots"
               navigateTo="/available-slots"
             />
             ,
             <ServiceItem
               imgSrc={chatpatient}
-              title="Chat with Doctor"
-              description="Connect with your doctor for instant advice through secure messaging. SOON"
+              title="Chat with Patient"
+              description="connect with your patient through secure in-app messaging"
             />
           </div>
+          <div className="about-us-container">
+      <h2>About Us</h2>
+      <p style={{
+          padding: '2rem',
+          marginLeft: '3rem',
+          fontSize: '16pt',
+          lineHeight: 1.6,
+          fontFamily: 'Arial, sans-serif',
+          fontWeight: 'bold'
+        }}>
+          At Khaleha-ala-allah Clinic, we are dedicated to providing exceptional healthcare services tailored to meet the unique needs of our patients.
+          With a commitment to excellence and a passion for wellness, our team of experienced healthcare professionals strives to 
+          deliver compassionate and comprehensive medical care.
+        </p>
+        <p style={{
+          marginTop: '2rem',
+          fontSize: '14pt',
+          lineHeight: 1.6,
+          fontFamily: 'Arial, sans-serif'
+        }}>
+          From routine check-ups to specialized medical services, we offer a range of healthcare solutions designed to promote a lifetime of optimal health. We look forward to serving you and your family with the highest standards of medical excellence.
+        </p>
+    </div>
         </div>
       }
     </div>
