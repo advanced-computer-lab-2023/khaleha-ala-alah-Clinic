@@ -1,0 +1,33 @@
+.addMedicinecontainer {
+    width: 530px;
+    height: 300px;
+    margin: auto;
+    padding-top:2rem;
+    margin-top: 7rem;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.267);
+    border-radius: 15px;
+    margin-bottom: 1rem;
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effect */
+  }
+
+  .addMedicinecontainer:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.267);
+  }
+  
+  .label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 15pt;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin-left: 3rem;
+    color: rgba(0, 0, 0, 0.555);
+  }
+  
+  .statusMessage {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+    color: red;
+  }

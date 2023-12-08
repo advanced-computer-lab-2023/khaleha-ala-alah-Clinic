@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import NavBar from "../Elements/NavBar.jsx";
-import Header from "../Elements/Header";
+import NavBar from "../Elements/NavBarDoctor.jsx";
+import Header from "../Elements/HeaderDoctor";
 
 import styles from "./editDoctorProfile.module.css"
 

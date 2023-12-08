@@ -64,6 +64,10 @@ import AdminDeltePatient from "./Components/adminDeletePatient.jsx";
 import AdminDeleteAdmin from "./Components/adminDeleteAdmin.jsx";
 
 import DoctorChangePasswordForm from "./Components/doctorchangePassword.jsx";
+import DoctorEditProfileForm from "./Components/doctorEditAcc.js";
+import DoctorUserProfileForm from "./Components/doctorUserprofile.js";
+import PatientEditProfileForm from "./Components/patientEditAcc.js";
+import PatientUserProfileForm from "./Components/patientUserProfile.js";
 
 function App() {
   const { role } = useAuth();
@@ -108,6 +112,9 @@ function App() {
               <Route path="/packagesPage" element={<PackagesPage />} />
               <Route path="/managePackages" element={<PackagesManagment />} />
               <Route path="/myselfPackages" element={<MyselfPackages />} />
+              
+              <Route path="/patientUserProfile" element={<PatientUserProfileForm />} />
+              <Route path="/patientEditAcc" element={<PatientEditProfileForm />} />
               <Route
                 path="/familyMemberPackages"
                 element={<FamilyMemberPackages />}
@@ -169,6 +176,8 @@ function App() {
 
               <Route path="/DoctorWallet" element={<DoctorWallet />} />
               <Route path="doctorchangePassword" element={<DoctorChangePasswordForm/>}/>
+              <Route path="/doctorEditAcc" element={<DoctorEditProfileForm/>}/>
+              <Route path="/doctorUserProfile" element={<DoctorUserProfileForm/>}/>
               <Route path="/doctorhome" element={<DoctorHome />} />
               <Route
                 path="/editDoctorProfile"

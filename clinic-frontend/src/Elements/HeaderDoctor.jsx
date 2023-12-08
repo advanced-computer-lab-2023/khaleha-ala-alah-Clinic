@@ -34,7 +34,7 @@ const Header = () => {
   }
 
   const handleEditAccount =()=>{
-    navigate("/doctorEditAccount");
+    navigate("/doctorEditAcc");
   }
 
 
