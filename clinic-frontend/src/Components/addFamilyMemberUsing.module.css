@@ -1,0 +1,90 @@
+.addfamMemUsingCon{
+    margin-bottom: 1rem;
+    border-radius: 15px;
+    width: 500px;
+    min-height: 140px;
+    padding: 30px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.267);
+    margin-top: 6rem;
+}
+
+.label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 12pt;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin-left: 2rem;
+  }
+
+  
+  .input {
+    margin-left: 2rem;
+    width: 340px;
+    padding: 12px;
+    box-sizing: border-box;
+    border: 1px solid rgb(231, 231, 231);
+    border-radius: 35px;
+    transition: border-color 0.3s;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13pt;
+    background-color: rgb(231, 231, 231);
+    margin-bottom: 2rem;
+  }
+
+  .input:hover {
+    border-color: #007bff;
+  }
+  
+  
+  .button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 70%;
+    font-size: 19px;
+    margin-top: 2rem;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    font-family: Arial, sans-serif;
+    margin-bottom: 2rem;
+    margin-left: 3rem;
+  }
+  
+  .button:hover {
+    background-color: #0056b3;
+  }
+
+  .statusMessage {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+    color: red;
+  }
+
+.pText{
+    font-size: 12pt;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgba(40, 40, 41, 0.534);
+}
+
+.select{
+    margin-left: 2rem;
+    width: 340px;
+    padding: 12px;
+    box-sizing: border-box;
+    border: 1px solid rgb(231, 231, 231);
+    border-radius: 35px;
+    transition: border-color 0.3s;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13pt;
+    background-color: rgb(231, 231, 231);
+    margin-bottom: 2rem;
+    color: rgba(0, 0, 0, 0.473)
+}
+
+.select:hover{
+    border-color: #007bff;
+}

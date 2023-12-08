@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import './registerForm.css';
 import axios from 'axios';
 import { message } from 'antd';
+import NavBar from "../Elements/NavBar";
+import Header from "../Elements/Header";
 
 function RegisterFamilymember() {
     const [name, setName] = useState("");
@@ -39,7 +41,9 @@ function RegisterFamilymember() {
 
     return (
         <div>
-            <div className="container">
+            <Header/>
+            <NavBar />
+            <div className="container" style={{marginTop: '3rem'}}>
                 <div className="title">Registration</div>
                 <div className="content">
                     <form action="#" onSubmit={handleSubmit}>

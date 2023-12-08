@@ -311,9 +311,9 @@ function Appointments() {
             selectedSubSection="viewAppointments"
           />
           <div style={{ marginTop: "93px" }}>
-            <h1 style={{ marginTop: "34px", marginBottom: "10px" }}>
+            {/* <h1 style={{ marginTop: "34px", marginBottom: "10px" }}>
               View Your Appointments
-            </h1>
+            </h1> */}
             <div className={styles.Filters}>
               <RangePicker
                 allowClear
@@ -338,6 +338,7 @@ function Appointments() {
                 type="primary"
                 onClick={filterAppointments}
                 icon={<SearchOutlined />}
+                style={{marginLeft:'1rem'}}
               >
                 Filter
               </Button>

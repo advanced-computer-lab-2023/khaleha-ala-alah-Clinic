@@ -55,7 +55,7 @@
     height: 3px;
     width: 30px;
     border-radius: 5px;
-    background: linear-gradient(135deg, #71b7e6, #608f8f);
+  
   }
   .content form .user-details{
     display: flex;
@@ -80,7 +80,6 @@
     border-radius: 15px;
     padding-left: 15px;
     border: 1px solid #ccc;
-    border-bottom-width: 2px;
     transition: all 0.3s ease;
   }
   .user-details .input-box input:focus,
@@ -141,11 +140,11 @@
      letter-spacing: 1px;
      cursor: pointer;
      transition: all 0.3s ease;
-     background: linear-gradient(135deg, #6894ad, #7299a5);
+     background: #007bff;
    }
    form .button input:hover{
     /* transform: scale(0.99); */
-    background: linear-gradient(-135deg,  #6894ad, #35616e);
+    background-color: #0056b3;
     }
    @media(max-width: 584px){
    .container{

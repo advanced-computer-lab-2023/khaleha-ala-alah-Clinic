@@ -159,8 +159,8 @@ export const PatientHome = () => {
                 ,
                 <ServiceItem
                   imgSrc={makeappointment}
-                  title="Make Appointments"
-                  description="Schedule a consultation with your preferred doctor anytime"
+                  title="View Appointments"
+                  description="View a scheduled consultation with your preferred doctor anytime"
                   navigateTo="/appointments"
                 />
                 ,

@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import "./addFamilyMember.css"; // Create a CSS file for styling
 import axios from "axios";
 import FeedbackMessage from "./feedbackMessage";
+import Header from "../Elements/Header";
+import NavBar from "../Elements/NavBar";
+import styles from './addFamilyMemberUsing.module.css';
 
 const AddFamilyMember = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -97,28 +100,32 @@ const AddFamilyMember = () => {
         </>
       ) : (
         <>
-          <div className="add-family-member-container">
-            <h2 className="centered-text">
-              Please Enter The Phone Number of Your Family Member
-            </h2>
-            <p className="small-text">
+        <div>
+        <Header />
+        <NavBar/>
+          <div className={styles.addfamMemUsingCon}>
+            <p className={styles.pText}>
+              Please enter the phone number of your family member
+            </p>
+            <p className={styles.pText} style={{marginBottom:'2rem'}}>
               This family member must be a member in our clinic.
             </p>
-            <label htmlFor="email">Your Phone Number:</label>
+            <label htmlFor="email" className={styles.label}>Phone Number</label>
             <input
               type="text"
               id="email"
-              placeholder="Enter Phone Number"
+              placeholder="Phone Number"
               value={phoneNumber}
               onChange={handlePhoneNumberChange}
-              className="email-input"
+              className={styles.input}
             />
             <div className="relation-dropdown">
-              <label htmlFor="relation">Choose Relation:</label>
+              <label htmlFor="relation" className={styles.label}>Relation</label>
               <select
                 id="relation"
                 value={relation}
                 onChange={handleRelationChange}
+                className={styles.select}
               >
                 <option value="">Select Relation</option>
                 <option value="husband">Husband</option>
@@ -126,8 +133,8 @@ const AddFamilyMember = () => {
                 <option value="children">Children</option>
               </select>
             </div>
-            <button onClick={handleAddFamilyMember} className="add-buttonFam">
-              Add Family Member
+            <button onClick={handleAddFamilyMember} className={styles.button}>
+             + Add Member
             </button>
             {feedback && (
               <FeedbackMessage
@@ -141,6 +148,7 @@ const AddFamilyMember = () => {
                 }}
               />
             )}
+          </div>
           </div>
         </>
       )}
