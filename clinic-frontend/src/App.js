@@ -63,6 +63,8 @@ import DrViewPrescriptions from "./Components/drViewPrescriptions.jsx";
 import AdminDeltePatient from "./Components/adminDeletePatient.jsx";
 import AdminDeleteAdmin from "./Components/adminDeleteAdmin.jsx";
 
+import DoctorChangePasswordForm from "./Components/doctorchangePassword.jsx";
+
 function App() {
   const { role } = useAuth();
   return (
@@ -163,7 +165,10 @@ function App() {
           {/* doctor routes */}
           {role === "doctor" && (
             <>
+
+
               <Route path="/DoctorWallet" element={<DoctorWallet />} />
+              <Route path="doctorchangePassword" element={<DoctorChangePasswordForm/>}/>
               <Route path="/doctorhome" element={<DoctorHome />} />
               <Route
                 path="/editDoctorProfile"

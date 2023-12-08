@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import NavBar from "../Elements/NavBar.jsx";
-import Header from "../Elements/Header";
+import NavBar from "../Elements/NavBarDoctor.jsx";
+import Header from "../Elements/HeaderDoctor";
 
 import styles from "./avaliableSlots.module.css"
 

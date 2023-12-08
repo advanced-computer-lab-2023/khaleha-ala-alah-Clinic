@@ -11,8 +11,8 @@ import editprofile from "../Images/editprofile.png";
 
 import ImageCarousel from "../Elements/ImageCarousel";
 import ServiceItem from "../Elements/ServiceItem";
-import NavBar from "../Elements/NavBar";
-import Header from "../Elements/Header";
+import NavBar from "../Elements/NavBarDoctor";
+import Header from "../Elements/HeaderDoctor";
 
 
 import appointments from "../Images/appointmentwithpatient.jpg";
