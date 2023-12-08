@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ConfirmationDialog from "../Elements/ConfirmationDialog.jsx";
+import styles from './packageDetails.module.css';
 
 import NavBar from "../Elements/NavBar";
 import Header from "../Elements/Header";
@@ -61,7 +62,7 @@ const PackageDetails = () => {
   }
 
   return (
-    <div className="package-details-container">
+    <div>
       {isLoading ? (
         <div>Loading...</div>
       ) : (
@@ -71,44 +72,58 @@ const PackageDetails = () => {
             selectedSection={"packages"}
             selectedSubSection={"familyMemberPackages"}
           />
-          <h1 className="package-details-title">Package Details</h1>
-          <div className="package-details-content">
-            <p>
+          {/* <h1 className="package-details-title">Package Details</h1> */}
+          <div  className={styles.packDetailsCont}>
+            <p className={styles.pText}>
               <strong>Package Name:</strong> {patient.packageName}
             </p>
-            <p>
+            <p className={styles.pText}>
               <strong>End Date:</strong> {formatDate(patient.packageEndDate)}
             </p>
-            <p>
+            <p className={styles.pText}>
               <strong>Medical Discount:</strong>{" "}
               {patient.medicalDiscount < 1
                 ? patient.medicalDiscount * 100
                 : patient.medicalDiscount}
               %
             </p>
-            <p>
+            <p className={styles.pText}>
               <strong>Doctor's Discount:</strong>{" "}
               {patient.doctorsDiscount < 1
                 ? patient.doctorsDiscount * 100
                 : patient.doctorsDiscount}
               %
             </p>
-            <p>
+            <p className={styles.pText}>
               <strong>Family Discount:</strong>{" "}
               {patient.familyDiscount < 1
                 ? patient.familyDiscount * 100
                 : patient.familyDiscount}
               %
             </p>
-            {patient.selfSubscription === false ? (
+            {/* {patient.selfSubscription === false ? (
               <button
-                className="unsubscribe-button"
+              className={styles.button}
                 onClick={() => setShowConfirmationDialog(true)}
               >
                 Unsubscribe
               </button>
-            ) : null}
-            {showConfirmationDialog && (
+            ) : null} */}
+            {/* {showConfirmationDialog && (
+              <ConfirmationDialog
+                message="Are you sure you want to unsubscribe?"
+                confirmLabel="Yes"
+                cancelLabel="No"
+                onConfirm={handleUnsubscribe}
+                onCancel={() => setShowConfirmationDialog(false)}
+              />
+            )} */}
+            <button className={styles.button} onClick={() => setShowConfirmationDialog(true)}>
+          Unsubscribe
+        </button>
+        
+          </div>
+          {showConfirmationDialog && (
               <ConfirmationDialog
                 message="Are you sure you want to unsubscribe?"
                 confirmLabel="Yes"
@@ -117,7 +132,6 @@ const PackageDetails = () => {
                 onCancel={() => setShowConfirmationDialog(false)}
               />
             )}
-          </div>
         </>
       )}
     </div>

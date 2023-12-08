@@ -6,6 +6,7 @@ import axios from "axios";
 import LoadingPage from "./LoadingPage";
 import Header from "../Elements/Header";
 import NavBar from "../Elements/NavBar";
+import styles from './packageManagement.module.css';
 
 const formatDate = (dateString) => {
   const options = { day: "numeric", month: "long", year: "numeric" };
@@ -59,26 +60,30 @@ const ManagePackages = () => {
           <div className="manage-packages">
             <h1 className="title">Manage Packages For</h1>
 
-            <div className="card" onClick={() => navigateTo("/myselfPackages")}>
+            <div  className={styles.bigCont}>
+
+           
+
+            <div  className={styles.addFamMemCont} onClick={() => navigateTo("/myselfPackages")}>
               <h2>Myself</h2>
-              <p>Description for personal packages...</p>
-              <p>Current Status : {status.status} </p>
+              <p className={styles.addFamMemPar} style={{marginTop:'1rem'}}> Discover tailored healthcare packages designed exclusively for you.</p>
+              <p className={styles.addFamMemPar}>Current Status : {status.status} </p>
               {status.status === "Ended" ? (
-                <p>Package Cancel Date : {formatDate(status.packageEndDate)}</p>
+                <p className={styles.addFamMemPar}>Package Cancel Date : {formatDate(status.packageEndDate)}</p>
               ) : status.status === "Subscribed" ? (
-                <p>Package End Date : {formatDate(status.packageEndDate)}</p>
+                <p className={styles.addFamMemPar}  style={{marginBottom:'1rem'}}>Package End Date : {formatDate(status.packageEndDate)}</p>
               ) : null}
             </div>
             <div
-              className="card"
+               className={styles.addFamMemCont}
               onClick={() => navigateTo("/familyMemberPackages")}
             >
               <h2>My Family Members</h2>
-              <p>
-                Description for family
-                packagesgpjfioghprehvpioerhverhogvheovheriohtvoiwhetois...
+              <p className={styles.addFamMemPar}  style={{marginTop:'1rem'}}>
+              Explore exclusive family packages designed to provide comprehensive healthcare for your loved ones. 
               </p>
             </div>
+          </div>
           </div>
         </>
       )}
