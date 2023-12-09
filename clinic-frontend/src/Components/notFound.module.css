@@ -1,0 +1,73 @@
+.errorContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    text-align: center;
+    background-color: #f4f4f4;
+    color: #333;
+    font-family: 'Arial', sans-serif;
+
+}
+.errorHeader{
+    display: flex;
+    flex-direction: row;
+}
+
+.errorContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 1400px;
+    height: 650px;
+    padding: 20px;
+    background: #f4f4f4;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    background: linear-gradient(to right, #466672, #74A8BD); /* Gradient background */
+    border: 2px solid #406F83; /* Red border */
+}
+
+.errorTitle {
+    font-size: 100px;
+    color: #ca2929;
+    font-family: Tahoma, Geneva, Verdana, sans-serif
+}
+
+.errorImage {
+    width: 450px; /* Adjust size as needed */
+}
+
+.errorMessage {
+    margin-left: 20px;
+    margin-top: 50px;
+    font-size: 40px;
+    line-height: 1.6;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+.errorLink {
+    margin-top: 40px;
+    display: inline-block;
+    width: 200px;
+    padding: 12px 25px;
+    border-radius: 70px;
+    background-color: #f4f4f4; /* Stylish background color */
+    color: #143743; /* Contrast text color for readability */
+    text-decoration: none;
+    font-size: 16px; /* Increased font size for better readability */
+    font-weight: bold; /* Bold font for emphasis */
+    letter-spacing: 0.5px; /* Slight letter spacing for a polished look */
+    transition: all 0.3s ease-in-out;
+    border: 2px solid #143743; /* Border matching the background */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Subtle shadow for depth */
+}
+
+.errorLink:hover, .errorLink:focus {
+    background-color: #1a5a6e; /* Slightly darker shade on hover/focus */
+    color: #ffffff; /* Keeping text color consistent */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Enhanced shadow on hover for a 3D effect */
+    transform: translateY(-2px); /* Slight upward shift on hover for interactivity */
+}

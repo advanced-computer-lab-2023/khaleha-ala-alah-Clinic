@@ -2,14 +2,15 @@ import React from 'react';
 import '../Elements/ServiceItem.css'; // Import the CSS
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { FileDoneOutlined, PlusOutlined } from "@ant-design/icons/lib";
-
-const ServiceItem = ({ imgSrc, title, description, navigateTo}) => {
+import { useState } from 'react';
+const ServiceItem = ({ imgSrc, title, description , method, message}) => {
   
+  const [showOverlay , setShowOverlay ] = useState(false);
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    navigate(navigateTo); // Navigate to the specified path
-  };
+  // const handleClick = () => {
+  //   setShowOverlay (true);
+  // };
 
   return (
     <div className="service-item" >
@@ -22,10 +23,12 @@ const ServiceItem = ({ imgSrc, title, description, navigateTo}) => {
         paddingTop: '70px',
         marginLeft: '11rem'
       }}>
-      <button className="button-Style" onClick={handleClick}>
+      <button className="button-Style" onClick={() => {method(title , message)}} >
         Details <FileDoneOutlined className="ml-2" />
       </button>
       </div>
+
+     
       
     </div>
   );

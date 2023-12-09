@@ -30,6 +30,9 @@ import { useEffect } from "react";
 import axios from "axios";
 import Wallet from "./Wallet.js";
 
+import ServiceInfo from "./infoWindow.jsx"
+import { message } from "antd";
+
 export const PatientHome = () => {
   const logut = () => {
     localStorage.clear();
@@ -38,6 +41,9 @@ export const PatientHome = () => {
 
   const [currentPatient, setCurrentPatient] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [showOverlay , setShowOverlay ] = useState(false);
+  const [serviceItemName , setServiceItemName] = useState("");
+  const [serviceItemDescription , setServiceItemDescription] = useState("");
 
   useEffect(() => {
     const getCurrentPatient = async () => {
@@ -109,6 +115,14 @@ export const PatientHome = () => {
     // Add more slides as needed
   ];
 
+  
+  const handleClickDetails = (title , description) => {
+    console.log(title , description);
+    setServiceItemName(title);
+    setServiceItemDescription(description);
+    setShowOverlay (true);
+  };
+
   return (
     <div className={styles.patientHomeContainer}>
       {isLoading ? (
@@ -130,65 +144,59 @@ export const PatientHome = () => {
               </div>
               <div className={styles.servicesContainer}>
                 <ServiceItem
-                  imgSrc={searchdoctor}
-                  title="Search For Doctors"
-                  description="Discover doctors by specialty or name to find your ideal match"
-                  navigateTo="/searchDoctors"
-                />
-                ,
-                <ServiceItem
-                  imgSrc={searchdoctor}
-                  title="wallet"
-                  description="Experience a modern clinic with our secure digital wallet "
-                  navigateTo="/wallet"
-                />
-                ,
-                <ServiceItem
                   imgSrc={viewdoctor}
-                  title="View All Doctors"
+                  title="View and Search all Doctors"
                   description="Explore profiles and expertise of our medical staff"
-                  navigateTo="/viewAllDoctors"
+                  method= {handleClickDetails}
+                  message= ""
                 />
                 ,
                 <ServiceItem
                   imgSrc={pres}
                   title="Prescriptions"
                   description="Show your medications prescribed online quickly and securely"
-                  navigateTo="/prescriptions"
+                  method= {handleClickDetails}
+                  message= ""
                 />
                 ,
                 <ServiceItem
                   imgSrc={makeappointment}
                   title="View Appointments"
                   description="View a scheduled consultation with your preferred doctor anytime"
-                  navigateTo="/appointments"
+                  method= {handleClickDetails}
+                  message= ""
                 />
                 ,
                 <ServiceItem
                   imgSrc={healthpackages}
                   title="Health Packages"
                   description="Choose from tailored health plans for comprehensive care solutions"
-                  navigateTo="/managePackages"
+                  method= {handleClickDetails}
+                  message= ""
                 />
                 ,
                 <ServiceItem
                   imgSrc={viewfm}
                   title="Family Members"
                   description="Access and manage your family's health profiles all in one place"
-                  navigateTo="/familyMembers"
+                  method= {handleClickDetails}
+                  message= ""
                 />
                 ,
                 <ServiceItem
                   imgSrc={addfm}
                   title="Add Family Member"
                   description="Expand your care circle by adding family members"
-                  navigateTo="/addFamilyMember"
+                  method= {handleClickDetails}
+                  message= ""
                 />
                 ,
                 <ServiceItem
                   imgSrc={chatdoctor}
                   title="Chat with Doctor"
                   description="connect with our doctors through secure in-app messaging"
+                  method= {handleClickDetails}
+                  message= ""
                 />
                 ,
               </div>
@@ -220,6 +228,17 @@ export const PatientHome = () => {
           }
         </div>
       )}
+
+      {showOverlay && (
+            <ServiceInfo
+              title={serviceItemName}
+              message={serviceItemDescription}
+              onCancel={() => {
+                setShowOverlay(false);
+              }}
+              cancelLabel={"Close"}
+            />
+          )}
     </div>
   );
 };
