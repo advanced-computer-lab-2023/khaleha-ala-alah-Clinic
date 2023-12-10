@@ -1,11 +1,12 @@
-.all-containers-doctorH{
+.allContainers{
+    margin-top: 900px;
     display: relative;
     align-items: center; 
     justify-content: center;
     overflow-x: hidden;
 }
 
-.carousel-container-doctorH{
+.carouselContainer{
     margin-top: 1500px;
     gap: 20px; /* Adjust the gap between items as needed */
     justify-content: center; /* Centers the items horizontally */
@@ -13,7 +14,7 @@
     height: auto;
 }
 
-.services-container-doctorH{
+.servicesContainer{
     display: flex;
     flex-wrap: wrap; /* This allows items to wrap onto the next line */
     gap: 20px; /* Adjust the gap between items as needed */
@@ -23,7 +24,7 @@
     background-color: white;
   }
 
-  .titleofPAGE-doctorH{
+  .titleofPAGEAdmin{
     display: flex;
     flex-wrap: wrap; /* This allows items to wrap onto the next line */
     gap: 20px; /* Adjust the gap between items as needed */
@@ -36,7 +37,7 @@
     height: 200px;
 
   }
-  .about-us-container {
+  .aboutuscontainer {
     background-color: #007bff; /* Blue background color */
     color: #fff; /* White text color */
     padding: 2rem;
@@ -46,9 +47,8 @@
     height: 400px;
   }
   
-  .about-us-container h2 {
+  .aboutuscontainer h2 {
     font-size: 40pt;
     margin-bottom: 10px;
   }
-  
   

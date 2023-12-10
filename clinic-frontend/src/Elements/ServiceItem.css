@@ -7,7 +7,7 @@
   display: relative;
   margin-bottom: 20px; /* Adjust as needed */
   width: 330px;
-  height: 340px;
+  height: 250px;
   transition: transform 0.3s ease;
   /* cursor: pointer; */
   /* border: 2px solid #022b3a; Border ; */
@@ -52,11 +52,12 @@ box-shadow: 0px 8px 18px rgba(0, 0, 0, 0.267);
   font-family: Arial, sans-serif;
   font-weight: bold;
 }
-.button-Style{
+
+.buttonStyleForServiceItem{
   font-weight: bold;
   width: 120px;
-  background-color: white;
-  color: #007bff;
+  background-color: #336cfb;
+  color: white;
   border: none;
   padding: 12px;
   cursor: pointer;
@@ -66,5 +67,5 @@ box-shadow: 0px 8px 18px rgba(0, 0, 0, 0.267);
 }
 
 .button-Style:hover{
-  background-color: white;
+  background-color: #6576a2;
 }

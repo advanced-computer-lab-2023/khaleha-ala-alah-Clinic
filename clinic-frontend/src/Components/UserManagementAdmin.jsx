@@ -46,6 +46,8 @@ const PackagesManagementAdmin = () => {
 
     getCurrentPatient();
   }, []);
+
+  
   return (
     <>
       {isLoading ? (

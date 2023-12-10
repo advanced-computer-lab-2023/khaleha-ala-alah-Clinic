@@ -20,16 +20,12 @@ const ServiceItem = ({ imgSrc, title, description , method, message}) => {
       <h3 className="service-title">{title}</h3>
       <p className="service-description">{description}</p>
       <div style={{
-        paddingTop: '70px',
         marginLeft: '11rem'
       }}>
-      <button className="button-Style" onClick={() => {method(title , message)}} >
+      <button className="buttonStyleForServiceItem" onClick={() => {method(title , message)}} >
         Details <FileDoneOutlined className="ml-2" />
       </button>
-      </div>
-
-     
-      
+      </div>      
     </div>
   );
 };

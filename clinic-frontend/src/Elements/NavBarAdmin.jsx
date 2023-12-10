@@ -3,6 +3,7 @@ import styles from "../Elements/NavBar.module.css"; // Link to the CSS file for 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+
 const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
   const navigate = useNavigate();
   const [hoveredSection, setHoveredSection] = useState(null);
@@ -44,7 +45,7 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
     // Logic to determine if a section has subsections
     // For example:
     return (
-      sectionName === "familyMembers" ||
+      sectionName === "manageusers" ||
       sectionName === "appointments" ||
       sectionName === "packages"
     ); // Assume 'home' has subsections for this example
@@ -80,33 +81,97 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
 
           <div
             className={
-              selectedSection === "viewMyPatients"
+              selectedSection === "manageadmins"
                 ? styles.navbarLinkSelected
                 : styles.navbarLinkSection
             }
-            onMouseEnter={() => handleSectionMouseEnter("viewMyPatients")}
+            onMouseEnter={() => handleSectionMouseEnter("manageadmins")}
             onMouseLeave={() => handleSectionMouseLeave()}
             onClick={(e) =>
-              handleSectionClick(e, "viewMyPatients", "/viewallmypatients")
+              handleSectionClick(e, "manageadmins", "/deleteAdminDoctorPatient")
             }
           >
-            View Patients {hasSubsections("viewMyPatients") && <span>▼</span>}
+            Manage Admins {hasSubsections("manageadmins") && <span>▼</span>}
           </div>
+
           <div
             className={
-              selectedSection === "scheduleAppiontments"
+              selectedSection === "manageusers"
                 ? styles.navbarLinkSelected
                 : styles.navbarLinkSection
             }
-            onMouseEnter={() => handleSectionMouseEnter("scheduleAppiontments")}
+            onMouseEnter={() => handleSectionMouseEnter("manageusers")}
             onMouseLeave={() => handleSectionMouseLeave()}
             onClick={(e) =>
-              handleSectionClick(e, "scheduleAppiontments", "/doctorAppointments")
+              handleSectionClick(e, "manageusers", "/familyMembers")
             }
           >
-            Schedule Appiontment{" "}
-            {hasSubsections("scheduleAppiontments") && <span>▼</span>}
+            Manage Users {hasSubsections("manageusers") && <span>▼</span>}
+            {/* Dropdown Menu */}
+            {hoveredSection === "manageusers" && (
+              <div
+                className={styles.homeDropdownMenu}
+                onMouseEnter={() => setHoveredSection("manageusers")}
+                onMouseLeave={() => setHoveredSection(null)}
+              >
+                <div
+                  className={
+                    selectedSubSection === "managedoctors"
+                      ? styles.dropdownItemSelected
+                      : styles.dropdownItem
+                  }
+                  onClick={(e) =>
+                    handleSectionClick(e, "home", "/ManageDoctor")
+                  }
+                >
+                  Manage Doctors
+                </div>{" "}
+                <div
+                  className={
+                    selectedSubSection === "managepatients"
+                      ? styles.dropdownItemSelected
+                      : styles.dropdownItem
+                  }
+                  onClick={(e) =>
+                    handleSectionClick(e, "about", "/deletePatient")
+                  }
+                >
+                  Manage Patients
+                </div>{" "}
+              </div>
+            )}
           </div>
+
+          <div
+            className={
+              selectedSection === "managependingdoctors"
+                ? styles.navbarLinkSelected
+                : styles.navbarLinkSection
+            }
+            onMouseEnter={() => handleSectionMouseEnter("managependingdoctors")}
+            onMouseLeave={() => handleSectionMouseLeave()}
+            onClick={(e) =>
+              handleSectionClick(e, "managependingdoctors", "/viewPendingDoctors")
+            }
+          >
+            Manage Pending Doctors {hasSubsections("managependingdoctors") && <span>▼</span>}
+          </div>
+
+          <div
+            className={
+              selectedSection === "healthpackages"
+                ? styles.navbarLinkSelected
+                : styles.navbarLinkSection
+            }
+            onMouseEnter={() => handleSectionMouseEnter("healthpackages")}
+            onMouseLeave={() => handleSectionMouseLeave()}
+            onClick={(e) =>
+              handleSectionClick(e, "healthpackages", "/packages")
+            }
+          >
+            Manage Health Packages {hasSubsections("healthpackages") && <span>▼</span>}
+          </div>
+
         </div>
       </div>
     </nav>
