@@ -1,13 +1,50 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./FollowUpScheduler.module.css";
+import LoadingPage from "./LoadingPageForOverlay.jsx";
 
-const FollowUpScheduler = ({ onCancel, patient }) => {
+const backendUrl = "http://localhost:4000";
+
+const FollowUpScheduler = ({ onCancel, patient, doctor }) => {
   //const [patientID, setPatientID] = useState("");
   const [selectedDateTime, setSelectedDateTime] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
-
+  const [availableAppointments, setAvailableAppointments] = useState([]);
+  const [loading, setLoading] = useState(true); // Add a loading state for appointments
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const appointmentsPerPage = 8; // Adjust the number per your requirement
+  const indexOfLastAppointment = currentPage * appointmentsPerPage;
+  const indexOfFirstAppointment = indexOfLastAppointment - appointmentsPerPage;
+  const currentAppointments = availableAppointments.slice(
+    indexOfFirstAppointment,
+    indexOfLastAppointment
+  );
   const patientID = patient.userID;
+
+  useEffect(() => {
+    if (doctor) {
+      fetch(
+        `${backendUrl}/patients/doctorAppointmentsWithoutAuth/${doctor.userID}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("after fetching available appointments");
+          if (data.status === "success") {
+            setAvailableAppointments(data.data.availableAppointments);
+          } else {
+            console.error("Failed to fetch available appointments");
+          }
+          setLoading(false); // Set loading to false when data is retrieved
+        });
+    }
+  }, []);
 
   // Fetch the list of patients when the component mounts
   function convertToISOFormat(dateTimeString) {
@@ -23,6 +60,8 @@ const FollowUpScheduler = ({ onCancel, patient }) => {
     return isoString;
   }
   function Decraese2HoursToISOFormat(dateTimeString) {
+    console.log("ALO");
+    console.log(dateTimeString);
     // Step 1: Decode the URL-encoded string
     let decodedString = decodeURIComponent(dateTimeString);
 
@@ -44,16 +83,15 @@ const FollowUpScheduler = ({ onCancel, patient }) => {
     return isoString;
   }
 
-
   const scheduleFollowUp = async () => {
     try {
       // const formattedDateTime1 = selectedDateTime.replace("T", " ");
       // console.log(formattedDateTime1);
-      let formattedDateTime = Decraese2HoursToISOFormat(
-        convertToISOFormat(selectedDateTime)
-      );
-      console.log(formattedDateTime);
+      console.log(selectedAppointment);
       console.log(patientID);
+      console.log(convertToISOFormat(selectedAppointment));
+      let formattedDateTime = selectedAppointment;
+      console.log(formattedDateTime);
       const response = await axios.post(
         `http://localhost:4000/doctors/scheduleFollowUpPatient/${patientID}/${formattedDateTime}`,
         {},
@@ -68,45 +106,87 @@ const FollowUpScheduler = ({ onCancel, patient }) => {
       setStatusMessage(response.data.message);
     } catch (error) {
       setStatusMessage(`Error scheduling follow-up: ${error.message}`);
+      console.log(error);
     }
   };
-
 
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
       onCancel();
     }
   };
-  
-  return (
-      <div className={styles.confirmationBackdrop} onClick={handleBackdropClick}>
-        <div className={styles.confirmationDialog}>
-      <h1>Follow-Up Scheduler</h1>
-      <form className={styles.form}
-        onSubmit={(e) => {
-          console.log(patient);
-          e.preventDefault();
-          scheduleFollowUp();
-          console.log(selectedDateTime)
-        }}
-      >
-        <br />
-        <label className={styles.labelFollowUp}>
-          Follow-Up Date and Time:
-          <input
-            className={styles.input}
-            type="datetime-local"
-            value={selectedDateTime}
-            onChange={(e) => setSelectedDateTime(e.target.value)}
-          />
-        </label>
-        <br />
-        <button className={styles.button} type="submit">Schedule Follow-Up</button>
-      </form>
-      <p>{statusMessage}</p>
-    </div>
-    </div>
 
+  const pageNumbers = [];
+  for (
+    let i = 1;
+    i <= Math.ceil(availableAppointments.length / appointmentsPerPage);
+    i++
+  ) {
+    pageNumbers.push(i);
+  }
+
+  const renderPageNumbers = pageNumbers.map((number) => {
+    return (
+      <button
+        key={number}
+        onClick={() => setCurrentPage(number)}
+        className={currentPage === number ? styles.activePage : null}
+      >
+        {number}
+      </button>
+    );
+  });
+
+  return (
+    <div className={styles.confirmationBackdrop} onClick={handleBackdropClick}>
+      <div className={styles.confirmationDialog}>
+        <h1 className={styles.headerofFollowUp}>Follow-Up Scheduler</h1>
+        <form
+          className={styles.formOfFollowUp}
+          onSubmit={(e) => {
+            console.log(patient);
+            e.preventDefault();
+            console.log(selectedDateTime);
+          }}
+        >
+          {loading ? (
+            <LoadingPage />
+          ) : (
+            currentAppointments.map((appointment, index) => {
+              const date = new Date(appointment);
+              const appointmentLabel = `${date.toDateString()} - ${
+                date.toTimeString().split(" ")[0]
+              }`;
+              return (
+                <div key={index} className={styles.radioOfFollowUp}>
+                  <input
+                    type="radio"
+                    id={`appointment_${index}`}
+                    name="appointment"
+                    value={appointment}
+                    checked={selectedAppointment === appointment}
+                    onChange={() => setSelectedAppointment(appointment)}
+                  />
+                  <label htmlFor={`appointment_${index}`}>
+                    {appointmentLabel}
+                  </label>
+                </div>
+              );
+            })
+          )}
+          <div className={styles.pagination}>{renderPageNumbers}</div>
+
+          <button className={styles.buttonOfFollowUp} type="submit" onClick = {(e) => {
+            e.preventDefault();
+            scheduleFollowUp();
+
+          }}>
+            Schedule Follow-Up
+          </button>
+        </form>
+        <p className={styles.paragraphofFollowUp}>{statusMessage}</p>
+      </div>
+    </div>
   );
 };
 

@@ -27,9 +27,6 @@ const Book = ({ onCancel, doctor }) => {
 
   useEffect(() => {
     if (selectedDoctor) {
-      // Fetch available appointments for the selectedDoctor
-      console.log("Selected doctor is: ", selectedDoctor);
-      console.log("before fetching available appointments");
       fetch(
         `${backendUrl}/patients/doctorAppointments/${selectedDoctor.userID}`,
         {
@@ -42,9 +39,6 @@ const Book = ({ onCancel, doctor }) => {
         .then((response) => response.json())
         .then((data) => {
           console.log("after fetching available appointments");
-          console.log(data);
-          console.log(data.data.availableAppointments);
-
           if (data.status === "success") {
             setAvailableAppointments(data.data.availableAppointments);
           } else {

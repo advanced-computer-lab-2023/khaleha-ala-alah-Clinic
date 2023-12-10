@@ -110,6 +110,10 @@ router.get(
   CheckAuth,
   patientController.viewDoctorAppointmentsForMonth
 );
+router.get(
+  "/doctorAppointmentsWithoutAuth/:doctorID",
+  patientController.viewDoctorAppointmentsForMonthWithoutAuth
+);
 
 router.post(
   "/SelectAppointment/:doctorID/:selectedDateTime",

@@ -34,7 +34,7 @@
 .errorTitle {
     font-size: 100px;
     color: #ca2929;
-    font-family: Tahoma, Geneva, Verdana, sans-serif
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
 .errorImage {
@@ -43,7 +43,7 @@
 
 .errorMessage {
     margin-left: 20px;
-    margin-top: 50px;
+    margin-top: 60px;
     font-size: 40px;
     line-height: 1.6;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif

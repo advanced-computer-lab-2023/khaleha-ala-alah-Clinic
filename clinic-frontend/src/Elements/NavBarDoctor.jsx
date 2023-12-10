@@ -107,23 +107,6 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
             Schedule Appiontment{" "}
             {hasSubsections("scheduleAppiontments") && <span>▼</span>}
           </div>
-
-          <div
-            className={
-              selectedSection === "healthRecords"
-                ? styles.navbarLinkSelected
-                : styles.navbarLinkSection
-            }
-            onMouseEnter={() => handleSectionMouseEnter("healthRecords")}
-            onMouseLeave={() => handleSectionMouseLeave()}
-            onClick={(e) =>
-              handleSectionClick(e, "healthRecords", "/HealthRecordForm")
-            }
-          >
-            Manage Health Records{" "}
-            {hasSubsections("addSlots") && <span>▼</span>}
-          </div>
-
           <div
             className={
               selectedSection === "AvailableSlotsForm"

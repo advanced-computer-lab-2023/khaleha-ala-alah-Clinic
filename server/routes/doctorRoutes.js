@@ -46,6 +46,8 @@ router.post(
 
 router.get("/viewAllDoctors", doctorControllers.viewAllDoctors);
 
+router.get("/getCurrDoc" , CheckAuth, doctorControllers.getCurrDoc)
+
 router.patch(
   "/rescheduleAppointmentPatient/:appointmentID/:newDateTime",
   CheckAuth,

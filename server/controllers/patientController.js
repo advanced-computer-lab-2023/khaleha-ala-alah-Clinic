@@ -877,6 +877,99 @@ exports.GetDoctorAppointments = async function (req, res) {
 //     });
 //   }
 // };
+
+
+
+exports.viewDoctorAppointmentsForMonthWithoutAuth = async function (req, res) {
+  try {
+    const { doctorID } = req.params; // Get doctorID from route parameters
+
+    // Find the selected doctor by their ID
+    const doctor = await Doctors.findOne({ userID: doctorID });
+
+    if (!doctor) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "Doctor not found" });
+    }
+
+    const currentDate = new Date(); // Get the current date
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1; // Month is 0-based
+
+    // Generate a list of time slots for the current month
+    const startDate = new Date(currentYear, currentMonth - 1, 1); // current month is 0-based
+    const endDate = new Date(currentYear, currentMonth + 1, 0);
+    // const endDate = new Date(year, currentMonth - 1, 7);
+
+    const availableTimeSlots = [];
+
+    for (const slot of doctor.fixedSlots) {
+      const currentDay = new Date(startDate);
+      while (currentDay <= endDate) {
+        if (currentDay.getDay() === getDayIndex(slot.day)) {
+          // Parse the time from "9:45 AM" format to 24-hour format
+          const timeParts = slot.hour.split(" ");
+          const time = timeParts[0];
+          const isPM = timeParts[1] === "PM";
+          let [hours, minutes] = time.split(":").map(Number);
+
+          if (isPM && hours !== 12) {
+            hours += 12;
+          } else if (!isPM && hours === 12) {
+            hours = 0; // Midnight (12:00 AM) is represented as 0 in 24-hour format
+          }
+
+          const appointmentTime = new Date(
+            currentDay.getFullYear(),
+            currentDay.getMonth(),
+            currentDay.getDate(),
+            hours,
+            minutes,
+            0
+          );
+          if (appointmentTime >= currentDate) {
+            const isBooked = await isAppointmentBooked(
+              doctorID,
+              appointmentTime
+            );
+            if (!isBooked) {
+              availableTimeSlots.push(appointmentTime);
+            }
+            const isCancelled = await Appointments.findOne({
+              DoctorID: doctorID,
+              timedAt: appointmentTime,
+              isCancelled: true,
+            });
+            if (isCancelled) {
+              availableTimeSlots.push(appointmentTime);
+            }
+          }
+        }
+        currentDay.setDate(currentDay.getDate() + 1);
+      }
+    }
+
+    // Sort the availableTimeSlots array by date
+    availableTimeSlots.sort((a, b) => a - b);
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        //doctor: doctor,
+        availableAppointments: availableTimeSlots,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+};
+
+
+
 exports.viewDoctorAppointmentsForMonth = async function (req, res) {
   try {
     const patient = await Patient.findOne({ userID: req.user._id });

@@ -1,9 +1,10 @@
-*{
+*/*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins',sans-serif;
   }
+  */
   body{
     height: 100vh;
     display: flex;
@@ -116,9 +117,6 @@
    #dot-3:checked ~ .category label .three{
      background: #3f6377;
      border-color: #d9d9d9;
-   }
-   form input[type="radio"]{
-     display: none;
    }
    .details{
     font-size: 18px;

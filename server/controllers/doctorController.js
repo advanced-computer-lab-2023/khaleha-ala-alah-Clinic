@@ -917,3 +917,29 @@ exports.viewAllDoctors = async function (req, res) {
     });
   }
 };
+
+
+exports.getCurrDoc = async function (req,res){
+  try {
+    console.log("HOLA");
+    const doctor = await Doctor.findOne({ userID: req.user._id });
+
+    if (!doctor) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Doctor not found",
+      });
+    }    
+    res.status(200).json({
+      status: "success",
+      data : {
+        doctor : doctor
+      }
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: "this route is not defined yet",
+    });
+  }
+}

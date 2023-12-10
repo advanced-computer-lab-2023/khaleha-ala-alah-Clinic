@@ -23,7 +23,7 @@ const NotFound = () => {
         <div className={styles.errorContainer}>
           <div className={styles.errorContent}>
           <div className={styles.errorHeader}>
-            <h1 className={styles.errorTitle}>404</h1> <p className={styles.errorMessage}>Not Found</p>
+            <h1 className={styles.errorTitle}>Error 404</h1> <p className={styles.errorMessage}>Not Found</p>
             </div>
             <img src={errorPic} alt="Error" className={styles.errorImage} />
             <a href="/" className={styles.errorLink}>

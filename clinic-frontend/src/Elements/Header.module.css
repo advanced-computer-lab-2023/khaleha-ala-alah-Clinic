@@ -22,18 +22,18 @@
 }
 
 .navbarLogo img {
-  max-width: 150px; /* Adjusts the width of the logo */
-  max-height: 70px; /* Adjusts the height of the logo */
+  max-width: 25vw; /* Adjusts the width of the logo */
+  max-height: 25vh; /* Adjusts the height of the logo */
   /* Add more styling as needed */
 }
 
 /* Responsive design: Adjust logo size for smaller screens */
-@media (max-width: 768px) {
+
   .navbarLogo img {
-    max-width: 50px;
-    max-height: 25px;
+    margin-top: 18px;
+    width: 11vw;
+    height: 21vh;
   }
-}
 
 .navbarLinks {
   display: flex;

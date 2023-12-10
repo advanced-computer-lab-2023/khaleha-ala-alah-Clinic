@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "../Elements/Header.module.css"; // Link to the CSS file for styles
-import logopng from "../Images/logooo.png";
+import logopng from "../Images/LOGOCLINIC.png";
 import settingsIcon from "../Images/settings.png";
 import alertIcon from "../Images/alert.png";
 import { useState } from "react";

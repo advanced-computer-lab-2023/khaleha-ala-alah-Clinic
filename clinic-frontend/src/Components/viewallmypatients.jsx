@@ -5,7 +5,7 @@ import Table from "./table.jsx";
 import FollowUpOverlay from "./FollowUpScheduler.jsx";
 import HealthRecordOverlay from "./ManageHealthRecords.jsx"
 
-import NavBar from "../Elements/NavBar.jsx";
+import NavBar from "../Elements/NavBarDoctor.jsx";
 import Header from "../Elements/Header";
 
 const DoctorPatients = ({ doctorId }) => {
@@ -19,6 +19,7 @@ const DoctorPatients = ({ doctorId }) => {
   const [showOverlay, setShowOverlay] = useState(false);
   const [showHealthRecords, setshowHealthRecords] = useState(false);
   const [selectedPatient , setSelectedPatient] = useState(null);
+  const [currDoctor , setCurrentDoctor] = useState(null);
 
   useEffect(() => {
     const fetchDoctorData = async () => {
@@ -65,6 +66,28 @@ const DoctorPatients = ({ doctorId }) => {
         })
         .then((data) => {
           setPrescriptions(data.data.prescriptions);
+        })
+        .catch((error) => {
+          console.error("There was a problem with the fetch operation:", error);
+        });
+
+        fetch("http://localhost:4000/doctors/getCurrDoc",
+        {
+          method: "GET",
+          headers: {
+            authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data.data.doctor);
+          setCurrentDoctor(data.data.doctor);
         })
         .catch((error) => {
           console.error("There was a problem with the fetch operation:", error);
@@ -248,6 +271,7 @@ const DoctorPatients = ({ doctorId }) => {
               onCancel={() => setShowOverlay(false)}
               cancelLabel="Close"
               patient = {selectedPatient}
+              doctor={currDoctor}
             />
           )}
 

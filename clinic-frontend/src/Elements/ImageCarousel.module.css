@@ -29,38 +29,32 @@
 }
 .textOverlayCar {
   position: absolute;
-  bottom: 127px;
-  left: 10px;
-  right: 0;
+  bottom: 0px;
   background-color: rgba(2, 43, 58, 0.4); /*Semi-transparent black background */
-  /* background-color: rgba(225, 229, 242, 0.6);*/
   color: white;
   padding: 10px;
   text-align: left;
-  width: 450px;
-  height: 350px;
+  width: 30vw; /* Full viewport width */
+  height:70vh; /* 30% of viewport height */
   z-index: 0;
-  border: 2px solid #022b3a; /* Border color */
-  border-top-left-radius: 20px;
-  border-bottom-right-radius: 20px;
 }
 
 .textOverlayCar h3 {
-  margin-top: 0;
+  margin-top: 70px;
   margin-bottom: 5px;
   font-size: 20px; /* Adjust size as needed */
   font-weight: bold; /* Bold font for title */
-  font-size: 50px;
+  font-size: 45px;
   color: #e1e5f2;
-  font-family: "Times New Roman", Times, serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
 .textOverlayCar p {
-  margin-top: 40px;
+  margin-top: 80px;
   font-size: 1em; /* Adjust size as needed */
   font-weight: normal;
   line-height: 1.4; /* Good for readability */
-  font-size: 25px;
+  font-size: 22px;
   color: white;
   font-family: "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial,
     sans-serif;
