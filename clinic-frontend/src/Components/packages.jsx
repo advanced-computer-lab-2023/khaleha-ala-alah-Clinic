@@ -7,6 +7,8 @@ import ConfirmationDialog from "../Elements/ConfirmationDialog.jsx";
 import EditPackageOverlay from "./editPackageAdminOverlay.jsx";
 import { PlusOutlined } from "@ant-design/icons";
 import AddPackageOverlay from "./AddHealthPackageOverlay.jsx";
+import NavBar from "../Elements/NavBarAdmin";
+import Header from "../Elements/HeaderDoctor";
 
 const HealthPackages = () => {
   const [healthPackages, setHealthPackages] = useState([]);
@@ -230,12 +232,13 @@ const HealthPackages = () => {
   ];
 
   return (
+    <>
+       <Header />
+      <NavBar />
     <div className={styles.packageAdminContainer}>
-      <h2>Health Packages</h2>
+      <h1>Health Packages</h1>
       {error && <p>Error: {error}</p>}
       <div>
-        <h3 className={styles.packagesListHeading}>
-          Packages List
           <Button
             type="primary"
             shape="round"
@@ -244,11 +247,10 @@ const HealthPackages = () => {
               setShowAddOverlay(true);
             }}
             className={styles.addPackageButton}
-            style={{ marginLeft: "20px", marginBottom: "20px" }}
+            style={{marginBottom: "20px" }}
           >
             Add Health Package
           </Button>
-        </h3>{" "}
         <Table data={data} columns={columns} />
       </div>
 
@@ -285,6 +287,8 @@ const HealthPackages = () => {
         />
       )}
     </div>
+
+    </>
   );
 };
 

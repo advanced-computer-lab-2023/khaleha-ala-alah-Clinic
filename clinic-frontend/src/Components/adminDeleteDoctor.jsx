@@ -6,6 +6,8 @@ import axios from "axios";
 import { Avatar, Button, Modal, Tag } from "antd";
 import styles from "./adminDeleteDoctor.module.css";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import NavBar from "../Elements/NavBarAdmin";
+import Header from "../Elements/HeaderDoctor";
 
 const DeleteDoctor = () => {
   const [doctors, setAllDoctors] = useState([]);
@@ -30,7 +32,7 @@ const DeleteDoctor = () => {
       const data = await response.json();
       console.log(data.data.doctors);
       setAllDoctors(data.data.doctors);
-      setFilteredDoctors(data.data.doctors); 
+      setFilteredDoctors(data.data.doctors);
     } catch (err) {
       //setError(err.message);
     }
@@ -100,12 +102,13 @@ const DeleteDoctor = () => {
     },
   ];
 
-  
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchQuery(value);
-    const filtered = doctors.filter(doctors => 
-      doctors.username && doctors.username.toLowerCase().includes(value.toLowerCase())
+    const filtered = doctors.filter(
+      (doctors) =>
+        doctors.username &&
+        doctors.username.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredDoctors(filtered);
   };
@@ -125,32 +128,35 @@ const DeleteDoctor = () => {
   };
 
   return (
-    <div className={styles.packageAdminContainer}>
-      <h2>Manage Doctors</h2>
-      {error && <p>Error: {error}</p>}
-      <div>
-      <input
-          type="text"
-          className={styles.searchInput} // Applied CSS class
-          placeholder="Search by username..."
-          value={searchQuery}
-          onChange={handleSearchChange}
-        />
+    <div>
+      <Header />
+      <NavBar />
+      <div className={styles.packageAdminContainer}>
+        <h1>Manage Doctors</h1>
+        {error && <p>Error: {error}</p>}
+        <div>
+          <input
+            type="text"
+            className={styles.searchInput} // Applied CSS class
+            placeholder="Search by username..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
         </div>
-      <div>
-        <h3 className={styles.packagesListHeading}>Doctors List</h3>{" "}
-        <Table data={data} columns={columns} />
-      </div>
+        <div>
+          <Table data={data} columns={columns} />
+        </div>
 
-      {showDeleteConfirmationDialog && (
-        <ConfirmationDialog
-          message="Are you sure you want to Delete this Doctor?"
-          confirmLabel="Yes"
-          cancelLabel="No"
-          onConfirm={handleDelete}
-          onCancel={() => setShowDeleteConfirmationDialog(false)}
-        />
-      )}
+        {showDeleteConfirmationDialog && (
+          <ConfirmationDialog
+            message="Are you sure you want to Delete this Doctor?"
+            confirmLabel="Yes"
+            cancelLabel="No"
+            onConfirm={handleDelete}
+            onCancel={() => setShowDeleteConfirmationDialog(false)}
+          />
+        )}
+      </div>
     </div>
   );
 };

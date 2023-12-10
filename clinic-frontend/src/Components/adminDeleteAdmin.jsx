@@ -10,6 +10,8 @@ import AddPackageOverlay from "./AddHealthPackageOverlay.jsx";
 import axios from "axios";
 import LoadingPage from "./LoadingPage.jsx";
 import AddAdminOverlay from "./AddAdminOverlay.jsx";
+import NavBar from "../Elements/NavBarAdmin";
+import Header from "../Elements/HeaderDoctor";
 
 const HealthPackages = () => {
   const [admins, setAllAdmins] = useState([]);
@@ -138,11 +140,16 @@ const HealthPackages = () => {
   };
 
   return (
+    <>
+    <Header />
+      <NavBar />
     <div>
       {isLoading ? (
         <LoadingPage />
       ) : (
         <>
+<div className={styles.containerOfAllDivs}>
+<h1>Manage Doctors</h1>
           <Button
             type="primary"
             shape="round"
@@ -182,9 +189,11 @@ const HealthPackages = () => {
               }}
             />
           )}
+           </div>
         </>
       )}
     </div>
+    </>
   );
 };
 

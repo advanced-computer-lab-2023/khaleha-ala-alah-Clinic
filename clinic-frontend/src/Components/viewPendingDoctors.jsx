@@ -4,6 +4,8 @@ import { message } from "antd";
 import styles from "./viewPendingDoctors.module.css";
 import LoadingPage from "./LoadingPage.jsx";
 import Table from "./table.jsx";
+import NavBar from "../Elements/NavBarAdmin";
+import Header from "../Elements/HeaderDoctor";
 
 const PendingDoctors = () => {
   const [doctors, setDoctors] = useState([]);
@@ -205,6 +207,8 @@ const PendingDoctors = () => {
     </div> */
 
     <>
+     <Header />
+      <NavBar />
       {isLoading ? (
         <LoadingPage />
       ) : (

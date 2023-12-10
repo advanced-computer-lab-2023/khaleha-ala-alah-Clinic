@@ -6,7 +6,8 @@ import axios from "axios";
 import { Avatar, Button, Modal, Tag } from "antd";
 import styles from "./adminDeletePatient.module.css";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-
+import NavBar from "../Elements/NavBarAdmin";
+import Header from "../Elements/HeaderDoctor";
 
 const DeletePatient = () => {
   const [patients, setAllPatients] = useState([]);
@@ -131,8 +132,11 @@ const DeletePatient = () => {
   };
 
   return (
+    <div>
+        <Header />
+      <NavBar />
     <div className={styles.packageAdminContainer}>
-      <h2>Manage Patients</h2>
+      <h1>Manage Patients</h1>
       {error && <p>Error: {error}</p>}
       <div>
       <input
@@ -144,7 +148,6 @@ const DeletePatient = () => {
         />
         </div>
       <div>
-        <h3 className={styles.packagesListHeading}>Patients List</h3>{" "}
         <Table data={data} columns={columns} />
       </div>
 
@@ -157,6 +160,7 @@ const DeletePatient = () => {
           onCancel={() => setShowDeleteConfirmationDialog(false)}
         />
       )}
+    </div>
     </div>
   );
 };

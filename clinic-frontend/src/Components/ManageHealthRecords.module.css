@@ -23,6 +23,8 @@ body {
     text-align: center;
     color: #333;
     margin-top: -20px;
+    font-family: Georgia, 'Times New Roman', Times, serif, Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 50px;
   }
 
   form {
