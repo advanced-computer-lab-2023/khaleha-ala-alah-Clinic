@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./FollowUpScheduler.module.css";
 import LoadingPage from "./LoadingPageForOverlay.jsx";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const backendUrl = "http://localhost:4000";
 
@@ -15,6 +16,7 @@ const FollowUpScheduler = ({ onCancel, patient, doctor }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const appointmentsPerPage = 8; // Adjust the number per your requirement
   const indexOfLastAppointment = currentPage * appointmentsPerPage;
+  const navigate = useNavigate();
   const indexOfFirstAppointment = indexOfLastAppointment - appointmentsPerPage;
   const currentAppointments = availableAppointments.slice(
     indexOfFirstAppointment,
@@ -110,6 +112,7 @@ const FollowUpScheduler = ({ onCancel, patient, doctor }) => {
     }
   };
 
+
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
       onCancel();
@@ -179,7 +182,6 @@ const FollowUpScheduler = ({ onCancel, patient, doctor }) => {
           <button className={styles.buttonOfFollowUp} type="submit" onClick = {(e) => {
             e.preventDefault();
             scheduleFollowUp();
-
           }}>
             Schedule Follow-Up
           </button>

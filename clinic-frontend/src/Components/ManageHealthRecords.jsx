@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./ManageHealthRecords.module.css";
+import { useNavigate } from "react-router-dom";
 
 const ManageHealthRecords = ({ onCancel, patient }) => {
   const patientID = patient.userID;
   const [statusMessage, setStatusMessage] = useState("");
   const [files, setFiles] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const navigate = useNavigate();
 
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -51,6 +53,7 @@ const ManageHealthRecords = ({ onCancel, patient }) => {
       setStatusMessage("Error uploading file");
     }
   };
+
 
   return (
     <div className={styles.confirmationBackdrop} onClick={handleBackdropClick}>
