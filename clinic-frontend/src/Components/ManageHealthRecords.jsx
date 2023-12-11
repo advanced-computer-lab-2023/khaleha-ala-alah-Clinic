@@ -20,13 +20,36 @@ const ManageHealthRecords = ({ onCancel, patient }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log("handleSubmit called");
+  
     const formData = new FormData();
-    formData.append("username", patient.username);
     for (let i = 0; i < files.length; i++) {
       formData.append("files", files[i]);
     }
-    setStatusMessage("file uploaded successfully");
+    await handleUploadFile(formData);
+  };
+  
+
+  const handleUploadFile = async (formData) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:4000/doctors/addHealthRecord/${patient.username}`,
+        formData,
+        {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'multipart/form-data'
+          },
+        }
+      );
+      // Handle response here
+      console.log(response.data);
+      setFiles(response.data);
+      setStatusMessage("File uploaded successfully");
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      setStatusMessage("Error uploading file");
+    }
   };
 
   return (
