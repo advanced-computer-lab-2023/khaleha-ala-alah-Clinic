@@ -4,9 +4,10 @@ import styles from "./viewallmypatients.module.css";
 import Table from "./table.jsx";
 import FollowUpOverlay from "./FollowUpScheduler.jsx";
 import HealthRecordOverlay from "./ManageHealthRecords.jsx"
-
+import LoadingPage from "./LoadingPage.jsx";
 import NavBar from "../Elements/NavBarDoctor.jsx";
-import Header from "../Elements/Header";
+import Header from "../Elements/HeaderDoctor.jsx";
+import Separator from "./separator.jsx";
 
 const DoctorPatients = ({ doctorId }) => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const DoctorPatients = ({ doctorId }) => {
   const [showHealthRecords, setshowHealthRecords] = useState(false);
   const [selectedPatient , setSelectedPatient] = useState(null);
   const [currDoctor , setCurrentDoctor] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchDoctorData = async () => {
@@ -39,7 +41,7 @@ const DoctorPatients = ({ doctorId }) => {
         const patientsData = await patientsResponse.json();
         setPatients(patientsData.data.patients);
         setFilteredPatients(patientsData.data.patients);
-
+        setIsLoading(false);
         const appointmentsResponse = await fetch(
           `http://localhost:4000/doctors/appointments`,
           {
@@ -257,10 +259,15 @@ const DoctorPatients = ({ doctorId }) => {
         ))}
       </ul>
     </div>*/
+    <>
+      {isLoading ? (
+        <LoadingPage />
+      ) : (
       <div className={styles.container}>
       <Header />
       <NavBar/>
-        {/*<h1>View all my Patients</h1>*/}
+        <h1>View all my Patients</h1>
+        <Separator/>
         <div className={styles.viewallpatients}>
           <div className={styles.tableWrapper}>
             <Table data={data} columns={columns} />
@@ -284,7 +291,8 @@ const DoctorPatients = ({ doctorId }) => {
           )}
         </div>
       </div>
-
+      )}
+      </>
   );
 };
 

@@ -6,6 +6,7 @@ import LoadingPage from "./LoadingPage.jsx";
 import Table from "./table.jsx";
 import NavBar from "../Elements/NavBarAdmin";
 import Header from "../Elements/HeaderDoctor";
+import Separator from "./separator.jsx";
 
 const PendingDoctors = () => {
   const [doctors, setDoctors] = useState([]);
@@ -214,6 +215,7 @@ const PendingDoctors = () => {
       ) : (
         <>
           <h1>Pending Doctors</h1>
+          <Separator/>
           <div className={styles.viewPendingDoctors}>
             <div className={styles.tableWrapper}>
               <Table data={data} columns={columns} />

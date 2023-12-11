@@ -9,6 +9,8 @@ import { PlusOutlined } from "@ant-design/icons";
 import AddPackageOverlay from "./AddHealthPackageOverlay.jsx";
 import NavBar from "../Elements/NavBarAdmin";
 import Header from "../Elements/HeaderDoctor";
+import Separator from "./separator.jsx";
+
 
 const HealthPackages = () => {
   const [healthPackages, setHealthPackages] = useState([]);
@@ -237,6 +239,7 @@ const HealthPackages = () => {
       <NavBar />
     <div className={styles.packageAdminContainer}>
       <h1>Health Packages</h1>
+      <Separator/>
       {error && <p>Error: {error}</p>}
       <div>
           <Button

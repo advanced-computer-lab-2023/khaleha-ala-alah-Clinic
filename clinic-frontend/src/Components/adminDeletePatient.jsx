@@ -8,6 +8,8 @@ import styles from "./adminDeletePatient.module.css";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import NavBar from "../Elements/NavBarAdmin";
 import Header from "../Elements/HeaderDoctor";
+import Separator from "./separator.jsx";
+
 
 const DeletePatient = () => {
   const [patients, setAllPatients] = useState([]);
@@ -137,6 +139,7 @@ const DeletePatient = () => {
       <NavBar />
     <div className={styles.packageAdminContainer}>
       <h1>Manage Patients</h1>
+      <Separator/>
       {error && <p>Error: {error}</p>}
       <div>
       <input

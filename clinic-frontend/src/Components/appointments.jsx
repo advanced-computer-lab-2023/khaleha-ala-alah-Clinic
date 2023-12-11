@@ -216,8 +216,6 @@ function Appointments() {
       key: "email",
       className: styles.tableHeader, // Apply custom header style
       sorter: (a, b) => a.email.localeCompare(b.email), // Sort alphabetically
-
-      // Add sorter or other properties as needed
     },
     {
       title: "Doctor Affiliation",
@@ -225,29 +223,7 @@ function Appointments() {
       key: "affiliation",
       className: styles.tableHeader, // Apply custom header style
       sorter: (a, b) => a.affiliation.localeCompare(b.affiliation), // Sort alphabetically
-
-      // Add sorter or other properties as needed
     },
-    // ... other columns
-    /*{
-      title: "Actions",
-      key: "actions",
-      render: (text, record) => (
-        <div className="buttons-list nowrap">
-          { Replace these actions as per your requirement }
-          <Button shape="circle" onClick={() => navigate("/some-route")}>
-            <span className="icofont icofont-external-link" />
-          </Button>
-          <Button shape="circle" type="primary">
-            <span className="icofont icofont-edit-alt" />
-          </Button>
-          <Button shape="circle" danger>
-            <span className="icofont icofont-ui-delete" />
-          </Button>
-        </div>
-      ),
-    },
-    */
   ];
 
   // Define the filterAppointments function to apply filters

@@ -299,8 +299,8 @@ exports.getAppointmentsPatients = async function (req, res) {
     //let doctor = "651f16c855b8273fedf03c93";
     const patientsID = await Appointment.find({
       DoctorID: req.user._id,
-    }).select({ PatientID: 1, _id: 0 });
-    // console.log(patientsID);
+    });
+    console.log(patientsID);
     const allPatients = await patientModel.find();
     const patients = [];
 

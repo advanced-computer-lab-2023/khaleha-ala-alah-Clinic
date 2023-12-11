@@ -102,9 +102,6 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
             }
             onMouseEnter={() => handleSectionMouseEnter("manageusers")}
             onMouseLeave={() => handleSectionMouseLeave()}
-            onClick={(e) =>
-              handleSectionClick(e, "manageusers", "/familyMembers")
-            }
           >
             Manage Users {hasSubsections("manageusers") && <span>▼</span>}
             {/* Dropdown Menu */}

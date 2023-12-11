@@ -12,6 +12,8 @@ import LoadingPage from "./LoadingPage.jsx";
 import AddAdminOverlay from "./AddAdminOverlay.jsx";
 import NavBar from "../Elements/NavBarAdmin";
 import Header from "../Elements/HeaderDoctor";
+import Separator from "./separator.jsx";
+
 
 const HealthPackages = () => {
   const [admins, setAllAdmins] = useState([]);
@@ -149,7 +151,8 @@ const HealthPackages = () => {
       ) : (
         <>
 <div className={styles.containerOfAllDivs}>
-<h1>Manage Doctors</h1>
+<h1>Manage Admins</h1>
+<Separator/>
           <Button
             type="primary"
             shape="round"

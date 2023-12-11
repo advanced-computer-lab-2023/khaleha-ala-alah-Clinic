@@ -94,18 +94,17 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
           </div>
           <div
             className={
-              selectedSection === "scheduleAppiontments"
+              selectedSection === "viewappointments"
                 ? styles.navbarLinkSelected
                 : styles.navbarLinkSection
             }
-            onMouseEnter={() => handleSectionMouseEnter("scheduleAppiontments")}
+            onMouseEnter={() => handleSectionMouseEnter("viewappointments")}
             onMouseLeave={() => handleSectionMouseLeave()}
             onClick={(e) =>
-              handleSectionClick(e, "scheduleAppiontments", "/doctorAppointments")
+              handleSectionClick(e, "viewappointments", "/doctorAppointments")
             }
           >
-            Schedule Appiontment{" "}
-            {hasSubsections("scheduleAppiontments") && <span>▼</span>}
+            View My Appointments {hasSubsections("viewappointments") && <span>▼</span>}
           </div>
         </div>
       </div>
