@@ -70,11 +70,12 @@ body {
   border-radius: 4px;
   padding: 20px;
   text-align: center;
-  width: 1000px;
+  width: 1100px;
   height: 400px;
   min-height: 45vh;
   overflow-y: auto;
   overflow-x: hidden;
+  border: 2px solid #98c1ed;
 }
 
 .confirmationMessage {
