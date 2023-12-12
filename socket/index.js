@@ -1,9 +1,10 @@
 const io=require('socket.io')(4001,{
     cors:{
-         origin:'http://localhost:3000'
+        // origin:'http://localhost:3000',
     }
 });
 
+const {saveMessage} = require('./database.js');
 let users=[];
 
 const addUser=(userID,socketID)=>{
@@ -41,6 +42,11 @@ io.on('connection',socket=>{
                 fileType
             })
         }
+         const newMessage = {
+            senderId,
+            receiverId,
+        };
+        saveMessage(newMessage);
     })
 
     //disconnection

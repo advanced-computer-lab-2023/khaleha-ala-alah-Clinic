@@ -59,6 +59,7 @@ import AdminDeletePatient from "./Components/adminDeletePatient.jsx";
 import "./App.css";
 import ChangePasswordForm from "./Components/changePassword.jsx";
 import ManagePackages from "./Components/packageManagmentPage";
+import Messenger from "./Components/messenger";
 
 function App() {
   const { role } = useAuth();
@@ -141,6 +142,7 @@ function App() {
                 element={<AddFamilyMemberPage />}
               />
               <Route path="/changePassword" element={<ChangePasswordForm />} />
+              <Route path="/messenger" element={<Messenger />} />
             </>
           )}
 
@@ -168,6 +170,7 @@ function App() {
                 element={<FollowUpScheduler />}
               />
               <Route path="/available-slots" element={<AvailableSlotsForm />} />
+              <Route path="/messenger" element={<Messenger />} />
             </>
           )}
 

@@ -4,6 +4,8 @@ const userVerificationModel = require("../models/userVerification");
 const doctorModel = require("../models/users/doctorModel");
 const resetPasswordModel = require("../models/resetPassword");
 const Appointments = require("./../models/appointmentModel");
+const conversationModel = require("./../models/conversationModel");
+const pharmasictModel = require("./../models/users/pharmacist");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const {
@@ -309,6 +311,9 @@ exports.login = async (req, res) => {
           .json({ error: "Doctor rejected", token: token, role: user.role });
       }
     }
+    if(user.role === "pharmacist"){
+      return res.status(400).json({ error: "pharmacist is not able to login"});
+    }
     res
       .status(200)
       .json({
@@ -435,6 +440,19 @@ exports.getUsers = async (req, res) => {
     }else if(role==="doctor"){
       const patientsID=await Appointments.distinct("PatientID", {DoctorID: userID,});
       users=await patientModel.find({userID:{$in:patientsID}}).select('name username userID');
+      const conversations = await conversationModel.find({ members: { $in: [userID] } });
+      const pharmasictPromises = [];
+      for (const conversation of conversations) {
+        const IDs = conversation.members.filter((member) => member !== userID);
+        for (const ID of IDs) {
+          const pharmasictPromise = pharmasictModel.findOne({ userID: ID }).select('name username userID');
+          pharmasictPromises.push(pharmasictPromise);
+        }
+      }
+      const pharmacists = await Promise.all(pharmasictPromises);
+      const validPharmacists = pharmacists.filter((pharmacist) => pharmacist !== null);
+      const pharmacistsWithRole = validPharmacists.map((pharmacist) => ({ ...pharmacist._doc, role: 'pharmacist' }));
+      users.push(...pharmacistsWithRole);
     }else{
       return res.status(400).json({error:"Invalid role"});
     }
@@ -445,7 +463,16 @@ exports.getUsers = async (req, res) => {
     console.log(err);
     return res.status(500).json({ error: "internal server error" });
   }
-}; 
+};
+ 
+exports.getUserID = async (req, res) => {
+  try {
+    const userID = req.user._id;
+    return res.status(200).json({ userID: userID });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 //validate token
 exports.validateToken = async (req, res) => {
