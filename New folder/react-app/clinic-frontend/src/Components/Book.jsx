@@ -61,7 +61,7 @@ const Book = ({ onCancel, doctor }) => {
           "http://localhost:4000/patients/currentPatient",
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              authorization: `Bearer ${localStorage.getItem("token")}`,
               "Content-Type": "application/json", // Specify the content type if needed
             },
           }

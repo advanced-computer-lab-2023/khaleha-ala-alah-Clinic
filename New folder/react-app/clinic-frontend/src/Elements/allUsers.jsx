@@ -7,7 +7,7 @@ const UserList = ({ users, onSelectUser }) => {
   const pharmacistsAndPatients = role === 'doctor' ? users : [];
   const doctors = role === 'patient' ? users : [];
 
-  const hasPharmacists = pharmacistsAndPatients.some((user) => user.role === 'pharmasict');
+  const hasPharmacists = pharmacistsAndPatients.some((user) => user.role === 'pharmacist');
 
   return (
     <div className="user-list">
