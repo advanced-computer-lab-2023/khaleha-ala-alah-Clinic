@@ -367,7 +367,7 @@ exports.viewPrescriptions = async function (req, res) {
 // get patient information from patient model
 exports.getPatient = async function (req, res) {
   try {
-    const patient = await patient.findById(req.params.id);
+    const patient = await Patient.findOne({userID : req.user._id});
     res.status(200).json({
       status: "success",
       data: {
@@ -377,10 +377,51 @@ exports.getPatient = async function (req, res) {
   } catch (err) {
     res.status(500).json({
       status: "error",
-      message: error.message,
+      message: err.message,
     });
   }
 };
+
+exports.updatePatient = async function(req,res){
+  // validate input name , email , phone number and birthdate if any of them
+  // is not valid return error
+  // else update the patient
+  // return the updated patient
+  try {
+    const patient = await Patient.findOne({userID : req.user._id});
+    if(!patient){
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    }
+    const {name,email,mobileNumber,dateOfBirth} = req.body;
+    if(name){
+      patient.name = name;
+    }
+    if(email){
+      patient.email = email;
+    }
+    if(mobileNumber){
+      patient.mobileNumber = mobileNumber;
+    }
+    if(dateOfBirth){
+      patient.dateOfBirth = dateOfBirth;
+    }
+    const updatedPatient = await patient.save();
+    res.status(200).json({
+      status: "success",
+      data: {
+        user: updatedPatient,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+}
 
 exports.getAppointments = async function (req, res) {
   try {

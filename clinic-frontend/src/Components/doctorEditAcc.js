@@ -1,77 +1,133 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import NavBar from "../Elements/NavBarDoctor";
-import Header from "../Elements/HeaderDoctor";
+import NavBar from '../Elements/NavBarDoctor';
+import Header from '../Elements/HeaderDoctor';
 import styles from './doctorEditAcc.module.css';
 
 const DoctorEditProfileForm = () => {
-  // Define state variables for the doctor's information
-  const [email, setEmail] = useState('');
-  const [hourlyRate, setHourlyRate] = useState('');
-  const [affiliation, setAffiliation] = useState('');
+  const [doctorData, setDoctorData] = useState({
+    email: '',
+    hourlyRate: '',
+    affiliation: '',
+    name: '',  // Add the missing fields
+    speciality: '',  // Add the missing fields
+    educationalBackground: '',  // Add the missing fields
+  });
   const [error, setError] = useState(null);
 
-  // Function to handle form submission
+  useEffect(() => {
+    // Fetching data if needed
+  }, []);
+
+  const handleChange = (e) => {
+    setDoctorData({
+      ...doctorData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
 
     try {
-      // Send a PUT request to update the doctor's profile
-      const response = await fetch('http://localhost:4000/doctors/update-email', {
-        method: 'PATCH',
+      // Send a PATCH request to update the doctor's profile
+      const response = await axios.patch('http://localhost:4000/doctors/update-profile', doctorData, {
         headers: {
           'Content-Type': 'application/json',
-          'authorization': 'Bearer ' + localStorage.getItem('token'),
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify({
-          email,
-          hourlyRate,
-          affiliation,
-        }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to update profile');
-      }
-
       // Handle successful update, e.g., display a success message
+      console.log('Profile updated:', response.data);
     } catch (err) {
       setError(err.message);
     }
   };
 
   return (
-    <div >
-      <Header/>
-      <NavBar/>
+    <div>
+      <Header />
+      <NavBar />
       <form onSubmit={handleUpdateProfile} className={styles.addMedicinecontainer}>
-        
         <div className={styles.inputContainer}>
           <label className={styles.label}>Email</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className={styles.input} placeholder='Email'/>
+          <input
+            type="email"
+            name="email"
+            value={doctorData.email}
+            onChange={handleChange}
+            className={styles.input}
+            placeholder="Email"
+          />
         </div>
-       
+
+        <div className={styles.inputContainer}>
+          <label className={styles.labelToLeft}>Name</label>
+          <input
+            type="text"
+            name="name"
+            value={doctorData.name}
+            onChange={handleChange}
+            className={styles.inputToLeft}
+            placeholder="Name"
+          />
+        </div>
+
         <div className={styles.inputContainer}>
           <label className={styles.labelToLeft}>Affiliation</label>
-          <input   type="text"
-            value={affiliation}
-            onChange={(e) => setAffiliation(e.target.value)}className={styles.inputToLeft} placeholder='Affiliation'/>
+          <input
+            type="text"
+            name="affiliation"
+            value={doctorData.affiliation}
+            onChange={handleChange}
+            className={styles.inputToLeft}
+            placeholder="Affiliation"
+          />
         </div>
-        
+
+        <div className={styles.inputContainer}>
+          <label className={styles.labelToLeft}>Educational Background</label>
+          <input
+            type="text"
+            name="educationalBackground"
+            value={doctorData.educationalBackground}
+            onChange={handleChange}
+            className={styles.inputToLeft}
+            placeholder="Educational Background"
+          />
+        </div>
+
+        <div className={styles.inputContainer}>
+          <label className={styles.labelToLeft}>Speciality</label>
+          <input
+            type="text"
+            name="speciality"
+            value={doctorData.speciality}
+            onChange={handleChange}
+            className={styles.inputToLeft}
+            placeholder="Speciality"
+          />
+        </div>
+
         <div className={styles.inputContainer}>
           <label className={styles.label}>Hourly Rate</label>
-          <input type="number"
-            value={hourlyRate}
-            onChange={(e) => setHourlyRate(e.target.value)} className={styles.input} placeholder='EGP' />
+          <input
+            type="number"
+            name="hourlyRate"
+            value={doctorData.hourlyRate}
+            onChange={handleChange}
+            className={styles.input}
+            placeholder="EGP"
+          />
         </div>
-        
-        <button type="submit" className={styles.button}>Update Profile</button> 
+
+        <button type="submit" className={styles.button}>
+          Update Profile
+        </button>
       </form>
     </div>
   );
 };
 
 export default DoctorEditProfileForm;
-
-
-

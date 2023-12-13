@@ -1,84 +1,80 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import NavBar from "../Elements/NavBarDoctor";
-import Header from "../Elements/HeaderDoctor";
+import NavBar from '../Elements/NavBarDoctor';
+import Header from '../Elements/HeaderDoctor';
 import styles from './doctorUserProfile.module.css';
 
 const DoctorUserProfileForm = () => {
-  const [formData, setFormData] = useState({
+  const [userData, setUserData] = useState({
+    username: '',
     name: '',
-    pictureUrl: '',
-    price: '',
-    description: '',
-    availableQuantity: '',
-    activeIngredients: [''], // Start with one empty ingredient field
-    medicalUse: '', // Medical Use field
+    email: '',
+    hourlyRate: '',
+    birthDate: '',
+    gender: '',
+    mobileNumber: '',
+    affiliation: '',
+    educationalBackground: '',
+    speciality: '',
+    status: '',
+    fixedSlots: [],
   });
 
-  const handleChange = (e) => {
-    const { name, value, dataset } = e.target;
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get('http://localhost:4000/doctors/1234', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        setUserData(response.data.data.doctor);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching doctor data:', error);
+      }
+    };
 
-    if (name === 'activeIngredients') {
-      // If the change is in the activeIngredients array, update it accordingly
-      const updatedIngredients = [...formData.activeIngredients];
-      const index = dataset.index; // Get the index from the data-index attribute
-      updatedIngredients[index] = value;
-      setFormData({ ...formData, activeIngredients: updatedIngredients });
-    } else {
-      // Otherwise, update the field directly
-      setFormData({ ...formData, [name]: value });
-    }
-  };
+    fetchUserData();
+  }, []);
 
-  const handleAddIngredient = () => {
-    // Add a new empty ingredient field when the "Add Ingredient" button is clicked
-    setFormData({ ...formData, activeIngredients: [...formData.activeIngredients, ''] });
-  };
+  const renderUserDetail = (label, value) => (
+    <div className={styles.inputContainer}>
+      <label className={styles.label}>{label}: {value}</label>
+    </div>
+  );
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await axios.post('http://localhost:4000/pharmacists/addMedicine', formData); // Replace with your API endpoint
-      console.log('Medicine added:', response.data);
-    } catch (error) {
-      console.error('Error adding medicine:', error);
-    }
-  };
+  const renderFixedSlots = (fixedSlots) => (
+    <div className={styles.inputContainer}>
+      <label className={styles.label}>Fixed Slots:</label>
+      {fixedSlots.map((slot) => (
+        <div key={slot._id}>
+          <span>{`Day: ${slot.day}, Hour: ${slot.hour}`}</span>
+        </div>
+      ))}
+    </div>
+  );
 
   return (
-    <div >
-      <Header/>
-      <NavBar/>
-      <form onSubmit={handleSubmit} className={styles.addMedicinecontainer}>
-      <div className={styles.inputContainer}>
-          <label className={styles.label}>Username: andria-potelie</label>
-        </div>
-        <div className={styles.inputContainer}>
-          <label className={styles.label}>Name: Andria Edward Porelie Anision Smith</label>
-        </div>
-        <div className={styles.inputContainer}>
-          <label className={styles.label}>Email: andriaPotelie@gmail.com</label>
-        </div>
-        <div className={styles.inputContainer}>
-          <label className={styles.label}>Birth Date: 30/04/2002</label>
-        </div>
-        <div className={styles.inputContainer}>
-          <label className={styles.label}>Gender: Female</label>
-        </div>
-        
-        <div className={styles.inputContainer}>
-          <label className={styles.label}>Mobile Number: 012132446749</label>
-        </div>
-        <div className={styles.inputContainer}>
-          <label className={styles.label}>Package: Silver</label>
-        </div>
-      </form>
+    <div>
+      <Header />
+      <NavBar />
+
+      {renderUserDetail('Username', userData.username)}
+      {renderUserDetail('Name', userData.name)}
+      {renderUserDetail('Email', userData.email)}
+      {renderUserDetail('Birth Date', userData.birthdate)}
+      {renderUserDetail('Educational Background', userData.educationalBackground)}
+      {renderUserDetail('Mobile Number', userData.mobileNumber)}
+      {renderUserDetail('Affiliation', userData.affiliation)}
+      {renderUserDetail('Hourly Rate', userData.hourlyRate)}
+      {renderUserDetail('Speciality', userData.speciality)}
+      {renderUserDetail('Status', userData.status)}
+      {renderFixedSlots(userData.fixedSlots)}
     </div>
   );
 };
 
 export default DoctorUserProfileForm;
-
 
 

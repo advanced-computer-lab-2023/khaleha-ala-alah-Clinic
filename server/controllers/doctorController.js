@@ -20,6 +20,78 @@ conn.once("open", () => {
   gfs = new mongoose.mongo.GridFSBucket(conn.db, { bucketName: "uploads" });
 });
 
+exports.getDoctor = async (req,res)=>{
+  try{
+    const doctor = await Doctor.findOne({userID:req.user._id});
+    if(!doctor){
+      return res.status(404).json({
+        status:"fail",
+        message:"Doctor not found"
+      })
+    }
+    res.status(200).json({
+      status:"success",
+      data:{
+        doctor
+      }
+    })
+  }catch(err){
+    res.status(500).json({
+      status:"error",
+      message:err.message
+    })
+  }
+}
+exports.updateDoctor = async (req,res)=>{
+  // validate input name , email , phone number and birthdate , affiliation , speciality , Educational Background , Hourly Rate if any of them
+  // is not valid return error
+  // else update the doctor
+  // return the updated doctor
+  try{
+    const doctor = await Doctor.findOne({userID:req.user._id});
+    if(!doctor){
+      return res.status(404).json({
+        status:"fail",
+        message:"Doctor not found"
+      })
+    }
+    const {name,email,phoneNumber,birthDate,affiliation,speciality,educationalBackground,hourlyRate} = req.body;
+    if(name){
+      doctor.name = name;
+    }
+    if(email){
+      doctor.email = email;
+    }
+    if(birthDate){
+      doctor.birthDate = birthDate;
+    }
+    if(affiliation){
+      doctor.affiliation = affiliation;
+    }
+    if(speciality){
+      doctor.speciality = speciality;
+    }
+    if(educationalBackground){
+      doctor.educationalBackground = educationalBackground;
+    }
+    if(hourlyRate){
+      doctor.hourlyRate = hourlyRate;
+    }
+    await doctor.save();
+    res.status(200).json({
+      status:"success",
+      data:{
+        doctor
+      }
+    })
+  }
+  catch(err){
+    res.status(500).json({
+      status:"error",
+      message:err.message
+    })
+  }
+}
 exports.getAmountInWallet = async (req, res) => {
   try {
     const userID = req.params.userID.trim();

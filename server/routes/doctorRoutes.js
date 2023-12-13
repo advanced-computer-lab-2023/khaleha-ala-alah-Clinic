@@ -22,6 +22,8 @@ router.post(
   upload.array("files", 3),
   doctorControllers.addNewHealthRecordForPatient
 );
+router.get('/1234' , CheckAuth , doctorControllers.getDoctor);
+router.patch('/update-profile' , CheckAuth , doctorControllers.updateDoctor);
 // upload.array("files",1)
 router.get("/Alldoctors", CheckAuth, doctorControllers.getAllDoctors); // Changed to GET
 router.patch("/update-email", CheckAuth, doctorControllers.updateDoctorEmail);
