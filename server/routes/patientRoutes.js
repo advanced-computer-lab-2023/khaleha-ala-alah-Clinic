@@ -11,6 +11,13 @@ router
   .get(CheckAuth, patientController.getAllPatients)
   .post(patientController.createPatient);
 
+// router
+//   .route("/1234")
+//   .get(CheckAuth, patientController.getPatient);
+  // .patch(CheckAuth, patientController.updatePatient)
+  // .delete(CheckAuth, patientController.deletePatient);
+router.get('/1234',CheckAuth ,patientController.getPatient);
+router.patch('/1234',CheckAuth ,patientController.updatePatient);
 router.get("/getAllPatients", patientController.viewAllPatients);
 
 router.post("/add-amount-Wallet", patientController.addAmountToWallet);
