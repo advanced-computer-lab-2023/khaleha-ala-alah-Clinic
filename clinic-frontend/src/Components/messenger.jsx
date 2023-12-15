@@ -6,6 +6,11 @@ import axios from 'axios';
 import { CircularProgress } from '@mui/material';
 import { useWebSocket } from '../WebSocketContext';
 import { useLocation } from 'react-router-dom';
+import Peer from 'simple-peer';
+import VideoCall from '../Elements/VideoCall';
+import IncomingCall from '../Elements/incommingCall';
+import CallerInfoModal from '../Elements/caller';
+
 
 
 function Messenger() {
@@ -18,6 +23,25 @@ function Messenger() {
   const[userID, setUserID]=useState();
   const socket=useWebSocket();
   const location = useLocation();
+  const myVideo=useRef(null);
+  const userVideo=useRef(null);
+  const [call,setCall]=useState(null);
+  const [callAccepted,setCallAccepted]=useState(false);
+  const [callEnded,setCallEnded]=useState(false);
+  const [calling,setCalling]=useState(false);
+  const connectionRef=useRef();
+  const [open, setOpen] = useState(false);
+  const acceptCall =useRef(null);
+ 
+
+  useEffect(() => {
+    if (callAccepted) {
+      setTimeout(() => { 
+        setOpen(true);
+      }
+      , 1000);
+    }
+  }, [callAccepted]);
  
   
   useEffect(() => {
@@ -31,7 +55,113 @@ function Messenger() {
         createdAt: Date.now(),
       });
     });
+    socket.on("callUser", ({from,signal,userName})=>{
+      setCall({isReceivedCall:true,from,signal,userName})
+    });
+    socket.on("callRejected",()=>{
+      setCallEnded(true);
+      connectionRef.current.destroy();
+    });
+    socket.on("callNoAnswer",()=>{
+      setCallEnded(true);
+      window.location.reload();
+    });
+    socket.on("callCancelled",()=>{
+      setCallEnded(true);
+      window.location.reload();
+    });
   }, []);
+  useEffect(()=>{
+    if(calling){
+      setTimeout(() => {
+        if(!acceptCall.current){
+          setCallEnded(true);
+          socket.emit("callNoAnswer",{to:selectedUser.userID});
+          window.location.reload();
+        }
+      }, 20000);
+    }
+  },[calling]);
+
+  const callUser=async()=>{
+    setCalling(true);
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: true,
+    });
+    myVideo.current=stream;
+    const peer=new Peer({initiator:true,trickle:false,stream});
+    peer.on("signal",(data)=>{
+      socket.emit("callUser",{to:selectedUser.userID,signal:data,from:userID});
+    });
+    peer.on("stream",(currentStream)=>{
+      userVideo.current=currentStream;
+    });
+    peer.on("close",()=>{
+      setCallEnded(true);
+      window.location.reload();
+      peer.destroy();
+    });
+    peer.on("error",(err)=>{
+      setCallEnded(true);
+      window.location.reload();
+      peer.destroy();
+    });
+    socket.on("callAccepted",(signal)=>{
+      setCallAccepted(true);
+      acceptCall.current=true;
+      peer.signal(signal);
+    });
+    connectionRef.current=peer;
+  };
+
+  const answerCall=async()=>{
+    setCallAccepted(true);
+    acceptCall.current=true;
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: true,
+    });
+    myVideo.current=stream;
+    const peer=new Peer({initiator:false,trickle:false,stream});
+    peer.on("signal",(data)=>{
+      socket.emit("answerCall",{signal:data,to:call.from});
+    })
+    peer.on("stream",(currentStream)=>{
+      userVideo.current = currentStream;
+    });
+    peer.on("close",()=>{
+      setCallEnded(true);
+      window.location.reload();
+      peer.destroy();
+    });
+    peer.on("error",(err)=>{
+      setCallEnded(true);
+      window.location.reload();
+      peer.destroy();
+    });
+    peer.signal(call.signal);
+    connectionRef.current=peer;
+  };
+  const cancelCall=()=>{
+    setCalling(false);
+    setCallEnded(true);
+    window.location.reload();
+    connectionRef.current.destroy();
+    socket.emit("callCancelled",{to:selectedUser.userID});
+  }
+
+  const rejectCall=()=>{
+    setCallEnded(true);
+    setCalling(false);
+    socket.emit("callRejected",{to:call.from});
+    window.location.reload();
+  }
+
+  const leaveCall=()=>{
+    setCallEnded(true);
+    connectionRef.current.destroy();
+  };
 
   useEffect(() => {
     if (location.state) {
@@ -141,6 +271,15 @@ function Messenger() {
               <CircularProgress />
         </div>
       )}
+      {calling && !callAccepted &&(
+        <CallerInfoModal callerName={selectedUser.name} cancelCall={cancelCall} />
+      )}
+      {call && !callAccepted &&(
+        <IncomingCall call={call} answerCall={answerCall} rejectCall={rejectCall} />
+          )}
+          {open &&(
+            <VideoCall myVideoStream={myVideo} userVideoStream={userVideo} leaveCall={leaveCall} />
+          )}
       <UserList users={users} onSelectUser={handleSelectUser} />
       {selectedUser && (
         <ChatInterface
@@ -149,6 +288,7 @@ function Messenger() {
           onSendMessage={handleSendMessage}
           setMessages={setMessages}
           loading={loading}
+          callUser={callUser}
         />
       )}
     </div>
