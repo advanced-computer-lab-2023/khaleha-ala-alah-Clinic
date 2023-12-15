@@ -68,11 +68,23 @@ import DoctorEditProfileForm from "./Components/doctorEditAcc.js";
 import DoctorUserProfileForm from "./Components/doctorUserprofile.js";
 import PatientEditProfileForm from "./Components/patientEditAcc.js";
 import PatientUserProfileForm from "./Components/patientUserProfile.js";
+import { useCallContext } from './callContext';
+import IncomingCall from './Elements/incommingCall';
+import VideoCall from './Elements/VideoCall';
 
 function App() {
+  const { call, callAccepted, answerCall, rejectCall,open,myVideo,userVideo,leaveCall } = useCallContext();
   const { role } = useAuth();
   return (
     <div className="App">
+      {call && !callAccepted &&(
+        <IncomingCall call={call} answerCall={answerCall} rejectCall={rejectCall} />
+          )}
+        {open &&(
+            <VideoCall myVideoStream={myVideo} userVideoStream={userVideo} leaveCall={leaveCall} />
+          )}
+
+
       <Routes>
         {/* public routes */}
 
