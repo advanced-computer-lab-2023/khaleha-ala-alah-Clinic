@@ -56,7 +56,8 @@ const PatientEditProfileForm = () => {
     <div>
       <Header />
       <NavBar />
-      <form onSubmit={handleSubmit} className={styles.addMedicinecontainer}>
+      <form onSubmit={handleSubmit} className={styles.Bigcontainer}>
+        <div className={styles.addMedicinecontainer}> 
         <div className={styles.inputContainer}>
           <label className={styles.label}>Name</label>
           <input
@@ -101,9 +102,12 @@ const PatientEditProfileForm = () => {
             placeholder="Mobile Nr"
           />
         </div>
+        </div>
+        <div>
         <button type="submit" className={styles.button}>
           Update Profile
         </button>
+        </div>
       </form>
     </div>
   );

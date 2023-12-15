@@ -37,6 +37,7 @@ const PatientUserProfileForm = () => {
     <div>
       <Header />
       <NavBar />
+      <div className={styles.addMedicinecontainer}>
       <div className={styles.inputContainer}>
         <label className={styles.label}>Username: {userData.username}</label>
       </div>
@@ -58,6 +59,7 @@ const PatientUserProfileForm = () => {
       <div className={styles.inputContainer}>
         <label className={styles.label}>Package: {userData.packageName}</label>
       </div>
+    </div>
     </div>
   );
 };
