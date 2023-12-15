@@ -49,7 +49,8 @@ const DoctorEditProfileForm = () => {
     <div>
       <Header />
       <NavBar />
-      <form onSubmit={handleUpdateProfile} className={styles.addMedicinecontainer}>
+      <form onSubmit={handleUpdateProfile} className={styles.Bigcontainer}>
+        <div className={styles.addMedicinecontainer}> 
         <div className={styles.inputContainer}>
           <label className={styles.label}>Email</label>
           <input
@@ -63,13 +64,13 @@ const DoctorEditProfileForm = () => {
         </div>
 
         <div className={styles.inputContainer}>
-          <label className={styles.label}>Name</label>
+          <label className={styles.labelToLeft}>Name</label>
           <input
             type="text"
             name="name"
             value={doctorData.name}
             onChange={handleChange}
-            className={styles.input}
+            className={styles.inputToLeft}
             placeholder="Name"
           />
         </div>
@@ -99,13 +100,13 @@ const DoctorEditProfileForm = () => {
         </div>
 
         <div className={styles.inputContainer}>
-          <label className={styles.labelToLeft}>Speciality</label>
+          <label className={styles.label}>Speciality</label>
           <input
             type="text"
             name="speciality"
             value={doctorData.speciality}
             onChange={handleChange}
-            className={styles.inputToLeft}
+            className={styles.input}
             placeholder="Speciality"
           />
         </div>
@@ -122,9 +123,13 @@ const DoctorEditProfileForm = () => {
           />
         </div>
 
-        <button type="submit" className={styles.button}>
+
+        </div>
+        <div>
+               <button type="submit" className={styles.button}>
           Update Profile
         </button>
+        </div>
       </form>
     </div>
   );
