@@ -10,6 +10,8 @@ import Peer from 'simple-peer';
 import VideoCall from '../Elements/VideoCall';
 
 
+
+
 function Messenger() {
   const [conversations, setConversations] = useState();
   const [messages, setMessages] = useState([]);
@@ -28,6 +30,7 @@ function Messenger() {
   const [calling,setCalling]=useState(false);
   const connectionRef=useRef();
   const [open, setOpen] = useState(false);
+  const acceptCall =useRef(null);
  
 
   useEffect(() => {
@@ -64,13 +67,15 @@ function Messenger() {
     });
   }, []);
   useEffect(()=>{
-    setTimeout(() => {
-      if(calling && !callAccepted){
-        setCallEnded(true);
-        window.location.reload();
-        socket.emit("callNoAnswer",{to:selectedUser.userID});
-      }
-    }, 5000);
+    if(calling){
+      setTimeout(() => {
+        if(!acceptCall.current){
+          setCallEnded(true);
+          socket.emit("callNoAnswer",{to:selectedUser.userID});
+          window.location.reload();
+        }
+      }, 10000);
+    }
   },[calling]);
 
   const callUser=async()=>{
@@ -99,6 +104,8 @@ function Messenger() {
     });
     socket.on("callAccepted",(signal)=>{
       setCallAccepted(true);
+      acceptCall.current=true;
+      setCalling(false);
       peer.signal(signal);
     });
     connectionRef.current=peer;
