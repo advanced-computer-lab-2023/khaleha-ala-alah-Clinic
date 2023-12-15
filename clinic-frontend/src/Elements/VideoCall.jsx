@@ -21,7 +21,7 @@ const VideoCall = ({ myVideoStream, userVideoStream ,leaveCall}) => {
   return (
     <div>
       <h2>Video Call</h2>
-      <video ref={myVideoRef} autoPlay  style={{ width: '240px', height: '180px' }}></video>
+      <video ref={myVideoRef} autoPlay style={{ width: '240px', height: '180px' }}></video>
       <video ref={userVideoRef} autoPlay style={{ width: '240px', height: '180px' }}></video>
       <button onClick={leaveCall}>End Call</button>
     </div>

@@ -25,6 +25,7 @@ function Messenger() {
   const [call,setCall]=useState(null);
   const [callAccepted,setCallAccepted]=useState(false);
   const [callEnded,setCallEnded]=useState(false);
+  const [calling,setCalling]=useState(false);
   const connectionRef=useRef();
   const [open, setOpen] = useState(false);
  
@@ -50,12 +51,30 @@ function Messenger() {
         createdAt: Date.now(),
       });
     });
-    socket.on("callUser", ({from,signal})=>{
-      setCall({isReceivedCall:true,from,signal})
+    socket.on("callUser", ({from,signal,userName})=>{
+      setCall({isReceivedCall:true,from,signal,userName})
+    });
+    socket.on("callRejected",()=>{
+      setCallEnded(true);
+      connectionRef.current.destroy();
+    });
+    socket.on("callNoAnswer",()=>{
+      setCallEnded(true);
+      window.location.reload();
     });
   }, []);
+  useEffect(()=>{
+    setTimeout(() => {
+      if(calling && !callAccepted){
+        setCallEnded(true);
+        window.location.reload();
+        socket.emit("callNoAnswer",{to:selectedUser.userID});
+      }
+    }, 5000);
+  },[calling]);
 
   const callUser=async()=>{
+    setCalling(true);
     const stream = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: true,
@@ -112,6 +131,12 @@ function Messenger() {
     peer.signal(call.signal);
     connectionRef.current=peer;
   };
+
+  const rejectCall=()=>{
+    setCallEnded(true);
+    socket.emit("callRejected",{to:call.from});
+    window.location.reload();
+  }
 
   const leaveCall=()=>{
     setCallEnded(true);
@@ -228,8 +253,9 @@ function Messenger() {
       )}
       {call && (
             <div>
-              <h1>{call.from} is calling</h1>
+              <h1>{call.userName} is calling</h1>
               <button onClick={answerCall}>Answer</button>
+              <button onClick={rejectCall}>Reject</button>
             </div>
           )}
           {open &&(
