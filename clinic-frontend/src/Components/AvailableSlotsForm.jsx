@@ -3,7 +3,7 @@ import axios from "axios";
 import NavBar from "../Elements/NavBarDoctor.jsx";
 import Header from "../Elements/HeaderDoctor";
 
-import styles from "./avaliableSlots.module.css"
+import styles from "./avaliableSlots.module.css";
 
 const AvailableSlotsForm = () => {
   const [day, setDay] = useState("");
@@ -58,18 +58,29 @@ const AvailableSlotsForm = () => {
       console.log(response.data);
       setStatusMessage("slot added successfully");
     } catch (error) {
-      setStatusMessage(`Error adding available slots: ${error.message}`);
+      //if i got response of 400 print slot already exists
+      console.log(error.response.status);
+      if (error.response.status === 400) {
+        setStatusMessage("slot already exists");
+      } else
+        setStatusMessage(
+          `Error adding available slots: ${error.response.message}`
+        );
     }
   };
 
   return (
     <div className={styles.container}>
       <Header />
-      <NavBar/>
+      <NavBar />
       <form onSubmit={handleSubmit}>
-      <div>
-        <label className={styles.labelSlot} >Select Day</label>
-          <select value={day} onChange={handleDayChange} className={styles.selectDay}>
+        <div>
+          <label className={styles.labelSlot}>Select Day</label>
+          <select
+            value={day}
+            onChange={handleDayChange}
+            className={styles.selectDay}
+          >
             <option value="Monday">Monday</option>
             <option value="Tuesday">Tuesday</option>
             <option value="Wednesday">Wednesday</option>
@@ -78,10 +89,9 @@ const AvailableSlotsForm = () => {
             <option value="Saturday">Saturday</option>
             <option value="Sunday">Sunday</option>
           </select>
-        
         </div>
         <div>
-        <label className={styles.labelSlot}> Select Time</label>
+          <label className={styles.labelSlot}> Select Time</label>
           <input
             type="text"
             value={hours}
@@ -99,13 +109,18 @@ const AvailableSlotsForm = () => {
             className={styles.input}
             placeholder="min"
           />
-          <select value={period} onChange={handlePeriodChange} className={styles.select}>
+          <select
+            value={period}
+            onChange={handlePeriodChange}
+            className={styles.select}
+          >
             <option value="am">AM</option>
             <option value="pm">PM</option>
           </select>
-        
         </div>
-        <button type="submit" className={styles.button}>Add Available Slot</button>
+        <button type="submit" className={styles.button}>
+          Add Available Slot
+        </button>
       </form>
       <p>{statusMessage}</p>
     </div>
