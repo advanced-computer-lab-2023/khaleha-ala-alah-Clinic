@@ -108,6 +108,7 @@ function Appointments() {
           .then((response) => response.json())
           .then((data) => {
             // Handle the retrieved data here
+            console.log(data);
             setDoctors(data.doctors);
 
             // Set loading to false once both appointments and doctors data are fetched
@@ -291,12 +292,12 @@ function Appointments() {
               View Your Appointments
             </h1> */}
             <div className={styles.Filters}>
-              <RangePicker
-                allowClear
+              <input
+                type="date"
+                id="dateFilter"
                 value={dateFilter}
-                onChange={handleDateFilterChange}
-                style={{ marginRight: "16px" }}
-                suffixIcon={<CalendarOutlined />}
+                onChange={(e) => setDateFilter(e.target.value)}
+                className={`${styles.searchInput} ${styles.inputField}`}
               />
               <Select
                 value={statusFilter}
@@ -314,7 +315,7 @@ function Appointments() {
                 type="primary"
                 onClick={filterAppointments}
                 icon={<SearchOutlined />}
-                style={{marginLeft:'1rem'}}
+                style={{ marginLeft: "1rem" }}
               >
                 Filter
               </Button>

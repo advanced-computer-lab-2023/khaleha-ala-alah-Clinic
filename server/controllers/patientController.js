@@ -367,7 +367,7 @@ exports.viewPrescriptions = async function (req, res) {
 // get patient information from patient model
 exports.getPatient = async function (req, res) {
   try {
-    const patient = await Patient.findOne({userID : req.user._id});
+    const patient = await Patient.findOne({ userID: req.user._id });
     res.status(200).json({
       status: "success",
       data: {
@@ -382,30 +382,30 @@ exports.getPatient = async function (req, res) {
   }
 };
 
-exports.updatePatient = async function(req,res){
+exports.updatePatient = async function (req, res) {
   // validate input name , email , phone number and birthdate if any of them
   // is not valid return error
   // else update the patient
   // return the updated patient
   try {
-    const patient = await Patient.findOne({userID : req.user._id});
-    if(!patient){
+    const patient = await Patient.findOne({ userID: req.user._id });
+    if (!patient) {
       return res.status(404).json({
         status: "fail",
         message: "Patient not found",
       });
     }
-    const {name,email,mobileNumber,dateOfBirth} = req.body;
-    if(name){
+    const { name, email, mobileNumber, dateOfBirth } = req.body;
+    if (name) {
       patient.name = name;
     }
-    if(email){
+    if (email) {
       patient.email = email;
     }
-    if(mobileNumber){
+    if (mobileNumber) {
       patient.mobileNumber = mobileNumber;
     }
-    if(dateOfBirth){
+    if (dateOfBirth) {
       patient.dateOfBirth = dateOfBirth;
     }
     const updatedPatient = await patient.save();
@@ -421,7 +421,7 @@ exports.updatePatient = async function(req,res){
       message: err.message,
     });
   }
-}
+};
 
 exports.getAppointments = async function (req, res) {
   try {
@@ -447,7 +447,7 @@ exports.getPatientDoctors = async function (req, res) {
     const doctorIds = await Appointments.find({
       PatientID: req.user._id,
     }).distinct("DoctorID", {
-      PatientID: patient,
+      PatientID: req.user._id,
     });
     //const doctors = await Doctors.find({ userID: { $in: doctorIds } });
     const doctors = [];
@@ -919,8 +919,6 @@ exports.GetDoctorAppointments = async function (req, res) {
 //   }
 // };
 
-
-
 exports.viewDoctorAppointmentsForMonthWithoutAuth = async function (req, res) {
   try {
     const { doctorID } = req.params; // Get doctorID from route parameters
@@ -1008,8 +1006,6 @@ exports.viewDoctorAppointmentsForMonthWithoutAuth = async function (req, res) {
     });
   }
 };
-
-
 
 exports.viewDoctorAppointmentsForMonth = async function (req, res) {
   try {
