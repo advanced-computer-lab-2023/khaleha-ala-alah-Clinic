@@ -8,7 +8,8 @@ import { useWebSocket } from '../WebSocketContext';
 import { useLocation } from 'react-router-dom';
 import Peer from 'simple-peer';
 import VideoCall from '../Elements/VideoCall';
-
+import IncomingCall from '../Elements/incommingCall';
+import CallerInfoModal from '../Elements/caller';
 
 
 
@@ -65,6 +66,10 @@ function Messenger() {
       setCallEnded(true);
       window.location.reload();
     });
+    socket.on("callCancelled",()=>{
+      setCallEnded(true);
+      window.location.reload();
+    });
   }, []);
   useEffect(()=>{
     if(calling){
@@ -74,7 +79,7 @@ function Messenger() {
           socket.emit("callNoAnswer",{to:selectedUser.userID});
           window.location.reload();
         }
-      }, 10000);
+      }, 20000);
     }
   },[calling]);
 
@@ -105,7 +110,6 @@ function Messenger() {
     socket.on("callAccepted",(signal)=>{
       setCallAccepted(true);
       acceptCall.current=true;
-      setCalling(false);
       peer.signal(signal);
     });
     connectionRef.current=peer;
@@ -113,6 +117,7 @@ function Messenger() {
 
   const answerCall=async()=>{
     setCallAccepted(true);
+    acceptCall.current=true;
     const stream = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: true,
@@ -138,9 +143,17 @@ function Messenger() {
     peer.signal(call.signal);
     connectionRef.current=peer;
   };
+  const cancelCall=()=>{
+    setCalling(false);
+    setCallEnded(true);
+    window.location.reload();
+    connectionRef.current.destroy();
+    socket.emit("callCancelled",{to:selectedUser.userID});
+  }
 
   const rejectCall=()=>{
     setCallEnded(true);
+    setCalling(false);
     socket.emit("callRejected",{to:call.from});
     window.location.reload();
   }
@@ -258,12 +271,11 @@ function Messenger() {
               <CircularProgress />
         </div>
       )}
-      {call && (
-            <div>
-              <h1>{call.userName} is calling</h1>
-              <button onClick={answerCall}>Answer</button>
-              <button onClick={rejectCall}>Reject</button>
-            </div>
+      {calling && !callAccepted &&(
+        <CallerInfoModal callerName={selectedUser.name} cancelCall={cancelCall} />
+      )}
+      {call && !callAccepted &&(
+        <IncomingCall call={call} answerCall={answerCall} rejectCall={rejectCall} />
           )}
           {open &&(
             <VideoCall myVideoStream={myVideo} userVideoStream={userVideo} leaveCall={leaveCall} />

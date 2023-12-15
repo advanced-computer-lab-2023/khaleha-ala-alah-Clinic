@@ -75,6 +75,13 @@ io.on('connection',socket=>{
           io.to(user.socketID).emit('callNoAnswer');
         }
       });
+      socket.on('callCancelled', (data) => {
+        const user = users.find((user) => user.userID === data.to);
+        if(user){
+          io.to(user.socketID).emit('callCancelled');
+        }
+      });
+
     //disconnection
     socket.on("disconnect",()=>{
         console.log("a user disconnected ");

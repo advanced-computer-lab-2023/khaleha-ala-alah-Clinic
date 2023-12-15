@@ -40,12 +40,13 @@ const VideoCall = ({ myVideoStream, userVideoStream, leaveCall }) => {
       closable={false}
       maskClosable={false}
       style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', border: 'none', padding: 0 }}
+      width={1000} 
     >
-      <Row style={{ width: '100%', height: '100%', position: 'relative' }}>
+      <Row style={{ width: '700px', height: '100%', position: 'relative' }}>
         <Col span={24} style={{ position: 'relative' }}>
           <video ref={userVideoRef} autoPlay style={{ width: '100%', height: '100%', objectFit: 'cover' }}></video>
         </Col>
-        <Col span={6} style={{ position: 'absolute', bottom: '70%', right: 0 }}>
+        <Col span={6} style={{ position: 'absolute', bottom: '70%', right: '2%' }}>
           <video ref={myVideoRef} autoPlay muted style={{ width: '100%', height: 'auto', borderRadius: '8px' }}></video>
         </Col>
         <Button
