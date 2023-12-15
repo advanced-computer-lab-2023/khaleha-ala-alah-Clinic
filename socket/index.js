@@ -60,13 +60,6 @@ io.on('connection',socket=>{
           io.to(user.socketID).emit('callAccepted', data.signal);
         }
       });
-        socket.on('endCall', (data) => {
-            const user = users.find((user) => user.userID === data.to);
-            if(user){
-            io.to(user.socketID).emit('endCall', data.signal);
-            }
-        });
-
     //disconnection
     socket.on("disconnect",()=>{
         console.log("a user disconnected ");

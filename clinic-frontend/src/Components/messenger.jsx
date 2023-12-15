@@ -27,7 +27,7 @@ function Messenger() {
   const [callEnded,setCallEnded]=useState(false);
   const connectionRef=useRef();
   const [open, setOpen] = useState(false);
-
+ 
 
   useEffect(() => {
     if (callAccepted) {
@@ -53,10 +53,6 @@ function Messenger() {
     socket.on("callUser", ({from,signal})=>{
       setCall({isReceivedCall:true,from,signal})
     });
-    socket.on("endCall",()=>{
-      setCallEnded(true);
-      window.location.reload();
-    });
   }, []);
 
   const callUser=async()=>{
@@ -73,6 +69,11 @@ function Messenger() {
       userVideo.current=currentStream;
     });
     peer.on("close",()=>{
+      setCallEnded(true);
+      window.location.reload();
+      peer.destroy();
+    });
+    peer.on("error",(err)=>{
       setCallEnded(true);
       window.location.reload();
       peer.destroy();
@@ -103,19 +104,18 @@ function Messenger() {
       window.location.reload();
       peer.destroy();
     });
+    peer.on("error",(err)=>{
+      setCallEnded(true);
+      window.location.reload();
+      peer.destroy();
+    });
     peer.signal(call.signal);
     connectionRef.current=peer;
   };
 
   const leaveCall=()=>{
     setCallEnded(true);
-    if(call){
-      socket.emit("endCall",{to:call.from});
-    }else{
-      socket.emit("endCall",{to:selectedUser.userID});
-    }
-    window.location.reload();
-
+    connectionRef.current.destroy();
   };
 
   useEffect(() => {
