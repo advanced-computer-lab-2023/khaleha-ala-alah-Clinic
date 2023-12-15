@@ -63,25 +63,25 @@ const DoctorEditProfileForm = () => {
         </div>
 
         <div className={styles.inputContainer}>
-          <label className={styles.labelToLeft}>Name</label>
+          <label className={styles.label}>Name</label>
           <input
             type="text"
             name="name"
             value={doctorData.name}
             onChange={handleChange}
-            className={styles.inputToLeft}
+            className={styles.input}
             placeholder="Name"
           />
         </div>
 
         <div className={styles.inputContainer}>
-          <label className={styles.labelToLeft}>Affiliation</label>
+          <label className={styles.label}>Affiliation</label>
           <input
             type="text"
             name="affiliation"
             value={doctorData.affiliation}
             onChange={handleChange}
-            className={styles.inputToLeft}
+            className={styles.input}
             placeholder="Affiliation"
           />
         </div>
@@ -109,15 +109,15 @@ const DoctorEditProfileForm = () => {
             placeholder="Speciality"
           />
         </div>
-
+ 
         <div className={styles.inputContainer}>
-          <label className={styles.label}>Hourly Rate</label>
+          <label className={styles.labelToLeft}>Hourly Rate</label>
           <input
             type="number"
             name="hourlyRate"
             value={doctorData.hourlyRate}
             onChange={handleChange}
-            className={styles.input}
+            className={styles.inputToLeft}
             placeholder="EGP"
           />
         </div>

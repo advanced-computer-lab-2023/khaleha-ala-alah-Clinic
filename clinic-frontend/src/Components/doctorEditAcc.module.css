@@ -24,7 +24,7 @@
     margin-bottom: 10px;
     font-size: 12pt;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    margin-right: 2rem;
+    margin-left: 4rem;
   }
   .inputContainer {
     margin-bottom: 10px;
@@ -46,7 +46,7 @@
   }
 
   .inputToLeft {
-    margin-right: 2rem;
+    margin-left: 4rem;
     width: 520px;
     padding: 12px;
     box-sizing: border-box;

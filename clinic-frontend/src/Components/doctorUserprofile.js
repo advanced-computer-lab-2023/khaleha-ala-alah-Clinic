@@ -49,7 +49,7 @@ const DoctorUserProfileForm = () => {
       <label className={styles.label}>Fixed Slots:</label>
       {fixedSlots.map((slot) => (
         <div key={slot._id}>
-          <span>{`Day: ${slot.day}, Hour: ${slot.hour}`}</span>
+          <label className={styles.label}>{`Day: ${slot.day}, Hour: ${slot.hour}`}</label>
         </div>
       ))}
     </div>
@@ -59,7 +59,7 @@ const DoctorUserProfileForm = () => {
     <div>
       <Header />
       <NavBar />
-
+      <div className={styles.addMedicinecontainer}>
       {renderUserDetail('Username', userData.username)}
       {renderUserDetail('Name', userData.name)}
       {renderUserDetail('Email', userData.email)}
@@ -71,6 +71,7 @@ const DoctorUserProfileForm = () => {
       {renderUserDetail('Speciality', userData.speciality)}
       {renderUserDetail('Status', userData.status)}
       {renderFixedSlots(userData.fixedSlots)}
+      </div>
     </div>
   );
 };
