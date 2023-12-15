@@ -48,6 +48,24 @@ io.on('connection',socket=>{
         };
         saveMessage(newMessage);
     })
+    socket.on('callUser', (data) => {
+        const user = users.find((user) => user.userID === data.to);
+        if(user){
+          io.to(user.socketID).emit('callUser', {signal: data.signal, from: data.from});
+        }
+      });
+      socket.on('answerCall', (data) => {
+        const user = users.find((user) => user.userID === data.to);
+        if(user){
+          io.to(user.socketID).emit('callAccepted', data.signal);
+        }
+      });
+        socket.on('endCall', (data) => {
+            const user = users.find((user) => user.userID === data.to);
+            if(user){
+            io.to(user.socketID).emit('endCall', data.signal);
+            }
+        });
 
     //disconnection
     socket.on("disconnect",()=>{

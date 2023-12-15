@@ -5,10 +5,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperclip, faTimes, faDownload, faMicrophone ,faPaperPlane,faTrashCan} from '@fortawesome/free-solid-svg-icons';
 import FileViewer from 'react-file-viewer';
 import { ReactMic } from 'react-mic';
+import { faVideo } from '@fortawesome/free-solid-svg-icons';
 
 
 
-const ChatInterface = ({ name, messages, onSendMessage, setMessages,loading }) => {
+const ChatInterface = ({ name, messages, onSendMessage, setMessages,loading,callUser }) => {
   const [message, setMessage] = useState('');
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
@@ -206,7 +207,9 @@ const ChatInterface = ({ name, messages, onSendMessage, setMessages,loading }) =
 
   return (
     <div className="chat-interface">
-      <div className="chat-header">{name}</div>
+      <div className="chat-header">{name}
+      <FontAwesomeIcon icon={faVideo} onClick={callUser} />
+      </div>
       <div className={`message-list ${loading ? 'blurred-background' : ''}`}>
         {messages.map((message, index) => (
           <div key={index} className="message">

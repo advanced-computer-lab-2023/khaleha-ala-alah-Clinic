@@ -6,6 +6,8 @@ import axios from 'axios';
 import { CircularProgress } from '@mui/material';
 import { useWebSocket } from '../WebSocketContext';
 import { useLocation } from 'react-router-dom';
+import Peer from 'simple-peer';
+import VideoCall from '../Elements/VideoCall';
 
 
 function Messenger() {
@@ -18,6 +20,23 @@ function Messenger() {
   const[userID, setUserID]=useState();
   const socket=useWebSocket();
   const location = useLocation();
+  const myVideo=useRef(null);
+  const userVideo=useRef(null);
+  const [call,setCall]=useState(null);
+  const [callAccepted,setCallAccepted]=useState(false);
+  const [callEnded,setCallEnded]=useState(false);
+  const connectionRef=useRef();
+  const [open, setOpen] = useState(false);
+
+
+  useEffect(() => {
+    if (callAccepted) {
+      setTimeout(() => { 
+        setOpen(true);
+      }
+      , 1000);
+    }
+  }, [callAccepted]);
  
   
   useEffect(() => {
@@ -31,7 +50,73 @@ function Messenger() {
         createdAt: Date.now(),
       });
     });
+    socket.on("callUser", ({from,signal})=>{
+      setCall({isReceivedCall:true,from,signal})
+    });
+    socket.on("endCall",()=>{
+      setCallEnded(true);
+      window.location.reload();
+    });
   }, []);
+
+  const callUser=async()=>{
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: true,
+    });
+    myVideo.current=stream;
+    const peer=new Peer({initiator:true,trickle:false,stream});
+    peer.on("signal",(data)=>{
+      socket.emit("callUser",{to:selectedUser.userID,signal:data,from:userID});
+    });
+    peer.on("stream",(currentStream)=>{
+      userVideo.current=currentStream;
+    });
+    peer.on("close",()=>{
+      setCallEnded(true);
+      window.location.reload();
+      peer.destroy();
+    });
+    socket.on("callAccepted",(signal)=>{
+      setCallAccepted(true);
+      peer.signal(signal);
+    });
+    connectionRef.current=peer;
+  };
+
+  const answerCall=async()=>{
+    setCallAccepted(true);
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: true,
+    });
+    myVideo.current=stream;
+    const peer=new Peer({initiator:false,trickle:false,stream});
+    peer.on("signal",(data)=>{
+      socket.emit("answerCall",{signal:data,to:call.from});
+    })
+    peer.on("stream",(currentStream)=>{
+      userVideo.current = currentStream;
+    });
+    peer.on("close",()=>{
+      setCallEnded(true);
+      window.location.reload();
+      peer.destroy();
+    });
+    peer.signal(call.signal);
+    connectionRef.current=peer;
+  };
+
+  const leaveCall=()=>{
+    setCallEnded(true);
+    if(call){
+      socket.emit("endCall",{to:call.from});
+    }else{
+      socket.emit("endCall",{to:selectedUser.userID});
+    }
+    window.location.reload();
+
+  };
 
   useEffect(() => {
     if (location.state) {
@@ -141,6 +226,15 @@ function Messenger() {
               <CircularProgress />
         </div>
       )}
+      {call && (
+            <div>
+              <h1>{call.from} is calling</h1>
+              <button onClick={answerCall}>Answer</button>
+            </div>
+          )}
+          {open &&(
+            <VideoCall myVideoStream={myVideo} userVideoStream={userVideo} leaveCall={leaveCall} />
+          )}
       <UserList users={users} onSelectUser={handleSelectUser} />
       {selectedUser && (
         <ChatInterface
@@ -149,6 +243,7 @@ function Messenger() {
           onSendMessage={handleSendMessage}
           setMessages={setMessages}
           loading={loading}
+          callUser={callUser}
         />
       )}
     </div>
