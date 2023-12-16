@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./ManageHealthRecords.module.css";
 import { useNavigate } from "react-router-dom";
+import { DownloadOutlined, DeleteOutlined, EyeOutlined, UploadOutlined } from "@ant-design/icons";
+import { Buffer } from "buffer";
+import { Spin, message, Button, Upload, Table, Space } from "antd";
 
 const ManageHealthRecords = ({ onCancel, patient }) => {
   const patientID = patient.userID;
@@ -53,12 +56,43 @@ const ManageHealthRecords = ({ onCancel, patient }) => {
       setStatusMessage("Error uploading file");
     }
   };
+  const columns = [
+    {
+      title: 'File Name',
+      dataIndex: 'file name',
+      key: 'file name',
+      render: (text, record) => (
+        <a href={`http://localhost:4000/api/files/${record.file}/download`} download>
+          {record.file}
+        </a>
+      ),
+    },
+    {
+        title: 'Action',
+        dataIndex: 'action',
+        key: 'action',
+    },
+  ];
+  const PatientFilesTable = ({ patient }) => {
+    const dataSource = patient.files.map((file, index) => ({
+      key: index,
+      file,
+      action: 'Your Action Here', // Replace with actual action
+    }));
+  
+    return (
+      <div>
+        <Table dataSource={dataSource} columns={columns} />
+      </div>
+    );
+  };
 
 
   return (
     <div className={styles.confirmationBackdrop} onClick={handleBackdropClick}>
       <div className={styles.confirmationDialog}>
         <h1>Manage Health Record</h1>
+            <Table dataSource={patient.files} columns={columns} />
         <ul>
           {patient.files.map((file, index) => (
             <li key={index}>
