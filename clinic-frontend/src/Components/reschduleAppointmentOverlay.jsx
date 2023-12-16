@@ -4,11 +4,20 @@ import LoadingPage from "./LoadingPageForOverlay.jsx";
 
 const RescheduleAppointmentOverlay = ({
   onCancel,
-  currentAppointments,
+  availableAppointments,
   selectedApp,
 }) => {
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [date, setDate] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const appointmentsPerPage = 8; // Adjust the number per your requirement
+  const indexOfLastAppointment = currentPage * appointmentsPerPage;
+  const indexOfFirstAppointment = indexOfLastAppointment - appointmentsPerPage;
+
+  const currentAppointments = availableAppointments.slice(
+    indexOfFirstAppointment,
+    indexOfLastAppointment
+  );
 
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -47,6 +56,27 @@ const RescheduleAppointmentOverlay = ({
         });
     }
   };
+
+  const pageNumbers = [];
+  for (
+    let i = 1;
+    i <= Math.ceil(availableAppointments.length / appointmentsPerPage);
+    i++
+  ) {
+    pageNumbers.push(i);
+  }
+
+  const renderPageNumbers = pageNumbers.map((number) => {
+    return (
+      <button
+        key={number}
+        onClick={() => setCurrentPage(number)}
+        className={currentPage === number ? styles.activePage : null}
+      >
+        {number}
+      </button>
+    );
+  });
 
   return (
     <div className={styles.confirmationBackdrop} onClick={handleBackdropClick}>
@@ -89,7 +119,7 @@ const RescheduleAppointmentOverlay = ({
               );
             })
           )}
-          <div className={styles.pagination}></div>
+          <div className={styles.pagination}>{renderPageNumbers}</div>
 
           <button
             className={styles.buttonOfFollowUp}

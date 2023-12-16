@@ -15,7 +15,7 @@ import NavBar from "../Elements/NavBar.jsx";
 import { DatePicker, Select } from "antd";
 import { CalendarOutlined, FilterOutlined } from "@ant-design/icons"; // Import Ant Design icons
 import Header from "../Elements/Header.jsx";
-import axios from 'axios';
+import axios from "axios";
 
 import ReschduleAppointmentOverlay from "./reschduleAppointmentOverlay.jsx";
 import { set } from "mongoose";
@@ -107,9 +107,7 @@ function Appointments() {
   };
   // i want to get DoctorID but search with name
   const getDoctorID = (appointment) => {
-    const doctor = doctors.find(
-      (doctor) => doctor.name === appointment.doctor
-    );
+    const doctor = doctors.find((doctor) => doctor.name === appointment.doctor);
     return doctor ? doctor.userID : "N/A";
   };
 
@@ -276,12 +274,9 @@ function Appointments() {
       >
         Reschedule
       </Button>
-      <Button
-          type="primary"
-          onClick={() => handleFollowUpRequest(appointment)}
-        >
-          Request Follow-up
-        </Button>
+      <Button type="primary" onClick={() => handleFollowUpRequest(appointment)}>
+        Request Follow-up
+      </Button>
     </div>
   );
 
@@ -325,22 +320,26 @@ function Appointments() {
       console.log(nextWeekDate);
 
       // Make an Axios request to your backend API
-      const response = await axios.post('http://localhost:4000/patients/followUpRequest', {
-        doctorID: doctorID,
-        date: nextWeekDate.toISOString(), // Format the date as needed
-      }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json',
+      const response = await axios.post(
+        "http://localhost:4000/patients/followUpRequest",
+        {
+          doctorID: doctorID,
+          date: nextWeekDate.toISOString(), // Format the date as needed
         },
-    });
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       // Handle the response as needed
-      console.log('Follow-up request sent successfully:', response.data);
-      alert('Follow-up request sent!');
+      console.log("Follow-up request sent successfully:", response.data);
+      alert("Follow-up request sent!");
     } catch (error) {
       // Handle errors
-      console.error('Error sending follow-up request:', error);
+      console.error("Error sending follow-up request:", error);
     }
   };
   const appointmentsColumnsFamilyMember = [
@@ -555,11 +554,11 @@ function Appointments() {
       sorter: (a, b) => a.affiliation.localeCompare(b.affiliation), // Sort alphabetically
     },
     {
-    //   title: "Actions",
-    //   key: "actions",
-    //   render: (text, appointment) => (
-       
-    //   ),
+      //   title: "Actions",
+      //   key: "actions",
+      //   render: (text, appointment) => (
+
+      //   ),
       key: "actions",
       title: "Actions",
       render: (text, appointment) => actions(appointment), // Correctly pass the appointment
@@ -688,7 +687,7 @@ function Appointments() {
                   }}
                   date={date}
                   // setDate={setDate}
-                  currentAppointments={availableAppointments}
+                  availableAppointments={availableAppointments}
                   selectedApp={selectedApp}
                 />
               )}
