@@ -28,3 +28,22 @@
     background-color: #71b7e6;
     color: black;
 }
+
+
+.searchInput {
+    margin-top: 20px;
+    padding: 8px 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+  
+    &:focus {
+      border-color: #007bff; /* Change color as needed */
+    }
+  }
+  .searchInput:hover {
+    border-color: #007bff; /* Change color as needed */
+  }
+  
