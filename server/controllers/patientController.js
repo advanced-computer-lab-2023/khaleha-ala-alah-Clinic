@@ -172,7 +172,7 @@ exports.getFamilyMemberPatients = async function (req, res) {
       status: "success",
       data: {
         patientFamilyMembers: familyMemberPatients,
-        familyMembers: PatientFamilyMembers,
+        familyMembers: familyMembers,
       },
     });
   } catch (err) {
@@ -535,13 +535,45 @@ exports.subscribeForFamilyMember = async function (req, res) {
   try {
     const { packageName, doctosDiscount, medicalDiscount, familyDiscount } =
       req.body;
+    let patient = await Patient.findOne({ userID: req.user._id });
     let familyMember = await Patient.findOne({ userID: req.query.id });
-    if (!familyMember) {
-      return res.status(404).json({
-        status: "fail",
-        message: "Patient not found",
-      });
+    let added = false;
+    console.log(req.query.nationalID);
+    console.log("AKOIWORUIORUWEORYOEWRYWEYORWEYORE");
+    for (let i = 0; i < patient.familyMembers.length; i++) {
+      if (
+        req.query.nationalID &&
+        patient.familyMembers[i].nationalID &&
+        patient.familyMembers[i].nationalID === req.query.nationalID
+      ) {
+        let currFamilyMember = patient.familyMembers[i];
+        currFamilyMember.packageName = req.body.packageName;
+        currFamilyMember.doctorsDiscount = req.body.doctorsDiscount;
+        currFamilyMember.medicalDiscount = req.body.medicalDiscount;
+        currFamilyMember.familyDiscount = req.body.familyDiscount;
+        currFamilyMember.packageEndDate = new Date().setFullYear(
+          new Date().getFullYear() + 1
+        );
+        added = true;
+        break;
+      }
     }
+    if (!familyMember) {
+      if (!added) {
+        return res.status(404).json({
+          status: "fail",
+          message: "Patient not found",
+        });
+      } else {
+        let updatedPatient = await patient.save();
+        return res.status(201).json({
+          packageAdded: true,
+          updatedPatient,
+        });
+      }
+    }
+
+    console.log("ALOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
 
     if (familyMember.packageName != "none") {
       return res.status(201).json({
@@ -557,6 +589,9 @@ exports.subscribeForFamilyMember = async function (req, res) {
     familyMember.packageEndDate = new Date().setFullYear(
       new Date().getFullYear() + 1
     );
+
+    console.log(req.body);
+    console.log("ALO");
 
     const updatedPatient = await familyMember.save();
     res.status(201).json({ packageAdded: true, updatedPatient });
@@ -650,11 +685,32 @@ exports.cancelHealthPackage = async function (req, res) {
 exports.cancelFamilyMemberPackage = async function (req, res) {
   try {
     const patient = await Patient.findOne({ userID: req.query.id });
+    const me = await Patient.findOne({ userID: req.user._id });
+    let added = false;
+    for (let i = 0; i < me.familyMembers.length; i++) {
+      if (me.familyMembers[i].nationalID == req.query.nationalID) {
+        me.familyMembers[i].packageName = "none";
+        me.familyMembers[i].doctorsDiscount = 0;
+        me.familyMembers[i].medicalDiscount = 0;
+        me.familyMembers[i].familyDiscount = 0;
+        me.familyMembers[i].packageEndDate = new Date();
+        added = true;
+        break;
+      }
+    }
     if (!patient) {
-      return res.status(404).json({
-        status: "fail",
-        message: "Patient not found",
-      });
+      if (!added) {
+        return res.status(404).json({
+          status: "fail",
+          message: "Patient not found",
+        });
+      } else {
+        let updatedPatient = await me.save();
+        return res.status(201).json({
+          packageDeleted: true,
+          updatedPatient,
+        });
+      }
     }
     console.log(patient);
     console.log(patient.selfSubscription);
@@ -1297,21 +1353,22 @@ exports.SelectAppointmentFamilyMember = async function (req, res) {
       });
     }
 
-    const isFamilyMemberPatient = await Patient.findOne({
-      userID: FamilyMember,
-    });
-    if (!isFamilyMemberPatient) {
-      return res.status(400).json({
-        status: "fail",
-        message: "Selected family member is not a patient.",
-      });
-    }
+    // const isFamilyMemberPatient = await Patient.findOne({
+    //   userID: FamilyMember,
+    // });
+    // if (!isFamilyMemberPatient) {
+    //   return res.status(400).json({
+    //     status: "fail",
+    //     message: "Selected family member is not a patient.",
+    //   });
+    // }
 
     // Create a new appointment
     const appointment = new Appointments({
-      PatientID: FamilyMember,
+      PatientID: req.user._id,
       DoctorID: doctorID,
       timedAt: new Date(selectedDateTime),
+      familyMemberNationalID: FamilyMember,
     });
 
     // Save the appointment to the database

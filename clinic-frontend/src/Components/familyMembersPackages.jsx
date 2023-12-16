@@ -132,23 +132,25 @@ const FamilyMembersPackages = () => {
     */
   ];
 
-  const data = patientFamilyMembers.map((familyMember, i) => ({
-    patient: familyMember,
-    name: familyMember.name,
-    relation: familyMembers[i].relationToPatient,
-    age: familyMembers[i].age,
-    gender: familyMembers[i].gender,
-    status:
-      familyMember.packageEndDate === null
-        ? "Unubscribed"
-        : familyMember.packageName === "none" &&
-          familyMember.packageEndDate !== null
-        ? "Ended"
-        : "Subscribed",
-    packageEndDate: familyMember.packageEndDate
-      ? formatDate(familyMember.packageEndDate)
-      : "NO SUBSCRIBED PACKAGE",
-  }));
+  const data = familyMembers
+    .filter((familyMember, i) => !familyMember.userID)
+    .map((familyMember, i) => ({
+      patient: familyMember,
+      name: familyMember.name,
+      relation: familyMembers[i].relationToPatient,
+      age: familyMembers[i].age,
+      gender: familyMembers[i].gender,
+      status:
+        familyMember.packageEndDate === null
+          ? "Unubscribed"
+          : familyMember.packageName === "none" &&
+            familyMember.packageEndDate !== null
+          ? "Ended"
+          : "Subscribed",
+      packageEndDate: familyMember.packageEndDate
+        ? formatDate(familyMember.packageEndDate)
+        : "NO SUBSCRIBED PACKAGE",
+    }));
 
   return (
     <>

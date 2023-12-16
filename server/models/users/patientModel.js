@@ -51,6 +51,27 @@ const familyMemberSchema = new mongoose.Schema({
     enum: ["Male", "Female", "Other"],
     required: true,
   },
+
+  packageName: {
+    type: String,
+    default: "none",
+  },
+  doctorsDiscount: {
+    type: Number,
+    default: 0,
+  },
+  medicalDiscount: {
+    type: Number,
+    default: 0,
+  },
+  familyDiscount: {
+    type: Number,
+    default: 0,
+  },
+  packageEndDate: {
+    type: Date,
+    default: null,
+  },
   relationToPatient: {
     type: String,
     required: [true, "Please provide the relation of your emergency contact"],
