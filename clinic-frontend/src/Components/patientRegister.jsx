@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../AuthContext";
+import styles from './patientRegister.module.css';
 
 export const PatientRegister = () => {
   const { role } = useAuth();
@@ -101,24 +102,23 @@ export const PatientRegister = () => {
   };
 
   return (
-    <div className="register">
-      <div className="container">
-        <div className="title">Registration</div>
-        <div className="content">
-          <form onSubmit={handleSubmit}>
-            <div className="user-details">
-              <div className="input-box">
-                <span className="details">Full Name</span>
-                <input
-                  type="text"
-                  name="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Name"
-                />
-              </div>
-              <div className="input-box">
-                <span className="details">Username</span>
+    <div>
+          <form onSubmit={handleSubmit} className={styles.Bigcontainer}>
+          <div className={styles.addMedicinecontainer}> 
+            <div className={styles.inputContainer}>
+              <label className={styles.label}>Full Name</label>
+              <input
+                type="text"
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className={styles.input}
+                placeholder="Name"
+              />
+            </div>
+
+              <div className={styles.inputContainer}>
+              <label className={styles.label}>Username</label>
                 <input
                   type="text"
                   name="username"
@@ -126,109 +126,120 @@ export const PatientRegister = () => {
                   onChange={(e) => setUsername(e.target.value)}
                   id="username"
                   placeholder="Username"
+                  className={styles.input}
                 />
               </div>
-              <div className="input-box">
-                <span className="details">Email</span>
+
+              <div className={styles.inputContainer}>
+              <label className={styles.label}>Email</label>
                 <input
-                  type="email"
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="email@email.com"
+                   type="email"
+                   name="email"
+                   value={email}
+                   onChange={(e) => setEmail(e.target.value)}
+                   placeholder="example@gmail.com"
+                  className={styles.input}
                 />
               </div>
-              <div className="input-box">
-                <span className="details">Phone Number</span>
+
+              <div className={styles.inputContainer}>
+              <label className={styles.label}>Phone Number</label>
                 <input
                   type="text"
                   name="mobileNumber"
                   value={mobileNumber}
                   onChange={(e) => setMobileNumber(e.target.value)}
-                  placeholder="Mobile Number"
+                  placeholder="Phone Nr"
+                  className={styles.input}
                 />
               </div>
-              <div className="input-box">
-                <span className="details">Password</span>
+
+              <div className={styles.inputContainer}>
+              <label className={styles.label}>Password</label>
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   name="password"
-                  placeholder="*****"
+                  placeholder="Password"
+                  className={styles.input}
                 />
               </div>
-              <div className="input-box">
-                <span className="details">Date Of Birth</span>
+
+              <div className={styles.inputContainer}>
+              <label className={styles.label}>Date Of Birth</label>
                 <input
-                  type="date"
-                  name="dateOfBirth"
-                  value={dateOfBirth}
-                  onChange={(e) => setDateOfBirth(e.target.value)}
+                   type="date"
+                   name="dateOfBirth"
+                   value={dateOfBirth}
+                   onChange={(e) => setDateOfBirth(e.target.value)}
+                  className={styles.input}
                 />
               </div>
-              <div className="input-box">
-                <span htmlFor="gender" className="details">
-                  Gender
-                </span>
-                <select
-                  name="gender"
-                  id="gender"
-                  className="gender"
-                  value={gender}
-                  onChange={(e) => setGender(e.target.value)}
-                >
-                  <option value="">Select Gender</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </select>
-              </div>
-            </div>
-            <div className="title2">Emergency Contact</div>
-            <div className="user-details">
-              <div className="input-box">
-                <span htmlFor="fullnameEC" className="details">
-                  Full Name
-                </span>
+              <div className={styles.inputContainer}>
+                  <label htmlFor="gender" className={styles.label}>
+                    Gender
+                  </label>
+                  <select
+                    name="gender"
+                    id="gender"
+                    className={styles.input}  
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value)}
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+               </div>
+               </div>
+
+            <div><h2 className={styles.h2Style}>Emergancy Contact</h2></div>
+            <div className={styles.addMedicinecontainer}> 
+              <div className={styles.inputContainer}>
+              <label  htmlFor="fullnameEC" className={styles.label}>Full Name</label>
                 <input
                   type="text"
                   name="emergencyName"
                   value={emergencyName}
                   onChange={(e) => setEmergencyName(e.target.value)}
                   placeholder="Name"
+                  className={styles.input}
                 />
               </div>
-              <div className="input-box">
-                <span htmlFor="phoneNrEC" className="details">
-                  Phone Number
-                </span>
+
+              <div className={styles.inputContainer}>
+              <label  htmlFor="phoneNrEC" className={styles.label}>Phone Number</label>
                 <input
-                  type="text"
-                  name="emergencyNumber"
-                  value={emergencyNumber}
-                  onChange={(e) => setEmergencyNumber(e.target.value)}
-                  placeholder="Mobile Number"
+                    type="text"
+                    name="emergencyNumber"
+                    value={emergencyNumber}
+                    onChange={(e) => setEmergencyNumber(e.target.value)}
+                    placeholder="Mobile Number"
+                  className={styles.input}
                 />
               </div>
-              {/* upload files */}
-              <div className="input-box">
-                <span className="details">Upload File(s)</span>
+                
+             <div className={styles.inputContainer}>
+              <label className={styles.label}>Upload File</label>
                 <input
-                  type="file"
-                  name="file"
-                  accept=".pdf, .jpg, .png" // Specify allowed file types
-                  multiple // Allow multiple file selection
-                  onChange={handleFileSelect}
+                    type="file"
+                    name="file"
+                    accept=".pdf, .jpg, .png" // Specify allowed file types
+                    multiple // Allow multiple file selection
+                    onChange={handleFileSelect}
+                  className={styles.input}
                 />
+              </div>
             </div>
+            <div><Link to="/login">Already have an account</Link></div>
+            <div>
+              <button type="submit" className={styles.button}>
+                  Register
+              </button>
             </div>
-            <div className="button">
-              <input type="submit" value="Register" />
-            </div>
-          </form>
-        </div>
-        <Link to="/login">Already have an account</Link>
-      </div>
+            <div><Link to="/login">Already have an account</Link></div>
+        </form>
     </div>
   );
 };
