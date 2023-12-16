@@ -30,6 +30,9 @@ const DoctorList = () => {
   const [tableData, setTableData] = useState([]);
   const [showOverlay, setShowOverlay] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [uniqueSpecialities, setUniqueSpecialities] = useState([]);
+  const [doctorsAvailable, setDoctorsAvailable] = useState(true);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,11 +53,32 @@ const DoctorList = () => {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
+        if (data.data.Doctors.length === 0) {
+          setDoctorsAvailable(false);
+        }
         setDoctors(data.data.Doctors);
+        let specialities = new Set();
+        for (let i = 0; i < data.data.Doctors.length; i++) {
+          console.log(data.data.Doctors[i].speciality);
+          specialities.add(data.data.Doctors[i].speciality);
+        }
+        console.log(specialities);
+        setUniqueSpecialities(Array.from(specialities));
         setSearchResults(data.data.Doctors);
       } catch (error) {
         console.error("Error fetching doctors:", error);
       }
+    };
+
+    const fetchSpecialities = async () => {
+      // unique
+      let specialities = new Set();
+      for (let i = 0; i < doctors.length; i++) {
+        console.log(doctors[i].speciality);
+        specialities.add(doctors[i].speciality);
+      }
+      console.log(specialities);
+      setUniqueSpecialities(Array.from(specialities));
     };
 
     // Function to fetch the current patient's discounts
@@ -84,11 +108,15 @@ const DoctorList = () => {
     // Call the functions to fetch data when the component mounts
     fetchDoctors();
     fetchPatientDiscounts();
+    fetchSpecialities();
     //setIsLoading(false);
   }, []);
 
   useEffect(() => {
-    if (doctors.length > 0 && currentPatient != null) {
+    if (
+      (doctors.length > 0 && currentPatient != null) ||
+      doctorsAvailable === false
+    ) {
       fetchData();
     }
   }, [doctors, currentPatient]);
@@ -233,8 +261,11 @@ const DoctorList = () => {
               onChange={(e) => setSpecialityFilter(e.target.value)}
             >
               <option value="all">All Specialities</option>
-              <option value="dermatologist">Dermatologist</option>
-              <option value="cardiology">Cardiologist</option>
+              {uniqueSpecialities.map((speciality, index) => (
+                <option key={index} value={speciality}>
+                  {speciality}
+                </option>
+              ))}
             </select>
 
             {/* Day Filter */}
