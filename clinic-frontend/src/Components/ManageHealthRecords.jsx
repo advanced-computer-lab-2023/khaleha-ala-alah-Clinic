@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import styles from "./ManageHealthRecords.module.css";
 import { useNavigate } from "react-router-dom";
@@ -25,18 +25,11 @@ const ManageHealthRecords = ({ onCancel, patient }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("handleSubmit called");
-  
-    const formData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      formData.append("files", files[i]);
-    }
-    await handleUploadFile(formData);
-  };
-  
-
-  const handleUploadFile = async (formData) => {
     try {
+      const formData = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        formData.append("files", files[i]);
+      }
       const response = await axios.post(
         `http://localhost:4000/doctors/addHealthRecord/${patient.username}`,
         formData,
@@ -47,8 +40,6 @@ const ManageHealthRecords = ({ onCancel, patient }) => {
           },
         }
       );
-      // Handle response here
-      console.log(response.data);
       setFiles(response.data);
       setStatusMessage("File uploaded successfully");
     } catch (error) {
@@ -56,28 +47,36 @@ const ManageHealthRecords = ({ onCancel, patient }) => {
       setStatusMessage("Error uploading file");
     }
   };
+
   const columns = [
     {
       title: 'File Name',
-      dataIndex: 'file name',
-      key: 'file name',
+      dataIndex: 'fileName',
+      key: 'fileName',
       render: (text, record) => (
-        <a href={`http://localhost:4000/api/files/${record.file}/download`} download>
-          {record.file}
+        <a href={`http://localhost:4000/api/files/${record.fileId}/download`} download>
+          {record.fileName}
         </a>
       ),
     },
     {
-        title: 'Action',
-        dataIndex: 'action',
-        key: 'action',
+      title: 'Action',
+      dataIndex: 'action',
+      key: 'action',
+      render: (text, record) => (
+        <Space size="middle">
+          <a href={`http://localhost:4000/api/files/${record.fileId}/download`} download>
+            <DownloadOutlined />
+          </a>
+        </Space>
+      ),
     },
   ];
   const PatientFilesTable = ({ patient }) => {
     const dataSource = patient.files.map((file, index) => ({
       key: index,
-      file,
-      action: 'Your Action Here', // Replace with actual action
+      fileId: file,
+      fileName: file, // Replace with actual file name logic
     }));
   
     return (
@@ -87,44 +86,33 @@ const ManageHealthRecords = ({ onCancel, patient }) => {
     );
   };
 
-
   return (
     <div className={styles.confirmationBackdrop} onClick={handleBackdropClick}>
       <div className={styles.confirmationDialog}>
-        <h1>Manage Health Record</h1>
-            <Table dataSource={patient.files} columns={columns} />
-        <ul>
-          {patient.files.map((file, index) => (
-            <li key={index}>
-              <a href={`http://localhost:4000/api/files/${file}/download`} download>
-                {file}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <PatientFilesTable patient={patient} />
         <button className={styles.AddHealthRecordButton} onClick={() => setShowForm(true)}>
           Add Health Record
         </button>
 
         {showForm && (
           <div className={styles.formContainer}>
-          <h1 className={styles.formTitle}>Health Record Form</h1>
-          <form onSubmit={handleSubmit}>
-            <label className={styles.formLabel}>
-              Upload Files:
-              <input
-                type="file"
-                multiple
-                onChange={handleFileChange}
-                className={styles.formFileInput}
-              />
-            </label>
-            <button type="submit" className={styles.formButton}>
-              Upload Health Record
-            </button>
-          </form>
-          <p className={styles.statusMessage}>{statusMessage}</p>
-        </div>
+            <h1 className={styles.formTitle}>Health Record Form</h1>
+            <form onSubmit={handleSubmit}>
+              <label className={styles.formLabel}>
+                Upload Files:
+                <input
+                  type="file"
+                  multiple
+                  onChange={handleFileChange}
+                  className={styles.formFileInput}
+                />
+              </label>
+              <button type="submit" className={styles.formButton}>
+                Upload Health Record
+              </button>
+            </form>
+            <p className={styles.statusMessage}>{statusMessage}</p>
+          </div>
         )}
       </div>
     </div>

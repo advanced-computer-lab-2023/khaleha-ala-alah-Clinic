@@ -19,7 +19,6 @@ import Header from "../Elements/Header.jsx";
 import axios from "axios";
 
 import ReschduleAppointmentOverlay from "./reschduleAppointmentOverlay.jsx";
-import { set } from "mongoose";
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
