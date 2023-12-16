@@ -28,7 +28,12 @@ function Prescriptions() {
   }, []);
 
   useEffect(() => {
-    if (prescriptions.length > 0 && doctors.length > 0) {
+    if (
+      prescriptions &&
+      prescriptions.length > 0 &&
+      doctors &&
+      doctors.length > 0
+    ) {
       fetchData();
     }
   }, [prescriptions, doctors]);
@@ -104,7 +109,15 @@ function Prescriptions() {
           break;
         }
       }
-      const dateMatch = dateFilter === "" || prescription.date === dateFilter;
+
+      const formattedPrescriptionDate = new Date(prescription.date)
+        .toISOString()
+        .split("T")[0]; // Convert to 'YYYY-MM-DD'
+      console.log(prescription.date);
+      console.log(dateFilter);
+      console.log("ALO");
+      const dateMatch =
+        dateFilter === "" || formattedPrescriptionDate === dateFilter;
       const doctorMatch =
         doctorFilter === "" ||
         (doctor && doctor.name.toLowerCase().includes(doctorFilter));

@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { message, Spin, Card, Table,Tooltip } from "antd";
-import { FilePdfOutlined, EditOutlined,CheckCircleOutlined,DownloadOutlined } from "@ant-design/icons";
+import { message, Spin, Card, Table, Tooltip } from "antd";
+import {
+  FilePdfOutlined,
+  EditOutlined,
+  CheckCircleOutlined,
+  DownloadOutlined,
+} from "@ant-design/icons";
 import axios from "axios";
 import { Buffer } from "buffer";
 import UpdatePrescriptionForm from "../Elements/updatePrescriptionForm";
+import styles from "./editPackageAdmin.module.css";
 
-const DrViewPrescriptions = () => {
+const DrViewPrescriptions = ({ patient, onCancel }) => {
   const location = useLocation();
   const [prescriptions, setPrescriptions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,7 +25,7 @@ const DrViewPrescriptions = () => {
         const response = await axios.post(
           "http://localhost:4000/doctors/viewPrescriptions",
           {
-            patient: location.state.patient,
+            patient: patient,
           },
           {
             headers: {
@@ -38,7 +44,7 @@ const DrViewPrescriptions = () => {
     };
 
     fetchPrescriptions();
-  }, [location.state.patient.userID]);
+  }, [patient.userID]);
 
   const columns = [
     {
@@ -82,8 +88,19 @@ const DrViewPrescriptions = () => {
     setShowUpdateForm(true);
   };
 
+  const handleBackdropClick = (e) => {
+    console.log(onCancel);
+    if (e.target === e.currentTarget) {
+      onCancel();
+    }
+  };
+
   return (
-    <div style={{ padding: "20px" }}>
+    <div
+      style={{ padding: "20px" }}
+      className={styles.confirmationBackdrop}
+      onClick={handleBackdropClick}
+    >
       <h1 style={{ marginBottom: "20px" }}>DrViewPrescriptions</h1>
       {loading ? (
         <Spin />
@@ -95,40 +112,53 @@ const DrViewPrescriptions = () => {
               <div style={{ display: "flex", alignItems: "center" }}>
                 <div style={{ flex: 1 }}>
                   Date: {new Date(prescription.date).toLocaleDateString()}
-                  {(prescription.isFilled===true) && (
+                  {prescription.isFilled === true && (
                     <Tooltip title="Prescription Filled">
-                    <CheckCircleOutlined style={{ color: "green", marginLeft: "3px" }} />
-                  </Tooltip>
+                      <CheckCircleOutlined
+                        style={{ color: "green", marginLeft: "3px" }}
+                      />
+                    </Tooltip>
                   )}
                 </div>
                 {prescription.pdfFileID && (
-                  <div >
+                  <div>
                     <Tooltip title="Open PDF">
-                    <FilePdfOutlined
-                      style={{ cursor: "pointer", color: "#1890ff", marginRight: "10px" }}
-                      onClick={() => openPDF(prescription)}
-                    />
+                      <FilePdfOutlined
+                        style={{
+                          cursor: "pointer",
+                          color: "#1890ff",
+                          marginRight: "10px",
+                        }}
+                        onClick={() => openPDF(prescription)}
+                      />
                     </Tooltip>
                     <Tooltip title="Download PDF">
                       <DownloadOutlined
-                        style={{ cursor: "pointer", color: "#1890ff",marginRight: "10px" }}
+                        style={{
+                          cursor: "pointer",
+                          color: "#1890ff",
+                          marginRight: "10px",
+                        }}
                         onClick={() => downloadPDF(prescription)}
                       />
                     </Tooltip>
                     <Tooltip title="Edit Prescription">
-                        <EditOutlined
+                      <EditOutlined
                         style={{ cursor: "pointer", color: "#1890ff" }}
                         onClick={() => handleEditPrescription(prescription)}
-                        />
-                     </Tooltip>
+                      />
+                    </Tooltip>
                   </div>
                 )}
-                
               </div>
             }
             style={{ marginBottom: "20px" }}
           >
-            <Table dataSource={prescription.medications} columns={columns} pagination={false} />
+            <Table
+              dataSource={prescription.medications}
+              columns={columns}
+              pagination={false}
+            />
           </Card>
         ))
       )}
@@ -141,7 +171,7 @@ const DrViewPrescriptions = () => {
           onSuccess={() => {
             setShowUpdateForm(false);
             window.location.reload();
-            }}
+          }}
         />
       )}
     </div>

@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 import styles from "./viewallmypatients.module.css";
 import Table from "./table.jsx";
 import FollowUpOverlay from "./FollowUpScheduler.jsx";
-import HealthRecordOverlay from "./ManageHealthRecords.jsx"
+import HealthRecordOverlay from "./ManageHealthRecords.jsx";
 import LoadingPage from "./LoadingPage.jsx";
 import NavBar from "../Elements/NavBarDoctor.jsx";
 import Header from "../Elements/HeaderDoctor.jsx";
 import Separator from "./separator.jsx";
+import DrViewPrescriptions from "./drViewPrescriptions.jsx";
+import AddPrescription from "./addPrescription.jsx";
 
 const DoctorPatients = ({ doctorId }) => {
   const navigate = useNavigate();
@@ -19,9 +21,11 @@ const DoctorPatients = ({ doctorId }) => {
   const [prescriptions, setPrescriptions] = useState([]);
   const [showOverlay, setShowOverlay] = useState(false);
   const [showHealthRecords, setshowHealthRecords] = useState(false);
-  const [selectedPatient , setSelectedPatient] = useState(null);
-  const [currDoctor , setCurrentDoctor] = useState(null);
+  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [currDoctor, setCurrentDoctor] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [showPrescriptions, setShowPrescriptions] = useState(false);
+  const [addPrescriptions, setAddPrescriptions] = useState(false);
 
   useEffect(() => {
     const fetchDoctorData = async () => {
@@ -73,14 +77,12 @@ const DoctorPatients = ({ doctorId }) => {
           console.error("There was a problem with the fetch operation:", error);
         });
 
-        fetch("http://localhost:4000/doctors/getCurrDoc",
-        {
-          method: "GET",
-          headers: {
-            authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      )
+      fetch("http://localhost:4000/doctors/getCurrDoc", {
+        method: "GET",
+        headers: {
+          authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
         .then((response) => {
           if (!response.ok) {
             throw new Error("Network response was not ok");
@@ -101,8 +103,8 @@ const DoctorPatients = ({ doctorId }) => {
 
   console.log(patients);
   const addHealthRecord = (patient) => {
-    navigate('/HealthRecordForm');
-  }
+    navigate("/HealthRecordForm");
+  };
 
   const viewPatientDetails = (patient) => {
     let myPrescriptions = prescriptions.filter(
@@ -140,7 +142,6 @@ const DoctorPatients = ({ doctorId }) => {
     setFilteredPatients(upcomingPatients);
   };
 
-  
   const data = filteredPatients.map((patient, index) => ({
     patient: patient,
     username: patient.username,
@@ -160,7 +161,7 @@ const DoctorPatients = ({ doctorId }) => {
             </a>
           ))
         : "No Files",*/
-    action: ""
+    action: "",
   }));
 
   const columns = [
@@ -194,7 +195,7 @@ const DoctorPatients = ({ doctorId }) => {
             onClick={() => {
               setSelectedPatient(record.patient);
               setshowHealthRecords(true);
-            }}    
+            }}
           >
             Manage Health Record
           </button>
@@ -204,16 +205,34 @@ const DoctorPatients = ({ doctorId }) => {
             onClick={() => {
               setSelectedPatient(record.patient);
               setShowOverlay(true);
-              
-            }}          
-            >
+            }}
+          >
             Schedule a follow-up
+          </button>
+          <button
+            className={styles.doctorActionButton + " " + styles.rejectButton}
+            value={"reject"}
+            onClick={() => {
+              setSelectedPatient(record.patient);
+              setShowPrescriptions(true);
+            }}
+          >
+            View Prescriptions
+          </button>
+          <button
+            className={styles.doctorActionButton + " " + styles.rejectButton}
+            value={"reject"}
+            onClick={() => {
+              setSelectedPatient(record.patient);
+              setAddPrescriptions(true);
+            }}
+          >
+            Add Prescription
           </button>
         </div>
       ),
     },
   ];
-
 
   return (
     /*
@@ -263,36 +282,45 @@ const DoctorPatients = ({ doctorId }) => {
       {isLoading ? (
         <LoadingPage />
       ) : (
-      <div className={styles.container}>
-      <Header />
-      <NavBar/>
-        <h1>View all my Patients</h1>
-        <Separator/>
-        <div className={styles.viewallpatients}>
-          <div className={styles.tableWrapper}>
-            <Table data={data} columns={columns} />
+        <div className={styles.container}>
+          <Header />
+          <NavBar />
+          <h1>View all my Patients</h1>
+          <Separator />
+          <div className={styles.viewallpatients}>
+            <div className={styles.tableWrapper}>
+              <Table data={data} columns={columns} />
+            </div>
+
+            {showOverlay && (
+              <FollowUpOverlay
+                onCancel={() => setShowOverlay(false)}
+                cancelLabel="Close"
+                patient={selectedPatient}
+                doctor={currDoctor}
+              />
+            )}
+
+            {showHealthRecords && (
+              <HealthRecordOverlay
+                onCancel={() => setshowHealthRecords(false)}
+                cancelLabel="Close"
+                patient={selectedPatient}
+              />
+            )}
+            {showPrescriptions && (
+              <DrViewPrescriptions
+                patient={selectedPatient}
+                onCancel={() => {
+                  setShowPrescriptions(false);
+                }}
+              />
+            )}
+            {addPrescriptions && <AddPrescription patient={selectedPatient} />}
           </div>
-
-          {showOverlay && (
-            <FollowUpOverlay
-              onCancel={() => setShowOverlay(false)}
-              cancelLabel="Close"
-              patient = {selectedPatient}
-              doctor={currDoctor}
-            />
-          )}
-
-        {showHealthRecords && (
-            <HealthRecordOverlay
-              onCancel={() => setshowHealthRecords(false)}
-              cancelLabel="Close"
-              patient = {selectedPatient}
-            />
-          )}
         </div>
-      </div>
       )}
-      </>
+    </>
   );
 };
 

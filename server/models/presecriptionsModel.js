@@ -32,7 +32,7 @@ const prescriptionsSchema = new Schema(
     medications: [medicationSchema],
     pdfFileID: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'uploads.files', 
+      ref: "uploads.files",
     },
   },
   { timestamps: true }
