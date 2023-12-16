@@ -2,15 +2,21 @@ import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
 import { Link } from "react-router-dom";
+import { DownloadOutlined, DeleteOutlined, EyeOutlined, UploadOutlined } from "@ant-design/icons";
+import { Buffer } from "buffer";
+import { Spin, message, Button, Upload, Table, Space } from "antd";
 
 
 export const Notification = () => {
     const [notifications, setNotifications] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        
 
         const fetchInitialNotifications = async () => {
             try {
+                setTimeout(async () => {
                 const response = await fetch('http://localhost:4000/notifications', {
                     headers: {
                         "Authorization": "Bearer " + localStorage.getItem("token"),
@@ -33,9 +39,13 @@ export const Notification = () => {
                     // Set to an empty array or handle the error as needed
                     setNotifications([]);
                 }
-            } catch (error) {
+                setLoading(false);
+            }, 2000);
+            } 
+            catch (error) {
                 console.error("There is a network error to fetch notifications", error);
             }
+        
         };
         
 
@@ -59,15 +69,48 @@ export const Notification = () => {
             socket.disconnect();}
     }, []);
 
+    const columns = [
+        {
+          title: 'Title',
+          dataIndex: 'title',
+          key: 'title',
+        },
+        {
+            title: 'Text',
+            dataIndex: 'text',
+            key: 'text',
+        },
+        // {
+        //   title: 'Actions',
+        //   dataIndex: 'actions',
+        //   key: 'actions',
+        //   render: (_, record) => (
+        //     <Space size="middle">
+        //       <Button
+        //         type="link"
+        //         icon={<DeleteOutlined />}
+        //         onClick={() => handleDelete(record)}
+        //       />
+        //     </Space>
+        //   ),
+        // },
+      ];
+
     return (
-        <div>
-            <h2>Notifications</h2>
-            <ul>
-                {notifications.map((notification, index) => (
-                    <li key={index}>{notification.title + ':-' +notification.text }</li> // Adjust depending on your notification structure
-                ))}
-            </ul>
-        </div>
+        // <div>
+        //     <h2>Notifications</h2>
+        //     <ul>
+        //         {notifications.map((notification, index) => (
+        //             <li key={index}>{notification.title + ':-' +notification.text }</li> // Adjust depending on your notification structure
+        //         ))}
+        //     </ul>
+        // </div>
+         <div className="container">
+         <h1>Notifications</h1>
+         <Spin spinning={loading}>
+            <Table dataSource={notifications} columns={columns} />
+        </Spin>
+       </div>
     );
 };
 
