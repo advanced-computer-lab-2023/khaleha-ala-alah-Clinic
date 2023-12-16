@@ -74,7 +74,6 @@ const DoctorAppointments = () => {
 
   
   useEffect(() => {
-    // Call the fetch function when the component mounts
     fetchAppointments();
   }, []);
 
@@ -99,6 +98,7 @@ const DoctorAppointments = () => {
       const data2 = await response2.json();
       console.log(data2.patients);
       setPatients(data2.patients);
+      
 
       const response = await fetch(
         "http://localhost:4000/doctors/appointments",
@@ -120,6 +120,15 @@ const DoctorAppointments = () => {
     } catch (err) {
       setError(err.message);
     }
+  };
+  const handleAccept = (appointment) => {
+    // Handle logic for accepting the appointment
+    console.log(`Accept appointment with ID ${appointment.id}`);
+  };
+
+  const handleRevoke = (appointment) => {
+    // Handle logic for revoking the appointment
+    console.log(`Revoke appointment with ID ${appointment.id}`);
   };
 
   
@@ -170,29 +179,19 @@ const DoctorAppointments = () => {
       key: "mobilenum",
       className: styles.tableHeader, // Apply custom header style
     },
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: (text, appointments) => (
+        appointments.isPending ? (
+          <>
+             <Button onClick={() => handleAccept(appointments)}>Accept</Button>
+             <Button onClick={() => handleRevoke(appointments)}>Revoke</Button>
+          </>
+        ) : null
+      ),
+    },
   ];
-
-  // Function to filter appointments based on date and status
-  // const filterAppointments = () => {
-  //   const filtered = appointments.filter((appointment) => {
-  //     const appointmentDate = new Date(appointment.timedAt)
-  //       .toISOString()
-  //       .split("T")[0];
-  //     const status = appointment.timedAt > Date.now() ? "pending" : "confirmed";
-
-  //     const dateFilterPassed =
-  //       dateFilter === "" || appointmentDate === dateFilter;
-  //     const statusFilterPassed =
-  //       statusFilter === "all" ||
-  //       status === statusFilter ||
-  //       (statusFilter === "rescheduled" && appointment.isRescheduled) ||
-  //       (statusFilter === "cancelled" && appointment.isCancelled);
-
-  //     return dateFilterPassed && statusFilterPassed;
-  //   });
-
-  //   return filtered;
-  // };
 
   const filterAppointments = () => {
     const filteredAppointments = appointments.filter((appointment) => {
@@ -245,40 +244,6 @@ const DoctorAppointments = () => {
 
 
   return (
-    // <div>
-    //   <h2>Doctor Appointments</h2>
-    //   {error && <p>Error: {error}</p>}
-    //   <div>
-    //     <label>Date Filter:</label>
-    //     <input
-    //       type="date"
-    //       id="dateFilter"
-    //       value={dateFilter}
-    //       onChange={(e) => setDateFilter(e.target.value)}
-    //     />
-    //     <label>Status Filter:</label>
-    //     <select
-    //       id="statusFilter"
-    //       value={statusFilter}
-    //       onChange={(e) => setStatusFilter(e.target.value)}
-    //     >
-    //       <option value="all">All</option>
-    //       <option value="confirmed">Confirmed</option>
-    //       <option value="pending">Pending</option>
-    //       <option value="rescheduled">Rescheduled</option>
-    //       <option value="cancelled">Cancelled</option>
-    //     </select>
-    //   </div>
-    //   <ul>
-    //     {filterAppointments().map((appointment) => (
-    //       <li key={appointment.id}>
-    //         {new Date(appointment.timedAt).toLocaleString()}:{" "}
-    //         {appointment.status}
-    //       </li>
-    //     ))}
-    //   </ul>
-    // </div>
-
     
     <div className={styles.Container}>
       {loading ? (

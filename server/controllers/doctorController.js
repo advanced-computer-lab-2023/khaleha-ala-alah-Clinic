@@ -413,6 +413,7 @@ exports.getAppointments = async function (req, res) {
     res.status(200).json({
       appointments,
     });
+    console.log(appointments);
   } catch (err) {
     res.status(500).json({
       status: "error",
