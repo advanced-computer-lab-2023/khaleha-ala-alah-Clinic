@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 //import "./appointments.module.css";
 import styles from "./appointments.module.css";
 import RescheduleAppointmentOverlay from "./reschduleAppointmentOverlay.jsx";
+import ToggleSwitch from "./toggleSwitch.jsx";
 
 import Table from "./table.jsx";
 import { useNavigate } from "react-router-dom";
@@ -624,21 +625,24 @@ function Appointments() {
         <LoadingPage />
       ) : (
         <div>
-          <Header />
-          <NavBar
-            selectedSection={"appointments"}
-            selectedSubSection="viewAppointments"
-          />
-          <button
-            onClick={handleAppointmentSwitch}
-            style={{ marginTop: "350px" }}
-          >
-            Switch
-          </button>
-          <div style={{ marginTop: "93px" }}>
+          <div>
+            <Header />
+            <NavBar
+              selectedSection={"appointments"}
+              selectedSubSection="viewAppointments"
+            />
+          </div>
+
+          <div style={{ marginTop: "70px" }}>
             {/* <h1 style={{ marginTop: "34px", marginBottom: "10px" }}>
               View Your Appointments
             </h1> */}
+            <span>Family Member Appointments</span>
+            <ToggleSwitch
+              isOn={myAppointmentsShown}
+              handleToggle={handleAppointmentSwitch}
+            />
+            <span>My Appointments</span>
             <div className={styles.Filters}>
               <input
                 type="date"
