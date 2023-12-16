@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  familyMemberNationalID: {
+    type: String,
+    default: "none",
+  },
 });
 
 const Appointment = mongoose.model("Appointment", userSchema);

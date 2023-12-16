@@ -23,8 +23,8 @@ const Book = ({ onCancel, doctor }) => {
   const { Option } = Select;
 
   const handleChange = (event) => {
-    console.log(event.target.value);
-    setSelectedOption(event.target.value);
+    console.log(event);
+    setSelectedOption(event);
   };
   const selectedDoctor = doctor; // Access the doctor object from the location
 
@@ -99,8 +99,9 @@ const Book = ({ onCancel, doctor }) => {
         // Parse the JSON response
         const data = await response.json();
         // Update the state with the fetched packages
-        console.log(data);
-        setPatientFamilyMember(data.data.patientFamilyMembers);
+        setPatientFamilyMember(
+          data.data.familyMembers.filter((familyMember) => !familyMember.userID)
+        );
         setIsLoading(false);
       } catch (error) {
         console.error("Failed to fetch packages:", error);
@@ -155,7 +156,7 @@ const Book = ({ onCancel, doctor }) => {
                   <Option value="">Select...</Option>
                   <Option value="Myself">Myself</Option>
                   {patientFamilyMembers.map((option, index) => (
-                    <Option key={index} value={option.userID}>
+                    <Option key={index} value={option.nationalID}>
                       {option.name}
                     </Option>
                   ))}

@@ -1353,21 +1353,22 @@ exports.SelectAppointmentFamilyMember = async function (req, res) {
       });
     }
 
-    const isFamilyMemberPatient = await Patient.findOne({
-      userID: FamilyMember,
-    });
-    if (!isFamilyMemberPatient) {
-      return res.status(400).json({
-        status: "fail",
-        message: "Selected family member is not a patient.",
-      });
-    }
+    // const isFamilyMemberPatient = await Patient.findOne({
+    //   userID: FamilyMember,
+    // });
+    // if (!isFamilyMemberPatient) {
+    //   return res.status(400).json({
+    //     status: "fail",
+    //     message: "Selected family member is not a patient.",
+    //   });
+    // }
 
     // Create a new appointment
     const appointment = new Appointments({
-      PatientID: FamilyMember,
+      PatientID: req.user._id,
       DoctorID: doctorID,
       timedAt: new Date(selectedDateTime),
+      familyMemberNationalID: FamilyMember,
     });
 
     // Save the appointment to the database

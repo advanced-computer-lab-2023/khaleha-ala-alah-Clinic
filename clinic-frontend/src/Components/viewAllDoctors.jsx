@@ -152,12 +152,9 @@ const DoctorList = () => {
     setIsLoading(true);
     const doctorss = doctors.filter((doctor) => {
       return (
-        (doctor.name.toLowerCase().includes(nameSearchValue.toLowerCase()) ||
-          nameSearchValue === "") &&
-        (doctor.speciality
-          .toLowerCase()
-          .includes(specialitySearchValue.toLowerCase()) ||
-          specialitySearchValue === "")
+        doctor.name.toLowerCase().includes(nameSearchValue.toLowerCase()) ||
+        nameSearchValue === "" ||
+        doctor.speciality.toLowerCase().includes(nameSearchValue.toLowerCase())
       );
     });
     console.log("SEARCHED");
@@ -219,14 +216,6 @@ const DoctorList = () => {
               id="nameSearch"
               value={nameSearchValue}
               onChange={(e) => setNameSearchValue(e.target.value)}
-            />
-            <input
-              type="text"
-              className={`${styles.searchInput} ${styles.inputField}`}
-              placeholder="Search by Speciality"
-              id="specialitySearch"
-              value={specialitySearchValue}
-              onChange={(e) => setSpecialitySearchValue(e.target.value)}
             />
             <button className={styles.searchButton} onClick={searchDoctor}>
               {" "}

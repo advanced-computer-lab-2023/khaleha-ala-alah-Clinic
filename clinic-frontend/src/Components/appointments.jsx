@@ -61,15 +61,17 @@ function Appointments() {
     return doctor ? doctor.email : "N/A";
   };
 
-  const appointmentsforPatient = filteredAppointments.map(
-    (appointment, index) => ({
+  const appointmentsforPatient = filteredAppointments
+    .filter(
+      (appointmentt, index) => appointmentt.familyMemberNationalID === "none"
+    )
+    .map((appointment, index) => ({
       date: new Date(appointment.timedAt).toDateString(),
       doctor: getDoctorName(appointment),
       speciality: getDoctorSpeciality(appointment),
       email: getDoctorEmail(appointment),
       affiliation: getDoctorAffilation(appointment),
-    })
-  );
+    }));
 
   //const appointmentsColumns = [
   //  { key: "date", title: "Date" },
