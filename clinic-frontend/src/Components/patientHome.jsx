@@ -30,7 +30,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import Wallet from "./Wallet.js";
 
-import ServiceInfo from "./infoWindow.jsx"
+import ServiceInfo from "./infoWindow.jsx";
 import { message } from "antd";
 
 export const PatientHome = () => {
@@ -41,9 +41,9 @@ export const PatientHome = () => {
 
   const [currentPatient, setCurrentPatient] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [showOverlay , setShowOverlay ] = useState(false);
-  const [serviceItemName , setServiceItemName] = useState("");
-  const [serviceItemDescription , setServiceItemDescription] = useState("");
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [serviceItemName, setServiceItemName] = useState("");
+  const [serviceItemDescription, setServiceItemDescription] = useState("");
 
   useEffect(() => {
     const getCurrentPatient = async () => {
@@ -115,12 +115,11 @@ export const PatientHome = () => {
     // Add more slides as needed
   ];
 
-  
-  const handleClickDetails = (title , description) => {
-    console.log(title , description);
+  const handleClickDetails = (title, description) => {
+    console.log(title, description);
     setServiceItemName(title);
     setServiceItemDescription(description);
-    setShowOverlay (true);
+    setShowOverlay(true);
   };
 
   return (
@@ -136,7 +135,9 @@ export const PatientHome = () => {
           {
             <div className={styles.allContainers}>
               <div className={styles.carouselContainer}>
-                      <h1 style={{ padding: '20px' }}>Wallet amount: {patientwalletamount}</h1>
+                <h1 style={{ padding: "20px" }}>
+                  Wallet amount: {currentPatient.walletValue}
+                </h1>
                 <ImageCarousel slides={slides} />
               </div>
 
@@ -148,98 +149,107 @@ export const PatientHome = () => {
                   imgSrc={viewdoctor}
                   title="View and Search all Doctors"
                   description="Explore profiles and expertise of our medical staff"
-                  method= {handleClickDetails}
-                  message= ""
+                  method={handleClickDetails}
+                  message=""
                 />
                 ,
                 <ServiceItem
                   imgSrc={pres}
                   title="Prescriptions"
                   description="Show your medications prescribed online quickly and securely"
-                  method= {handleClickDetails}
-                  message= ""
+                  method={handleClickDetails}
+                  message=""
                 />
                 ,
                 <ServiceItem
                   imgSrc={makeappointment}
                   title="View Appointments"
                   description="View a scheduled consultation with your preferred doctor anytime"
-                  method= {handleClickDetails}
-                  message= ""
+                  method={handleClickDetails}
+                  message=""
                 />
                 ,
                 <ServiceItem
                   imgSrc={healthpackages}
                   title="Health Packages"
                   description="Choose from tailored health plans for comprehensive care solutions"
-                  method= {handleClickDetails}
-                  message= ""
+                  method={handleClickDetails}
+                  message=""
                 />
                 ,
                 <ServiceItem
                   imgSrc={viewfm}
                   title="Family Members"
                   description="Access and manage your family's health profiles all in one place"
-                  method= {handleClickDetails}
-                  message= ""
+                  method={handleClickDetails}
+                  message=""
                 />
                 ,
                 <ServiceItem
                   imgSrc={addfm}
                   title="Add Family Member"
                   description="Expand your care circle by adding family members"
-                  method= {handleClickDetails}
-                  message= ""
+                  method={handleClickDetails}
+                  message=""
                 />
                 ,
                 <ServiceItem
                   imgSrc={chatdoctor}
                   title="Chat with Doctor"
                   description="connect with our doctors through secure in-app messaging"
-                  method= {handleClickDetails}
-                  message= ""
+                  method={handleClickDetails}
+                  message=""
                 />
                 ,
               </div>
               <div className={styles.aboutuscontainer}>
-      <h2 className ={styles.aboutuscontainerh2}>About Us</h2>
-      <p style={{
-          padding: '2rem',
-          marginLeft: '3rem',
-          fontSize: '16pt',
-          lineHeight: 1.6,
-          fontFamily: 'Arial, sans-serif',
-          fontWeight: 'bold'
-        }}>
-          At Khaleha-ala-allah Clinic, we are dedicated to providing exceptional healthcare services tailored to meet the unique needs of our patients.
-          With a commitment to excellence and a passion for wellness, our team of experienced healthcare professionals strives to 
-          deliver compassionate and comprehensive medical care.
-        </p>
-        <p style={{
-          marginTop: '2rem',
-          fontSize: '14pt',
-          lineHeight: 1.6,
-          fontFamily: 'Arial, sans-serif'
-        }}>
-          From routine check-ups to specialized medical services, we offer a range of healthcare solutions designed to promote a lifetime of optimal health. We look forward to serving you and your family with the highest standards of medical excellence.
-        </p>
-    </div>
+                <h2 className={styles.aboutuscontainerh2}>About Us</h2>
+                <p
+                  style={{
+                    padding: "2rem",
+                    marginLeft: "3rem",
+                    fontSize: "16pt",
+                    lineHeight: 1.6,
+                    fontFamily: "Arial, sans-serif",
+                    fontWeight: "bold",
+                  }}
+                >
+                  At Khaleha-ala-allah Clinic, we are dedicated to providing
+                  exceptional healthcare services tailored to meet the unique
+                  needs of our patients. With a commitment to excellence and a
+                  passion for wellness, our team of experienced healthcare
+                  professionals strives to deliver compassionate and
+                  comprehensive medical care.
+                </p>
+                <p
+                  style={{
+                    marginTop: "2rem",
+                    fontSize: "14pt",
+                    lineHeight: 1.6,
+                    fontFamily: "Arial, sans-serif",
+                  }}
+                >
+                  From routine check-ups to specialized medical services, we
+                  offer a range of healthcare solutions designed to promote a
+                  lifetime of optimal health. We look forward to serving you and
+                  your family with the highest standards of medical excellence.
+                </p>
+              </div>
             </div>
-            
           }
         </div>
       )}
 
       {showOverlay && (
-            <ServiceInfo
-              title={serviceItemName}
-              message={serviceItemDescription}
-              onCancel={() => {
-                setShowOverlay(false);
-              }}
-              cancelLabel={"Close"}
-            />
-          )}
+        <ServiceInfo
+          title={serviceItemName}
+          message={serviceItemDescription}
+          onCancel={() => {
+            setShowOverlay(false);
+          }}
+          cancelLabel={"Close"}
+        />
+      )}
     </div>
   );
 };
