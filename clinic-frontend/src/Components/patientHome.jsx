@@ -44,6 +44,8 @@ export const PatientHome = () => {
   const [showOverlay , setShowOverlay ] = useState(false);
   const [serviceItemName , setServiceItemName] = useState("");
   const [serviceItemDescription , setServiceItemDescription] = useState("");
+   const [patientwalletamount , setPatientwalletamount] = useState();
+
 
   useEffect(() => {
     const getCurrentPatient = async () => {
@@ -58,6 +60,7 @@ export const PatientHome = () => {
           }
         );
         setCurrentPatient(response.data.data.user);
+        setPatientwalletamount(response.data.data.user.walletValue);
       } catch (error) {
         console.error("Error fetching current patient", error);
         // Handle error...
@@ -132,11 +135,16 @@ export const PatientHome = () => {
       ) : (
         <div>
           <Header />
+  
           <NavBar selectedSection="home" />
           {
+       
             <div className={styles.allContainers}>
+                     
               <div className={styles.carouselContainer}>
+               <h1 style={{ padding: '20px' }}>Wallet amount: {patientwalletamount}</h1>
                 <ImageCarousel slides={slides} />
+                
               </div>
 
               <div className={styles.titleofPAGE} style={{ marginTop: "0px" }}>
