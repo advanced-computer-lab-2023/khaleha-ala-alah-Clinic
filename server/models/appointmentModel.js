@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "none",
   },
+  isPending:{
+    type: String,
+    default: "True",
+  }
 });
 
 const Appointment = mongoose.model("Appointment", userSchema);

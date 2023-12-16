@@ -1676,6 +1676,16 @@ exports.followUpRequestAppointment = async (req, res) => {
       DoctorID: req.body.doctorID,
       timedAt: req.body.date,
     });
+    // i want to create new appointment 
+    const appointment2 = new Appointments({
+    PatientID: req.user._id, // Assuming you have patient information in req.user
+    DoctorID: req.body.doctorID,
+    timedAt: new Date(req.body.date),
+  });
+
+  // Save the appointment to the database
+  await appointment2.save();
+
     if (!appointment) {
       return res.status(404).json({
         status: "fail",

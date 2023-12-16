@@ -15,6 +15,8 @@ import NavBar from "../Elements/NavBar.jsx";
 import { DatePicker, Select } from "antd";
 import { CalendarOutlined, FilterOutlined } from "@ant-design/icons"; // Import Ant Design icons
 import Header from "../Elements/Header.jsx";
+import axios from 'axios';
+
 import ReschduleAppointmentOverlay from "./reschduleAppointmentOverlay.jsx";
 import { set } from "mongoose";
 const { RangePicker } = DatePicker;
@@ -103,6 +105,14 @@ function Appointments() {
     );
     return doctor ? doctor.name : "N/A";
   };
+  // i want to get DoctorID but search with name
+  const getDoctorID = (appointment) => {
+    const doctor = doctors.find(
+      (doctor) => doctor.name === appointment.doctor
+    );
+    return doctor ? doctor.userID : "N/A";
+  };
+
   const getDoctorAffilation = (appointment) => {
     const doctor = doctors.find(
       (doctor) => doctor.userID === appointment.DoctorID
@@ -297,6 +307,36 @@ function Appointments() {
     <th style={{ backgroundColor: "blue", color: "white" }}>{title}</th>
   );
 
+  const handleFollowUpRequest = async (appointment) => {
+    console.log("Requesting follow-up for appointment:", appointment);
+    try {
+      const nextWeekDate = new Date(appointment.date);
+      nextWeekDate.setDate(nextWeekDate.getDate() + 7);
+      console.log("haahahha");
+      console.log(appointment);
+      const doctorID = getDoctorID(appointment);
+      console.log(doctorID);
+      console.log(nextWeekDate);
+
+      // Make an Axios request to your backend API
+      const response = await axios.post('http://localhost:4000/patients/followUpRequest', {
+        doctorID: doctorID,
+        date: nextWeekDate.toISOString(), // Format the date as needed
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json',
+        },
+    });
+
+      // Handle the response as needed
+      console.log('Follow-up request sent successfully:', response.data);
+      alert('Follow-up request sent!');
+    } catch (error) {
+      // Handle errors
+      console.error('Error sending follow-up request:', error);
+    }
+  };
   const appointmentsColumnsFamilyMember = [
     {
       title: "Name",
@@ -509,6 +549,16 @@ function Appointments() {
       sorter: (a, b) => a.affiliation.localeCompare(b.affiliation), // Sort alphabetically
     },
     {
+      title: "Actions",
+      key: "actions",
+      render: (text, appointment) => (
+        <Button
+          type="primary"
+          onClick={() => handleFollowUpRequest(appointment)}
+        >
+          Request Follow-up
+        </Button>
+      ),
       key: "actions",
       title: "Actions",
       render: (text, appointment) => actions(appointment), // Correctly pass the appointment
