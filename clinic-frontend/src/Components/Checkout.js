@@ -52,6 +52,25 @@ const StripePaymentButton = ({ amount ,medicalDiscount,doctorsDiscount,familyDis
         const data = await response.json();
         console.log("Subscription successful:", data);
         // Handle any post-subscription logic here
+        try{
+          fetch('http://localhost:4000/notifications', {
+            headers: {
+              "Authorization": "Bearer " + localStorage.getItem("token"),
+              "Content-Type": "application/json",
+            },
+            method: 'POST',
+            body: JSON.stringify({
+              title: "Package Subscription",
+              text: "You have successfully subscribed to " + name22 + " package",
+            }),
+          });
+          // await axios.post('http://localhost:4000/notifications',notficationData).then(async (res)=>{
+          //   console.log('notfication is saved');
+          // })
+        }
+        catch(error){
+          console.error("notficaion is not saved yet", error);
+        }
         navigate('/myselfPackages');
 
       } catch (error) {
