@@ -3,7 +3,6 @@ import axios from "axios";
 import styles from "./FollowUpScheduler.module.css";
 import LoadingPage from "./LoadingPageForOverlay.jsx";
 import { Navigate, useNavigate } from "react-router-dom";
-
 const backendUrl = "http://localhost:4000";
 
 const FollowUpScheduler = ({ onCancel, patient, doctor }) => {
@@ -112,7 +111,6 @@ const FollowUpScheduler = ({ onCancel, patient, doctor }) => {
     }
   };
 
-
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
       onCancel();
@@ -179,10 +177,14 @@ const FollowUpScheduler = ({ onCancel, patient, doctor }) => {
           )}
           <div className={styles.pagination}>{renderPageNumbers}</div>
 
-          <button className={styles.buttonOfFollowUp} type="submit" onClick = {(e) => {
-            e.preventDefault();
-            scheduleFollowUp();
-          }}>
+          <button
+            className={styles.buttonOfFollowUp}
+            type="submit"
+            onClick={(e) => {
+              e.preventDefault();
+              scheduleFollowUp();
+            }}
+          >
             Schedule Follow-Up
           </button>
         </form>

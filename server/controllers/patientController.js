@@ -1630,10 +1630,9 @@ exports.cancelAppointment = async (req, res) => {
 
     //console.log("before wallet");
     if (refundAmount > 0) {
-      await Wallet.findOneAndUpdate(
-        { userID: patient.userID },
-        { $inc: { amount: refundAmount } }
-      );
+      let patientt = await Patient.findOne({ userID: req.user._id });
+      patientt.walletValue += refundAmount;
+      await patientt.save();
     }
     //console.log("Updated wallet");
 
