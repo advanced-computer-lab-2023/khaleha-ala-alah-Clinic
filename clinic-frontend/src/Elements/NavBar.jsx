@@ -237,6 +237,22 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
             View & Search Doctors{" "}
             {hasSubsections("viewAllDoctors") && <span>▼</span>}
           </div>
+          <div
+            className={
+              selectedSection === "chat"
+                ? styles.navbarLinkSelected
+                : styles.navbarLinkSection
+            }
+            onMouseEnter={() => handleSectionMouseEnter("chat")}
+            onMouseLeave={() => handleSectionMouseLeave()}
+            onClick={(e) =>
+              handleSectionClick(e, "chat", "/chat")
+            }
+          >
+           Chat{" "}
+            {hasSubsections("chat") && <span>▼</span>}
+          </div>
+
         </div>
       </div>
     </nav>
