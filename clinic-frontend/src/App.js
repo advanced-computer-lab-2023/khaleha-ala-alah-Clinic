@@ -49,7 +49,7 @@ import AdminDeleteDoctor from "./Components/adminDeleteDoctor.jsx";
 import AppointmentCheckout from "./Components/appointmentCheckout";
 import "./App.css";
 import Wallet from "./Components/Wallet.js";
-import PaymentMethod from "./Components/choose-to-pay.js";
+import PaymentMethod from "./Components/chooseToPay.jsx";
 import PaymentMethodSubscriptionFamily from "./Components/choose-to-pay-familyPackage";
 import HealthRecordForm from "./Components/HealthRecordForm";
 import { Notification } from "./Components/notification";
