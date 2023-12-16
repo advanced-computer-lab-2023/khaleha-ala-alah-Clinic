@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../AuthContext";
 import ContractComponent from "./Contract";
+import styles from "./doctorRegister.module.css";
 
 export const DoctorRegister = () => {
   const { role } = useAuth();
@@ -133,194 +134,216 @@ export const DoctorRegister = () => {
   };
 
   return (
-    <div className="register">
-      <div className="container">
-        <div className="title">Registration</div>
-        <div className="content">
-          <form onSubmit={handleSubmit}>
-            <div className="user-details">
-              <div className="input-box">
-                <span className="details">Full Name</span>
-                <input
-                  type="text"
-                  name="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Name"
-                />
+    <div >
+          <form onSubmit={handleSubmit}className={styles.Bigcontainer}>
+          <div className={styles.addMedicinecontainer}>
+
+              <div className={styles.inputContainer}>
+                  <label className={styles.label}>Full Name</label>
+                  <input
+                     type="text"
+                     name="name"
+                     value={name}
+                     onChange={(e) => setName(e.target.value)}
+                     placeholder="Name"
+                    className={styles.input}
+                  />
+                </div>
+
+                <div className={styles.inputContainer}>
+                  <label className={styles.label}>Username</label>
+                    <input
+                      type="text"
+                      name="username"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      id="username"
+                      placeholder="Username"
+                      className={styles.input}
+                    />
+                  </div>
+                  
+                <div className={styles.inputContainer}>
+                  <label className={styles.label}>Email</label>
+                    <input
+                       type="email"
+                       name="email"
+                       value={email}
+                       onChange={(e) => setEmail(e.target.value)}
+                       placeholder="example@gmail.com"
+                      className={styles.input}
+                    />
+                  </div>
+
+                  <div className={styles.inputContainer}>
+                  <label className={styles.label}>Password</label>
+                    <input
+                       type="password"
+                       value={password}
+                       onChange={(e) => setPassword(e.target.value)}
+                       name="password"
+                      placeholder="Password"
+                      className={styles.input}
+                    />
+                  </div>
+
+                  <div className={styles.inputContainer}>
+                  <label className={styles.label}>Date Of Birth</label>
+                    <input
+                       type="date"
+                       name="birthdate"
+                       value={birthdate}
+                       onChange={(e) => setBirthdate(e.target.value)}
+                      className={styles.input}
+                    />
+                  </div>          
+
+                  <div className={styles.inputContainer}>
+                  <label className={styles.label}>Hourly Rate</label>
+                    <input
+                      type="text"
+                      name="hourlyRate"
+                      value={hourlyRate}
+                      onChange={(e) => setHourlyRate(e.target.value)}
+                      placeholder="hourly rate"
+                      className={styles.input}
+                    />
+                  </div>
+                
+                  <div className={styles.inputContainer}>
+                  <label className={styles.label}>Affiliation</label>
+                    <input
+                         type="affiliation"
+                         value={affiliation}
+                         onChange={(e) => setAffiliation(e.target.value)}
+                         name="affiliation"
+                         placeholder="affiliation"
+                      className={styles.input}
+                    />
+                  </div>
+
+                  <div className={styles.inputContainer}>
+                  <label className={styles.label}>Speciality</label>
+                    <input
+                        type="speciality"
+                        value={speciality}
+                        onChange={(e) => setSpeciality(e.target.value)}
+                        name="speciality"
+                        placeholder="speciality"
+                      className={styles.input}
+                    />
+                  </div>
+
+                  <div className={styles.inputContainer}>
+                  <label className={styles.label}>Educational Background</label>
+                    <input
+                       type="educationalBackground"
+                       value={educationalBackground}
+                       onChange={(e) => setEducationalBackground(e.target.value)}
+                       name="educationalBackground"
+                        placeholder="Educational Background"
+                      className={styles.input}
+                    />
+                  </div>
+
+                  <div className={styles.inputContainer}>
+                  <label className={styles.label}>Upload File</label>
+                    <input
+                        type="file"
+                        name="file"
+                        accept=".pdf, .jpg, .png" // Specify allowed file types
+                        multiple // Allow multiple file selection
+                        onChange={handleFileSelect}
+                      className={styles.input}
+                    />
+                  </div>
               </div>
-              <div className="input-box">
-                <span className="details">Username</span>
-                <input
-                  type="text"
-                  name="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  id="username"
-                  placeholder="Username"
-                />
-              </div>
-              <div className="input-box">
-                <span className="details">Email</span>
-                <input
-                  type="email"
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="email@email.com"
-                />
-              </div>
-              <div className="input-box">
-                <span className="details">hourly rate</span>
-                <input
-                  type="text"
-                  name="hourlyRate"
-                  value={hourlyRate}
-                  onChange={(e) => setHourlyRate(e.target.value)}
-                  placeholder="hourly rate"
-                />
-              </div>
-              <div className="input-box">
-                <span className="details">Password</span>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  name="password"
-                  placeholder="*****"
-                />
-              </div>
-              <div className="input-box">
-                <span className="details">Date Of Birth</span>
-                <input
-                  type="date"
-                  name="birthdate"
-                  value={birthdate}
-                  onChange={(e) => setBirthdate(e.target.value)}
-                />
-              </div>
-              <div className="input-box">
-                <span className="details">affiliation</span>
-                <input
-                  type="affiliation"
-                  value={affiliation}
-                  onChange={(e) => setAffiliation(e.target.value)}
-                  name="affiliation"
-                  placeholder="affiliation"
-                />
-              </div>
-              <div className="input-box">
-                <span className="details">speciality</span>
-                <input
-                  type="speciality"
-                  value={speciality}
-                  onChange={(e) => setSpeciality(e.target.value)}
-                  name="speciality"
-                  placeholder="speciality"
-                />
-              </div>
-              <div className="input-box">
-                <span className="details">educationalBackground</span>
-                <input
-                  type="educationalBackground"
-                  value={educationalBackground}
-                  onChange={(e) => setEducationalBackground(e.target.value)}
-                  name="educationalBackground"
-                  placeholder="educationalBackground"
-                />
-              </div>
-              <div className="input-box">
-                <label htmlFor="day" className="details">
+
+              <div><h2 className={styles.h2Style}>Add Your Slots</h2></div>
+              <div className={styles.addMedicinecontainer}>
+              <div className={styles.inputContainer}>
+                  <label htmlFor="day" className={styles.label}>
                   Select Day
-                </label>
-                <select
-                  id="day"
-                  name="day"
-                  value={selectedDay}
-                  onChange={(e) => setSelectedDay(e.target.value)}
-                  className="select"
-                >
-                  <option value="">Select day</option>
-                  <option value="Saturday">Saturday</option>
-                  <option value="Sunday">Sunday</option>
-                  <option value="Monday">Monday</option>
-                  <option value="Tuesday">Tuesday</option>
-                  <option value="Wednesday">Wednesday</option>
-                  <option value="Thursday">Thursday</option>
-                  <option value="Friday">Friday</option>
-                  {/* Add more day options as needed */}
-                </select>
-              </div>
-              <div className="input-box">
-                <label htmlFor="hour" className="details">
+                  </label>
+                  <select
+                   id="day"
+                   name="day"
+                   value={selectedDay}
+                   onChange={(e) => setSelectedDay(e.target.value)}
+                  className={styles.input}  
+                  >
+                    <option value="">Select day</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                  </select>
+               </div>
+
+               <div className={styles.inputContainer}>
+                  <label htmlFor="hour" className={styles.label}>
                   Select hour
-                </label>
-                <select
+                  </label>
+                  <select
                   id="hour"
                   name="hour"
                   value={selectedhour}
                   onChange={(e) => setSelectedhour(e.target.value)}
-                  className="select"
-                >
-                  <option value="">Select hour</option>
-                  <option value="9:00 AM">09:00 AM</option>
-                  <option value="10:00 AM">10:00 AM</option>
-                  <option value="11:00 AM">11:00 AM</option>
-                  <option value="12:00 PM">12:00 PM</option>
-                  <option value="1:00 PM">01:00 PM</option>
-                  <option value="2:00 PM">02:00 PM</option>
-                  <option value="3:00 PM">03:00 PM</option>
-                  <option value="4:00 PM">04:00 PM</option>
-
-                  {/* Add more hour options as needed */}
-                </select>
+                  className={styles.input}  
+                  >
+                   <option value="">Select hour</option>
+                    <option value="9:00 AM">09:00 AM</option>
+                    <option value="10:00 AM">10:00 AM</option>
+                    <option value="11:00 AM">11:00 AM</option>
+                    <option value="12:00 PM">12:00 PM</option>
+                    <option value="1:00 PM">01:00 PM</option>
+                    <option value="2:00 PM">02:00 PM</option>
+                    <option value="3:00 PM">03:00 PM</option>
+                    <option value="4:00 PM">04:00 PM</option>
+                  </select>
+               </div>
               </div>
-              <div className="slot-buttons">
+
+              
+
+              <div>
                 <button
                   type="button"
-                  className="add-slot-button"
+                  className={styles.addSlotBut}
                   onClick={handleAddSlot}
                 >
                   Add Slot
                 </button>
               </div>
-              <div className="fixed-slots">
+
+              <div>
                 {fixedSlots.map((slot, index) => (
-                  <div key={index} className="fixed-slot">
-                    <span>
-                      {slot.day} - {slot.hour}
-                    </span>
+                  <div key={index} >
                     <button
                       type="button"
-                      className="remove-slot-button"
+                      className={styles.removeBut}
                       onClick={() => handleRemoveSlot(index)}
                     >
                       Remove
                     </button>
+                    <label className={styles.timing}>
+                      {slot.day} - {slot.hour}
+                    
+                      </label>
+                    
                   </div>
                 ))}
               </div>
-              {/* upload files */}
-              <div className="input-box">
-                <span className="details">Upload File(s)</span>
-                <input
-                  type="file"
-                  name="file"
-                  accept=".pdf, .jpg, .png" // Specify allowed file types
-                  multiple // Allow multiple file selection
-                  onChange={handleFileSelect}
-                />
-              </div>
-            </div>
-            <div className="button">
-              <input type="submit" value="Register" />
-            </div>
-          </form>
-          <div className="input-box">
-              <label>
-              <button onClick={() => setShowContract(!showContract)}>
+
+          <div>
+          <label className={styles.label}>
+              <button onClick={() => setShowContract(!showContract)} children className={styles.buttonContract}>
                 View Contract
               </button>
+              
                 <input
                   type="checkbox"
                   checked={agreedToContract}
@@ -330,7 +353,6 @@ export const DoctorRegister = () => {
                 />
                 I agree to the terms of the contract
               </label>
-              
             </div>
 
             { showContract && (
@@ -361,18 +383,22 @@ export const DoctorRegister = () => {
                     10.2 By accepting this Contract, Employee acknowledges understanding and agrees to abide by the terms and conditions outlined herein.
                   `}
                 </pre>
-                <div className="button-container">
-                  <button className="close-button" onClick={closeContract}>
+                <div>
+                  <button className={styles.removeBut} onClick={closeContract}>
                     close
                   </button>
-                  
                 </div>
               </div>
             )}
+
           
-        </div>
-        <Link to="/login">Already have an account</Link>
+        <div><Link to="/login">Already have an account</Link></div>
+        <div>
+              <button type="submit" className={styles.button}>
+                  Register
+              </button>
+            </div>
+        </form>
       </div>
-    </div>
   );
 };

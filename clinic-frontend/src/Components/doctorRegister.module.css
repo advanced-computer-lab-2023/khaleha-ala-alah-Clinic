@@ -1,0 +1,177 @@
+  
+  .Bigcontainer{
+    width: 1200px;
+    padding: 20px;
+    margin-top: 40rem;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.267);
+    display:block;
+    border-radius: 15px;
+    margin-bottom: 1rem;
+    max-height:  5000px;
+  }
+  
+  .addMedicinecontainer {
+      display: flex;
+      flex-wrap: wrap; /* Allow wrapping to the next line if needed */
+      justify-content: space-between;
+      padding-right:1rem;
+    }
+    
+    .label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 12pt;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      margin-left: 2rem;
+    }
+    .textSolt{
+    font-size: 12pt;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      margin-left: 2rem;
+      margin-right: 2rem;
+    }
+    .labelToLeft {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 12pt;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      margin-right: 2rem;
+    }
+    .inputContainer {
+      margin-bottom: 10px;
+      position: relative;
+    }
+    
+    .input {
+      margin-left: 2rem;
+      width: 520px;
+      padding: 12px;
+      box-sizing: border-box;
+      border: 1px solid rgb(231, 231, 231);
+      border-radius: 35px;
+      transition: border-color 0.3s;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 13pt;
+      background-color: rgb(231, 231, 231);
+      margin-bottom: 1rem;
+    }
+  
+    .inputToLeft {
+      margin-right: 2rem;
+      width: 520px;
+      padding: 12px;
+      box-sizing: border-box;
+      border: 1px solid rgb(231, 231, 231);
+      border-radius: 35px;
+      transition: border-color 0.3s;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 13pt;
+      background-color: rgb(231, 231, 231);
+      margin-bottom: 1rem;
+    }
+    .inputToLeft:hover {
+      border-color: #007bff;
+    }
+    .input:hover {
+      border-color: #007bff;
+    }
+    
+    
+    .button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      width: 55%;
+      font-size: 19px;
+      margin-top: 2rem;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      font-family: Arial, sans-serif;
+      margin-bottom: 2rem;
+      margin-left: 17rem;
+    }
+    
+    .button:hover {
+      background-color: #0056b3;
+    }
+  
+    .statusMessage {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+      color: red;
+    }
+  
+    .h2Style{
+      font-size: 15pt;
+      font-family: Arial, sans-serif;
+      margin-left:2rem;
+    }
+
+    .addSlotBut{
+      background-color:rgb(17, 165, 54);
+      color: white;
+      border: none;
+      padding: 12px;
+      cursor: pointer;
+      width: 15%;
+      font-size: 17px;
+      margin-top: 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      font-family: Arial, sans-serif;
+      margin-left:4rem;
+      margin-bottom: 1rem;
+    }
+
+    .addSlotBut:hover {
+        background-color: rgb(26, 90, 42);
+      }
+  
+  .removeBut{
+    background-color:rgb(158, 18, 18);
+      color: white;
+      border: none;
+      padding: 12px;
+      cursor: pointer;
+      width: 15%;
+      font-size: 17px;
+      margin-top: 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      font-family: Arial, sans-serif;
+      margin-left:4rem;
+  }
+
+  .removeBut:hover {
+    background-color: rgb(114, 15, 15);
+  }
+  
+  .buttonContract {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 15%;
+    font-size: 17px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    font-family: Arial, sans-serif;
+    margin-left:2rem;
+    margin-top:4rem;
+    margin-bottom: 2rem;
+  }
+  
+  .buttonContract:hover {
+    background-color: #0056b3;
+  }
+
+  .timing{
+    font-size: 15pt;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-left: 1rem;
+  }
+  

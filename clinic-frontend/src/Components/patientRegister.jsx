@@ -96,7 +96,7 @@ export const PatientRegister = () => {
         window.location.replace("/verifyUser");
       })
       .catch((err) => {
-        console.log(err);
+        console.error("Registration Failed:", err.response || err.message || err);
         message.error("Registration Failed");
       });
   };
@@ -232,13 +232,14 @@ export const PatientRegister = () => {
                 />
               </div>
             </div>
+
+            
             <div><Link to="/login">Already have an account</Link></div>
             <div>
               <button type="submit" className={styles.button}>
                   Register
               </button>
             </div>
-            <div><Link to="/login">Already have an account</Link></div>
         </form>
     </div>
   );

@@ -225,6 +225,22 @@ useEffect(() => {
             if (data.status == "success") {
               // Handle success (e.g., show a success message or redirect)
               console.log("Appointment booked successfully");
+              try{
+                fetch('http://localhost:4000/notifications', {
+                  headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("token"),
+                    "Content-Type": "application/json",
+                  },
+                  method: 'POST',
+                  body: JSON.stringify({
+                    title: "Appointment is booked successfuly",
+                    text: "You have an appointment with " + doctor.name + " at " + date.toISOString(),
+                  }),
+                });
+              }
+              catch(error){
+                console.error("notficaion is not saved yet", error);
+              }
             } else {
               console.error("Failed to book appointment");
             }
