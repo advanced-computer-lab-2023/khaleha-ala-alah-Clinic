@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 //import "./appointments.module.css";
 import styles from "./appointments.module.css";
+import RescheduleAppointmentOverlay from "./reschduleAppointmentOverlay.jsx";
 
 import Table from "./table.jsx";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +17,8 @@ import { CalendarOutlined, FilterOutlined } from "@ant-design/icons"; // Import 
 import Header from "../Elements/Header.jsx";
 import axios from 'axios';
 
+import ReschduleAppointmentOverlay from "./reschduleAppointmentOverlay.jsx";
+import { set } from "mongoose";
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
@@ -30,8 +33,71 @@ function Appointments() {
   const [loading, setLoading] = useState(true); // Add loading state
   const [patientFamilyMember, setPatientFamilyMember] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-
+  const [myAppointmentsShown, setMyAppointmentsShown] = useState(true);
+  const [currentPatient, setCurrentPatient] = useState([]); // Add a currentPatient state
+  const [date, setDate] = useState(null);
+  const [showOverlay, setShowOverlay] = useState(false);
   const navigate = useNavigate();
+  const [availableAppointments, setAvailableAppointments] = useState([]); // Add a loading state for appointments
+  const [selectedApp, setSelectedApp] = useState(null);
+
+  const fetchDoctorAppointments = async (doctorID) => {
+    fetch(`${backendUrl}/patients/doctorAppointments/${doctorID}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("after fetching available appointments");
+        if (data.status === "success") {
+          console.log(data.data.availableAppointments);
+          setAvailableAppointments(data.data.availableAppointments);
+          setShowOverlay(true);
+        } else {
+          console.error("Failed to fetch available appointments");
+        }
+        setLoading(false); // Set loading to false when data is retrieved
+      });
+  };
+
+  // rescheduler appointment
+  const handleReschedule = (appointment) => {
+    fetchDoctorAppointments(appointment.DoctorID);
+    console.log(appointment._id + "<<< appointment id");
+    console.log(date);
+  };
+
+  useEffect(() => {
+    if (selectedApp !== null) {
+      console.log(selectedApp);
+      console.log(date);
+      fetch(
+        `${backendUrl}/patients/rescheduleAppointment/${selectedApp._id}/${date}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json", // Specify the content type if needed
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          if (data.status === "success") {
+            console.log("Appointment Rescheduled");
+            fetchAppointments();
+          } else {
+            console.log("Failed to Reschedule Appointment");
+          }
+        })
+        .catch((error) => {
+          console.error("Error Rescheduling Appointment:", error);
+        });
+    }
+  }, [date]);
 
   const getDoctorName = (appointment) => {
     const doctor = doctors.find(
@@ -70,17 +136,53 @@ function Appointments() {
     return doctor ? doctor.email : "N/A";
   };
 
+  const getFamilyMemberName = (appointment) => {
+    for (let i = 0; i < currentPatient.familyMembers.length; i++) {
+      if (
+        currentPatient.familyMembers[i].nationalID ===
+        appointment.familyMemberNationalID
+      ) {
+        return currentPatient.familyMembers[i].name;
+      }
+    }
+  };
+  const getRelationToPatient = (appointment) => {
+    for (let i = 0; i < currentPatient.familyMembers.length; i++) {
+      if (
+        currentPatient.familyMembers[i].nationalID ===
+        appointment.familyMemberNationalID
+      ) {
+        return currentPatient.familyMembers[i].relationToPatient;
+      }
+    }
+  };
   const appointmentsforPatient = filteredAppointments
-    .filter(
-      (appointmentt, index) => appointmentt.familyMemberNationalID === "none"
+    .filter((appointmentt, index) =>
+      myAppointmentsShown
+        ? appointmentt.familyMemberNationalID === "none"
+        : appointmentt.familyMemberNationalID !== "none"
     )
-    .map((appointment, index) => ({
-      date: new Date(appointment.timedAt).toDateString(),
-      doctor: getDoctorName(appointment),
-      speciality: getDoctorSpeciality(appointment),
-      email: getDoctorEmail(appointment),
-      affiliation: getDoctorAffilation(appointment),
-    }));
+    .map((appointment, index) =>
+      myAppointmentsShown
+        ? {
+            appointment: appointment,
+            date: new Date(appointment.timedAt).toDateString(),
+            doctor: getDoctorName(appointment),
+            speciality: getDoctorSpeciality(appointment),
+            email: getDoctorEmail(appointment),
+            affiliation: getDoctorAffilation(appointment),
+          }
+        : {
+            appointment: appointment,
+            name: getFamilyMemberName(appointment),
+            relationToPatient: getRelationToPatient(appointment),
+            date: new Date(appointment.timedAt).toDateString(),
+            doctor: getDoctorName(appointment),
+            speciality: getDoctorSpeciality(appointment),
+            email: getDoctorEmail(appointment),
+            affiliation: getDoctorAffilation(appointment),
+          }
+    );
 
   //const appointmentsColumns = [
   //  { key: "date", title: "Date" },
@@ -92,7 +194,27 @@ function Appointments() {
   useEffect(() => {
     // Fetch data when the component mounts
     fetchAppointments();
+    fetchCurrentPatient();
   }, []);
+
+  const fetchCurrentPatient = () => {
+    // Fetch patient data
+    fetch(`${backendUrl}/patients/currentpatient`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json", // Specify the content type if needed
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Handle the retrieved data here
+        console.log(data);
+        setCurrentPatient(data.data.user);
+        // Set loading to false once the patient data is fetched
+        setLoading(false);
+      })
+      .catch((error) => console.error("Error fetching patient:", error));
+  };
 
   const fetchAppointments = () => {
     // Fetch appointments data
@@ -134,6 +256,53 @@ function Appointments() {
       });
   };
 
+  const actions = (appointment) => (
+    <div>
+      <Button
+        type="primary"
+        disabled={appointment.isCancelled}
+        onClick={() => {
+          handleCancel(appointment.appointment);
+        }}
+      >
+        cancel
+      </Button>
+      <Button
+        type="primary"
+        onClick={() => {
+          setSelectedApp(appointment.appointment);
+          handleReschedule(appointment.appointment);
+        }}
+      >
+        Reschedule
+      </Button>
+    </div>
+  );
+
+  const handleCancel = (appointment) => {
+    console.log(appointment._id + "<<< appointment id");
+    fetch(`${backendUrl}/patients/cancelAppointment/${appointment._id}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json", // Specify the content type if needed
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.status === "success") {
+          console.log("Appointment Cancelled");
+          fetchAppointments();
+        } else {
+          console.log("Failed to Cancel Appointment");
+        }
+      })
+      .catch((error) => {
+        console.error("Error Cancelling Appointment:", error);
+      });
+  };
+
   const CustomHeader = ({ title }) => (
     <th style={{ backgroundColor: "blue", color: "white" }}>{title}</th>
   );
@@ -168,6 +337,118 @@ function Appointments() {
       console.error('Error sending follow-up request:', error);
     }
   };
+  const appointmentsColumnsFamilyMember = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Relation To Patient",
+      dataIndex: "relationToPatient",
+      key: "relationToPatient",
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      //className: styles.tableHeader, // Apply custom header style
+      sorter: (a, b) => new Date(a.date) - new Date(b.date),
+
+      // Add sorter or other properties as needed
+    },
+    {
+      title: "Doctor Name",
+      dataIndex: "doctor",
+      key: "doctor",
+      className: styles.tableHeader, // Apply custom header style
+      sorter: (a, b) => a.doctor.localeCompare(b.doctor), // Sort alphabetically
+
+      // Add sorter or other properties as needed
+    },
+    {
+      title: "Doctor Speciality",
+      dataIndex: "speciality",
+      key: "speciality",
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => (
+        <div style={{ padding: 8 }}>
+          <Menu
+            mode="vertical"
+            selectedKeys={selectedKeys}
+            multiple={true}
+            onClick={(e) => {
+              setSelectedKeys([e.key]);
+              confirm();
+            }}
+          >
+            <Menu.Item key="cardio">Cardio</Menu.Item>
+            <Menu.Item key="dermatology">Dermatology</Menu.Item>
+            <Menu.Item key="orthopedics">Orthopedics</Menu.Item>
+            {/* Add more specialties as needed */}
+          </Menu>
+          <Button
+            type="primary"
+            onClick={() => confirm()}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => {
+              clearFilters();
+              setFilteredData([]); // Reset filtered data
+            }}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Reset
+          </Button>
+        </div>
+      ),
+      filterIcon: (filtered) => (
+        <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+      ),
+      onFilter: (value, record) =>
+        record.speciality.toLowerCase().includes(value.toLowerCase()),
+      render: (text) =>
+        filteredData.length > 0 ? (
+          <Highlighter
+            highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+            searchWords={[filteredData]}
+            autoEscape
+            textToHighlight={text}
+          />
+        ) : (
+          text
+        ),
+    },
+    {
+      title: "Doctor Email",
+      dataIndex: "email",
+      key: "email",
+      className: styles.tableHeader, // Apply custom header style
+      sorter: (a, b) => a.email.localeCompare(b.email), // Sort alphabetically
+    },
+    {
+      title: "Doctor Affiliation",
+      dataIndex: "affiliation",
+      key: "affiliation",
+      className: styles.tableHeader, // Apply custom header style
+      sorter: (a, b) => a.affiliation.localeCompare(b.affiliation), // Sort alphabetically
+    },
+    {
+      key: "actions",
+      title: "Actions",
+      render: (Text, appointment) => actions(appointment),
+    },
+  ];
 
   const appointmentsColumns = [
     // Define columns similar to PatientsTable
@@ -278,6 +559,9 @@ function Appointments() {
           Request Follow-up
         </Button>
       ),
+      key: "actions",
+      title: "Actions",
+      render: (text, appointment) => actions(appointment), // Correctly pass the appointment
     },
   ];
 
@@ -330,6 +614,10 @@ function Appointments() {
     // Update statusFilter when the user selects a status
     setStatusFilter(value);
   };
+
+  const handleAppointmentSwitch = () => {
+    setMyAppointmentsShown(!myAppointmentsShown);
+  };
   return (
     <div className={styles.Container}>
       {loading ? (
@@ -341,6 +629,12 @@ function Appointments() {
             selectedSection={"appointments"}
             selectedSubSection="viewAppointments"
           />
+          <button
+            onClick={handleAppointmentSwitch}
+            style={{ marginTop: "350px" }}
+          >
+            Switch
+          </button>
           <div style={{ marginTop: "93px" }}>
             {/* <h1 style={{ marginTop: "34px", marginBottom: "10px" }}>
               View Your Appointments
@@ -378,9 +672,25 @@ function Appointments() {
               <div style={{ width: 92 + "vw", marginTop: "10px" }}>
                 <Table
                   data={appointmentsforPatient}
-                  columns={appointmentsColumns}
+                  columns={
+                    myAppointmentsShown
+                      ? appointmentsColumns
+                      : appointmentsColumnsFamilyMember
+                  }
                 />
               </div>
+              {showOverlay && (
+                <RescheduleAppointmentOverlay
+                  onCancel={() => {
+                    setShowOverlay(false);
+                    fetchAppointments();
+                  }}
+                  date={date}
+                  // setDate={setDate}
+                  currentAppointments={availableAppointments}
+                  selectedApp={selectedApp}
+                />
+              )}
             </div>
           </div>
         </div>

@@ -1,0 +1,230 @@
+.headerofFollowUp {
+    text-align: center;
+    color: #333;
+    margin-top: -20px;
+  }
+
+  .formOfFollowUp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
+    width: 500px;
+  }
+  
+  .labelFollowUp {
+    display: flex;
+    justify-items: center;
+    color: #555;
+    width: 100%;
+    font-size: 13pt; 
+    margin-left: 550px;
+  }
+  
+  
+  .paragraphofFollowUp {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+    text-align: center;
+  }
+  
+
+  
+.confirmationBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7); 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999; 
+}
+
+input[type="radio" i] {
+  background-color: initial;
+  cursor: default;
+  appearance: auto;
+  box-sizing: border-box;
+  margin: 3px 3px 0px 5px;
+  padding: 3px;
+  border: initial;
+  width: 50px;
+}
+
+.confirmationDialog {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  padding: 20px;
+  text-align: center;
+  width: 700px;
+  height: 500px;
+  min-height: 45vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.confirmationMessage {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.confirmationButtons {
+  display: flex;
+  justify-content: center;
+}
+
+.confirmationButtons button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.confirmationButtons button.confirm {
+  background-color: #4caf50; 
+  color: #fff;
+}
+
+.confirmationButtons button.cancel {
+  background-color: #f44336; 
+  color: #fff;
+}
+
+.testDiv {
+  position: relative;
+  width: 100%;
+  height: 43vh;
+}
+
+.inputOfFollowUp {
+  width: 20%;
+  padding: 8px;
+  font-size: 11pt; 
+  border: 1px solid #ccc;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  margin: 3px;
+  border-radius: 4px;
+  margin-left: 10px;
+  margin-top: -10px;
+}
+
+.buttonOfFollowUp {
+  padding: 8px 16px;
+  background-color: #336cfb;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  font-size: 12pt;
+  transition: background-color 0.3s;
+}
+
+.inputOfFollowUp:hover {
+  border-color: #336cfb; 
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5); 
+
+}
+
+.button:hover {
+  background-color: #0056b3; 
+}
+
+.selectDropdown {
+  width: 30%;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 16px;
+  color: #333;
+  margin-left: 10px;
+  margin-top: -10px;
+}
+
+.selectDropdown:hover{
+  outline: none;
+  border-color: #336cfb;
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.optionItem {
+  font-size: 16px;
+  color: #333;
+}
+
+.radioOfFollowUp {
+  cursor: pointer;
+  width: 500px;
+}
+
+.radioOfFollowUp :after {
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+  top: -2px;
+  left: -1px;
+  position: relative;
+  background-color: #d1d3d1;
+  content: '';
+  visibility: visible;
+  border: 2px solid white;
+  
+}
+
+/*
+.radioOfFollowUp :checked:after {
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+  top: -2px;
+  left: -1px;
+  position: absolute;
+  background-color: #336cfb;
+  content: '';
+  display: inline-block;
+  visibility: visible;
+  border: 3px solid rgb(21, 35, 49);
+  cursor: default;
+  appearance: auto;
+  box-sizing: border-box;
+  margin: 3px 3px 0px 5px;
+  padding: initial;
+  border: initial;
+}
+*/
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background-color: #eee;
+}
+
+.pagination .activePage {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}

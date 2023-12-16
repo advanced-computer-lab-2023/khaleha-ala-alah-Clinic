@@ -1630,10 +1630,9 @@ exports.cancelAppointment = async (req, res) => {
 
     //console.log("before wallet");
     if (refundAmount > 0) {
-      await Wallet.findOneAndUpdate(
-        { userID: patient.userID },
-        { $inc: { amount: refundAmount } }
-      );
+      let patientt = await Patient.findOne({ userID: req.user._id });
+      patientt.walletValue += refundAmount;
+      await patientt.save();
     }
     //console.log("Updated wallet");
 
@@ -1726,3 +1725,94 @@ exports.viewAllPatients = async function (req, res) {
     });
   }
 };
+
+exports.viewMyHealthRecords = async function (req, res) {
+  try {
+    const conn = mongoose.connection;
+    const gfs = new mongoose.mongo.GridFSBucket(conn.db, {
+      bucketName: "uploads",
+    });
+    const patient = await Patient.findOne({ userID: req.user._id });
+    const healthRecords = patient.files;
+    const healthRecordsFiles=await Promise.all(
+      healthRecords.map(async (file) => {
+        const filename=await gfs.find({_id:file}).toArray();
+        const fileStream = gfs.openDownloadStream(file);
+        const chunks = [];
+        return new Promise((resolve, reject) => {
+          fileStream.on("data", (chunk) => {
+            chunks.push(chunk);
+          });
+          fileStream.on("end", () => {
+            const fileData = Buffer.concat(chunks);
+            resolve({ fileId: file, fileData, filename: filename[0].filename,fileType:filename[0].contentType });
+          });
+          fileStream.on("error", (error) => {
+            reject(error);
+          });
+        });
+      })
+    );
+    res.status(200).json({healthRecordsFiles});
+  } catch (err) {
+    res.status(500).json({message: err.message});
+  }
+};
+exports.deletePatientHealthRecord = async function (req, res) {
+  try{
+    const conn = mongoose.connection;
+    const gfs = new mongoose.mongo.GridFSBucket(conn.db, {
+      bucketName: "uploads",
+    });
+    const patient = await Patient.findOne({ userID: req.user._id });
+    const {file} =req.body;
+    patient.files.pull(file);
+    await patient.save();
+    await gfs.delete(new mongoose.Types.ObjectId(file));
+    res.status(200).json({message: "deleted successfully"});
+  }catch(err){
+    console.log(err);
+    res.status(500).json({message: err.message});
+  }
+}
+exports.addPatientHealthRecord = async function (req, res) {
+  try {
+    const conn = mongoose.connection;
+    const gfs = new mongoose.mongo.GridFSBucket(conn.db, {
+      bucketName: "uploads",
+    });
+    const patient = await Patient.findOne({ userID: req.user._id });
+    const files=req.files;
+    let Filepathes=[];
+    if(files){
+      Filepathes = req.files.map((file) => file.id);
+    }
+    allFiles= [...patient.files, ...Filepathes];
+    patient.files=allFiles;
+    console.log(allFiles);
+    await patient.save();
+    const healthRecords = patient.files;
+    const healthRecordsFiles=await Promise.all(
+      healthRecords.map(async (file) => {
+        const filename=await gfs.find({_id:file}).toArray();
+        const fileStream = gfs.openDownloadStream(file);
+        const chunks = [];
+        return new Promise((resolve, reject) => {
+          fileStream.on("data", (chunk) => {
+            chunks.push(chunk);
+          });
+          fileStream.on("end", () => {
+            const fileData = Buffer.concat(chunks);
+            resolve({ fileId: file, fileData, filename: filename[0].filename,fileType:filename[0].contentType });
+          });
+          fileStream.on("error", (error) => {
+            reject(error);
+          });
+        });
+      })
+    );
+    res.status(200).json({healthRecordsFiles});
+  } catch (err) {
+    res.status(500).json({message: err.message});
+  }
+}
