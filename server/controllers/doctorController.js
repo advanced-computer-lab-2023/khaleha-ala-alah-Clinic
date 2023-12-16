@@ -954,6 +954,11 @@ exports.revokeFollowUpRequest = async (req, res) => {
         await FollowUpRequestAppointments[i].save();
       }
     }
+    const appointment = await Appointment.findOneAndDelete({
+      DoctorID: req.user._id,
+      PatientID: patientID,
+      isPending : "True"
+    });
 
     res.status(200).json({
       status: "success",
@@ -989,6 +994,14 @@ exports.acceptFollowUpRequest = async (req, res) => {
         FollowUpRequestAppointments[i].status = "Accepted";
         await FollowUpRequestAppointments[i].save();
       }
+    }
+    const appointment = await Appointment.findOne({
+      DoctorID: req.user._id,
+      PatientID: patientID,
+    });
+    if (appointment) {
+      appointment.isPending = "False";
+      await appointment.save();
     }
 
     res.status(200).json({
