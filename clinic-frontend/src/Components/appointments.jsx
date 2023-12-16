@@ -276,6 +276,12 @@ function Appointments() {
       >
         Reschedule
       </Button>
+      <Button
+          type="primary"
+          onClick={() => handleFollowUpRequest(appointment)}
+        >
+          Request Follow-up
+        </Button>
     </div>
   );
 
@@ -549,16 +555,11 @@ function Appointments() {
       sorter: (a, b) => a.affiliation.localeCompare(b.affiliation), // Sort alphabetically
     },
     {
-      title: "Actions",
-      key: "actions",
-      render: (text, appointment) => (
-        <Button
-          type="primary"
-          onClick={() => handleFollowUpRequest(appointment)}
-        >
-          Request Follow-up
-        </Button>
-      ),
+    //   title: "Actions",
+    //   key: "actions",
+    //   render: (text, appointment) => (
+       
+    //   ),
       key: "actions",
       title: "Actions",
       render: (text, appointment) => actions(appointment), // Correctly pass the appointment
