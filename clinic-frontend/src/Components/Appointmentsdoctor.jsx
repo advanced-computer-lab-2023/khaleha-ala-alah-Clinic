@@ -7,12 +7,13 @@ import { CalendarOutlined, FilterOutlined } from "@ant-design/icons"; // Import 
 import Header from "../Elements/HeaderDoctor.jsx";
 import Table from "./table.jsx";
 import { useNavigate } from "react-router-dom";
-import { Input, Button, Space, Menu } from "antd";
+import { Input, Button, Space, Menu, Dropdown } from "antd";
 import { SearchOutlined } from "@ant-design/icons"; // Import SearchOutlined
 import Separator from "./separator";
 import RescheduleOverlay from "./rescheduleAppointment.jsx";
 import ConfirmationDialog from "../Elements/ConfirmationDialog.jsx";
 import axios from "axios";
+import OptionIcon from "../Images/optionsIcon.png";
 
 //import { set } from "../../../server/app.js";
 

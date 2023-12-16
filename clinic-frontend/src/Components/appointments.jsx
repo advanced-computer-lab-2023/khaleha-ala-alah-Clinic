@@ -18,6 +18,9 @@ import { CalendarOutlined, FilterOutlined } from "@ant-design/icons"; // Import 
 import Header from "../Elements/Header.jsx";
 import axios from "axios";
 
+import OptionIcon from "../Images/optionsIcon.png";
+import { Dropdown } from "antd";
+
 import ReschduleAppointmentOverlay from "./reschduleAppointmentOverlay.jsx";
 import { set } from "mongoose";
 const { RangePicker } = DatePicker;
@@ -255,31 +258,57 @@ function Appointments() {
       });
   };
 
-  const actions = (appointment) => (
-    <div>
-      <Button
-        type="primary"
-        disabled={appointment.isCancelled}
-        onClick={() => {
-          handleCancel(appointment.appointment);
-        }}
-      >
-        cancel
-      </Button>
-      <Button
-        type="primary"
-        onClick={() => {
-          setSelectedApp(appointment.appointment);
-          handleReschedule(appointment.appointment);
-        }}
-      >
-        Reschedule
-      </Button>
-      <Button type="primary" onClick={() => handleFollowUpRequest(appointment)}>
-        Request Follow-up
-      </Button>
-    </div>
-  );
+  // const actions = (appointment) => (
+  //   <div>
+  //     <Button
+  //       type="primary"
+  //       disabled={appointment.isCancelled}
+  //       onClick={() => {
+  //         handleCancel(appointment.appointment);
+  //       }}
+  //     >
+  //       cancel
+  //     </Button>
+  //     <Button
+  //       type="primary"
+  //       onClick={() => {
+  //         setSelectedApp(appointment.appointment);
+  //         handleReschedule(appointment.appointment);
+  //       }}
+  //     >
+  //       Reschedule
+  //     </Button>
+  //     <Button type="primary" onClick={() => handleFollowUpRequest(appointment)}>
+  //       Request Follow-up
+  //     </Button>
+  //   </div>
+  // );
+
+  // const actions = (appointment) => {
+  //   const menu = (
+  //     <Menu>
+  //       <Menu.Item
+  //         key="1"
+  //         disabled={appointment.isCancelled}
+  //         onClick={() => handleCancel(appointment.appointment)}
+  //       >
+  //         Cancel Appointment
+  //       </Menu.Item>
+  //       <Menu.Item
+  //         key="2"
+  //         onClick={() => {
+  //           setSelectedApp(appointment.appointment);
+  //           handleReschedule(appointment.appointment);
+  //         }}
+  //       >
+  //         Reschedule Appointment
+  //       </Menu.Item>
+  //       <Menu.Item key="3" onClick={() => handleFollowUpRequest(appointment)}>
+  //         Request Follow-up 
+  //       </Menu.Item>
+  //     </Menu>
+  //   );
+  // };
 
   const handleCancel = (appointment) => {
     console.log(appointment._id + "<<< appointment id");
@@ -449,12 +478,61 @@ function Appointments() {
       className: styles.tableHeader, // Apply custom header style
       sorter: (a, b) => a.affiliation.localeCompare(b.affiliation), // Sort alphabetically
     },
-    {
-      key: "actions",
-      title: "Actions",
-      render: (Text, appointment) => actions(appointment),
+  //   {
+  //     key: "actions",
+  //     title: "Actions",
+  //     render: (Text, appointment) => actions(appointment),
+  //   },
+  // ];
+  {
+    title: "Action",
+    key: "action",
+    className: styles.tableHeader,
+    render: (text, appointment) => {
+      const menu = (
+        <Menu>
+          <Menu.Item
+            key="1"
+            disabled={appointment.isCancelled}
+            onClick={() => handleCancel(appointment.appointment)}
+          >
+            Cancel Appointment
+          </Menu.Item>
+          <Menu.Item
+            key="2"
+            onClick={() => {
+              setSelectedApp(appointment.appointment);
+              handleReschedule(appointment.appointment);
+            }}
+          >
+            Reschedule Appointment
+          </Menu.Item>
+          <Menu.Item key="3" onClick={() => handleFollowUpRequest(appointment)}>
+            Request Follow-up
+          </Menu.Item>
+        </Menu>
+      );
+
+      return (
+        <Dropdown overlay={menu} trigger={["click"]}>
+          <a
+            className="ant-dropdown-link"
+            onClick={(e) => e.preventDefault()}
+          >
+            <img
+              style={{
+                width: "30px",
+                height: "30px",
+              }}
+              src={OptionIcon}
+              alt="Options"
+            />
+          </a>
+        </Dropdown>
+      );
     },
-  ];
+  },
+];
 
   const appointmentsColumns = [
     // Define columns similar to PatientsTable
@@ -554,17 +632,66 @@ function Appointments() {
       className: styles.tableHeader, // Apply custom header style
       sorter: (a, b) => a.affiliation.localeCompare(b.affiliation), // Sort alphabetically
     },
-    {
-      //   title: "Actions",
-      //   key: "actions",
-      //   render: (text, appointment) => (
+  //   {
+  //     //   title: "Actions",
+  //     //   key: "actions",
+  //     //   render: (text, appointment) => (
 
-      //   ),
-      key: "actions",
-      title: "Actions",
-      render: (text, appointment) => actions(appointment), // Correctly pass the appointment
+  //     //   ),
+  //     key: "actions",
+  //     title: "Actions",
+  //     render: (text, appointment) => actions(appointment), // Correctly pass the appointment
+  //   },
+  // ];
+  {
+    title: "Action",
+    key: "action",
+    className: styles.tableHeader,
+    render: (text, appointment) => {
+      const menu = (
+        <Menu>
+          <Menu.Item
+            key="1"
+            disabled={appointment.isCancelled}
+            onClick={() => handleCancel(appointment.appointment)}
+          >
+            Cancel Appointment
+          </Menu.Item>
+          <Menu.Item
+            key="2"
+            onClick={() => {
+              setSelectedApp(appointment.appointment);
+              handleReschedule(appointment.appointment);
+            }}
+          >
+            Reschedule Appointment
+          </Menu.Item>
+          <Menu.Item key="3" onClick={() => handleFollowUpRequest(appointment)}>
+            Request Follow-up
+          </Menu.Item>
+        </Menu>
+      );
+
+      return (
+        <Dropdown overlay={menu} trigger={["click"]}>
+          <a
+            className="ant-dropdown-link"
+            onClick={(e) => e.preventDefault()}
+          >
+            <img
+              style={{
+                width: "30px",
+                height: "30px",
+              }}
+              src={OptionIcon}
+              alt="Options"
+            />
+          </a>
+        </Dropdown>
+      );
     },
-  ];
+  },
+];
 
   // Define the filterAppointments function to apply filters
   const filterAppointments = () => {
