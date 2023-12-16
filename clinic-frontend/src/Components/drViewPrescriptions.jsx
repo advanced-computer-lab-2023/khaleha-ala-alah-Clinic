@@ -10,7 +10,8 @@ import {
 import axios from "axios";
 import { Buffer } from "buffer";
 import UpdatePrescriptionForm from "../Elements/updatePrescriptionForm";
-import styles from "./editPackageAdmin.module.css";
+import styles from "./drViewPrescriptions.module.css";
+import LoadingPage from "./LoadingPage";
 
 const DrViewPrescriptions = ({ patient, onCancel }) => {
   const location = useLocation();
@@ -101,9 +102,9 @@ const DrViewPrescriptions = ({ patient, onCancel }) => {
       className={styles.confirmationBackdrop}
       onClick={handleBackdropClick}
     >
-      <h1 style={{ marginBottom: "20px" }}>DrViewPrescriptions</h1>
+      <div className={styles.confirmationDialog}>
       {loading ? (
-        <Spin />
+        <LoadingPage />
       ) : (
         prescriptions.map((prescription) => (
           <Card
@@ -152,7 +153,7 @@ const DrViewPrescriptions = ({ patient, onCancel }) => {
                 )}
               </div>
             }
-            style={{ marginBottom: "20px" }}
+            style={{ marginBottom: "20px" , width:"400px" }}
           >
             <Table
               dataSource={prescription.medications}
@@ -162,7 +163,7 @@ const DrViewPrescriptions = ({ patient, onCancel }) => {
           </Card>
         ))
       )}
-
+    </div>
       {showUpdateForm && (
         <UpdatePrescriptionForm
           prescription={selectedPrescription}

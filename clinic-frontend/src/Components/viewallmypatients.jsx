@@ -26,6 +26,7 @@ const DoctorPatients = ({ doctorId }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [showPrescriptions, setShowPrescriptions] = useState(false);
   const [addPrescriptions, setAddPrescriptions] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(""); // State to store search query
 
   useEffect(() => {
     const fetchDoctorData = async () => {
@@ -123,7 +124,7 @@ const DoctorPatients = ({ doctorId }) => {
     );
   };
 
-  const handleSearchChange = (e) => {
+  const handleSearchChangeNotUsed = (e) => {
     setSearchName(e.target.value);
 
     const filtered = patients.filter((patient) =>
@@ -140,6 +141,18 @@ const DoctorPatients = ({ doctorId }) => {
     );
 
     setFilteredPatients(upcomingPatients);
+  };
+
+  
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    const filtered = patients.filter(
+      (patients) =>
+        patients.username &&
+        patients.username.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredPatients(filtered);
   };
 
   const data = filteredPatients.map((patient, index) => ({
@@ -165,6 +178,12 @@ const DoctorPatients = ({ doctorId }) => {
   }));
 
   const columns = [
+    {
+      title: "Username",
+      dataIndex: "username",
+      key: "username",
+      className: styles.tableHeader,
+    },
     {
       title: "Name",
       dataIndex: "name",
@@ -286,6 +305,15 @@ const DoctorPatients = ({ doctorId }) => {
           <Header />
           <NavBar />
           <h1>View all my Patients</h1>
+          <div>
+          <input
+            type="text"
+            className={styles.searchInput} // Applied CSS class
+            placeholder="Search by username..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+        </div>
           <Separator />
           <div className={styles.viewallpatients}>
             <div className={styles.tableWrapper}>
@@ -316,7 +344,14 @@ const DoctorPatients = ({ doctorId }) => {
                 }}
               />
             )}
-            {addPrescriptions && <AddPrescription patient={selectedPatient} />}
+            {addPrescriptions && (
+            <AddPrescription 
+            patient={selectedPatient} 
+            onCancel={() => {
+              setAddPrescriptions(false);
+            }}
+            /> 
+            )}
           </div>
         </div>
       )}
