@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ConfirmationDialog from "../Elements/ConfirmationDialog.jsx";
-import styles from './packageDetails.module.css';
+import styles from "./packageDetails.module.css";
 
 import NavBar from "../Elements/NavBar";
 import Header from "../Elements/Header";
@@ -34,7 +34,7 @@ const PackageDetails = () => {
     setIsLoading(true);
     try {
       const response = await axios.patch(
-        `http://localhost:4000/patients/unsubscribeFromFamilyMember?id=${patient.userID}`,
+        `http://localhost:4000/patients/unsubscribeFromFamilyMember?id=${patient.userID}&nationalID=${patient.nationalID}`,
         {
           // Include necessary data for the unsubscribe request
           // For example, if you need to send the patient ID:
@@ -73,7 +73,7 @@ const PackageDetails = () => {
             selectedSubSection={"familyMemberPackages"}
           />
           {/* <h1 className="package-details-title">Package Details</h1> */}
-          <div  className={styles.packDetailsCont}>
+          <div className={styles.packDetailsCont}>
             <p className={styles.pText}>
               <strong>Package Name:</strong> {patient.packageName}
             </p>
@@ -118,20 +118,22 @@ const PackageDetails = () => {
                 onCancel={() => setShowConfirmationDialog(false)}
               />
             )} */}
-            <button className={styles.button} onClick={() => setShowConfirmationDialog(true)}>
-          Unsubscribe
-        </button>
-        
+            <button
+              className={styles.button}
+              onClick={() => setShowConfirmationDialog(true)}
+            >
+              Unsubscribe
+            </button>
           </div>
           {showConfirmationDialog && (
-              <ConfirmationDialog
-                message="Are you sure you want to unsubscribe?"
-                confirmLabel="Yes"
-                cancelLabel="No"
-                onConfirm={handleUnsubscribe}
-                onCancel={() => setShowConfirmationDialog(false)}
-              />
-            )}
+            <ConfirmationDialog
+              message="Are you sure you want to unsubscribe?"
+              confirmLabel="Yes"
+              cancelLabel="No"
+              onConfirm={handleUnsubscribe}
+              onCancel={() => setShowConfirmationDialog(false)}
+            />
+          )}
         </>
       )}
     </div>

@@ -99,6 +99,7 @@ const Book = ({ onCancel, doctor }) => {
         // Parse the JSON response
         const data = await response.json();
         // Update the state with the fetched packages
+        console.log(data);
         setPatientFamilyMember(data.data.patientFamilyMembers);
         setIsLoading(false);
       } catch (error) {
@@ -135,12 +136,15 @@ const Book = ({ onCancel, doctor }) => {
           ) : (
             <div className="container-confirm-dialogue-content">
               <div className="container-selection-myself-fm">
-                <label htmlFor="dropdown"
-                style={{ 
-                  fontFamily: "Segoe UI, Fallback, sans-serif",
-                  fontSize: "18px"
-              }}
-                >Select an option:</label>
+                <label
+                  htmlFor="dropdown"
+                  style={{
+                    fontFamily: "Segoe UI, Fallback, sans-serif",
+                    fontSize: "18px",
+                  }}
+                >
+                  Select an option:
+                </label>
                 <Select
                   id="dropdown"
                   value={selectedOption}
