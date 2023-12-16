@@ -3,7 +3,139 @@ import React from 'react';
 import StripeCheckout from 'react-stripe-checkout';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { useState,useEffect } from 'react';
+ 
+
 const StripePaymentButton = () => {
+         const [walletPaymentLoading, setWalletPaymentLoading] = useState(false);
+  const [patientID, setPatientID] = useState('');
+const onWalletPaymentClick = async () => {
+
+
+  try {
+    setWalletPaymentLoading(true);
+
+    // Call the API for wallet amount update
+    const response = await fetch("http://localhost:4000/patients/wallet-amount-update", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        patientID: patientID,
+        newWalletValue: amount22,
+        // Add any other necessary data for the wallet update
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    console.log("Wallet update successful:", data);
+
+    console.log(selectedOption);
+    if (selectedOption === "Myself") {
+      try {
+        console.log(
+          `http://localhost:4000/patients/SelectAppointment/${
+            doctor.userID
+          }/${date.toISOString()}`
+        );
+        const response = await fetch(
+          `http://localhost:4000/patients/SelectAppointment/${
+            doctor.userID
+          }/${date.toISOString()}`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        console.log(data);
+        if (data.status === "success") {
+          // Handle success (e.g., show a success message or redirect)
+          console.log("Appointment booked successfully");
+        } else {
+          console.error("Failed to book appointment");
+        }
+      } catch (error) {
+        console.error("Error booking appointment:", error);
+        // Handle error
+      }
+    } else {
+      // http://localhost:4000/patients/SelectAppointmentFamilyMember/
+      try {
+        console.log(
+          `http://localhost:4000/patients/SelectAppointmentFamilyMember/${
+            doctor.userID
+          }/${date.toISOString()}`
+        );
+        const response = await fetch(
+          `http://localhost:4000/patients/SelectAppointmentFamilyMember/${
+            doctor.userID
+          }/${date.toISOString()}/${selectedOption}`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        console.log(data);
+        if (data.status === "success") {
+          // Handle success (e.g., show a success message or redirect)
+          console.log("Appointment booked successfully");
+        } else {
+          console.error("Failed to book appointment");
+        }
+      } catch (error) {
+        console.error("Error booking appointment:", error);
+        // Handle error
+      }
+    }
+  } catch (error) {
+    console.error("Failed to update wallet:", error);
+    // Handle the error as needed
+  } finally {
+    setWalletPaymentLoading(false);
+  }
+};
+
+
+
+useEffect(() => {
+    // Call the getCurrentPatient API to get the patient ID
+    const getCurrentPatient = async () => {
+      try {
+        const response = await fetch("http://localhost:4000/patients/currentPatient", {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await response.json();
+        setPatientID(data.data.user.userID);
+      } catch (error) {
+        console.error("Error getting current patient:", error);
+        // Handle the error as needed
+      }
+    };
+
+    getCurrentPatient();
+  }, []);
   const navigate = useNavigate();
   const location = useLocation();
   //   const amount22 = location.state?.amount;
@@ -119,7 +251,7 @@ const StripePaymentButton = () => {
 
   return (
     <div>
-       <button onClick={handleWallet}>Pay with Wallet</button>
+       <button onClick={onWalletPaymentClick}>Pay with Wallet</button>
     <StripeCheckout
       token={onToken}
       onClose={onCancel}
