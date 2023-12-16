@@ -23,7 +23,7 @@ router.get("/getAllPatients", patientController.viewAllPatients);
 router.post("/add-amount-Wallet", patientController.addAmountToWallet);
 router.post("/remove-from-wallet", patientController.removeAmountFromWallet);
 router.get("/amount-wallet/:userID", patientController.getAmountInWallet);
-
+router.put("/wallet-amount-update", CheckAuth,patientController.updateWalletValue);
 router.post("/save-stripe-token", CheckAuth, payForPackage);
 
 router.get("/patientdoctors", CheckAuth, patientController.getPatientDoctors);

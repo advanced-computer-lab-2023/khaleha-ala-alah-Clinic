@@ -45,6 +45,39 @@ exports.getAmountInWallet = async (req, res) => {
     });
   }
 };
+
+exports.updateWalletValue = async (req, res) => {
+  try {
+    const { patientID, newWalletValue } = req.body;
+
+    // Find the patient document
+    const patient = await Patient.findOne({ userID: patientID });
+
+    if (!patient) {
+      return res.status(404).json({ success: false, message: "Patient not found." });
+    }
+
+    // Get the old wallet value
+    const oldWalletValue = patient.walletValue;
+
+    // Update the wallet value
+    const updatedPatient = await Patient.findOneAndUpdate(
+      { userID: patientID },
+      { $set: { walletValue: oldWalletValue-newWalletValue } },
+      { new: true } // Return the updated document
+    );
+
+    if (updatedPatient) {
+      return res.status(200).json({ success: true, oldWalletValue, updatedPatient });
+    } else {
+      return res.status(404).json({ success: false, message: "Patient not found." });
+    }
+  } catch (error) {
+    console.error("Error updating wallet value:", error.message);
+    return res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 // Function to add amount to the wallet or create a new wallet if not available
 exports.addAmountToWallet = async (req, res) => {
   try {
