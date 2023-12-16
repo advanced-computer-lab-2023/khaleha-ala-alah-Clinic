@@ -136,6 +136,7 @@ export const PatientHome = () => {
           {
             <div className={styles.allContainers}>
               <div className={styles.carouselContainer}>
+                      <h1 style={{ padding: '20px' }}>Wallet amount: {patientwalletamount}</h1>
                 <ImageCarousel slides={slides} />
               </div>
 
