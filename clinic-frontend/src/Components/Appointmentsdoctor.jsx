@@ -66,6 +66,7 @@ const DoctorAppointments = ({doctorId}) => {
 
   const appointmentsforDoctor = filteredAppointments.map(
     (appointment, index) => ({
+      appointment: appointment,
       date: new Date(appointment.timedAt).toDateString(),
       patient: getPatientName(appointment),
       email: getPatientEmail(appointment),
@@ -207,8 +208,8 @@ const DoctorAppointments = ({doctorId}) => {
     {
       title: 'Actions',
       key: 'actions',
-      render: (text, appointments) => (
-        appointments.isPending ? (
+      render: (text, record) => (
+        record.appointment.isPending ? (
           <>
              <Button onClick={() => handleAccept(appointments)}>Accept</Button>
              <Button onClick={() => handleRevoke(appointments)}>Revoke</Button>
