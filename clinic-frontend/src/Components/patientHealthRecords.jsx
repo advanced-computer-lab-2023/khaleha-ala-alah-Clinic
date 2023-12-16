@@ -1,29 +1,31 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { DownloadOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import { DownloadOutlined, DeleteOutlined, EyeOutlined, UploadOutlined } from "@ant-design/icons";
 import { Buffer } from "buffer";
+import { Spin, message, Button, Upload, Table, Space } from "antd";
 
 const PatientHealthRecords = () => {
   const [patientHealthRecords, setPatientHealthRecords] = useState([]);
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [fetchingData, setFetchingData] = useState(true);
 
   useEffect(() => {
-    axios
-      .post(
-        "http://localhost:4000/patients/viewHealtRecords",
-        {},
-        {
+    const fetchData = async () => {
+      try {
+        const response = await axios.post("http://localhost:4000/patients/viewHealtRecords", {}, {
           headers: {
             authorization: "Bearer " + localStorage.getItem("token"),
           },
-        }
-      )
-      .then((response) => {
+        });
         setPatientHealthRecords(response.data.healthRecordsFiles);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.log(error);
-      });
+      } finally {
+        setFetchingData(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const handleDownload = (patientHealthRecord) => {
@@ -36,6 +38,7 @@ const PatientHealthRecords = () => {
     link.setAttribute("download", patientHealthRecord.filename);
     document.body.appendChild(link);
     link.click();
+    message.success('Download started.');
   };
 
   const handleView = (patientHealthRecord) => {
@@ -47,109 +50,92 @@ const PatientHealthRecords = () => {
   };
 
   const handleDelete = (patientHealthRecord) => {
-    console.log(patientHealthRecord);
-   axios.post("http://localhost:4000/patients/deletePatientHealthRecord", {
-    file: patientHealthRecord.fileId,
-   }, {
-    headers: {
-      authorization: "Bearer " + localStorage.getItem("token"),
-    },
-   }).then((response) => {
-    setPatientHealthRecords(patientHealthRecords.filter((PatientHealthRecordI) => PatientHealthRecordI.fileId !== patientHealthRecord.fileId));
-   }).catch((error) => {
-    console.log(error);
-   });
-   };
-
-  const handleFileSelect = (e) => {
-    const files = e.target.files;
-    setSelectedFiles([...files]);
-  };
-
-  const handleUpload = () => {
-    const formData = new FormData();
-    for (let i = 0; i < selectedFiles.length; i++) {
-      formData.append("files", selectedFiles[i]);
-    }
-    axios
-      .post("http://localhost:4000/patients/addPatientHealthRecord", formData, {
-        headers: {
-          authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
-      .then((response) => {
-        setPatientHealthRecords(response.data.healthRecordsFiles);
+    axios.post("http://localhost:4000/patients/deletePatientHealthRecord", {
+      file: patientHealthRecord.fileId,
+    }, {
+      headers: {
+        authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    })
+      .then(() => {
+        setPatientHealthRecords((prevRecords) => prevRecords.filter((record) => record.fileId !== patientHealthRecord.fileId));
+        message.success('File deleted successfully.');
       })
       .catch((error) => {
         console.log(error);
+        message.error('Failed to delete file. Please try again.');
       });
   };
+
+  const customRequest = async ({ file, onSuccess, onError }) => {
+    try {
+      const formData = new FormData();
+      formData.append("files", file);
+      setLoading(true);
+
+      const response = await axios.post("http://localhost:4000/patients/addPatientHealthRecord", formData, {
+        headers: {
+          authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+
+      setPatientHealthRecords(response.data.healthRecordsFiles);
+      message.success('File uploaded successfully.');
+      onSuccess();
+    } catch (error) {
+      console.error(error);
+      message.error('Failed to upload file. Please try again.');
+      onError();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const columns = [
+    {
+      title: 'File Name',
+      dataIndex: 'filename',
+      key: 'filename',
+      render: (text, record) => (
+        <a href="#" onClick={(e) => { e.preventDefault(); handleView(record); }}>{text}</a>
+      ),
+    },
+    {
+      title: 'Actions',
+      dataIndex: 'actions',
+      key: 'actions',
+      render: (_, record) => (
+        <Space size="middle">
+          <Button
+            type="link"
+            icon={<DownloadOutlined />}
+            onClick={() => handleDownload(record)}
+          />
+          <Button
+            type="link"
+            icon={<DeleteOutlined />}
+            onClick={() => handleDelete(record)}
+          />
+        </Space>
+      ),
+    },
+  ];
 
   return (
     <div className="container">
       <h1>Health Records</h1>
-      <input
-        type="file"
-        name="file"
-        accept=".pdf, .jpg, .png"
-        multiple
-        onChange={handleFileSelect}
-      />
-      <button onClick={handleUpload}>Upload Selected Files</button>
-
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">File Name</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {patientHealthRecords && patientHealthRecords.length > 0 ? (
-            patientHealthRecords.map((patientHealthRecord, index) => (
-              <tr key={index}>
-                <td>
-                  <a
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleView(patientHealthRecord);
-                    }}
-                  >
-                    {patientHealthRecord.filename}
-                  </a>
-                </td>
-                <td>
-                  <a
-                    href="#"
-                    className="action-icon"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleDownload(patientHealthRecord);
-                    }}
-                  >
-                    <DownloadOutlined />
-                  </a>
-                  <a
-                    href="#"
-                    className="action-icon"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleDelete(patientHealthRecord);
-                    }}
-                  >
-                    <DeleteOutlined />
-                  </a>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="3">No health records found.</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <Spin spinning={loading || fetchingData}>
+        <Upload
+          customRequest={customRequest}
+          accept=".pdf, .jpg, .png"
+          showUploadList={false}
+        >
+          <Button icon={<UploadOutlined />} loading={loading}>
+            Upload File
+          </Button>
+        </Upload>
+        <Table dataSource={patientHealthRecords} columns={columns} />
+      </Spin>
     </div>
   );
 };
