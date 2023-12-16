@@ -71,6 +71,7 @@ import PatientUserProfileForm from "./Components/patientUserProfile.js";
 import { useCallContext } from './callContext';
 import IncomingCall from './Elements/incommingCall';
 import VideoCall from './Elements/VideoCall';
+import PatientHealthRecords from "./Components/patientHealthRecords.jsx";
 
 function App() {
   const { call, callAccepted, answerCall, rejectCall,open,myVideo,userVideo,leaveCall } = useCallContext();
@@ -178,6 +179,7 @@ function App() {
               <Route path="/notification" element={<Notification />} />
 
               <Route path="/chat" element={<Messenger />} />
+              <Route path="/patientHealthRecords" element={<PatientHealthRecords />} />
             </>
           )}
 
