@@ -4,7 +4,7 @@
   justify-content: center; /* Center children horizontally */
   align-items: center; /* Center children vertically */
   width: 1200px;
-  height: 500px;
+  height: 600px;
   margin: 0 auto; /* Center the container itself */
   overflow: hidden;
 }
@@ -68,4 +68,14 @@
   transition: transform 0.5s ease; /* Smooth transition for sliding effect */
   box-sizing: border-box;
   padding: 20px;
+}
+
+.slider {
+  height: 600px !important;
+}
+.slider {
+  position: relative !important;
+  width: 100% !important;
+  height: 560px !important;
+  overflow: hidden !important;
 }

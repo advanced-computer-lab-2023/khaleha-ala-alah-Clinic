@@ -108,13 +108,18 @@ const StripePaymentButton = () => {
         // Handle the error as needed
       });
   };
+  const handleWallet = () =>{
+
+  }
 
   const onCancel = () => {
     console.log("Payment Cancelled or Failed");
-    // You can handle the cancellation or failure here.
+    
   };
 
   return (
+    <div>
+       <button onClick={handleWallet}>Pay with Wallet</button>
     <StripeCheckout
       token={onToken}
       onClose={onCancel}
@@ -123,6 +128,8 @@ const StripePaymentButton = () => {
       amount={amount22 * 100} // Convert amount to cents
       stripeKey="pk_test_51LYdhJF0BL68bZ9bNouUaO2Cutn6GjQUDsc7Q1JQRXRAZd4mSRqV3d5G3On4SlM44iWnXlorkDELEGGVF7nBgGpX00buYL644E"
     />
+    </div>
+    
   );
 };
 

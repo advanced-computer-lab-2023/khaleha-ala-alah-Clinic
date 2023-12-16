@@ -9,7 +9,7 @@ router.get("/appointments", CheckAuth, doctorControllers.getAppointments);
 router.patch(
   "/addAvaliableSlots",
   CheckAuth,
-  doctorControllers.addAvaliableSlots
+  doctorControllers.addAvailableSlots
 );
 router.post(
   "/scheduleFollowUpPatient/:patientID/:selectedDateTime",

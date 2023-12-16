@@ -209,8 +209,7 @@ const DoctorList = () => {
         <div className={styles.AllDoctorsContainer}>
           <Header />
           <NavBar selectedSection={"viewAllDoctors"} />
-          <h2 className={styles.h1}>View All Doctors</h2>
-
+          <h1>View All Doctors</h1>
           {/* Header Bar */}
           <div className={styles.headerBar}>
             <input

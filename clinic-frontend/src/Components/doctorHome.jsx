@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../Components/doctorHome.css";
+import { useState } from "react";
+import ServiceInfo from "./infoWindow.jsx"
 
 import makeappointment from "../Images/appointmentpatient.png";
 import chatpatient from "../Images/chat.png";
@@ -21,6 +23,10 @@ import patientrecord from "../Images/patienthealth.jpg";
 import viewpatient from "../Images/viewpatient.jpg";
 
 export const DoctorHome = () => {
+
+  const [showOverlay , setShowOverlay ] = useState(false);
+  const [serviceItemName , setServiceItemName] = useState("");
+  const [serviceItemDescription , setServiceItemDescription] = useState("");
   const slides = [
     {
       image: viewpatient,
@@ -50,6 +56,15 @@ export const DoctorHome = () => {
     // Add more slides as needed
   ];
 
+    
+  const handleClickDetails = (title , description) => {
+    console.log(title , description);
+    setServiceItemName(title);
+    setServiceItemDescription(description);
+    setShowOverlay (true);
+  };
+
+
   return (
     <div>
       <Header />
@@ -68,41 +83,45 @@ export const DoctorHome = () => {
               imgSrc={editprofile}
               title="Edit My Profile"
               description="Easily edit and update your profile details"
-              navigateTo="/editDoctorProfile"
+              method= {handleClickDetails}
+              message= ""
             />
             ,
             <ServiceItem
               imgSrc={allpatients}
               title="View My Patients"
               description="Explore profiles and expertise of all your patients"
-              navigateTo="/viewallmypatients"
+              method= {handleClickDetails}
+              message= ""
             />
             ,
             <ServiceItem
               imgSrc={makeappointment}
               title="Make Appointments"
               description="Schedule a consultation with your patients anytime"
-              navigateTo="/doctorAppointments"
-            />
+              method= {handleClickDetails}
+              message= ""            />
             ,
             <ServiceItem
               imgSrc={healthrecord}
               title="Patient Health Records"
               description="view and manage detailed health records of your patients"
-              navigateTo="/patientdoctorhealth"
-            />
+              method= {handleClickDetails}
+              message= ""            />
             ,
             <ServiceItem
               imgSrc={makeappointment}
               title="add available slots"
               description="Seamlessly manage your schedule by updating available slots"
-              navigateTo="/available-slots"
-            />
+              method= {handleClickDetails}
+              message= ""            />
             ,
             <ServiceItem
               imgSrc={chatpatient}
               title="Chat with Patient"
               description="connect with your patient through secure in-app messaging"
+              method= {handleClickDetails}
+              message= ""
             />
           </div>
           <div className="about-us-container">
@@ -130,6 +149,17 @@ export const DoctorHome = () => {
     </div>
         </div>
       }
+
+        {showOverlay && (
+            <ServiceInfo
+              title={serviceItemName}
+              message={serviceItemDescription}
+              onCancel={() => {
+                setShowOverlay(false);
+              }}
+              cancelLabel={"Close"}
+            />
+          )}
     </div>
   );
 };

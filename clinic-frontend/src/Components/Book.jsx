@@ -7,6 +7,8 @@ import "../Elements/AppointmentCard.css";
 import LoadingPage from "./LoadingPageForOverlay.jsx";
 import { useNavigate } from "react-router-dom";
 import { CloseOutlined } from "@ant-design/icons"; // Importing a close icon from Ant Design
+import { Select } from "antd";
+
 const backendUrl = "http://localhost:4000";
 
 const Book = ({ onCancel, doctor }) => {
@@ -18,6 +20,7 @@ const Book = ({ onCancel, doctor }) => {
   const [patientFamilyMembers, setPatientFamilyMember] = useState([]); // Add a patientFamilyMember state
   const [selectedOption, setSelectedOption] = useState(null);
   const [showOverlay, setShowOverlay] = useState(false);
+  const { Option } = Select;
 
   const handleChange = (event) => {
     console.log(event.target.value);
@@ -120,22 +123,9 @@ const Book = ({ onCancel, doctor }) => {
       onCancel();
     }
   };
-  
+
   return (
     <>
-      <div>
-        <label htmlFor="dropdown">Select an option:</label>
-        <select id="dropdown" value={selectedOption} onChange={handleChange}>
-          <option value="">Select...</option>
-          <option value="Myself">Myself</option>
-          {patientFamilyMembers.map((option, index) => (
-            <option key={index} value={option.userID}>
-              {option.name}
-            </option>
-          ))}
-        </select>
-        {selectedOption && <p>You selected: {selectedOption}</p>}
-      </div>
       <div className="confirmationBackdrop" onClick={handleBackdropClick}>
         <div className="confirmationDialog">
           {loading ? ( // Render a loading message when loading is true
@@ -143,33 +133,62 @@ const Book = ({ onCancel, doctor }) => {
               <LoadingPage />
             </div>
           ) : (
-            availableAppointments.map((appointment, index) => {
-              const date = new Date(appointment);
-              return (
-                <AppointmentCard
-                  key={index}
-                  details={[
-                    { label: "Date", value: date.toDateString() }, // Convert the string to a Date object
-                    {
-                      label: "Time",
-                      value: date.toTimeString().split(" ")[0],
-                    },
-                    // You can add more details as needed
-                  ]}
-                  buttonsDetails={[
-                    {
-                      text: "Book Now!",
+            <div className="container-confirm-dialogue-content">
+              <div className="container-selection-myself-fm">
+                <label htmlFor="dropdown"
+                style={{ 
+                  fontFamily: "Segoe UI, Fallback, sans-serif",
+                  fontSize: "18px"
+              }}
+                >Select an option:</label>
+                <Select
+                  id="dropdown"
+                  value={selectedOption}
+                  onChange={handleChange}
+                  placeholder="Please select myself/family member"
+                  style={{ width: 275 }} // You can adjust the width as needed
+                >
+                  <Option value="">Select...</Option>
+                  <Option value="Myself">Myself</Option>
+                  {patientFamilyMembers.map((option, index) => (
+                    <Option key={index} value={option.userID}>
+                      {option.name}
+                    </Option>
+                  ))}
+                </Select>
+                {selectedOption && <p>You selected: {selectedOption}</p>}
+              </div>
 
-                      onClick: () => handleCheckout(selectedDoctor, date),
+              <div className="conatiner-of-all-avai-dates">
+                {availableAppointments.map((appointment, index) => {
+                  const date = new Date(appointment);
+                  return (
+                    <AppointmentCard
+                      key={index}
+                      details={[
+                        { label: "Date", value: date.toDateString() }, // Convert the string to a Date object
+                        {
+                          label: "Time",
+                          value: date.toTimeString().split(" ")[0],
+                        },
+                        // You can add more details as needed
+                      ]}
+                      buttonsDetails={[
+                        {
+                          text: "Book Now!",
 
-                      // Handle the click event for booking here
-                      // You can add an event handler for booking appointments
-                    },
-                    // Add other buttons as needed
-                  ]}
-                />
-              );
-            })
+                          onClick: () => handleCheckout(selectedDoctor, date),
+
+                          // Handle the click event for booking here
+                          // You can add an event handler for booking appointments
+                        },
+                        // Add other buttons as needed
+                      ]}
+                    />
+                  );
+                })}
+              </div>
+            </div>
           )}
         </div>
       </div>

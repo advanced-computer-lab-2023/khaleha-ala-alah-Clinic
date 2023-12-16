@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from '../AuthContext';
+import "./allUsers.css";
 
 const UserList = ({ users, onSelectUser }) => {
   const { role } = useAuth();

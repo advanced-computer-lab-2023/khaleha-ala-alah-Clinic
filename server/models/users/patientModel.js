@@ -124,6 +124,15 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
+  walletValue: {
+    type: Number,
+    default: 0,
+  },
+  nationalID: {
+    type: String,
+    //required: [true, "Please provide your national ID"],
+    unique: true,
+  },
 
   EmergencyContact: emergencyContactSchema,
   familyMembers: {

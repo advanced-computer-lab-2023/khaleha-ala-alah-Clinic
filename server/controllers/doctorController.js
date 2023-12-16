@@ -20,78 +20,86 @@ conn.once("open", () => {
   gfs = new mongoose.mongo.GridFSBucket(conn.db, { bucketName: "uploads" });
 });
 
-exports.getDoctor = async (req,res)=>{
-  try{
-    const doctor = await Doctor.findOne({userID:req.user._id});
-    if(!doctor){
+exports.getDoctor = async (req, res) => {
+  try {
+    const doctor = await Doctor.findOne({ userID: req.user._id });
+    if (!doctor) {
       return res.status(404).json({
-        status:"fail",
-        message:"Doctor not found"
-      })
+        status: "fail",
+        message: "Doctor not found",
+      });
     }
     res.status(200).json({
-      status:"success",
-      data:{
-        doctor
-      }
-    })
-  }catch(err){
+      status: "success",
+      data: {
+        doctor,
+      },
+    });
+  } catch (err) {
     res.status(500).json({
-      status:"error",
-      message:err.message
-    })
+      status: "error",
+      message: err.message,
+    });
   }
-}
-exports.updateDoctor = async (req,res)=>{
+};
+exports.updateDoctor = async (req, res) => {
   // validate input name , email , phone number and birthdate , affiliation , speciality , Educational Background , Hourly Rate if any of them
   // is not valid return error
   // else update the doctor
   // return the updated doctor
-  try{
-    const doctor = await Doctor.findOne({userID:req.user._id});
-    if(!doctor){
+  try {
+    const doctor = await Doctor.findOne({ userID: req.user._id });
+    if (!doctor) {
       return res.status(404).json({
-        status:"fail",
-        message:"Doctor not found"
-      })
+        status: "fail",
+        message: "Doctor not found",
+      });
     }
-    const {name,email,phoneNumber,birthDate,affiliation,speciality,educationalBackground,hourlyRate} = req.body;
-    if(name){
+    const {
+      name,
+      email,
+      phoneNumber,
+      birthDate,
+      affiliation,
+      speciality,
+      educationalBackground,
+      hourlyRate,
+    } = req.body;
+    if (name) {
       doctor.name = name;
     }
-    if(email){
+    if (email) {
       doctor.email = email;
     }
-    if(birthDate){
+    if (birthDate) {
       doctor.birthDate = birthDate;
     }
-    if(affiliation){
+    if (affiliation) {
       doctor.affiliation = affiliation;
     }
-    if(speciality){
+    if (speciality) {
       doctor.speciality = speciality;
     }
-    if(educationalBackground){
+    if (educationalBackground) {
       doctor.educationalBackground = educationalBackground;
     }
-    if(hourlyRate){
+    if (hourlyRate) {
       doctor.hourlyRate = hourlyRate;
     }
     await doctor.save();
     res.status(200).json({
-      status:"success",
-      data:{
-        doctor
-      }
-    })
-  }
-  catch(err){
+      status: "success",
+      data: {
+        doctor,
+      },
+    });
+  } catch (err) {
     res.status(500).json({
-      status:"error",
-      message:err.message
-    })
+      status: "error",
+      message: err.message,
+    });
   }
-}
+};
 exports.getAmountInWallet = async (req, res) => {
   try {
     const userID = req.params.userID.trim();
@@ -413,19 +421,40 @@ exports.getAppointments = async function (req, res) {
   }
 };
 
-exports.addAvaliableSlots = async function (req, res) {
+exports.addAvailableSlots = async function (req, res) {
   try {
-    //check that doctor has status accepted
+    // Check that the doctor has status accepted
     const doctor = await Doctor.findOne({
       userID: req.user._id,
       status: "accepted",
     });
-    // console.log(req.body + "  " + doctor);
+
     if (!doctor) {
       return res.status(404).json({ error: "Doctor not found." });
     }
+
+    const newSlots = req.body.fixedSlots;
+
+    const newSlotKeys = newSlots.map((slot) => `${slot.day}-${slot.hour}`);
+    const existingSlotKeys = doctor.fixedSlots.map(
+      (slot) => `${slot.day}-${slot.hour}`
+    );
+    const duplicateSlotKeys = newSlotKeys.filter((key) =>
+      existingSlotKeys.includes(key)
+    );
+
+    if (duplicateSlotKeys.length > 0) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Slot already exists",
+        duplicates: duplicateSlotKeys,
+      });
+    }
+
     doctor.fixedSlots.push(...req.body.fixedSlots);
+
     await doctor.save();
+
     res.status(200).json({
       status: "success",
       data: {
@@ -439,6 +468,7 @@ exports.addAvaliableSlots = async function (req, res) {
     });
   }
 };
+
 exports.scheduleFollowUpWithPatients = async function (req, res) {
   try {
     console.log("here");
@@ -990,8 +1020,7 @@ exports.viewAllDoctors = async function (req, res) {
   }
 };
 
-
-exports.getCurrDoc = async function (req,res){
+exports.getCurrDoc = async function (req, res) {
   try {
     console.log("HOLA");
     const doctor = await Doctor.findOne({ userID: req.user._id });
@@ -1001,12 +1030,12 @@ exports.getCurrDoc = async function (req,res){
         status: "fail",
         message: "Doctor not found",
       });
-    }    
+    }
     res.status(200).json({
       status: "success",
-      data : {
-        doctor : doctor
-      }
+      data: {
+        doctor: doctor,
+      },
     });
   } catch (err) {
     res.status(500).json({
@@ -1014,4 +1043,4 @@ exports.getCurrDoc = async function (req,res){
       message: "this route is not defined yet",
     });
   }
-}
+};
