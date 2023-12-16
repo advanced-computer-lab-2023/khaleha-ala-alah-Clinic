@@ -56,7 +56,7 @@ const Header = () => {
       if(socket){
         initialized.current = true
         socket.on("getMessage", (data) => {
-          axios.post("http://localhost:4002/users/getUser", {
+          axios.post("http://localhost:4000/users/getUser", {
             userID: data.senderId,
           }, {
             headers: {
@@ -102,7 +102,7 @@ const handleMessageItemClick = (message) => {
   );
   setMessages(updatedMessages);
   const senderId = message.senderId;
-  navigate(`/messenger`, { state: {senderId} });
+  navigate(`/chat`, { state: {senderId} });
   setDropdownVisibleMessages(false);
 
 };

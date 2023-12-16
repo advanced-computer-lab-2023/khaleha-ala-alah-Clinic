@@ -59,7 +59,7 @@ const Header = () => {
         socket.on("getMessage", (data) => {
           axios
             .post(
-              "http://localhost:4002/users/getUser",
+              "http://localhost:4000/users/getUser",
               {
                 userID: data.senderId,
               },
@@ -110,7 +110,7 @@ const Header = () => {
     );
     setMessages(updatedMessages);
     const senderId = message.senderId;
-    navigate(`/messenger`, { state: { senderId } });
+    navigate(`/chat`, { state: { senderId } });
     setDropdownVisibleMessages(false);
   };
 
