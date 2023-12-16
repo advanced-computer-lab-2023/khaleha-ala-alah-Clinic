@@ -209,7 +209,7 @@ const DoctorAppointments = ({doctorId}) => {
       title: 'Actions',
       key: 'actions',
       render: (text, record) => (
-        record.appointment.isPending ? (
+        record.appointment.isPending === "True" ? (
           <>
              <Button onClick={() => handleAccept(appointments)}>Accept</Button>
              <Button onClick={() => handleRevoke(appointments)}>Revoke</Button>

@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
   },
   isPending:{
     type: String,
-    default: "True",
+    default: "False",
   }
 });
 
