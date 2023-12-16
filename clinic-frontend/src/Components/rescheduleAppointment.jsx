@@ -6,7 +6,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 const backendUrl = "http://localhost:4000";
 
-const FollowUpScheduler = ({ onCancel, patient, doctor }) => {
+const FollowUpScheduler = ({ onCancel, patient, doctor , appointment}) => {
   //const [patientID, setPatientID] = useState("");
   const [selectedDateTime, setSelectedDateTime] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
@@ -143,7 +143,7 @@ const FollowUpScheduler = ({ onCancel, patient, doctor }) => {
   return (
     <div className={styles.confirmationBackdrop} onClick={handleBackdropClick}>
       <div className={styles.confirmationDialog}>
-        <h2 className={styles.headerofFollowUp}>Follow-Up Scheduler</h2>
+        <h2 className={styles.headerofFollowUp}>Reschedule Appointment</h2>
         <form
           className={styles.formOfFollowUp}
           onSubmit={(e) => {
@@ -181,9 +181,9 @@ const FollowUpScheduler = ({ onCancel, patient, doctor }) => {
 
           <button className={styles.buttonOfFollowUp} type="submit" onClick = {(e) => {
             e.preventDefault();
-            scheduleFollowUp();
+            //scheduleFollowUp();
           }}>
-            Schedule Follow-Up
+            Reschedule
           </button>
         </form>
         <p className={styles.paragraphofFollowUp}>{statusMessage}</p>

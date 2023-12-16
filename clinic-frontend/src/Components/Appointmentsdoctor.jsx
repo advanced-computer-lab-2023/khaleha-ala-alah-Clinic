@@ -10,12 +10,13 @@ import { useNavigate } from "react-router-dom";
 import { Input, Button, Space, Menu } from "antd";
 import { SearchOutlined } from "@ant-design/icons"; // Import SearchOutlined
 import Separator from "./separator";
+import RescheduleOverlay from "./rescheduleAppointment.jsx"
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 
-const DoctorAppointments = () => {
+const DoctorAppointments = ({doctorId}) => {
   const [appointments, setAppointments] = useState([]);
   const [dateFilter, setDateFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -23,8 +24,10 @@ const DoctorAppointments = () => {
   const [patients,setPatients]= useState([]);  
   const [filteredAppointments, setFilteredAppointments] = useState([]);
   const [loading, setLoading] = useState(true); // Add loading state
-
-  //Methods for forming the table
+  const [selectedappointment, setSelectedAppointment] = useState(null);
+  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [currDoctor, setCurrentDoctor] = useState(null);
 
   
   const getPatientName = (appointment) => {
@@ -68,15 +71,36 @@ const DoctorAppointments = () => {
       email: getPatientEmail(appointment),
       age: getPatientAge(appointment),
       gender: getPatientGender(appointment),
-      mobilenum: getPatientMobileNum(appointment)
+      mobilenum: getPatientMobileNum(appointment),
     })
   );
 
   
   useEffect(() => {
-    // Call the fetch function when the component mounts
+
     fetchAppointments();
-  }, []);
+
+    fetch("http://localhost:4000/doctors/getCurrDoc", {
+        method: "GET",
+        headers: {
+          authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data.data.doctor);
+          setCurrentDoctor(data.data.doctor);
+        })
+        .catch((error) => {
+          console.error("There was a problem with the fetch operation:", error);
+        });
+
+  }, [doctorId]);
 
   // Function to fetch all appointments of a doctor
   const fetchAppointments = async () => {
@@ -165,12 +189,26 @@ const DoctorAppointments = () => {
       className: styles.tableHeader, // Apply custom header style
     },
     {
-      title: "Patient Mobile",
-      dataIndex: "mobilenum",
-      key: "mobilenum",
-      className: styles.tableHeader, // Apply custom header style
-    },
-  ];
+          title: "Action",
+          key: "action",
+          className: styles.tableHeader,
+          render: (text, record) => (
+            <div>
+              <button
+                className={styles.doctorActionButton + " " + styles.approveButton}
+                value={"approve"}
+                onClick={() => {
+                  setSelectedPatient(record.patient);
+                  setSelectedAppointment(record.appointment);
+                  setShowOverlay(true);
+                }}
+              >
+                Reschedule Appointment
+              </button>
+            </div>
+          ),
+        },
+      ];
 
   // Function to filter appointments based on date and status
   // const filterAppointments = () => {
@@ -338,6 +376,16 @@ const DoctorAppointments = () => {
         </div>
         </div>
       )}
+
+      {showOverlay && (
+              <RescheduleOverlay
+                onCancel={() => setShowOverlay(false)}
+                cancelLabel="Close"
+                patient={selectedPatient}
+                appointment={selectedappointment}
+                doctor={currDoctor}
+              />
+            )}
     </div>
   );
 };
