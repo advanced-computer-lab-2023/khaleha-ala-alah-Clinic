@@ -26,7 +26,7 @@ export const CallProvider = ({ children }) => {
           setTimeout(() => { 
             setOpen(true);
           }
-          , 1000);
+          , 1500);
         }
       }, [callAccepted]);
 
