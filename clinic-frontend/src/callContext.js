@@ -26,12 +26,12 @@ export const CallProvider = ({ children }) => {
           setTimeout(() => { 
             setOpen(true);
           }
-          , 1000);
+          , 1500);
         }
       }, [callAccepted]);
 
   useEffect(() => {
-    if (!socket) return;
+    if (socket){ 
     socket.on("callUser", ({from,signal,userName})=>{
         setCall({isReceivedCall:true,from,signal,userName})
       });
@@ -39,6 +39,7 @@ export const CallProvider = ({ children }) => {
         setCallEnded(true);
         window.location.reload();
       });
+    }
 
   }, [socket]);
 

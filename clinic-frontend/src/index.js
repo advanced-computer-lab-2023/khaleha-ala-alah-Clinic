@@ -16,7 +16,7 @@ root.render(
   <React.StrictMode>
     <AuthProvider>
     <WebSocketProvider>
-      <CallProvider>
+    <CallProvider>
     <BrowserRouter>
       <App />
     </BrowserRouter>

@@ -39,7 +39,7 @@ function Messenger() {
       setTimeout(() => { 
         setOpen(true);
       }
-      , 1000);
+      , 1500);
     }
   }, [callAccepted]);
  
