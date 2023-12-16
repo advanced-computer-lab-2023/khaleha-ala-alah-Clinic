@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import NavBar from '../Elements/NavBar';
 import Header from '../Elements/Header';
@@ -11,7 +12,11 @@ const PatientEditProfileForm = () => {
     dateOfBirth: '',
     mobileNumber: '',
   });
+  const navigate = useNavigate();
 
+  const viewHealthrecords = () => {
+    navigate('/patientHealthRecords');
+  }
   useEffect(() => {
     // Fetch the user data when the component mounts
     // const fetchUserData = async () => {
@@ -109,6 +114,8 @@ const PatientEditProfileForm = () => {
         </button>
         </div>
       </form>
+      <button onClick={viewHealthrecords} >View my health records</button>
+
     </div>
   );
 };

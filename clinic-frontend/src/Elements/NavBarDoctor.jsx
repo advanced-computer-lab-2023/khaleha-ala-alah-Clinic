@@ -120,6 +120,20 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
           >
             Chat {hasSubsections("chat") && <span>▼</span>}
           </div>
+          <div
+            className={
+              selectedSection === "manageslots"
+                ? styles.navbarLinkSelected
+                : styles.navbarLinkSection
+            }
+            onMouseEnter={() => handleSectionMouseEnter("manageslots")}
+            onMouseLeave={() => handleSectionMouseLeave()}
+            onClick={(e) =>
+              handleSectionClick(e, "manageslots", "/available-slots")
+            }
+          >
+            Manage Slots {hasSubsections("chat") && <span>▼</span>}
+          </div>
         </div>
       </div>
     </nav>

@@ -3,9 +3,10 @@ import axios from "axios";
 import styles from "./FollowUpScheduler.module.css";
 import LoadingPage from "./LoadingPageForOverlay.jsx";
 import { Navigate, useNavigate } from "react-router-dom";
+
 const backendUrl = "http://localhost:4000";
 
-const FollowUpScheduler = ({ onCancel, patient, doctor }) => {
+const FollowUpScheduler = ({ onCancel, patient, doctor , appointment}) => {
   //const [patientID, setPatientID] = useState("");
   const [selectedDateTime, setSelectedDateTime] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
@@ -111,6 +112,7 @@ const FollowUpScheduler = ({ onCancel, patient, doctor }) => {
     }
   };
 
+
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
       onCancel();
@@ -141,7 +143,7 @@ const FollowUpScheduler = ({ onCancel, patient, doctor }) => {
   return (
     <div className={styles.confirmationBackdrop} onClick={handleBackdropClick}>
       <div className={styles.confirmationDialog}>
-        <h2 className={styles.headerofFollowUp}>Follow-Up Scheduler</h2>
+        <h2 className={styles.headerofFollowUp}>Reschedule Appointment</h2>
         <form
           className={styles.formOfFollowUp}
           onSubmit={(e) => {
@@ -177,15 +179,11 @@ const FollowUpScheduler = ({ onCancel, patient, doctor }) => {
           )}
           <div className={styles.pagination}>{renderPageNumbers}</div>
 
-          <button
-            className={styles.buttonOfFollowUp}
-            type="submit"
-            onClick={(e) => {
-              e.preventDefault();
-              scheduleFollowUp();
-            }}
-          >
-            Schedule Follow-Up
+          <button className={styles.buttonOfFollowUp} type="submit" onClick = {(e) => {
+            e.preventDefault();
+            //scheduleFollowUp();
+          }}>
+            Reschedule
           </button>
         </form>
         <p className={styles.paragraphofFollowUp}>{statusMessage}</p>
