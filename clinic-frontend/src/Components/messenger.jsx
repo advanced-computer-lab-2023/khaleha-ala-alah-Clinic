@@ -320,6 +320,7 @@ function Messenger() {
       {selectedUser && (
         <ChatInterface
           name={selectedUser.name}
+          userRole={selectedUser.role}
           messages={messages}
           onSendMessage={handleSendMessage}
           setMessages={setMessages}

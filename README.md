@@ -673,7 +673,222 @@ JWT_SECRET=Khleeha-Ala-Allah
 
    The backend server should now be running and listening for requests.
 
+# API Refrences
 
+This section provides a detailed overview of the available API endpoints for our application. The API is structured around REST principles, delivering access to resources such as messages, conversations, admins, patients, doctors, and other entities. Authentication is required for most endpoints, ensuring secure access and operations.
+
+**Authentication**
+
+POST /login: User login
+
+POST /validateToken: Validate user token
+
+POST /verifyUser: Verify user account
+
+POST /changePassword: Change user password (Authenticated)
+
+POST /forgotPassword: User forgot password
+
+POST /resetPassword: Reset user password
+
+**User Management**
+
+POST /register: Register a new user
+
+GET /getUsers: Get all users (Authenticated)
+
+GET /getUserID: Get user ID (Authenticated)
+
+**Admin Management**
+
+GET /getCurrentAdmin: getCurrentUserAdmin(Authenticated)
+
+GET /pendingDoctors:viewPendingDoctors
+
+GET /getPending: getPendingDoctors
+
+POST /approveOrRejectDoctor:approveDoctor (Authenticated)
+
+GET / : getAllAdmins
+
+POST /  :addAdmin
+
+DELETE / :delAdminDoctorPatient
+
+**Patient Management**
+
+PUT /wallet-amount-update :updateWalletValue  (Authenticated)
+
+POST /save-stripe-token:payForPackage (Authenticated)
+
+GET /patientdoctors:getPatientDoctors  (Authenticated)
+
+GET /mydoctors:getMyDoctors    (Authenticated)
+
+PATCH /add-family-members:addFamilyMembers   (Authenticated),
+
+GET /currentPatient:getCurrentPatient  (Authenticated)
+
+GET /getAppointments:getAppointments (Authenticated)
+
+GET /persecriptions:getPatientPrescribtions     (Authenticated)
+
+PATCH /subscribeToPackage:subscribeToPackage  (Authenticated)
+
+PATCH /subscribeForFamilyMember:subscribeForFamilyMember (Authenticated)
+
+GET /getFamilyMembersPatients:getFamilyMemberPatients (Authenticated)
+
+PATCH /unsubscribeFromPackage:cancelHealthPackage  (Authenticated)
+
+PATCH /unsubscribeFromFamilyMember :cancelFamilyMemberPackage  (Authenticated)
+
+GET /viewCurrentHealthPackage:viewCurrentHealthPackage    (Authenticated)
+
+GET /viewFamilyMemberHealthPackages:viewFamilyMemberHealthPackages (Authenticated)
+
+PATCH /addFamilyMemberUsingEmail (Authenticated)
+
+PATCH /addFamilyMemberUsingMobileNumber (Authenticated)
+
+GET /getHealthCareDetails:getHealthCareDetails   (Authenticated)
+
+GET /getHealthCareDetailsForFamilyMember  (Authenticated)
+
+GET /:id :getPatients
+
+GET /getDoctorApp/:id : GetDoctorAppointments
+
+GET /doctorAppointments/:doctorID:.viewDoctorAppointmentsForMonth (Authenticated)
+
+POST /SelectAppointment/:doctorID/:selectedDateTime : .SelectAppointmentPatient (Authenticated)
+
+POST / SelectAppointmentFamilyMember/:doctorID/:selectedDateTime/:FamilyMember:SelectAppointmentFamilyMember (Authenticated)
+
+PATCH /rescheduleAppointment/:appointmentID/:newDateTime:rescheduleAppointment (Authenticated)
+
+PATCH /rescheduleFamilyMemberAppointment/:appointmentID/:newDateTime/:familyMemberID:.rescheduleFamilyMemberAppointment (Authenticated)
+
+GET /viewPrescriptions:viewPrescriptions (Authenticated)
+
+PATCH /cancelAppointment/:appointmentID" (Authenticated)
+
+POST /followUpRequest:followUpRequestAppointment  (Authenticated)
+
+**Doctor Management**
+
+GET /:getAppointmentsPatients   (Authenticated)
+
+GET /appointments:getAppointments   (Authenticated)
+
+PATCH /addAvaliableSlots:addAvailableSlots  (Authenticated)
+
+POST /scheduleFollowUpPatient/:patientID/:selectedDateTime  
+:scheduleFollowUpWithPatients (Authenticated)
+
+POST /addHealthRecord/:username:addNewHealthRecordForPatient
+ (Authenticated)
+PATCH /update-profile:updateDoctor    (Authenticated)
+
+PATCH /update-email :updateDoctorEmail   (Authenticated)
+
+GET /getPatients: getPatientsByDoctorId     (Authenticated)
+
+GET /allPrescriptions :getAllPrescriptions
+
+GET /:doctorId/:patientId/get-info : getPrescriptionsByDoctorAndPatient
+
+POST /addPrescription: .addPrescription  (Authenticated)
+
+POST /viewPrescriptions:viewPatientPrescriptions (Authenticated)
+
+POST /updatePrescription : .updatePatientPrescriptions (Authenticated)
+
+GET /viewAllDoctors:viewAllDoctors
+
+GET /getCurrDoc :getCurrDoc (Authenticated)
+
+PATCH /rescheduleAppointmentPatient/:appointmentID/:newDateTime :.rescheduleAppointmen
+(Authenticated)
+
+PATCH /cancelAppointment/:appointmentID:cancelAppointment  (Authenticated)
+
+PATCH /revokeFollowUpRequest:revokeFollowUpRequest (Authenticated)
+
+PATCH /acceptFollowUpRequest:acceptFollowUpRequest (Authenticated)
+
+**Package Management**
+
+GET / :getAllPackages 
+
+POST /createPackage:addPackage
+
+PUT /updatePackage:updatePackage
+
+DELETE /deletePackage:deletePackage
+
+**Notfication Management**
+
+GET /: getAllNotifications (Authenticated)
+
+POST /:  createNewNotfication (Authenticated)
+
+DELETE /:deleteNotfication  (Authenticated)
+
+**Message Management**
+
+GET /notifications :getMessagesNotifications   (Authenticated)
+
+POST / ,upload.single("file"),: .createMessage 
+
+GET /:conversationId:getM
+
+# Contribute
+We welcome contributions from the community and are pleased to have you join us. If you wish to contribute code and you have not yet done so, please review our contribution guide.
+
+## Quickstart:
+ 
+1- Fork the repository.
+
+2- Clone your fork and create a new branch: git checkout -b my-branch-name.
+
+3- Make your changes, test them, and ensure they follow the project's coding standards.
+
+4- Commit your changes with a clear and detailed commit message.
+
+5- Push your changes to your forked repository.
+
+6- Open a pull request to the main branch of the original repository.
+
+7- Provide as much information as possible with the pull request description.
+
+
+
+If you need help, don't hesitate to ask questions in the issues section or reach out directly via our contact channels.
+
+Thank you for your contributions!
+
+# Credits
+Our gratitude extends to the following resources and communities that have been instrumental in the development of our project:
+
+-MongoDB Documentation: For offering comprehensive guides and references that serve as the cornerstone for designing our database architecture. [MongoDB Manual](https://www.mongodb.com/docs/)
+
+-W3Schools MongoDB Tutorial: For providing an accessible and practical introduction to MongoDB. [W3Schools MongoDB Tutorial](https://www.w3schools.com/nodejs/nodejs_mongodb.asp)
+
+-Node.js Documentation: For detailed documentation and API references that form the backbone of our server-side application logic. [Node.js Documentation](https://nodejs.org/en/docs/)
+
+-React Documentation: For the official tutorials and guides that have enabled us to build dynamic and high-performing user interfaces. [React Documentation](https://reactjs.org/docs/getting-started.html)
+
+-Ant Design Documentation: For a rich set of React UI components that have enhanced the aesthetic and functional aspects of our application. [Ant Design](https://ant.design/docs/react/introduce)
+
+
+-MUI Documentation: For their robust React components that have allowed us to implement Google's Material Design in our project seamlessly. [MUI Documentation](https://mui.com/getting-started/installation/)
+
+-Postman Documentation: For their collaborative platform and educational resources that have streamlined our API testing processes. [Postman Documentation](https://learning.postman.com/docs/getting-started/introduction/)
+
+-GitHub Docs: For their version control platform and guides that have facilitated our collaborative development efforts. [GitHub Docs](https://docs.github.com/)
+
+Each of these resources has played a pivotal role in our project's success, and we wholeheartedly recommend them to any aspiring or established developers looking to delve into full-stack development.
 
 
 
