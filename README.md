@@ -7,7 +7,7 @@ in this readme file you will be provided with all the screenshots  from postman 
 first we have this home page that is rendered when the app starts 
 
 
-## Screenshots
+# Screenshots
 
 ![App Screenshot](https://drive.google.com/uc?id=1CBjkvhprH4C9PH24iuQLh9kpgnKy2xJX)
 
