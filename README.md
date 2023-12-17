@@ -1,13 +1,82 @@
 # el7a2ni Clinc
 
+
+
+
+
 in this project we have a clinc reservation system .
 the system has registered doctors and patients .
 the patient can register to the system and the doctor can apply to this system and wait for the admin approval . Doctors can add their available slots where they can examine patients. the system also has integrations with the stripe paymenmt system and has wallet system related to the website.
 
 in this readme file you will be provided with all the screenshots  from postman and from the website as a frontend system 
 
+## Installation
+
+Follow these steps to set up and run the frontend and backend of the project.
+
+### Frontend Installation
+
+1. *Clone the Repository*
+
+   First, clone the repository to your local machine:
+
+   bash
+   git clone https://github.com/advanced-computer-lab-2023/khaleha-ala-alah-Pharmacy
+   
+
+2. *Open the Folder*
+
+   Navigate to the project directory:
+
+   bash
+   cd khaleha-ala-alah-Pharmacy
+   
+
+3. *Install Frontend Dependencies*
+
+   Change to the frontend directory and install the necessary dependencies:
+
+   bash
+   cd react-app
+   npm i
+   
+
+4. *Start the Frontend*
+
+   Start the frontend application:
+
+   bash
+   npm start
+   
+
+   This should launch the frontend of your application in your default web browser.
+
+### Backend Installation
+
+1. *Install Backend Dependencies*
+
+   Navigate to the backend directory from the root of the project:
+
+   bash
+   cd server
+   npm i
+   
+
+2. *Start the Backend Server*
+
+   Start the backend server in development mode:
+
+   bash
+   npm run start:dev
+   
+
+   The backend server should now be running and listening for requests.
+
+
 
 first we have this home page that is rendered when the app starts 
+
+
 
 
 ## Screenshots
