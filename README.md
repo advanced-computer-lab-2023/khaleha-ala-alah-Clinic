@@ -32,7 +32,7 @@ To maintain the quality and readability of our code, we adhere to a set of codin
 
 We appreciate your adherence to these guidelines, as it helps to keep our codebase clean, organized, and accessible to everyone!
 
-## Screenshots
+# Screenshots
 
 ![App Screenshot](https://drive.google.com/uc?id=1CBjkvhprH4C9PH24iuQLh9kpgnKy2xJX)
 
@@ -72,42 +72,12 @@ clicking on the logout will redirect the user to the login page
   now we can enter our username and password and we will be directed back to the home page 
 
 
-
-
-
-
-
-## API Reference
-
-#### Get all items
-
-```http
-  POST /users/register
-```
-#### this will register a user regarding his role
-
-```http
-  POST  /users/login
-```
-
-#### this will login a user regarding his role and will generate a token for the user 
-
- ![App Screenshot](https://drive.google.com/uc?id=13BBSB6HmyugchoSAO1QbtOzs_6U3Jp1y)
-
  now lets move to the doctor registeration 
 
 REGISTER AS DOCTOR 
 
 in this page the doctor enters all the details and then click view contract and will agree to it and then click register 
 
-
-```http
-  POST /users/register
-```
-#### this will register a user regarding his role
-
-
- ![App Screenshot](https://drive.google.com/uc?id=1Se2Io6XAYbeG9nFeKn3lio6xotdCX60e)
 
   ![App Screenshot](https://drive.google.com/uc?id=11tfd8WNNxxBoaon9cpD9lU0kgTEct7rx)
 
@@ -136,11 +106,6 @@ in admin home we will click on view pending doctors
 
 now lets register with an approved doctor the doctor will be redirected to the doctor home page. 
 
-\\home page doctor 1
-
-```http
-  POST  /users/login
-```
 
 #### this will login a user regarding his role and will generate a token for the user 
 
@@ -148,50 +113,50 @@ now lets register with an approved doctor the doctor will be redirected to the d
  ![App Screenshot](https://drive.google.com/uc?id=1eRSTgZKYh2U5RBOFB_xBN_xq43zXl7Ut)
 
 
-in this screenshoot you have many options to choose from in the navigation bar the home will render u to the home page if u went to another one.
+in this screenshoot you have many options to choose from in the navigation bar the home will render you to the home page if you went to another one.
 
-The view patients will render u to this page which have all of ur patients with their details and u have different options 
+The view patients will render you to this page which have all of your patients with their details and you have different options 
 
  ![App Screenshot](https://drive.google.com/uc?id=1Ou5iwFpjcOoItLK3ni9m1Gic-7A5tgn8)
 
-the first option is manage health records where u can add a file to health records of the selected patient
+the first option is manage health records where you can add a file to health records of the selected patient
 
  ![App Screenshot](https://drive.google.com/uc?id=1sVItwjiyqtyYPH0LtbJUqpjrLRFr5B7J)
-the second option is schedule a followup where u can choose between different dates and timings then u click on schedule a follow up so that the choosen date can be scheduled 
+the second option is schedule a followup where you can choose between different dates and timings then you click on schedule a follow up so that the choosen date can be scheduled 
 
 
  ![App Screenshot](https://drive.google.com/uc?id=1IL_LDmyhqRZJTGP_YcFZ2CskBJVVrpfv)
 
-the third option is viewing the given prescription for that patient before with their dosage and the prescribed dates and u have the option to edit the given prescriptions download it or open it in a pdf format 
+the third option is viewing the given prescription for that patient before with their dosage and the prescribed dates and you have the option to edit the given prescriptions download it or open it in a pdf format 
 
  ![App Screenshot](https://drive.google.com/uc?id=11rbVjxAAOe1UPqQkIilA_LUMtmmZ6re9)
 the fourth and last option is to add prescription for the patient
-u add it bychoosing the medecine and prescripping a specific dosage 
+you add it bychoosing the medecine and prescripping a specific dosage 
 
 
  ![App Screenshot](https://drive.google.com/uc?id=1crYP2xel60dz6Wougvi2RZhOkdLCty-T)
 
-the view appiontements will render u to this page that contains all the appiontements with the logged in dr with all the details of the appiontements
+the view appiontements will render you to this page that contains all the appiontements with the logged in doctor with all the details of the appiontements
 
 
  ![App Screenshot](https://drive.google.com/uc?id=1_XU__xNw3l19ytfoLn6IfUjvMdPqyvvx)
 
 
 
-also u can filter the appiontements according to different options and then u click on filtrer so what will appear are the only appiontements that satisfy this condition 
+also you can filter the appiontements according to different options and then you click on filtrer so what will appear are the only appiontements that satisfy this condition 
 
 
  ![App Screenshot](https://drive.google.com/uc?id=1RkxvCrdq56BxxXHPzIJ7L_nz8Nt0sr8W)
  
-u have another chioce to filter the appiontments according tp the dates u choose the start date and the end date and click on the filter button the appiontements that will appear are the ones whthin that time interval
+you have another chioce to filter the appiontments according tp the dates you choose the start date and the end date and click on the filter button the appiontements that will appear are the ones whthin that time interval
  
  ![App Screenshot](https://drive.google.com/uc?id=1EP-1JQBEIkR1yDWHhuySs04cH8j8goI9)
 
-the chat in the navigation bar will render u to this page which contains the different patients u can chat with 
+the chat in the navigation bar will render you to this page which contains the different patients you can chat with 
 
  ![App Screenshot](https://drive.google.com/uc?id=1XF6EzPFDsVAXDpTFTjVIyDfojH3-KS3j)
 
-when u choose a patient u will be rendered to this page which will contains the chat with the choosen patient
+when you choose a patient you will be rendered to this page which will contains the chat with the choosen patient
 
 
  ![App Screenshot](https://drive.google.com/uc?id=1DV4zyn72P3WAj7AreOR0h8JKGMBbVXss)
@@ -618,16 +583,6 @@ Follow these steps to set up and run the frontend and backend of the project.
    npm i
    ```
 
-4. **Start the Frontend**
-
-   Start the frontend application:
-
-   ```bash
-   npm start
-   ```
-
-   This should launch the frontend of the application in your default web browser.
-
  **Backend Installation**
 
 1. **Install Backend Dependencies**
@@ -639,7 +594,41 @@ Follow these steps to set up and run the frontend and backend of the project.
    npm i
    ```
 
-2. **Start the Backend Server**
+
+   # How to Use
+
+In this section, you'll find step-by-step instructions on how to use and configure the project using the provided environment variables.
+
+ **Prerequisites**
+
+Before you begin, make sure you have the following prerequisites:
+
+- [Node.js](https://nodejs.org/): Ensure you have Node.js installed to run the project.
+- [React](https://reactjs.org/): Ensure you have React installed to run the project.
+
+Create an .env file in the root of the project and add the following environment variables:
+
+```bash
+NODE_ENV=development
+PORT=4002
+DATABASE=mongodb+srv://magdy_hussien:<DATABASE_PASSWORD>@cluster0.vftrsrv.mongodb.net/el7a2ni
+USERNAME=magdy
+DATABASE_PASSWORD=Mm123456
+JWT_SECRET=Khleeha-Ala-Allah
+
+```
+**Start the Frontend**
+
+   Start the frontend application:
+
+   ```bash
+   npm start
+   ```
+
+   This should launch the frontend of your application in your default web browser.
+
+
+ **Start the Backend Server**
 
    Start the backend server in development mode:
 
@@ -649,9 +638,251 @@ Follow these steps to set up and run the frontend and backend of the project.
 
    The backend server should now be running and listening for requests.
 
+# API Refrences
+
+This section provides a detailed overview of the available API endpoints for our application. The API is structured around REST principles, delivering access to resources such as messages, conversations, admins, patients, doctors, and other entities. Authentication is required for most endpoints, ensuring secure access and operations.
+
+**Authentication**
+
+POST /login: User login
+
+POST /validateToken: Validate user token
+
+POST /verifyUser: Verify user account
+
+POST /changePassword: Change user password (Authenticated)
+
+POST /forgotPassword: User forgot password
+
+POST /resetPassword: Reset user password
+
+**User Management**
+
+POST /register: Register a new user
+
+GET /getUsers: Get all users (Authenticated)
+
+GET /getUserID: Get user ID (Authenticated)
+
+**Admin Management**
+
+GET /getCurrentAdmin: getCurrentUserAdmin(Authenticated)
+
+GET /pendingDoctors:viewPendingDoctors
+
+GET /getPending: getPendingDoctors
+
+POST /approveOrRejectDoctor:approveDoctor (Authenticated)
+
+GET / : getAllAdmins
+
+POST /  :addAdmin
+
+DELETE / :delAdminDoctorPatient
+
+**Patient Management**
+
+PUT /wallet-amount-update :updateWalletValue  (Authenticated)
+
+POST /save-stripe-token:payForPackage (Authenticated)
+
+GET /patientdoctors:getPatientDoctors  (Authenticated)
+
+GET /mydoctors:getMyDoctors    (Authenticated)
+
+PATCH /add-family-members:addFamilyMembers   (Authenticated),
+
+GET /currentPatient:getCurrentPatient  (Authenticated)
+
+GET /getAppointments:getAppointments (Authenticated)
+
+GET /persecriptions:getPatientPrescribtions     (Authenticated)
+
+PATCH /subscribeToPackage:subscribeToPackage  (Authenticated)
+
+PATCH /subscribeForFamilyMember:subscribeForFamilyMember (Authenticated)
+
+GET /getFamilyMembersPatients:getFamilyMemberPatients (Authenticated)
+
+PATCH /unsubscribeFromPackage:cancelHealthPackage  (Authenticated)
+
+PATCH /unsubscribeFromFamilyMember :cancelFamilyMemberPackage  (Authenticated)
+
+GET /viewCurrentHealthPackage:viewCurrentHealthPackage    (Authenticated)
+
+GET /viewFamilyMemberHealthPackages:viewFamilyMemberHealthPackages (Authenticated)
+
+PATCH /addFamilyMemberUsingEmail (Authenticated)
+
+PATCH /addFamilyMemberUsingMobileNumber (Authenticated)
+
+GET /getHealthCareDetails:getHealthCareDetails   (Authenticated)
+
+GET /getHealthCareDetailsForFamilyMember  (Authenticated)
+
+GET /:id :getPatients
+
+GET /getDoctorApp/:id : GetDoctorAppointments
+
+GET /doctorAppointments/:doctorID:.viewDoctorAppointmentsForMonth (Authenticated)
+
+POST /SelectAppointment/:doctorID/:selectedDateTime : .SelectAppointmentPatient (Authenticated)
+
+POST / SelectAppointmentFamilyMember/:doctorID/:selectedDateTime/:FamilyMember:SelectAppointmentFamilyMember (Authenticated)
+
+PATCH /rescheduleAppointment/:appointmentID/:newDateTime:rescheduleAppointment (Authenticated)
+
+PATCH /rescheduleFamilyMemberAppointment/:appointmentID/:newDateTime/:familyMemberID:.rescheduleFamilyMemberAppointment (Authenticated)
+
+GET /viewPrescriptions:viewPrescriptions (Authenticated)
+
+PATCH /cancelAppointment/:appointmentID" (Authenticated)
+
+POST /followUpRequest:followUpRequestAppointment  (Authenticated)
+
+**Doctor Management**
+
+GET /:getAppointmentsPatients   (Authenticated)
+
+GET /appointments:getAppointments   (Authenticated)
+
+PATCH /addAvaliableSlots:addAvailableSlots  (Authenticated)
+
+POST /scheduleFollowUpPatient/:patientID/:selectedDateTime  
+:scheduleFollowUpWithPatients (Authenticated)
+
+POST /addHealthRecord/:username:addNewHealthRecordForPatient
+ (Authenticated)
+PATCH /update-profile:updateDoctor    (Authenticated)
+
+PATCH /update-email :updateDoctorEmail   (Authenticated)
+
+GET /getPatients: getPatientsByDoctorId     (Authenticated)
+
+GET /allPrescriptions :getAllPrescriptions
+
+GET /:doctorId/:patientId/get-info : getPrescriptionsByDoctorAndPatient
+
+POST /addPrescription: .addPrescription  (Authenticated)
+
+POST /viewPrescriptions:viewPatientPrescriptions (Authenticated)
+
+POST /updatePrescription : .updatePatientPrescriptions (Authenticated)
+
+GET /viewAllDoctors:viewAllDoctors
+
+GET /getCurrDoc :getCurrDoc (Authenticated)
+
+PATCH /rescheduleAppointmentPatient/:appointmentID/:newDateTime :.rescheduleAppointmen
+(Authenticated)
+
+PATCH /cancelAppointment/:appointmentID:cancelAppointment  (Authenticated)
+
+PATCH /revokeFollowUpRequest:revokeFollowUpRequest (Authenticated)
+
+PATCH /acceptFollowUpRequest:acceptFollowUpRequest (Authenticated)
+
+**Package Management**
+
+GET / :getAllPackages 
+
+POST /createPackage:addPackage
+
+PUT /updatePackage:updatePackage
+
+DELETE /deletePackage:deletePackage
+
+**Notfication Management**
+
+GET /: getAllNotifications (Authenticated)
+
+POST /:  createNewNotfication (Authenticated)
+
+DELETE /:deleteNotfication  (Authenticated)
+
+**Message Management**
+
+GET /notifications :getMessagesNotifications   (Authenticated)
+
+POST / ,upload.single("file"),: .createMessage 
+
+GET /:conversationId:getM
+
+# Tests
+
+Throughout the development of our API, we extensively utilized Postman for testing and validating our endpoints. Postman, a popular API client, enabled us to efficiently test each API route for functionality, error handling, and response accuracy. This tool proved invaluable in ensuring that our API met the expected standards of performance and reliability. By leveraging Postman’s user-friendly interface and comprehensive testing capabilities, we were able to simulate client requests and fine-tune our API responses, ensuring a robust and dependable service for our users. In the following sections, we will provide some examples of these Postman tests to demonstrate how our API endpoints can be interacted with and tested effectively.
+
+![logintest](https://github.com/advanced-computer-lab-2023/khaleha-ala-alah-Clinic/assets/126784831/34719794-5fb8-4254-a03b-f748751ebfb1)
+
+This test verifies the user authentication process. A POST request is made to the /users/login endpoint with the user's credentials. The test confirms that upon successful authentication, the server responds with a 200 OK status and a JSON object containing a success message, user role, and authentication token.
+
+![packages](https://github.com/advanced-computer-lab-2023/khaleha-ala-alah-Clinic/assets/126784831/adc63a5a-5eae-4e1f-b2ef-53b8ca1950ac)
+
+This test checks the retrieval of all available packages. A GET request is made to the /packages endpoint. The expected outcome is a 200 OK status and a JSON response with an array of package objects, confirming the system can successfully list available packages, including details like name, price, and description.
+
+![createpackages](https://github.com/advanced-computer-lab-2023/khaleha-ala-alah-Clinic/assets/126784831/b9134b56-f505-4453-98f6-63462ebfb28e)
+
+This test demonstrates the API's capability to create a new package. A POST request is sent to the /packages/createPackage endpoint with package details such as name, price, and description, along with discounts applicable to doctors and families. The successful creation of a package is indicated by a 201 Created status and a JSON response containing the new package's details.
+
+![prescriptions](https://github.com/advanced-computer-lab-2023/khaleha-ala-alah-Clinic/assets/126784831/da801815-6eaf-43dc-ae62-51c04c311644)
+
+The purpose of this test is to confirm that the system can retrieve all prescriptions for a doctor. A GET request is sent to the /doctors/allPrescriptions endpoint. The successful execution is indicated by a 200 OK status and a JSON response that lists all prescriptions, including details such as patient ID, doctor ID, medication, and dosage instructions.
 
 
 
+
+# Contribute
+
+We welcome contributions from the community and are pleased to have you join us. If you wish to contribute code and you have not yet done so, please review our contribution guide.
+
+## Quickstart:
+ 
+1- Fork the repository.
+
+2- Clone your fork and create a new branch: git checkout -b my-branch-name.
+
+3- Make your changes, test them, and ensure they follow the project's coding standards.
+
+4- Commit your changes with a clear and detailed commit message.
+
+5- Push your changes to your forked repository.
+
+6- Open a pull request to the main branch of the original repository.
+
+7- Provide as much information as possible with the pull request description.
+
+
+
+If you need help, don't hesitate to ask questions in the issues section or reach out directly via our contact channels.
+
+Thank you for your contributions!
+
+# Credits
+Our gratitude extends to the following resources and communities that have been instrumental in the development of our project:
+
+-MongoDB Documentation: For offering comprehensive guides and references that serve as the cornerstone for designing our database architecture. [MongoDB Manual](https://www.mongodb.com/docs/)
+
+-W3Schools MongoDB Tutorial: For providing an accessible and practical introduction to MongoDB. [W3Schools MongoDB Tutorial](https://www.w3schools.com/nodejs/nodejs_mongodb.asp)
+
+-Node.js Documentation: For detailed documentation and API references that form the backbone of our server-side application logic. [Node.js Documentation](https://nodejs.org/en/docs/)
+
+-React Documentation: For the official tutorials and guides that have enabled us to build dynamic and high-performing user interfaces. [React Documentation](https://reactjs.org/docs/getting-started.html)
+
+-Ant Design Documentation: For a rich set of React UI components that have enhanced the aesthetic and functional aspects of our application. [Ant Design](https://ant.design/docs/react/introduce)
+
+
+-MUI Documentation: For their robust React components that have allowed us to implement Google's Material Design in our project seamlessly. [MUI Documentation](https://mui.com/getting-started/installation/)
+
+-Postman Documentation: For their collaborative platform and educational resources that have streamlined our API testing processes. [Postman Documentation](https://learning.postman.com/docs/getting-started/introduction/)
+
+-GitHub Docs: For their version control platform and guides that have facilitated our collaborative development efforts. [GitHub Docs](https://docs.github.com/)
+
+Each of these resources has played a pivotal role in our project's success, and we wholeheartedly recommend them to any aspiring or established developers looking to delve into full-stack development.
+
+
+# License 
+
+This project is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0) and [MIT License](https://opensource.org/licenses/MIT).
 
 
 

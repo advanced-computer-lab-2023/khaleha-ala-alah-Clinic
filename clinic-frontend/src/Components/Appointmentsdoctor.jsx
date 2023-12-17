@@ -297,8 +297,8 @@ const DoctorAppointments = ({ doctorId }) => {
       render: (text, record) =>
         record.appointment.isPending=== "True" ? (
           <>
-            <Button onClick={() => handleAccept(record)}>Accept</Button>
-            <Button onClick={() => handleRevoke(record)}>Revoke</Button>
+            <Button className={styles.approveButton} style={{border: "2px solid blue", marginRight:"2px"}} onClick={() => handleAccept(record)}>Accept</Button>
+            <Button className={styles.rejectButton} style={{border: "2px solid blue"}} onClick={() => handleRevoke(record)}>Revoke</Button>
           </>
         ) : null,
     },
@@ -309,7 +309,7 @@ const DoctorAppointments = ({ doctorId }) => {
       render: (text, record) => (
         <div>
           <button
-            className={styles.doctorActionButton + " " + styles.approveButton}
+            className={styles.rescheduleButton}
             value={"approve"}
             onClick={() => {
               setSelectedPatient(record.patient);
@@ -321,7 +321,7 @@ const DoctorAppointments = ({ doctorId }) => {
           </button>
 
           <button
-            className={styles.doctorActionButton + " " + styles.approveButton}
+            className={styles.cancelButton}
             value={"approve"}
             onClick={() => {
               setSelectedPatient(record.patient);

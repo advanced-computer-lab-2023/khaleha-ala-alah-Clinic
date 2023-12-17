@@ -43,11 +43,7 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
   const hasSubsections = (sectionName) => {
     // Logic to determine if a section has subsections
     // For example:
-    return (
-      sectionName === "familyMembers" ||
-      sectionName === "appointments" ||
-      sectionName === "packages"
-    ); // Assume 'home' has subsections for this example
+    return sectionName === "familyMembers" || sectionName === "packages"; // Assume 'home' has subsections for this example
   };
   return (
     <nav className={styles.navbar}>
@@ -245,14 +241,10 @@ const NavBar = ({ selectedSection, selectedSubSection = "" }) => {
             }
             onMouseEnter={() => handleSectionMouseEnter("chat")}
             onMouseLeave={() => handleSectionMouseLeave()}
-            onClick={(e) =>
-              handleSectionClick(e, "chat", "/chat")
-            }
+            onClick={(e) => handleSectionClick(e, "chat", "/chat")}
           >
-           Chat{" "}
-            {hasSubsections("chat") && <span>▼</span>}
+            Chat {hasSubsections("chat") && <span>▼</span>}
           </div>
-
         </div>
       </div>
     </nav>
