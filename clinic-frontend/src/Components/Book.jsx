@@ -156,7 +156,7 @@ const Book = ({ onCancel, doctor }) => {
                   <Option value="">Select...</Option>
                   <Option value="Myself">Myself</Option>
                   {patientFamilyMembers.map((option, index) => (
-                    <Option key={index} value={option.nationalID}>
+                   <Option key={index} value={option.name}>
                       {option.name}
                     </Option>
                   ))}

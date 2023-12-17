@@ -63,6 +63,24 @@ const DoctorAppointments = ({ doctorId }) => {
           },
         }
       );
+      try{
+        fetch('http://localhost:4000/notifications', {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+            "Content-Type": "application/json",
+          },
+          method: 'POST',
+          body: JSON.stringify({
+            title: "Appointment is cancelled",
+            text: "You have an appointment cancelled at " + selectedappointment.timedAt,
+            userID : selectedappointment.patientID,
+          }),
+        });
+      }
+      catch(error){
+        console.error("notficaion is not saved yet", error);
+      }
+
 
       //setStatusMessage(response.data.message);
     } catch (error) {
@@ -169,14 +187,61 @@ const DoctorAppointments = ({ doctorId }) => {
       setError(err.message);
     }
   };
-  const handleAccept = (appointment) => {
+  const handleAccept = (record) => {
     // Handle logic for accepting the appointment
-    console.log(`Accept appointment with ID ${appointment.id}`);
+    console.log(`Accept appointment with ID ${record.appointment.id}`);
+    let token = localStorage.getItem("token");
+    console.log(token);
+    console.log(record.appointment);
+    fetch(`http://localhost:4000/doctors/acceptFollowUpRequest`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: "Bearer " + token,
+      },
+      body: JSON.stringify({
+        PatientID: record.appointment.PatientID,
+      }),
+    })
+      .then((response) => {
+        console.log(response);
+        if (response.ok) {
+          console.log("Appointment accepted");
+        } else {
+          console.log("Appointment not accepted");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
-  const handleRevoke = (appointment) => {
+  const handleRevoke = (record) => {
     // Handle logic for revoking the appointment
-    console.log(`Revoke appointment with ID ${appointment.id}`);
+    let token = localStorage.getItem("token");
+    console.log(token);
+    console.log(record.appointment);
+    fetch(`http://localhost:4000/doctors/revokeFollowUpRequest`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: "Bearer " + token,
+      },
+      body: JSON.stringify({
+        PatientID: record.appointment.PatientID,
+      }),
+    })
+      .then((response) => {
+        console.log(response);
+        if (response.ok) {
+          console.log("Appointment accepted");
+        } else {
+          console.log("Appointment not accepted");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const appointmentsColumns = [
@@ -230,10 +295,10 @@ const DoctorAppointments = ({ doctorId }) => {
       title: "Actions",
       key: "actions",
       render: (text, record) =>
-        record.appointment.isPending ? (
+        record.appointment.isPending=== "True" ? (
           <>
-            <Button className={styles.approveButton} style={{border: "2px solid blue", marginRight:"2px"}} onClick={() => handleAccept(appointments)}>Accept</Button>
-            <Button className={styles.rejectButton} style={{border: "2px solid blue"}} onClick={() => handleRevoke(appointments)}>Revoke</Button>
+            <Button className={styles.approveButton} style={{border: "2px solid blue", marginRight:"2px"}} onClick={() => handleAccept(record)}>Accept</Button>
+            <Button className={styles.rejectButton} style={{border: "2px solid blue"}} onClick={() => handleRevoke(record)}>Revoke</Button>
           </>
         ) : null,
     },
