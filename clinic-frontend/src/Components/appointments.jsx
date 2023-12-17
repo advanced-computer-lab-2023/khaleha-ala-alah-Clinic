@@ -22,7 +22,6 @@ import OptionIcon from "../Images/optionsIcon.png";
 import { Dropdown } from "antd";
 
 import ReschduleAppointmentOverlay from "./reschduleAppointmentOverlay.jsx";
-import { set } from "mongoose";
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 

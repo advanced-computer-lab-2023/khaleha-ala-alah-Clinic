@@ -42,12 +42,10 @@ export const PatientHome = () => {
   const [currentPatient, setCurrentPatient] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [showOverlay , setShowOverlay ] = useState(false);
-  const [serviceItemName , setServiceItemName] = useState("");
-  const [serviceItemDescription , setServiceItemDescription] = useState("");
-   const [patientwalletamount , setPatientwalletamount] = useState();
-
-
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [serviceItemName, setServiceItemName] = useState("");
+  const [serviceItemDescription, setServiceItemDescription] = useState("");
+  const [patientwalletamount, setPatientwalletamount] = useState();
 
   useEffect(() => {
     const getCurrentPatient = async () => {
@@ -136,20 +134,12 @@ export const PatientHome = () => {
       ) : (
         <div>
           <Header />
-  
+
           <NavBar selectedSection="home" />
           {
-       
             <div className={styles.allContainers}>
-                     
               <div className={styles.carouselContainer}>
-
-               <h1 style={{ padding: '20px' }}>Wallet amount: {patientwalletamount}</h1>
-
-             
-
                 <ImageCarousel slides={slides} />
-                
               </div>
 
               <div className={styles.titleofPAGE} style={{ marginTop: "0px" }}>
