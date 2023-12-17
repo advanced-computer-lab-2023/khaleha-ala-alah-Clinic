@@ -6,7 +6,8 @@ import { useLocation } from "react-router-dom";
 import "../Elements/AppointmentCard.css";
 import LoadingPage from "./LoadingPageForOverlay.jsx";
 import { useNavigate } from "react-router-dom";
-import { CloseOutlined } from "@ant-design/icons"; // Importing a close icon from Ant Design
+import { CloseOutlined } from "@ant-design/icons";
+
 import axios from "axios";
 import { message, Spin, Card, Table, Tooltip, Button, Form, Input } from "antd";
 import {
@@ -20,13 +21,15 @@ import UpdatePrescriptionForm from "../Elements/updatePrescriptionForm";
 
 const backendUrl = "http://localhost:4000";
 
+
 const PrescriptionsOverlay = ({ onCancel, prescription = [] }) => {
   const navigate = useNavigate();
   const [availableAppointments, setAvailableAppointments] = useState([]);
-  const [loading, setLoading] = useState(false); // Add a loading state for appointments
-  const [isLoading, setIsLoading] = useState(true); // Add a loading state for CurrentPatient
-  const [currentPatient, setCurrentPatient] = useState([]); // Add a currentPatient state
-  const [patientFamilyMembers, setPatientFamilyMember] = useState([]); // Add a patientFamilyMember state
+  const [patientID,setPatientID] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentPatient, setCurrentPatient] = useState([]);
+  const [patientFamilyMembers, setPatientFamilyMember] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const [showOverlay, setShowOverlay] = useState(false);
   const [isPrescriptionFilled, setIsPrescriptionFilled] = useState(false);
@@ -35,6 +38,7 @@ const PrescriptionsOverlay = ({ onCancel, prescription = [] }) => {
     username: "",
     password: "",
   });
+
   const handleChange = (event) => {
     console.log(event.target.value);
     setSelectedOption(event.target.value);
@@ -45,8 +49,33 @@ const PrescriptionsOverlay = ({ onCancel, prescription = [] }) => {
       state: { Doctor: doctor, Date: date, selectedOption: selectedOption },
     });
   };
-  const [form] = Form.useForm();
 
+  const [form] = Form.useForm();
+useEffect(() => {
+    // Call the getCurrentPatient API to get the patient ID
+    const getCurrentPatient = async () => {
+      try {
+        const response = await fetch("http://localhost:4000/patients/currentPatient", {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await response.json();
+        setPatientID(data.data.user.userID);
+      } catch (error) {
+        console.error("Error getting current patient:", error);
+        // Handle the error as needed
+      }
+    };
+
+    getCurrentPatient();
+  }, []);
   useEffect(() => {
     form.setFieldsValue({
       medications: prescription.medications.map((medication) => ({
@@ -77,11 +106,9 @@ const PrescriptionsOverlay = ({ onCancel, prescription = [] }) => {
 
       console.log("Admin added successfully", response.data);
       onCancel();
-      // You can add code to handle success, e.g., redirect to a new page.
     } catch (error) {
       console.error("Error adding admin", error);
       onCancel();
-      // You can add code to handle errors, e.g., show an error message to the user.
     }
   };
 
@@ -94,6 +121,7 @@ const PrescriptionsOverlay = ({ onCancel, prescription = [] }) => {
       window.open(url, "_blank");
     }
   };
+
   const downloadPDF = (prescription) => {
     if (prescription.fileData) {
       const pdfBlob = new Blob([Buffer.from(prescription.fileData, "base64")], {
@@ -112,6 +140,36 @@ const PrescriptionsOverlay = ({ onCancel, prescription = [] }) => {
   const isMedicineValid = (medicine) => {
     return medicine && medicine.trim() !== "";
   };
+
+  // Import Axios at the top of your file
+
+// ... (other imports and component code)
+
+const handleBuyNow = async () => {
+  try {
+    const medicinesWithQuantities = form.getFieldsValue().medications.map(
+      (medication) => ({
+        [medication.medicine]: 1, // You can adjust the quantity as needed
+      })
+    );
+
+    const response = await axios.post(
+      "http://localhost:4002/patients/add-to-cart-with-medicines",
+      {
+        patientID:patientID,
+        medicinesWithQuantities:medicinesWithQuantities
+      
+      }
+    );
+    console.log("Added to cart successfully:", response.data);
+  } catch (error) {
+    console.error("Error adding to cart:", error);
+    message.error("Failed to add to cart. Please try again.");
+  }
+};
+
+
+
   return (
     <>
       <div
@@ -119,7 +177,7 @@ const PrescriptionsOverlay = ({ onCancel, prescription = [] }) => {
         onClick={handleBackdropClick}
       >
         <div className={styles.confirmationDialog}>
-          {loading ? ( // Render a loading message when loading is true
+          {loading ? (
             <div className="testDiv">
               <LoadingPage />
             </div>
@@ -177,6 +235,9 @@ const PrescriptionsOverlay = ({ onCancel, prescription = [] }) => {
                       >
                         {(fields, { add, remove }) => (
                           <>
+                            <div>
+                              <button onClick={handleBuyNow}>Buy Now</button>
+                            </div>
                             {fields.map(
                               ({ key, name, fieldKey, ...restField }) => (
                                 <div
