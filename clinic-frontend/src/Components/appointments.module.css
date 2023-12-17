@@ -59,3 +59,75 @@
   border-color: #007bff; /* Change border color on hover */
   box-shadow: 0 0 8px rgba(0, 123, 255, 0.5); /* Add box shadow on hover */
 }
+
+.approveButton {
+  margin-right: 2px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  height: 32px;
+  background-color: rgb(90, 160, 90);
+  color: white;
+  border: 2px solid  rgb(90, 160, 90);
+
+}
+
+
+.rejectButton {
+  margin-right: 2px;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  height: 32px;
+  background-color: rgb(160, 90, 90);
+  color: white;
+  border: none;
+}
+
+
+.rescheduleButton {
+  margin-right: 2px;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  height: 32px;
+  color: white;
+  border: none;
+}
+
+
+.cancelButton {
+  margin-right: 2px;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  height: 32px;
+  color: white;
+  border: none;
+}
+
+.rescheduleButton {
+  background-color: #007bff; /* Green background */
+  color: black;
+}
+
+.rescheduleButton:hover {
+  background-color: #0d4786; /* Darker green on hover */
+  color: white;
+}
+
+.cancelButton {
+  background-color: #007bff; /* Red background */
+  color: black;
+}
+
+.cancelButton:hover {
+  background-color: #0d4786; /* Darker red on hover */
+  color: white;
+}
+
