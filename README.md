@@ -36,6 +36,18 @@ We understand the frustration that such an issue can cause and are taking immedi
 
 Your patience and cooperation are greatly appreciated while we implement a permanent fix to enhance the system's navigational integrity.
 
+**3- Prescription State Not Updating**
+
+We have identified a persistent issue within our platform regarding the state management of prescriptions. Users are encountering a scenario where, regardless of the action taken — whether choosing to 'Buy Now' or deciding not to proceed with the purchase — the prescription's state does not update to reflect the action. This can lead to confusion as the interface fails to indicate the current status of the prescription, which is essential for tracking the progress of patient care and medication dispensing.
+
+This issue points towards a potential flaw in our state handling logic or a breakdown in the communication between the client interface and the server. It's possible that the event meant to trigger the state change is not being captured correctly or that the response from the server does not correctly alter the prescription's status in the user's session.
+
+Our development team is delving into the system's state management functionality to diagnose and remedy this critical flaw. Ensuring that prescription states transition appropriately in response to user actions is vital for the integrity and reliability of the pharmacy management process.
+
+We are prioritizing a fix for this issue to provide accurate real-time feedback within the user interface, thereby improving the accuracy of the information displayed. We understand the importance of this functionality for our users and are working diligently to implement a solution.
+
+We appreciate the patience and understanding of our users as we work to resolve this issue and apologize for any inconvenience caused. We are dedicated to providing a seamless and trustworthy experience within our pharmacy management system.
+
 
 # Code Style
 
