@@ -79,14 +79,6 @@ REGISTER AS DOCTOR
 in this page the doctor enters all the details and then click view contract and will agree to it and then click register 
 
 
-```http
-  POST /users/register
-```
-#### this will register a user regarding his role
-
-
- ![App Screenshot](https://drive.google.com/uc?id=1Se2Io6XAYbeG9nFeKn3lio6xotdCX60e)
-
   ![App Screenshot](https://drive.google.com/uc?id=11tfd8WNNxxBoaon9cpD9lU0kgTEct7rx)
 
 
@@ -114,11 +106,6 @@ in admin home we will click on view pending doctors
 
 now lets register with an approved doctor the doctor will be redirected to the doctor home page. 
 
-\\home page doctor 1
-
-```http
-  POST  /users/login
-```
 
 #### this will login a user regarding his role and will generate a token for the user 
 
@@ -126,50 +113,50 @@ now lets register with an approved doctor the doctor will be redirected to the d
  ![App Screenshot](https://drive.google.com/uc?id=1eRSTgZKYh2U5RBOFB_xBN_xq43zXl7Ut)
 
 
-in this screenshoot you have many options to choose from in the navigation bar the home will render u to the home page if u went to another one.
+in this screenshoot you have many options to choose from in the navigation bar the home will render you to the home page if you went to another one.
 
-The view patients will render u to this page which have all of ur patients with their details and u have different options 
+The view patients will render you to this page which have all of your patients with their details and you have different options 
 
  ![App Screenshot](https://drive.google.com/uc?id=1Ou5iwFpjcOoItLK3ni9m1Gic-7A5tgn8)
 
-the first option is manage health records where u can add a file to health records of the selected patient
+the first option is manage health records where you can add a file to health records of the selected patient
 
  ![App Screenshot](https://drive.google.com/uc?id=1sVItwjiyqtyYPH0LtbJUqpjrLRFr5B7J)
-the second option is schedule a followup where u can choose between different dates and timings then u click on schedule a follow up so that the choosen date can be scheduled 
+the second option is schedule a followup where you can choose between different dates and timings then you click on schedule a follow up so that the choosen date can be scheduled 
 
 
  ![App Screenshot](https://drive.google.com/uc?id=1IL_LDmyhqRZJTGP_YcFZ2CskBJVVrpfv)
 
-the third option is viewing the given prescription for that patient before with their dosage and the prescribed dates and u have the option to edit the given prescriptions download it or open it in a pdf format 
+the third option is viewing the given prescription for that patient before with their dosage and the prescribed dates and you have the option to edit the given prescriptions download it or open it in a pdf format 
 
  ![App Screenshot](https://drive.google.com/uc?id=11rbVjxAAOe1UPqQkIilA_LUMtmmZ6re9)
 the fourth and last option is to add prescription for the patient
-u add it bychoosing the medecine and prescripping a specific dosage 
+you add it bychoosing the medecine and prescripping a specific dosage 
 
 
  ![App Screenshot](https://drive.google.com/uc?id=1crYP2xel60dz6Wougvi2RZhOkdLCty-T)
 
-the view appiontements will render u to this page that contains all the appiontements with the logged in dr with all the details of the appiontements
+the view appiontements will render you to this page that contains all the appiontements with the logged in doctor with all the details of the appiontements
 
 
  ![App Screenshot](https://drive.google.com/uc?id=1_XU__xNw3l19ytfoLn6IfUjvMdPqyvvx)
 
 
 
-also u can filter the appiontements according to different options and then u click on filtrer so what will appear are the only appiontements that satisfy this condition 
+also you can filter the appiontements according to different options and then you click on filtrer so what will appear are the only appiontements that satisfy this condition 
 
 
  ![App Screenshot](https://drive.google.com/uc?id=1RkxvCrdq56BxxXHPzIJ7L_nz8Nt0sr8W)
  
-u have another chioce to filter the appiontments according tp the dates u choose the start date and the end date and click on the filter button the appiontements that will appear are the ones whthin that time interval
+you have another chioce to filter the appiontments according tp the dates you choose the start date and the end date and click on the filter button the appiontements that will appear are the ones whthin that time interval
  
  ![App Screenshot](https://drive.google.com/uc?id=1EP-1JQBEIkR1yDWHhuySs04cH8j8goI9)
 
-the chat in the navigation bar will render u to this page which contains the different patients u can chat with 
+the chat in the navigation bar will render you to this page which contains the different patients you can chat with 
 
  ![App Screenshot](https://drive.google.com/uc?id=1XF6EzPFDsVAXDpTFTjVIyDfojH3-KS3j)
 
-when u choose a patient u will be rendered to this page which will contains the chat with the choosen patient
+when you choose a patient you will be rendered to this page which will contains the chat with the choosen patient
 
 
  ![App Screenshot](https://drive.google.com/uc?id=1DV4zyn72P3WAj7AreOR0h8JKGMBbVXss)
