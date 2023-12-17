@@ -21,7 +21,7 @@ Follow these steps to set up and run the frontend and backend of the project.
    First, clone the repository to your local machine:
 
    bash
-   git clone https://github.com/advanced-computer-lab-2023/khaleha-ala-alah-Pharmacy
+   git clone https://github.com/advanced-computer-lab-2023/khaleha-ala-alah-Clinc
    
 
 2. *Open the Folder*
@@ -29,7 +29,7 @@ Follow these steps to set up and run the frontend and backend of the project.
    Navigate to the project directory:
 
    bash
-   cd khaleha-ala-alah-Pharmacy
+   cd khaleha-ala-alah-Clinc
    
 
 3. *Install Frontend Dependencies*
