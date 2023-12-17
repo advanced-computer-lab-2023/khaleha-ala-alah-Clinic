@@ -9,18 +9,18 @@ import chatpatient from "../Images/chat.png";
 import healthrecord from "../Images/record.png";
 import allpatients from "../Images/viewallpatients.png";
 import follow from "../Images/followup.png";
-import editprofile from "../Images/editprofile.png";
 
-import ImageCarousel from "../Elements/ImageCarousel";
+import ImageCarousel from "../Elements/ImageCarouselDr";
 import ServiceItem from "../Elements/ServiceItem";
 import NavBar from "../Elements/NavBarDoctor";
 import Header from "../Elements/HeaderDoctor";
 
+import appointments from "../Images/appointmentsDrr.jpg";
+import chat from "../Images/chat.jpg";
+import patientrecord from "../Images/healthrecords.jpg";
+import viewpatient from "../Images/patients.jpg";
+import manageprescrip from "../Images/prescriptions.jpg";
 
-import appointments from "../Images/appointmentwithpatient.jpg";
-import chat from "../Images/chatwithpatient.jpg";
-import patientrecord from "../Images/patienthealth.jpg";
-import viewpatient from "../Images/viewpatient.jpg";
 
 export const DoctorHome = () => {
 
@@ -36,7 +36,7 @@ export const DoctorHome = () => {
     },
     {
       image: appointments,
-      title: "make Appointments",
+      title: "Manage Appointments",
       description:
         "Experience the ease of effortless appointment booking and simple follow-ups with your patients.",
     },
@@ -47,10 +47,16 @@ export const DoctorHome = () => {
         "Instantly access and update patient health records, ensuring accurate and up-to-date medical information.",
     },
     {
+      image: manageprescrip,
+      title: "Manage Prescriptions",
+      description:
+        "Streamline patient care with the ability to add, update, and delete prescriptions, including detailed medicine types and dosages",
+    },
+    {
       image: chat,
       title: "Chat with your Patient",
       description:
-        "Get immediate access to your patient with our easy-to-use chat feature. Send your personalized care anytime to your patients. SOON",
+        "Get immediate access to your patient with our easy-to-use chat feature. Send your personalized care anytime to your patients",
     },
 
     // Add more slides as needed
@@ -80,48 +86,40 @@ export const DoctorHome = () => {
           </div>
           <div className="services-container-doctorH">
             <ServiceItem
-              imgSrc={editprofile}
-              title="Edit My Profile"
-              description="Easily edit and update your profile details"
-              method= {handleClickDetails}
-              message= ""
-            />
-            ,
-            <ServiceItem
               imgSrc={allpatients}
               title="View My Patients"
               description="Explore profiles and expertise of all your patients"
               method= {handleClickDetails}
-              message= ""
+              message= "Explore profiles and health records of your patients. Manage health records, schedule follow-ups, view prescriptions, and add new prescriptions for each patient."
             />
             ,
             <ServiceItem
               imgSrc={makeappointment}
-              title="Make Appointments"
+              title="Manage Appointments"
               description="Schedule a consultation with your patients anytime"
               method= {handleClickDetails}
-              message= ""            />
+              message= "View and manage your patients' appointments. Accept, revoke, or reschedule appointments to schedule consultations with your patients at your convenience."            />
             ,
             <ServiceItem
               imgSrc={healthrecord}
               title="Patient Health Records"
               description="view and manage detailed health records of your patients"
               method= {handleClickDetails}
-              message= ""            />
+              message= "Effortlessly access and oversee comprehensive health records for your patients. Manage and review detailed health information to provide the best possible care."            />
             ,
             <ServiceItem
               imgSrc={makeappointment}
               title="add available slots"
               description="Seamlessly manage your schedule by updating available slots"
               method= {handleClickDetails}
-              message= ""            />
+              message= "Easily enhance your appointment schedule by adding available slots to your calendar. Streamline your availability for patients with ease."           />
             ,
             <ServiceItem
               imgSrc={chatpatient}
               title="Chat with Patient"
               description="connect with your patient through secure in-app messaging"
               method= {handleClickDetails}
-              message= ""
+              message= "Stay in touch and communicate securely with your patients through our convenient in-app messaging system. Enhance patient-doctor communication effortlessly."
             />
           </div>
           <div className="about-us-container">
