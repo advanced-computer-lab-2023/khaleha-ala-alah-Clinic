@@ -10,6 +10,43 @@ the patient can register to the system and the doctor can apply to this system a
 
 in this readme file you will be provided with all the screenshots  from postman and from the website as a frontend system 
 
+## *Tech/Framework Used*
+
+*Frontend:*
+
+- React.js
+
+- MUI
+
+- CSS for styling
+
+*Backend:*
+
+- Node.js with Express framework
+
+- MongoDB for database
+
+*Authentication:*
+
+- JSON Web Tokens (JWT)
+
+*Testing:*
+
+- Postman for API testing
+
+*CI/CD:*
+
+- GitHub Actions for continuous integration
+
+*Version Control:*
+
+- Git
+
+*Other Tools:*
+
+- Prettier for code formatting
+
+
 ## Installation
 
 Follow these steps to set up and run the frontend and backend of the project.
