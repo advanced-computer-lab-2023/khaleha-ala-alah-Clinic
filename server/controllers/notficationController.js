@@ -3,7 +3,7 @@ const notification = require('../models/notficationsModel');
 const Patient = require('../models/users/patientModel');
 const user = require('../models/users/user');
 const socket = require('./../utilities/sockets/socketio');
-const doctor = require('../models/users/doctorModel');
+const Doctor = require('../models/users/doctorModel');
 const nodeMailer = require("nodemailer");
 const getAllNotifications = async (req, res) => {
   try{
@@ -32,15 +32,25 @@ const createNewNotfication = async (req,res)=>{
         email = patient.email;
       }
       else if(User.role == "doctor"){
-        const doctor = await doctor.findOne({userID : req.user._id});
+        const doctor = await Doctor.findOne({userID : req.user._id});
         email = doctor.email;
       }
-        const notifications = new notification({
+      const notifications = new notification({
           user:req.user._id,
           title:req.body.title,
           text:req.body.text
       })
       await notifications.save();
+      // if(req.body.PatientID){
+      //   const notifications = new notification({
+      //     user:req.body.PatientID,
+      //     title:req.body.title,
+      //     text:req.body.text
+      // })
+      // await notifications.save();
+
+      //}
+      
       const io = socket.getIO();
       io.emit('notification', notifications);
       //console.log("iooo   " + io);
