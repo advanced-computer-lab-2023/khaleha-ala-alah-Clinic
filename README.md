@@ -1,9 +1,6 @@
-# el7a2ni Clinc
+# Khaleeha Ala Allah Clinic Management System
 
-in this project we have a clinc reservation system .
-the system has registered doctors and patients .
-the patient can register to the system and the doctor can apply to this system and wait for the admin approval . Doctors can add their available slots where they can examine patients. the system also has integrations with the stripe paymenmt system and has wallet system related to the website.
-
+The Khaleeha Ala Allah Clinic Management System is an integrated web application meticulously crafted to optimize clinic operations, catering to the needs of administrators, patients, and doctors. This project is dedicated to elevating the standard of healthcare management by facilitating efficient patient care, streamlining appointment scheduling, and enhancing medical record keeping.
 in this readme file you will be provided with all the screenshots  from postman and from the website as a frontend system 
 
 
