@@ -1,40 +1,127 @@
-# Khaleeha Ala Allah Clinic Management System
+# el7a2ni Clinc
 
-The Khaleeha Ala Allah Clinic Management System is an integrated web application meticulously crafted to optimize clinic operations, catering to the needs of administrators, patients, and doctors. This project is dedicated to elevating the standard of healthcare management by facilitating efficient patient care, streamlining appointment scheduling, and enhancing medical record keeping.
+
+
+
+
+in this project we have a clinc reservation system .
+the system has registered doctors and patients .
+the patient can register to the system and the doctor can apply to this system and wait for the admin approval . Doctors can add their available slots where they can examine patients. the system also has integrations with the stripe paymenmt system and has wallet system related to the website.
+
 in this readme file you will be provided with all the screenshots  from postman and from the website as a frontend system 
 
-# Motivation
 
-The genesis of the Khaleeha Ala Allah Clinic Management System was driven by the imperative to transform and optimize the functionality of clinical operations. In the swiftly evolving realm of healthcare, the necessity for an integrated and fluid platform is paramount, catering to the needs of healthcare providers and patients alike.
+## Code Style 📜
 
-We identified the myriad of challenges confronted by administrators, patients, and doctors in efficiently orchestrating clinical activities. The objective of this project is to surmount these obstacles by introducing a centralized, user-friendly system that simplifies procedures, bolsters communication, and, in turn, elevates the overall clinical experience.
+The code style is enforced using eslint and prettier. The code style is enforced using pre-commit hooks and pre-commit github action.
 
-With the development of the Khaleeha Ala Allah platform, we endeavor to play a pivotal role in the advancement of clinic management. This initiative is geared towards empowering medical professionals and ensuring that patients receive exemplary care. Our dedication is centered on crafting a solution that not only addresses current demands but also proactively adapts to the future developments in the constantly progressing healthcare sector.
+## *Tech/Framework Used*
 
-# Code Style
+*Frontend:*
 
-To maintain the quality and readability of our code, we adhere to a set of coding standards and style guidelines. Our code style choices are designed to ensure consistency across the project and to make our code as intuitive and accessible as possible to new contributors.
+- React.js
 
-### Key Guidelines:
+- MUI
 
-- **Indentation**: We use spaces for indentation and maintain a consistent level of indentation throughout our codebase. For most of our files, we use 2-space indentation.
+- CSS for styling
 
-- **Naming Conventions**: Variable and function names follow camelCase notation. For constants, we use UPPER_SNAKE_CASE. Class names are written in PascalCase.
+*Backend:*
 
-- **Comments and Documentation**: Code is adequately commented to explain complex logic or decisions. Comments are concise and relevant. We also use JSDoc (or relevant documentation tool) for function and class documentation.
+- Node.js with Express framework
 
-- **Code Linting**: We use [ESLint](https://eslint.org/) for JavaScript linting to ensure our code meets the best practices and standards.
+- MongoDB for database
 
-- **Code Formatting**: [Prettier](https://prettier.io/) is used for code formatting.
+*Authentication:*
 
-- **Testing Conventions**: Tests are written for new features and bug fixes. We aim for high test coverage and meaningful test cases.
+- JSON Web Tokens (JWT)
 
-- **Pull Request Process**: All code changes are submitted through pull requests. PRs require review and approval from the team before merging.
+*Testing:*
+
+- Postman for API testing
+
+*CI/CD:*
+
+- GitHub Actions for continuous integration
+
+*Version Control:*
+
+- Git
+
+*Other Tools:*
+
+- Prettier for code formatting
 
 
-We appreciate your adherence to these guidelines, as it helps to keep our codebase clean, organized, and accessible to everyone!
+## Installation
 
-# Screenshots
+Follow these steps to set up and run the frontend and backend of the project.
+
+### Frontend Installation
+
+1. *Clone the Repository*
+
+   First, clone the repository to your local machine:
+
+   bash
+   git clone https://github.com/advanced-computer-lab-2023/khaleha-ala-alah-Clinc
+   
+
+2. *Open the Folder*
+
+   Navigate to the project directory:
+
+   bash
+   cd khaleha-ala-alah-Clinc
+   
+
+3. *Install Frontend Dependencies*
+
+   Change to the frontend directory and install the necessary dependencies:
+
+   bash
+   cd react-app
+   npm i
+   
+
+4. *Start the Frontend*
+
+   Start the frontend application:
+
+   bash
+   npm start
+   
+
+   This should launch the frontend of your application in your default web browser.
+
+### Backend Installation
+
+1. *Install Backend Dependencies*
+
+   Navigate to the backend directory from the root of the project:
+
+   bash
+   cd server
+   npm i
+   
+
+2. *Start the Backend Server*
+
+   Start the backend server in development mode:
+
+   bash
+   npm run start:dev
+   
+
+   The backend server should now be running and listening for requests.
+
+
+
+first we have this home page that is rendered when the app starts 
+
+
+
+
+## Screenshots
 
 ![App Screenshot](https://drive.google.com/uc?id=1CBjkvhprH4C9PH24iuQLh9kpgnKy2xJX)
 
@@ -154,48 +241,59 @@ in this screenshoot you have many options to choose from in the navigation bar t
 
 The view patients will render u to this page which have all of ur patients with their details and u have different options 
 
-//view patients dr 
+ ![App Screenshot](https://drive.google.com/uc?id=1Ou5iwFpjcOoItLK3ni9m1Gic-7A5tgn8)
 
 the first option is manage health records where u can add a file to health records of the selected patient
 
-//manage health records dr
-
+ ![App Screenshot](https://drive.google.com/uc?id=1sVItwjiyqtyYPH0LtbJUqpjrLRFr5B7J)
 the second option is schedule a followup where u can choose between different dates and timings then u click on schedule a follow up so that the choosen date can be scheduled 
 
-//schedule a follow up dr 
+
+ ![App Screenshot](https://drive.google.com/uc?id=1IL_LDmyhqRZJTGP_YcFZ2CskBJVVrpfv)
 
 the third option is viewing the given prescription for that patient before with their dosage and the prescribed dates and u have the option to edit the given prescriptions download it or open it in a pdf format 
 
-//view prescription dr
-
+ ![App Screenshot](https://drive.google.com/uc?id=11rbVjxAAOe1UPqQkIilA_LUMtmmZ6re9)
 the fourth and last option is to add prescription for the patient
 u add it bychoosing the medecine and prescripping a specific dosage 
 
-//add prescription dr 
+
+ ![App Screenshot](https://drive.google.com/uc?id=1crYP2xel60dz6Wougvi2RZhOkdLCty-T)
 
 the view appiontements will render u to this page that contains all the appiontements with the logged in dr with all the details of the appiontements
 
-//view my appiontements dr 
+
+ ![App Screenshot](https://drive.google.com/uc?id=1_XU__xNw3l19ytfoLn6IfUjvMdPqyvvx)
+
+
 
 also u can filter the appiontements according to different options and then u click on filtrer so what will appear are the only appiontements that satisfy this condition 
 
-//filter appiontementsdiff options dr
+
+ ![App Screenshot](https://drive.google.com/uc?id=1RkxvCrdq56BxxXHPzIJ7L_nz8Nt0sr8W)
  
 u have another chioce to filter the appiontments according tp the dates u choose the start date and the end date and click on the filter button the appiontements that will appear are the ones whthin that time interval
  
-//filter appiontements with dates dr 
+ ![App Screenshot](https://drive.google.com/uc?id=1EP-1JQBEIkR1yDWHhuySs04cH8j8goI9)
 
 the chat in the navigation bar will render u to this page which contains the different patients u can chat with 
 
-//chat rendering page dr 
+ ![App Screenshot](https://drive.google.com/uc?id=1XF6EzPFDsVAXDpTFTjVIyDfojH3-KS3j)
 
 when u choose a patient u will be rendered to this page which will contains the chat with the choosen patient
 
-//chat with a specific patient dr 
+
+ ![App Screenshot](https://drive.google.com/uc?id=1DV4zyn72P3WAj7AreOR0h8JKGMBbVXss)
+
+
 
 at the top left of any page u have a notification button when u click on it it veiws a number of different notifications
 
-//notifications dr
+
+
+ ![App Screenshot](https://drive.google.com/uc?id=1z-GYZtVKP-Bq17k0Zlb383gZpltnJxoq)
+
+
 
 and when u click on them u can view every one details 
 
@@ -203,25 +301,29 @@ and when u click on them u can view every one details
 
 also u have a setting button when clicked it view these different opyions to choose from 
 
-//settings dr 
-
+ 
+ ![App Screenshot](https://drive.google.com/uc?id=1i4gkjXDIJRQWpjuk-cOoFEkCYectZJIM)
 when u choose edit profile u are rendered to this page in whcich u can add all the info u want to edit,then u click on update profile so all the written info will be updated 
 
-//edit dr setting
+
+ ![App Screenshot](https://drive.google.com/uc?id=1uY0JTrIaQEC-8yWbEUnMwOdgCPca-pgm)
 
 when u click on user profile u will be rendered to this page which contains all the info about the logged in dr 
 
-//setting user profile
+ ![App Screenshot](https://drive.google.com/uc?id=12L7UAiyoSivejezyZsiTnNjedlGe0UB4)
 
 when u click on change password u will be rendered to this page where u have to enter the doctors current password and the new password the click on update password so thepassword will be updates 
 
-//settings change password
+
+ ![App Screenshot](https://drive.google.com/uc?id=1_LMHZlCuxk2AGLN16_IZ6UEwchIwswJ3)
 
 the last option which is the log out will render u to the main login page 
 
 Now when we login with the patient credintials u will be rendered to this page which is the patient home page 
 
-//patient home page 
+
+ ![App Screenshot](https://drive.google.com/uc?id=1Cy8C375tOolq7RJt2ArdremWCZgQSwOM)
+
 
 in this page's navigationbar u will have all different services u will be offered as a patient;the first one is family members u will choose between two opyions in this drop down list 
 
@@ -229,34 +331,42 @@ in this page's navigationbar u will have all different services u will be offere
 
 when u choose the first option which is view family memebers u will be rendered to this page which will contain all the added family members with their details 
 
-//view family memebers patient
+
+ ![App Screenshot](https://drive.google.com/uc?id=10QtmZwxMyp3kdd0-WYHQQTLzoVs-sJvu)
+
 
 and when u click on add fmily member u will be directed to this page where u can choose between different ways u can add him/her 
 with it 
 
-//add family mem patient main page 
+ ![App Screenshot](https://drive.google.com/uc?id=1NFVPNjBNtGmPi94JarHWBoXSdqJpPY-3)
+
 
 the first option is using the national ID and when u add a family member using ID this member should not be an already existing patient,and u enter the required details then click on add member to be added 
 
-//add family member using national ID patient
+ ![App Screenshot](https://drive.google.com/uc?id=1G0llNevxAAIxlZojWEQ0au4t53Lj3uGp)
 
 the second and third options are using mail or using  a phone number if u used any the added family must be an already existing patient and u will be linked to him/her;u will need to enter the email or phone no with the type of the relation with this member 
 then click on add member to be added 
 
 //add family mem patient phone
-//add family mem patient mail
+
+ ![App Screenshot](https://drive.google.com/uc?id=1XWhq5jwZOZtbLy7VZsXhynMQqunXWfOX)
 
 the second chioce in the nav bar is appiontements when u click on it u can view all ur scheduled appiontements where all of their details will appear
 
-//view appiontements patient
+
+ ![App Screenshot](https://drive.google.com/uc?id=1g9r3UKaJpqrTXT2bL22MPJFS16hlBTpn)
 
 also u can filter the appiontements according to different options and then u click on filtrer so what will appear are the only appiontements that satisfy this condition 
 
-//filter appiontements patient both
- 
+
+  ![App Screenshot](https://drive.google.com/uc?id=11D315IuKQL7fOWdCyX-923531wvTGaVa)
+
+
 u have another chioce to filter the appiontments according tp the dates u choose the start date and the end date and click on the filter button the appiontements that will appear are the ones whthin that time interval
  
-//filter appiontements patient both
+
+  ![App Screenshot](https://drive.google.com/uc?id=11D315IuKQL7fOWdCyX-923531wvTGaVa)
 
 the third option in the nav bar is packages which have two different options to choose between them appeared as a drop down list 
 
@@ -264,9 +374,11 @@ the third option in the nav bar is packages which have two different options to 
 
 the first chioce is manage ur package when u click on it it will renderu to this page where u can subscribe to new packages and when u click subscribe u will need to pay using a card and u will enter all the card details that will be needed to make the payment sucessful 
 
-//manage ur packages patient
-//pay with card patient subscribe
-//enter card details patient subscribe
+
+  ![App Screenshot](https://drive.google.com/uc?id=1_Xz54BnsaIJzltvTEJVL14DEQr1ovKJn)
+    ![App Screenshot](https://drive.google.com/uc?id=1nbu-rmpFwtHSpYSXezNth9NK0CyAkpuf)
+      ![App Screenshot](https://drive.google.com/uc?id=1AFQ_aCgEcRfdHh6SreEDeV0jLX67P9-k)
+
 
 the second one is manage ur family member packages when u click on it it renders u to this page where u will be viewed all the family packages that u have with all the details about the member whom u share the package with
 
@@ -304,7 +416,7 @@ when u choose a doctor u will be rendered to this page which will contains the c
 
 at the top left of any page u have a notification button when u click on it it veiws a number of different notifications
 
-//notifications dr
+  ![App Screenshot](https://drive.google.com/uc?id=1z-GYZtVKP-Bq17k0Zlb383gZpltnJxoq)
 
 and when u click on them u can view every one details 
 
@@ -312,19 +424,22 @@ and when u click on them u can view every one details
 
 also u have a setting button when clicked it view these different options to choose from 
 
-//settings dr 
+
+  ![App Screenshot](https://drive.google.com/uc?id=1i4gkjXDIJRQWpjuk-cOoFEkCYectZJIM)
 
 when u choose edit profile u are rendered to this page in whcich u can add all the info u want to edit,then u click on update profile so all the written info will be updated 
 
-//edit account patient 
+  ![App Screenshot](https://drive.google.com/uc?id=1oKLYzUUk9UyQfWbLP_H3IiOiPKZQCDoK)
+
 
 when u click on user profile u will be rendered to this page which contains all the info about the logged in dr 
 
-//setting user profile
+  ![App Screenshot](https://drive.google.com/uc?id=12L7UAiyoSivejezyZsiTnNjedlGe0UB4)
 
 when u click on change password u will be rendered to this page where u have to enter the doctors current password and the new password the click on update password so thepassword will be updates 
 
-//settings change password
+
+  ![App Screenshot](https://drive.google.com/uc?id=1_LMHZlCuxk2AGLN16_IZ6UEwchIwswJ3)
 
 the last option which is the log out will render u to the main login page 
 
