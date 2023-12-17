@@ -618,16 +618,6 @@ Follow these steps to set up and run the frontend and backend of the project.
    npm i
    ```
 
-4. **Start the Frontend**
-
-   Start the frontend application:
-
-   ```bash
-   npm start
-   ```
-
-   This should launch the frontend of the application in your default web browser.
-
  **Backend Installation**
 
 1. **Install Backend Dependencies**
@@ -639,7 +629,41 @@ Follow these steps to set up and run the frontend and backend of the project.
    npm i
    ```
 
-2. **Start the Backend Server**
+
+   # How to Use
+
+In this section, you'll find step-by-step instructions on how to use and configure the project using the provided environment variables.
+
+ **Prerequisites**
+
+Before you begin, make sure you have the following prerequisites:
+
+- [Node.js](https://nodejs.org/): Ensure you have Node.js installed to run the project.
+- [React](https://reactjs.org/): Ensure you have React installed to run the project.
+
+Create an .env file in the root of the project and add the following environment variables:
+
+```bash
+NODE_ENV=development
+PORT=4002
+DATABASE=mongodb+srv://magdy_hussien:<DATABASE_PASSWORD>@cluster0.vftrsrv.mongodb.net/el7a2ni
+USERNAME=magdy
+DATABASE_PASSWORD=Mm123456
+JWT_SECRET=Khleeha-Ala-Allah
+
+```
+**Start the Frontend**
+
+   Start the frontend application:
+
+   ```bash
+   npm start
+   ```
+
+   This should launch the frontend of your application in your default web browser.
+
+
+ **Start the Backend Server**
 
    Start the backend server in development mode:
 
