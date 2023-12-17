@@ -10,6 +10,11 @@ the patient can register to the system and the doctor can apply to this system a
 
 in this readme file you will be provided with all the screenshots  from postman and from the website as a frontend system 
 
+
+## Code Style 📜
+
+The code style is enforced using eslint and prettier. The code style is enforced using pre-commit hooks and pre-commit github action.
+
 ## *Tech/Framework Used*
 
 *Frontend:*
