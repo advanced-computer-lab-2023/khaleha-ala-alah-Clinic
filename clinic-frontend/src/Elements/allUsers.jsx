@@ -1,18 +1,20 @@
-import React from 'react';
-import { useAuth } from '../AuthContext';
+import React from "react";
+import { useAuth } from "../AuthContext";
 import "./allUsers.css";
 
 const UserList = ({ users, onSelectUser }) => {
   const { role } = useAuth();
+  console.log(users);
+  const pharmacistsAndPatients = role === "doctor" ? users : [];
+  const doctors = role === "patient" ? users : [];
 
-  const pharmacistsAndPatients = role === 'doctor' ? users : [];
-  const doctors = role === 'patient' ? users : [];
-
-  const hasPharmacists = pharmacistsAndPatients.some((user) => user.role === 'pharmasict');
+  const hasPharmacists = pharmacistsAndPatients.some(
+    (user) => user.role === "pharmasict"
+  );
 
   return (
     <div className="user-list">
-      {(role === 'pharmacist' || role === 'doctor') && (
+      {(role === "pharmacist" || role === "doctor") && (
         <>
           <h2>Patients</h2>
           {pharmacistsAndPatients
@@ -29,11 +31,11 @@ const UserList = ({ users, onSelectUser }) => {
         </>
       )}
 
-      {role === 'doctor' && hasPharmacists && (
+      {role === "doctor" && hasPharmacists && (
         <>
           <h2>pharmacist</h2>
           {pharmacistsAndPatients
-            .filter((user) => user.role === 'pharmacist')
+            .filter((user) => user.role === "pharmacist")
             .map((pharmacist, index) => (
               <div
                 key={index}
@@ -46,7 +48,7 @@ const UserList = ({ users, onSelectUser }) => {
         </>
       )}
 
-      {role === 'patient' && (
+      {role === "patient" && (
         <>
           <h2>Doctors</h2>
           {doctors.map((doctor, index) => (

@@ -180,7 +180,6 @@ const Header = () => {
         <div className={styles.navbarLogo}>
           <img src={logopng} alt="Logo" />
         </div>
-        <ToggleButton />
         <div className={styles.navbarRight}>
           <div className={styles.walletContainer}>
             <img src={WalletImage} alt="Wallet" style={{ width: "35px" }} />

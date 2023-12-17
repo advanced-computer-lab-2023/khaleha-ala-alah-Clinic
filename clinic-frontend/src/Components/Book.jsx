@@ -161,7 +161,6 @@ const Book = ({ onCancel, doctor }) => {
                     </Option>
                   ))}
                 </Select>
-                {selectedOption && <p>You selected: {selectedOption}</p>}
               </div>
 
               <div className="conatiner-of-all-avai-dates">

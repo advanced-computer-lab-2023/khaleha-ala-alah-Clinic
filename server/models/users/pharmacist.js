@@ -22,12 +22,12 @@ const pharmacistSchema = new Schema(
         message: "Invalid email address.",
       },
     },
-    
+
     hourlyRate: {
       type: Number,
       required: true,
     },
-  
+
     username: {
       type: String,
       required: true,
@@ -44,6 +44,10 @@ const pharmacistSchema = new Schema(
     educationalBackground: {
       type: String,
       required: true,
+    },
+    walletValue: {
+      type: Number,
+      default: 0,
     },
     speciality: {
       type: String,
