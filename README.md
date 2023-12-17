@@ -72,28 +72,6 @@ clicking on the logout will redirect the user to the login page
   now we can enter our username and password and we will be directed back to the home page 
 
 
-
-
-
-
-
-## API Reference
-
-#### Get all items
-
-```http
-  POST /users/register
-```
-#### this will register a user regarding his role
-
-```http
-  POST  /users/login
-```
-
-#### this will login a user regarding his role and will generate a token for the user 
-
- ![App Screenshot](https://drive.google.com/uc?id=13BBSB6HmyugchoSAO1QbtOzs_6U3Jp1y)
-
  now lets move to the doctor registeration 
 
 REGISTER AS DOCTOR 
