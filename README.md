@@ -8,7 +8,6 @@ the patient can register to the system and the doctor can apply to this system a
 in this readme file you will be provided with all the screenshots  from postman and from the website as a frontend system 
 
 
-
 first we have this home page that is rendered when the app starts 
 
 
