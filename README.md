@@ -30,114 +30,7 @@ To maintain the quality and readability of our code, we adhere to a set of codin
 
 - **Pull Request Process**: All code changes are submitted through pull requests. PRs require review and approval from the team before merging.
 
-
 We appreciate your adherence to these guidelines, as it helps to keep our codebase clean, organized, and accessible to everyone!
-
-## *Tech/Framework Used*
-
-*Frontend:*
-
-- React.js
-
-- MUI
-
-- CSS for styling
-
-*Backend:*
-
-- Node.js with Express framework
-
-- MongoDB for database
-
-*Authentication:*
-
-- JSON Web Tokens (JWT)
-
-*Testing:*
-
-- Postman for API testing
-
-*CI/CD:*
-
-- GitHub Actions for continuous integration
-
-*Version Control:*
-
-- Git
-
-*Other Tools:*
-
-- Prettier for code formatting
-
-
-## Installation
-
-Follow these steps to set up and run the frontend and backend of the project.
-
-### Frontend Installation
-
-1. *Clone the Repository*
-
-   First, clone the repository to your local machine:
-
-   bash
-   git clone https://github.com/advanced-computer-lab-2023/khaleha-ala-alah-Clinc
-   
-
-2. *Open the Folder*
-
-   Navigate to the project directory:
-
-   bash
-   cd khaleha-ala-alah-Clinc
-   
-
-3. *Install Frontend Dependencies*
-
-   Change to the frontend directory and install the necessary dependencies:
-
-   bash
-   cd react-app
-   npm i
-   
-
-4. *Start the Frontend*
-
-   Start the frontend application:
-
-   bash
-   npm start
-   
-
-   This should launch the frontend of your application in your default web browser.
-
-### Backend Installation
-
-1. *Install Backend Dependencies*
-
-   Navigate to the backend directory from the root of the project:
-
-   bash
-   cd server
-   npm i
-   
-
-2. *Start the Backend Server*
-
-   Start the backend server in development mode:
-
-   bash
-   npm run start:dev
-   
-
-   The backend server should now be running and listening for requests.
-
-
-
-first we have this home page that is rendered when the app starts 
-
-
-
 
 ## Screenshots
 
@@ -460,6 +353,44 @@ when u click on change password u will be rendered to this page where u have to 
   ![App Screenshot](https://drive.google.com/uc?id=1_LMHZlCuxk2AGLN16_IZ6UEwchIwswJ3)
 
 the last option which is the log out will render u to the main login page 
+
+# Tech/Framework Used
+
+**Frontend:**
+
+- React.js
+
+- MUI
+
+- Ant Design
+
+- CSS for styling
+
+**Backend:**
+
+- Node.js with Express framework
+
+- MongoDB for database
+
+**Authentication:**
+
+- JSON Web Tokens (JWT)
+
+**Testing:**
+
+- Postman for API testing
+
+**CI/CD:**
+
+- GitHub Actions for continuous integration
+
+**Version Control:**
+
+- Git
+
+**Other Tools:**
+
+- Prettier for code formatting
 
 
 
