@@ -642,7 +642,6 @@ exports.addPrescription = async function (req, res) {
   try {
     const { patient, medications } = req.body;
     const doctor = await Doctor.findOne({ userID: req.user._id });
-
     // Read the HTML template
     const templatePath = path.join(
       __dirname,
@@ -651,10 +650,8 @@ exports.addPrescription = async function (req, res) {
       "prescription-template.html"
     );
     const htmlTemplate = fs.readFileSync(templatePath, "utf-8");
-
     // Create a Handlebars template function
     const templateFunction = handlebars.compile(htmlTemplate);
-
     // Replace placeholders with actual data
     const filledTemplate = templateFunction({
       doctorName: doctor.name,
@@ -670,12 +667,10 @@ exports.addPrescription = async function (req, res) {
 
       medicationsList: medications,
     });
-
     // Options for pdf creation
     const pdfOptions = {
       format: "Letter",
     };
-
     // Convert HTML to PDF
     pdf.create(filledTemplate, pdfOptions).toBuffer(async (err, pdfBuffer) => {
       if (err) {
@@ -956,7 +951,7 @@ exports.revokeFollowUpRequest = async (req, res) => {
     }
     const appointment = await Appointment.findOneAndDelete({
       DoctorID: req.user._id,
-      PatientID: patientID,
+      PatientID: req.body.PatientID,
       isPending : "True"
     });
 
@@ -997,8 +992,12 @@ exports.acceptFollowUpRequest = async (req, res) => {
     }
     const appointment = await Appointment.findOne({
       DoctorID: req.user._id,
-      PatientID: patientID,
+      PatientID: req.body.PatientID,
+      isPending : "True"
     });
+    console.log('hahaha');
+    console.log(req.body)
+    console.log(appointment);
     if (appointment) {
       appointment.isPending = "False";
       await appointment.save();

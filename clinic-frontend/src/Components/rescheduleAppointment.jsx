@@ -103,6 +103,24 @@ const FollowUpScheduler = ({ onCancel, patient, doctor, appointment }) => {
       );
 
       setStatusMessage(response.data.message);
+      try{
+        fetch('http://localhost:4000/notifications', {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+            "Content-Type": "application/json",
+          },
+          method: 'POST',
+          body: JSON.stringify({
+            title: "Appointment is resechduled successfuly",
+            text: "You have an appointment resecheduled at " + selectedAppointment,
+            userID : appointment.patientID,
+          }),
+        });
+      }
+      catch(error){
+        console.error("notficaion is not saved yet", error);
+      }
+
     } catch (error) {
       setStatusMessage(`Error scheduling follow-up: ${error.message}`);
       console.log(error);
