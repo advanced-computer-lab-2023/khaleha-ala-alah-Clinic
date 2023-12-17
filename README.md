@@ -392,6 +392,61 @@ the last option which is the log out will render u to the main login page
 
 - Prettier for code formatting
 
+# Features
+
+**Features for Doctors:**
+
+-Patient Records Access: View and update patient medical records, including history, medications, allergies, and test results.
+
+-Appointment Management: Schedule, view, and manage patient appointments.
+
+-Prescription Management: Create, renew, and manage prescriptions for patients.
+
+-Diagnostic Reporting: Record and access diagnostic reports and test results.
+
+-Treatment Plans: Develop and monitor treatment plans for patients.
+
+-Communication Tools: Communicate with patients and other healthcare providers through secure messaging or notifications.
+
+-Alerts and Reminders: Receive reminders for patient follow-ups, appointments, and treatment milestones.
+
+-Data Analysis and Reporting: Access to analytics for patient outcomes, clinic performance, and other relevant metrics.
+
+**Features for Admins:**
+
+-User Management: Manage user accounts for staff, doctors, and patients, including access controls and permissions.
+
+-Appointment Scheduling: Oversee and manage the scheduling of all appointments.
+
+-Inventory Management: Track and manage medical supplies and inventory.
+
+-Financial Management: Handle billing, invoicing, insurance claims, and financial reporting.
+
+-Compliance and Reporting: Ensure the clinic is compliant with healthcare regulations and standards; generate required reports.
+
+-Facility Management: Oversee clinic facilities, including maintenance schedules and usage.
+
+-Staff Scheduling and Payroll: Manage schedules for all staff and handle payroll processing.
+
+-Data Security and Backup: Ensure the security of clinic data and manage backups.
+
+**Features for Patients:**
+
+-Appointment Booking: Schedule, reschedule, or cancel appointments online.
+
+-Medical Records Access: View their personal medical records, including treatment history and test results.
+
+-Prescription Access and Renewal: View prescriptions and request renewals online.
+
+-Communication with Doctors: Secure messaging or chat features to consult with doctors.
+
+-Treatment Plans and Follow-ups: Access treatment plans and follow-up schedules.
+
+-Billing and Payments: View and pay bills online, access insurance information.
+
+-Health Tips and Information: Access to educational materials, health tips, and clinic updates.
+
+-Feedback and Surveys: Provide feedback on their healthcare experience.
 
 
 
