@@ -844,6 +844,9 @@ POST / ,upload.single("file"),: .createMessage
 GET /:conversationId:getM
 
 # Tests
+
+Throughout the development of our API, we extensively utilized Postman for testing and validating our endpoints. Postman, a popular API client, enabled us to efficiently test each API route for functionality, error handling, and response accuracy. This tool proved invaluable in ensuring that our API met the expected standards of performance and reliability. By leveraging Postman’s user-friendly interface and comprehensive testing capabilities, we were able to simulate client requests and fine-tune our API responses, ensuring a robust and dependable service for our users. In the following sections, we will provide some examples of these Postman tests to demonstrate how our API endpoints can be interacted with and tested effectively.
+
 ![logintest](https://github.com/advanced-computer-lab-2023/khaleha-ala-alah-Clinic/assets/126784831/34719794-5fb8-4254-a03b-f748751ebfb1)
 
 This test verifies the user authentication process. A POST request is made to the /users/login endpoint with the user's credentials. The test confirms that upon successful authentication, the server responds with a 200 OK status and a JSON object containing a success message, user role, and authentication token.
