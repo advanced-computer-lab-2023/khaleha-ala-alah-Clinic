@@ -843,7 +843,28 @@ POST / ,upload.single("file"),: .createMessage
 
 GET /:conversationId:getM
 
+# Tests
+![logintest](https://github.com/advanced-computer-lab-2023/khaleha-ala-alah-Clinic/assets/126784831/34719794-5fb8-4254-a03b-f748751ebfb1)
+
+This test verifies the user authentication process. A POST request is made to the /users/login endpoint with the user's credentials. The test confirms that upon successful authentication, the server responds with a 200 OK status and a JSON object containing a success message, user role, and authentication token.
+
+![packages](https://github.com/advanced-computer-lab-2023/khaleha-ala-alah-Clinic/assets/126784831/adc63a5a-5eae-4e1f-b2ef-53b8ca1950ac)
+
+This test checks the retrieval of all available packages. A GET request is made to the /packages endpoint. The expected outcome is a 200 OK status and a JSON response with an array of package objects, confirming the system can successfully list available packages, including details like name, price, and description.
+
+![createpackages](https://github.com/advanced-computer-lab-2023/khaleha-ala-alah-Clinic/assets/126784831/b9134b56-f505-4453-98f6-63462ebfb28e)
+
+This test demonstrates the API's capability to create a new package. A POST request is sent to the /packages/createPackage endpoint with package details such as name, price, and description, along with discounts applicable to doctors and families. The successful creation of a package is indicated by a 201 Created status and a JSON response containing the new package's details.
+
+![prescriptions](https://github.com/advanced-computer-lab-2023/khaleha-ala-alah-Clinic/assets/126784831/da801815-6eaf-43dc-ae62-51c04c311644)
+
+The purpose of this test is to confirm that the system can retrieve all prescriptions for a doctor. A GET request is sent to the /doctors/allPrescriptions endpoint. The successful execution is indicated by a 200 OK status and a JSON response that lists all prescriptions, including details such as patient ID, doctor ID, medication, and dosage instructions.
+
+
+
+
 # Contribute
+
 We welcome contributions from the community and are pleased to have you join us. If you wish to contribute code and you have not yet done so, please review our contribution guide.
 
 ## Quickstart:
