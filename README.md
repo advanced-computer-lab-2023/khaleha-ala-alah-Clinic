@@ -11,6 +11,28 @@ We identified the myriad of challenges confronted by administrators, patients, a
 
 With the development of the Khaleeha Ala Allah platform, we endeavor to play a pivotal role in the advancement of clinic management. This initiative is geared towards empowering medical professionals and ensuring that patients receive exemplary care. Our dedication is centered on crafting a solution that not only addresses current demands but also proactively adapts to the future developments in the constantly progressing healthcare sector.
 
+# Code Style
+
+To maintain the quality and readability of our code, we adhere to a set of coding standards and style guidelines. Our code style choices are designed to ensure consistency across the project and to make our code as intuitive and accessible as possible to new contributors.
+
+### Key Guidelines:
+
+- **Indentation**: We use spaces for indentation and maintain a consistent level of indentation throughout our codebase. For most of our files, we use 2-space indentation.
+
+- **Naming Conventions**: Variable and function names follow camelCase notation. For constants, we use UPPER_SNAKE_CASE. Class names are written in PascalCase.
+
+- **Comments and Documentation**: Code is adequately commented to explain complex logic or decisions. Comments are concise and relevant. We also use JSDoc (or relevant documentation tool) for function and class documentation.
+
+- **Code Linting**: We use [ESLint](https://eslint.org/) for JavaScript linting to ensure our code meets the best practices and standards.
+
+- **Code Formatting**: [Prettier](https://prettier.io/) is used for code formatting.
+
+- **Testing Conventions**: Tests are written for new features and bug fixes. We aim for high test coverage and meaningful test cases.
+
+- **Pull Request Process**: All code changes are submitted through pull requests. PRs require review and approval from the team before merging.
+
+
+We appreciate your adherence to these guidelines, as it helps to keep our codebase clean, organized, and accessible to everyone!
 
 # Screenshots
 
