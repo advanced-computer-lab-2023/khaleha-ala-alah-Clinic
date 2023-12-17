@@ -12,7 +12,7 @@ import searchdoctor from "../Images/searchdoctor.png";
 import viewfm from "../Images/fammember.png";
 import healthpackages from "../Images/packages.png";
 import chatdoctor from "../Images/chat.png";
-
+import WalletImage from "../Images/wallet.png";
 import ImageCarousel from "../Elements/ImageCarousel";
 import ServiceItem from "../Elements/ServiceItem";
 import NavBar from "../Elements/NavBar";
@@ -128,6 +128,7 @@ export const PatientHome = () => {
 
   return (
     <div className={styles.patientHomeContainer}>
+        
       {isLoading ? (
         <div>
           <LoadingPage />
@@ -142,7 +143,12 @@ export const PatientHome = () => {
             <div className={styles.allContainers}>
                      
               <div className={styles.carouselContainer}>
-               <h1 style={{ padding: '20px' }}>Wallet amount: {patientwalletamount}</h1>
+      <div className={styles.walletContainer}>
+            <img src={WalletImage} alt="Wallet" style={{ width: "35px" }} />
+            <p className={styles.walletValue}>
+              EGP {patientwalletamount}
+            </p>
+          </div>
                 <ImageCarousel slides={slides} />
                 
               </div>
