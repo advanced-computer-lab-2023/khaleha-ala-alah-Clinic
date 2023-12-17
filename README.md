@@ -10,6 +10,33 @@ We identified the myriad of challenges confronted by administrators, patients, a
 
 With the development of the Khaleeha Ala Allah platform, we endeavor to play a pivotal role in the advancement of clinic management. This initiative is geared towards empowering medical professionals and ensuring that patients receive exemplary care. Our dedication is centered on crafting a solution that not only addresses current demands but also proactively adapts to the future developments in the constantly progressing healthcare sector.
 
+# Build Status
+
+In the iterative and dynamic process of software development, encountering bugs is as certain as the code itself. No matter how rigorous the development cycle, some issues often surface as a natural byproduct of innovation and complexity. This project, while meticulously crafted, is no exception. In our commitment to transparency and continuous improvement, we acknowledge these challenges openly.
+
+Below, we document known issues that have emerged in our build process. This candid disclosure serves not only as an informational resource for users and contributors but also as a roadmap for future enhancements. Each listed bug is a milestone on our journey towards refinement, and with each update, we aim to resolve these issues, enhancing the robustness and reliability of our system.
+
+By sharing our current build status, including any identified bugs, we invite our community to contribute to the project’s progress. Whether through problem-solving, submitting patches, or offering workaround strategies, every contribution is a valuable step towards collective growth.
+
+Let's navigate these challenges together, and in doing so, elevate the quality of the Khaleeha Ala Allah Clinic Management System to new heights.
+
+**1- Slow Loading of Follow-Up Scheduler**
+
+We've observed that the Follow-Up Scheduler feature is experiencing longer than expected load times. This issue is currently under investigation by our development team. The performance lag may affect the user experience by causing delays when trying to schedule follow-up appointments. We are prioritizing this issue to identify the root cause—be it server-side processing, database queries, or frontend rendering—and implement the appropriate optimizations. Our goal is to resolve this promptly to restore the scheduler's responsiveness and maintain the smooth operation of the clinic management system. We appreciate your patience and understanding as we work to enhance system performance.
+
+**2-Navigation Loop Between Payment and Package Selection Pages**
+
+We have detected a navigation flaw within the system that causes an infinite loop between the payment page and the package selection page. Users experiencing this issue report that after selecting a package and proceeding to the payment page, pressing the back button does not return them to the expected previous state. Instead, it leads back to the payment page, creating a loop between these two pages.
+
+This looping behavior suggests a problem with the navigation stack or the state management in our web application. It is likely that the 'back' action is being incorrectly handled, causing the application to revert to an unintended state.
+
+Our development team is delving into this with high urgency to correct the state transitions and ensure that the 'back' navigation functions as intended, taking the user to the logically previous page without unexpected redirects. We are examining both client-side routing and server-side session management to diagnose and address the root cause.
+
+We understand the frustration that such an issue can cause and are taking immediate steps to resolve it. In the interim, we recommend that users avoid using the browser's back button on the payment and package selection pages and instead utilize the in-app navigation controls provided.
+
+Your patience and cooperation are greatly appreciated while we implement a permanent fix to enhance the system's navigational integrity.
+
+
 # Code Style
 
 To maintain the quality and readability of our code, we adhere to a set of coding standards and style guidelines. Our code style choices are designed to ensure consistency across the project and to make our code as intuitive and accessible as possible to new contributors.
