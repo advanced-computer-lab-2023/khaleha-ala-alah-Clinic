@@ -7,29 +7,33 @@ import { CalendarOutlined, FilterOutlined } from "@ant-design/icons"; // Import 
 import Header from "../Elements/HeaderDoctor.jsx";
 import Table from "./table.jsx";
 import { useNavigate } from "react-router-dom";
-import { Input, Button, Space, Menu } from "antd";
+import { Input, Button, Space, Menu, Dropdown } from "antd";
 import { SearchOutlined } from "@ant-design/icons"; // Import SearchOutlined
 import Separator from "./separator";
-import RescheduleOverlay from "./rescheduleAppointment.jsx"
+import RescheduleOverlay from "./rescheduleAppointment.jsx";
+import ConfirmationDialog from "../Elements/ConfirmationDialog.jsx";
+import axios from "axios";
+import OptionIcon from "../Images/optionsIcon.png";
+
+//import { set } from "../../../server/app.js";
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
-
-const DoctorAppointments = ({doctorId}) => {
+const DoctorAppointments = ({ doctorId }) => {
   const [appointments, setAppointments] = useState([]);
   const [dateFilter, setDateFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [error, setError] = useState(null);
-  const [patients,setPatients]= useState([]);  
+  const [patients, setPatients] = useState([]);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
   const [loading, setLoading] = useState(true); // Add loading state
   const [selectedappointment, setSelectedAppointment] = useState(null);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [showOverlay, setShowOverlay] = useState(false);
   const [currDoctor, setCurrentDoctor] = useState(null);
+  const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
 
-  
   const getPatientName = (appointment) => {
     const patient = patients.find(
       (patient) => patient.userID === appointment.PatientID
@@ -42,7 +46,33 @@ const DoctorAppointments = ({doctorId}) => {
     );
     return patient ? patient.email : "N/A";
   };
-  
+
+  const handleCancel = async () => {
+    console.log(selectedappointment._id);
+    try {
+      // const formattedDateTime1 = selectedDateTime.replace("T", " ");
+      // console.log(formattedDateTime1);
+      console.log("ALO");
+      const response = await axios.patch(
+        `http://localhost:4000/doctors/cancelAppointment/${selectedappointment._id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json", // Specify the content type if needed
+          },
+        }
+      );
+
+      //setStatusMessage(response.data.message);
+    } catch (error) {
+      //setStatusMessage(`Error scheduling follow-up: ${error.message}`);
+      console.log(error);
+    } finally {
+      setShowConfirmationDialog(false);
+    }
+  };
+
   const getPatientAge = (appointment) => {
     const patient = patients.find(
       (patient) => patient.userID === appointment.PatientID
@@ -66,6 +96,7 @@ const DoctorAppointments = ({doctorId}) => {
 
   const appointmentsforDoctor = filteredAppointments.map(
     (appointment, index) => ({
+      appointment: appointment,
       date: new Date(appointment.timedAt).toDateString(),
       patient: getPatientName(appointment),
       email: getPatientEmail(appointment),
@@ -75,51 +106,44 @@ const DoctorAppointments = ({doctorId}) => {
     })
   );
 
-  
   useEffect(() => {
-
     fetchAppointments();
 
     fetch("http://localhost:4000/doctors/getCurrDoc", {
-        method: "GET",
-        headers: {
-          authorization: "Bearer " + localStorage.getItem("token"),
-        },
+      method: "GET",
+      headers: {
+        authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
       })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log(data.data.doctor);
-          setCurrentDoctor(data.data.doctor);
-        })
-        .catch((error) => {
-          console.error("There was a problem with the fetch operation:", error);
-        });
-
+      .then((data) => {
+        console.log(data.data.doctor);
+        setCurrentDoctor(data.data.doctor);
+      })
+      .catch((error) => {
+        console.error("There was a problem with the fetch operation:", error);
+      });
   }, [doctorId]);
 
   // Function to fetch all appointments of a doctor
   const fetchAppointments = async () => {
     try {
-
-      const response2 = await fetch(
-        "http://localhost:4000/doctors",
-        {
-          method: "GET",
-          headers: {
-            authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      );
+      const response2 = await fetch("http://localhost:4000/doctors", {
+        method: "GET",
+        headers: {
+          authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
       if (!response2.ok) {
         console.log("laa");
         throw new Error("Failed to fetch appointments");
       }
-      console.log("ewurew")
+      console.log("ewurew");
       const data2 = await response2.json();
       console.log(data2.patients);
       setPatients(data2.patients);
@@ -145,8 +169,16 @@ const DoctorAppointments = ({doctorId}) => {
       setError(err.message);
     }
   };
+  const handleAccept = (appointment) => {
+    // Handle logic for accepting the appointment
+    console.log(`Accept appointment with ID ${appointment.id}`);
+  };
 
-  
+  const handleRevoke = (appointment) => {
+    // Handle logic for revoking the appointment
+    console.log(`Revoke appointment with ID ${appointment.id}`);
+  };
+
   const appointmentsColumns = [
     // Define columns similar to PatientsTable
     // Example column:
@@ -189,48 +221,56 @@ const DoctorAppointments = ({doctorId}) => {
       className: styles.tableHeader, // Apply custom header style
     },
     {
-          title: "Action",
-          key: "action",
-          className: styles.tableHeader,
-          render: (text, record) => (
-            <div>
-              <button
-                className={styles.doctorActionButton + " " + styles.approveButton}
-                value={"approve"}
-                onClick={() => {
-                  setSelectedPatient(record.patient);
-                  setSelectedAppointment(record.appointment);
-                  setShowOverlay(true);
-                }}
-              >
-                Reschedule Appointment
-              </button>
-            </div>
-          ),
-        },
-      ];
+      title: "Patient Mobile",
+      dataIndex: "mobilenum",
+      key: "mobilenum",
+      className: styles.tableHeader, // Apply custom header style
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (text, record) =>
+        record.appointment.isPending ? (
+          <>
+            <Button onClick={() => handleAccept(appointments)}>Accept</Button>
+            <Button onClick={() => handleRevoke(appointments)}>Revoke</Button>
+          </>
+        ) : null,
+    },
+    {
+      title: "Action",
+      key: "action",
+      className: styles.tableHeader,
+      render: (text, record) => (
+        <div>
+          <button
+            className={styles.doctorActionButton + " " + styles.approveButton}
+            value={"approve"}
+            onClick={() => {
+              setSelectedPatient(record.patient);
+              setSelectedAppointment(record.appointment);
+              setShowOverlay(true);
+            }}
+          >
+            Reschedule Appointment
+          </button>
 
-  // Function to filter appointments based on date and status
-  // const filterAppointments = () => {
-  //   const filtered = appointments.filter((appointment) => {
-  //     const appointmentDate = new Date(appointment.timedAt)
-  //       .toISOString()
-  //       .split("T")[0];
-  //     const status = appointment.timedAt > Date.now() ? "pending" : "confirmed";
-
-  //     const dateFilterPassed =
-  //       dateFilter === "" || appointmentDate === dateFilter;
-  //     const statusFilterPassed =
-  //       statusFilter === "all" ||
-  //       status === statusFilter ||
-  //       (statusFilter === "rescheduled" && appointment.isRescheduled) ||
-  //       (statusFilter === "cancelled" && appointment.isCancelled);
-
-  //     return dateFilterPassed && statusFilterPassed;
-  //   });
-
-  //   return filtered;
-  // };
+          <button
+            className={styles.doctorActionButton + " " + styles.approveButton}
+            value={"approve"}
+            onClick={() => {
+              setSelectedPatient(record.patient);
+              setSelectedAppointment(record.appointment);
+              //setShowOverlay(true);
+              setShowConfirmationDialog(true);
+            }}
+          >
+            Cancel Appointment
+          </button>
+        </div>
+      ),
+    },
+  ];
 
   const filterAppointments = () => {
     const filteredAppointments = appointments.filter((appointment) => {
@@ -281,43 +321,7 @@ const DoctorAppointments = ({doctorId}) => {
     setStatusFilter(value);
   };
 
-
   return (
-    // <div>
-    //   <h2>Doctor Appointments</h2>
-    //   {error && <p>Error: {error}</p>}
-    //   <div>
-    //     <label>Date Filter:</label>
-    //     <input
-    //       type="date"
-    //       id="dateFilter"
-    //       value={dateFilter}
-    //       onChange={(e) => setDateFilter(e.target.value)}
-    //     />
-    //     <label>Status Filter:</label>
-    //     <select
-    //       id="statusFilter"
-    //       value={statusFilter}
-    //       onChange={(e) => setStatusFilter(e.target.value)}
-    //     >
-    //       <option value="all">All</option>
-    //       <option value="confirmed">Confirmed</option>
-    //       <option value="pending">Pending</option>
-    //       <option value="rescheduled">Rescheduled</option>
-    //       <option value="cancelled">Cancelled</option>
-    //     </select>
-    //   </div>
-    //   <ul>
-    //     {filterAppointments().map((appointment) => (
-    //       <li key={appointment.id}>
-    //         {new Date(appointment.timedAt).toLocaleString()}:{" "}
-    //         {appointment.status}
-    //       </li>
-    //     ))}
-    //   </ul>
-    // </div>
-
-    
     <div className={styles.Container}>
       {loading ? (
         <LoadingPage />
@@ -328,64 +332,73 @@ const DoctorAppointments = ({doctorId}) => {
             selectedSection={"appointments"}
             selectedSubSection="viewAppointments"
           />
-          <div style={{ marginTop: "100px" }}> 
-          <h1> View My Appointments </h1>
-          <div>
-          <Separator/>
-            {/* <h1 style={{ marginTop: "34px", marginBottom: "10px" }}>
+          <div style={{ marginTop: "100px" }}>
+            <h1> View My Appointments </h1>
+            <div>
+              <Separator />
+              {/* <h1 style={{ marginTop: "34px", marginBottom: "10px" }}>
               View Your Appointments
             </h1> */}
-            <div className={styles.Filters}>
-              <RangePicker
-                allowClear
-                value={dateFilter}
-                onChange={handleDateFilterChange}
-                style={{ marginRight: "16px" }}
-                suffixIcon={<CalendarOutlined />}
-              />
-              <Select
-                value={statusFilter}
-                onChange={handleStatusFilterChange}
-                style={{ width: "150px" }}
-                suffixIcon={<FilterOutlined />}
-              >
-                <Option value="all">All</Option>
-                <Option value="confirmed">Finished</Option>
-                <Option value="pending">Pending</Option>
-                <Option value="rescheduled">Rescheduled</Option>
-                <Option value="cancelled">Cancelled</Option>
-              </Select>
-              <Button
-                type="primary"
-                onClick={filterAppointments}
-                icon={<SearchOutlined />}
-                style={{marginLeft:'1rem'}}
-              >
-                Filter
-              </Button>
-            </div>
-            <div>
-              <div style={{ width: 92 + "vw", marginTop: "10px" }}>
-                <Table
-                  data={appointmentsforDoctor}
-                  columns={appointmentsColumns}
+              <div className={styles.Filters}>
+                <RangePicker
+                  allowClear
+                  value={dateFilter}
+                  onChange={handleDateFilterChange}
+                  style={{ marginRight: "16px" }}
+                  suffixIcon={<CalendarOutlined />}
                 />
+                <Select
+                  value={statusFilter}
+                  onChange={handleStatusFilterChange}
+                  style={{ width: "150px" }}
+                  suffixIcon={<FilterOutlined />}
+                >
+                  <Option value="all">All</Option>
+                  <Option value="confirmed">Finished</Option>
+                  <Option value="pending">Pending</Option>
+                  <Option value="rescheduled">Rescheduled</Option>
+                  <Option value="cancelled">Cancelled</Option>
+                </Select>
+                <Button
+                  type="primary"
+                  onClick={filterAppointments}
+                  icon={<SearchOutlined />}
+                  style={{ marginLeft: "1rem" }}
+                >
+                  Filter
+                </Button>
+              </div>
+              <div>
+                <div style={{ width: 92 + "vw", marginTop: "10px" }}>
+                  <Table
+                    data={appointmentsforDoctor}
+                    columns={appointmentsColumns}
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
-        </div>
       )}
 
       {showOverlay && (
-              <RescheduleOverlay
-                onCancel={() => setShowOverlay(false)}
-                cancelLabel="Close"
-                patient={selectedPatient}
-                appointment={selectedappointment}
-                doctor={currDoctor}
-              />
-            )}
+        <RescheduleOverlay
+          onCancel={() => setShowOverlay(false)}
+          cancelLabel="Close"
+          patient={selectedPatient}
+          appointment={selectedappointment}
+          doctor={currDoctor}
+        />
+      )}
+      {showConfirmationDialog && (
+        <ConfirmationDialog
+          onCancel={() => setShowConfirmationDialog(false)}
+          cancelLabel="Close"
+          message={`Are you sure you want to cancel this appointment?`}
+          onConfirm={handleCancel}
+          confirmLabel="Cancel Appointment"
+        />
+      )}
     </div>
   );
 };

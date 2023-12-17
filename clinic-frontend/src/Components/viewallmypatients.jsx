@@ -10,8 +10,8 @@ import Header from "../Elements/HeaderDoctor.jsx";
 import Separator from "./separator.jsx";
 import DrViewPrescriptions from "./drViewPrescriptions.jsx";
 import AddPrescription from "./addPrescription.jsx";
-import OptionIcon from "../Images/optionsIcon.png"
-import { Dropdown, Menu } from 'antd';
+import OptionIcon from "../Images/optionsIcon.png";
+import { Dropdown, Menu } from "antd";
 
 const DoctorPatients = ({ doctorId }) => {
   const navigate = useNavigate();
@@ -30,7 +30,27 @@ const DoctorPatients = ({ doctorId }) => {
   const [addPrescriptions, setAddPrescriptions] = useState(false);
   const [searchQuery, setSearchQuery] = useState(""); // State to store search query
   const [showAppointmentOverlay, setShowAppointmentOverlay] = useState(false);
+  const [availableAppointments, setAvailableAppointments] = useState([]);
 
+  const fetchDoctorAppointments = async (doctorID) => {
+    fetch(`http://localhost:4000/patients/doctorAppointments/${doctorID}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("after fetching available appointments");
+        if (data.status === "success") {
+          console.log(data.data.availableAppointments);
+          setAvailableAppointments(data.data.availableAppointments);
+        } else {
+          console.error("Failed to fetch available appointments");
+        }
+        setIsLoading(false); // Set loading to false when data is retrieved
+      });
+  };
   useEffect(() => {
     const fetchDoctorData = async () => {
       try {
@@ -96,6 +116,7 @@ const DoctorPatients = ({ doctorId }) => {
         .then((data) => {
           console.log(data.data.doctor);
           setCurrentDoctor(data.data.doctor);
+          fetchDoctorAppointments(data.data.doctor.userID);
         })
         .catch((error) => {
           console.error("There was a problem with the fetch operation:", error);
@@ -146,7 +167,6 @@ const DoctorPatients = ({ doctorId }) => {
     setFilteredPatients(upcomingPatients);
   };
 
-  
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchQuery(value);
@@ -205,105 +225,122 @@ const DoctorPatients = ({ doctorId }) => {
       key: "gender",
       className: styles.tableHeader,
     },
-  //   {
-  //     title: "Action",
-  //     key: "action",
-  //     className: styles.tableHeader,
-  //     render: (text, record) => (
-  //       <div>
-  //         <button
-  //           className={styles.doctorActionButton + " " + styles.approveButton}
-  //           value={"approve"}
-  //           onClick={() => {
-  //             setSelectedPatient(record.patient);
-  //             setshowHealthRecords(true);
-  //           }}
-  //         >
-  //           Manage Health Record
-  //         </button>
-  //         <button
-  //           className={styles.doctorActionButton + " " + styles.rejectButton}
-  //           value={"reject"}
-  //           onClick={() => {
-  //             setSelectedPatient(record.patient);
-  //             setShowOverlay(true);
-  //           }}
-  //         >
-  //           Schedule a follow-up
-  //         </button>
-  //         <button
-  //           className={styles.doctorActionButton + " " + styles.rejectButton}
-  //           value={"reject"}
-  //           onClick={() => {
-  //             setSelectedPatient(record.patient);
-  //             setShowPrescriptions(true);
-  //           }}
-  //         >
-  //           View Prescriptions
-  //         </button>
-  //         <button
-  //           className={styles.doctorActionButton + " " + styles.rejectButton}
-  //           value={"reject"}
-  //           onClick={() => {
-  //             setSelectedPatient(record.patient);
-  //             setAddPrescriptions(true);
-  //           }}
-  //         >
-  //           Add Prescription
-  //         </button>
-  //       </div>
-  //     ),
-  //   },
-  // ];
-  {
-    title: "Action",
-    key: "action",
-    className: styles.tableHeader,
-    render: (text, record) => {
-      const menu = (
-        <Menu>
-          <Menu.Item key="1" onClick={() => {
-            setSelectedPatient(record.patient);
-            setshowHealthRecords(true);
-          }}>
-            Manage Health Record
-          </Menu.Item>
-          <Menu.Item key="2" onClick={() => {
-            setSelectedPatient(record.patient);
-            setShowOverlay(true);
-          }}>
-            Schedule a follow-up
-          </Menu.Item>
-          <Menu.Item key="3" onClick={() => {
-            setSelectedPatient(record.patient);
-            setShowPrescriptions(true);
-          }}>
-            View Prescriptions
-          </Menu.Item>
-          <Menu.Item key="4" onClick={() => {
-            setSelectedPatient(record.patient);
-            setAddPrescriptions(true);
-          }}>
-            Add Prescription
-          </Menu.Item>
-        </Menu>
-      );
+    //   {
+    //     title: "Action",
+    //     key: "action",
+    //     className: styles.tableHeader,
+    //     render: (text, record) => (
+    //       <div>
+    //         <button
+    //           className={styles.doctorActionButton + " " + styles.approveButton}
+    //           value={"approve"}
+    //           onClick={() => {
+    //             setSelectedPatient(record.patient);
+    //             setshowHealthRecords(true);
+    //           }}
+    //         >
+    //           Manage Health Record
+    //         </button>
+    //         <button
+    //           className={styles.doctorActionButton + " " + styles.rejectButton}
+    //           value={"reject"}
+    //           onClick={() => {
+    //             setSelectedPatient(record.patient);
+    //             setShowOverlay(true);
+    //           }}
+    //         >
+    //           Schedule a follow-up
+    //         </button>
+    //         <button
+    //           className={styles.doctorActionButton + " " + styles.rejectButton}
+    //           value={"reject"}
+    //           onClick={() => {
+    //             setSelectedPatient(record.patient);
+    //             setShowPrescriptions(true);
+    //           }}
+    //         >
+    //           View Prescriptions
+    //         </button>
+    //         <button
+    //           className={styles.doctorActionButton + " " + styles.rejectButton}
+    //           value={"reject"}
+    //           onClick={() => {
+    //             setSelectedPatient(record.patient);
+    //             setAddPrescriptions(true);
+    //           }}
+    //         >
+    //           Add Prescription
+    //         </button>
+    //       </div>
+    //     ),
+    //   },
+    // ];
+    {
+      title: "Action",
+      key: "action",
+      className: styles.tableHeader,
+      render: (text, record) => {
+        const menu = (
+          <Menu>
+            <Menu.Item
+              key="1"
+              onClick={() => {
+                setSelectedPatient(record.patient);
+                setshowHealthRecords(true);
+              }}
+            >
+              Manage Health Record
+            </Menu.Item>
+            <Menu.Item
+              key="2"
+              onClick={() => {
+                setSelectedPatient(record.patient);
+                setShowOverlay(true);
+              }}
+            >
+              Schedule a follow-up
+            </Menu.Item>
+            <Menu.Item
+              key="3"
+              onClick={() => {
+                setSelectedPatient(record.patient);
+                setShowPrescriptions(true);
+              }}
+            >
+              View Prescriptions
+            </Menu.Item>
+            <Menu.Item
+              key="4"
+              onClick={() => {
+                setSelectedPatient(record.patient);
+                setAddPrescriptions(true);
+              }}
+            >
+              Add Prescription
+            </Menu.Item>
+          </Menu>
+        );
 
-      return (
-        <Dropdown overlay={menu} trigger={['click']}>
-          <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-            <img 
-            style={{
-              width:"30px",
-              height:"30px"
-            }}
-            src={OptionIcon} alt="Options" />
-          </a>
-        </Dropdown>
-      );
+        return (
+          <Dropdown overlay={menu} trigger={["click"]}>
+            <a
+              className="ant-dropdown-link"
+              onClick={(e) => e.preventDefault()}
+            >
+              <img
+                style={{
+                  width: "30px",
+                  height: "30px",
+                }}
+                src={OptionIcon}
+                alt="Options"
+              />
+            </a>
+          </Dropdown>
+        );
+      },
     },
-  },
-];
+  ];
 
   return (
     /*
@@ -358,14 +395,14 @@ const DoctorPatients = ({ doctorId }) => {
           <NavBar />
           <h1>View all my Patients</h1>
           <div>
-          <input
-            type="text"
-            className={styles.searchInput} // Applied CSS class
-            placeholder="Search by username..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
-        </div>
+            <input
+              type="text"
+              className={styles.searchInput} // Applied CSS class
+              placeholder="Search by username..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+          </div>
           <Separator />
           <div className={styles.viewallpatients}>
             <div className={styles.tableWrapper}>
@@ -381,7 +418,7 @@ const DoctorPatients = ({ doctorId }) => {
               />
             )}
 
-             {/* {showAppointmentOverlay && (
+            {/* {showAppointmentOverlay && (
               <RescheduleOverlay
                 onCancel={() => setShowAppointmentOverlay(false)}
                 cancelLabel="Close"
@@ -406,12 +443,12 @@ const DoctorPatients = ({ doctorId }) => {
               />
             )}
             {addPrescriptions && (
-            <AddPrescription 
-            patient={selectedPatient} 
-            onCancel={() => {
-              setAddPrescriptions(false);
-            }}
-            /> 
+              <AddPrescription
+                patient={selectedPatient}
+                onCancel={() => {
+                  setAddPrescriptions(false);
+                }}
+              />
             )}
           </div>
         </div>

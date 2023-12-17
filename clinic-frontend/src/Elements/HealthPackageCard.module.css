@@ -8,7 +8,7 @@
   text-align: center;
   align-items: center;
   justify-content: center;
-  height: 450px;
+  height: 350px;
   width: 350px; /* Responsive width */
   max-width: 450px; /* Maximum width */
   margin: 0 auto; /* Center card */
@@ -91,10 +91,18 @@
   display: flex !important;
   align-items: center !important; /* Aligns the icon and text vertically */
   gap: 10px !important; /* Adds space between the icon and text */
+  margin-top: -10px;
 }
 
 .iconStylePack {
   margin-top: 12px !important;
   width: 20px !important; /* Adjust the size of the icon */
   height: 20px !important; /* Adjust the height of the icon */
+}
+.lastDetailText{
+  font-size: 35px;
+  margin-top: 15px;
+  margin-bottom: 0px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2752bd;
 }

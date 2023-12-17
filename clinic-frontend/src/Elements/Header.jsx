@@ -12,6 +12,7 @@ import { BellOutlined, MessageOutlined } from "@ant-design/icons";
 import { Badge } from "antd";
 import axios from "axios";
 import ToggleButton from "../Components/ToggleButton";
+import WalletImage from "../Images/wallet.png";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const Header = () => {
   const socket = useWebSocket();
   const initialized = useRef(false);
   const { role } = useAuth();
+  const [currentPatient, setCurrentPatient] = useState(null);
 
   useEffect(() => {
     axios
@@ -51,6 +53,38 @@ const Header = () => {
       .catch((err) => {
         console.log(err);
       });
+    const fetchCurrentPatient = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:4000/patients/currentPatient`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        const data = await response.json();
+        if (response.ok) {
+          console.log("Current patient fetched successfully:");
+          console.log(data);
+          return data;
+        } else {
+          console.error("Failed to fetch current patient:");
+          console.error(data);
+          return null;
+        }
+      } catch (error) {
+        console.error("Failed to fetch current patient:");
+        console.error(error);
+        return null;
+      }
+    };
+    fetchCurrentPatient().then((data) => {
+      console.log(data.data.user.walletValue);
+      setCurrentPatient(data.data.user);
+    });
   }, []);
   useEffect(() => {
     if (!initialized.current) {
@@ -119,7 +153,8 @@ const Header = () => {
   };
 
   const toggleDropdownforNotification = () => {
-    setDropdownVisibleAlert(!dropdownVisibleAlert);
+    // setDropdownVisibleAlert(!dropdownVisibleAlert);
+    navigate("/notification");
   };
 
   const handleLogout = () => {
@@ -147,6 +182,12 @@ const Header = () => {
         </div>
         <ToggleButton />
         <div className={styles.navbarRight}>
+          <div className={styles.walletContainer}>
+            <img src={WalletImage} alt="Wallet" style={{ width: "35px" }} />
+            <p className={styles.walletValue}>
+              EGP {currentPatient ? currentPatient.walletValue : "Loading ..."}
+            </p>
+          </div>
           <a
             href="#messages"
             className={styles.navbarLink}
@@ -184,13 +225,13 @@ const Header = () => {
             </span>
             <img src={alertIcon} alt="Alerts" />
           </a>
-          {dropdownVisibleAlert && (
+          {/* {dropdownVisibleAlert && (
             <div className={styles.dropdownMenu}>
               <button className={styles.dropdownItem}>Notification 1</button>
               <button className={styles.dropdownItem}>Notification 2</button>
               <button className={styles.dropdownItem}>Notification 3</button>
             </div>
-          )}
+          )} */}
           <a
             href="#settings"
             className={styles.navbarLink}

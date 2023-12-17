@@ -6,7 +6,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 const backendUrl = "http://localhost:4000";
 
-const FollowUpScheduler = ({ onCancel, patient, doctor , appointment}) => {
+const FollowUpScheduler = ({ onCancel, patient, doctor, appointment }) => {
   //const [patientID, setPatientID] = useState("");
   const [selectedDateTime, setSelectedDateTime] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
@@ -90,12 +90,9 @@ const FollowUpScheduler = ({ onCancel, patient, doctor , appointment}) => {
       // const formattedDateTime1 = selectedDateTime.replace("T", " ");
       // console.log(formattedDateTime1);
       console.log(selectedAppointment);
-      console.log(patientID);
-      console.log(convertToISOFormat(selectedAppointment));
-      let formattedDateTime = selectedAppointment;
-      console.log(formattedDateTime);
-      const response = await axios.post(
-        `http://localhost:4000/doctors/scheduleFollowUpPatient/${patientID}/${formattedDateTime}`,
+      console.log("ALO");
+      const response = await axios.patch(
+        `http://localhost:4000/doctors/rescheduleAppointmentPatient/${appointment._id}/${selectedAppointment}`,
         {},
         {
           headers: {
@@ -111,7 +108,6 @@ const FollowUpScheduler = ({ onCancel, patient, doctor , appointment}) => {
       console.log(error);
     }
   };
-
 
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -179,10 +175,14 @@ const FollowUpScheduler = ({ onCancel, patient, doctor , appointment}) => {
           )}
           <div className={styles.pagination}>{renderPageNumbers}</div>
 
-          <button className={styles.buttonOfFollowUp} type="submit" onClick = {(e) => {
-            e.preventDefault();
-            //scheduleFollowUp();
-          }}>
+          <button
+            className={styles.buttonOfFollowUp}
+            type="submit"
+            onClick={(e) => {
+              e.preventDefault();
+              scheduleFollowUp();
+            }}
+          >
             Reschedule
           </button>
         </form>

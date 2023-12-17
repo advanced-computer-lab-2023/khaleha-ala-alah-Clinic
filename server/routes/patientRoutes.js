@@ -1,6 +1,7 @@
 const { CheckAuth } = require("../middlewares/auth");
 const express = require("express");
 const router = express.Router();
+const {upload}=require("../server");
 
 const patientController = require("./../controllers/patientController");
 const Prescriptions = require("./../models/presecriptionsModel.js");
@@ -168,4 +169,13 @@ router.post(
   CheckAuth,
   patientController.followUpRequestAppointment
 );
+router.post(
+  "/viewHealtRecords",
+  CheckAuth,
+  patientController.viewMyHealthRecords
+);
+router.post("/addPatientHealthRecord",CheckAuth,upload.array("files",3), patientController.addPatientHealthRecord);
+router.post("/deletePatientHealthRecord",CheckAuth ,patientController.deletePatientHealthRecord);
+
+
 module.exports = router;
