@@ -448,6 +448,146 @@ the last option which is the log out will render u to the main login page
 
 -Feedback and Surveys: Provide feedback on their healthcare experience.
 
+ # Code Examples
+
+**Example 1 (Add Prescription):**
+
+```javascript
+exports.addPrescription = async function (req, res) {
+  try {
+    const { patient, medications } = req.body;
+    const doctor = await Doctor.findOne({ userID: req.user._id });
+    // Read the HTML template
+    const templatePath = path.join(
+      __dirname,
+      "..",
+      "utilities",
+      "prescription-template.html"
+    );
+    const htmlTemplate = fs.readFileSync(templatePath, "utf-8");
+    // Create a Handlebars template function
+    const templateFunction = handlebars.compile(htmlTemplate);
+    // Replace placeholders with actual data
+    const filledTemplate = templateFunction({
+      doctorName: doctor.name,
+      doctorEmail: doctor.email,
+      doctorAffiliation: doctor.affiliation,
+      doctorSpeciality: doctor.speciality,
+
+      patientName: patient.name,
+      patientGender: patient.gender,
+      patientDateOfBirth: moment(patient.dateOfBirth).format("DD/MM/YYYY"),
+
+      issuedDate: new Date().toLocaleDateString("en-US", {}),
+
+      medicationsList: medications,
+    });
+    // Options for pdf creation
+    const pdfOptions = {
+      format: "Letter",
+    };
+    // Convert HTML to PDF
+    pdf.create(filledTemplate, pdfOptions).toBuffer(async (err, pdfBuffer) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({
+          status: "error",
+          message: err.message,
+        });
+      } else {
+        // Create a write stream for GridFS
+        const writeStream = gfs.openUploadStream("prescription.pdf", {
+          contentType: "application/pdf",
+        });
+
+        writeStream.on("finish", () => {
+          console.log("File uploaded to GridFS");
+        });
+
+        // Pipe the PDF buffer to the write stream
+        const bufferStream = new stream.PassThrough();
+        bufferStream.end(pdfBuffer);
+        await bufferStream.pipe(writeStream);
+
+        // Save the prescription to the database
+        const prescription = new Prescription({
+          doctorID: req.user._id,
+          patientID: patient.userID,
+          medications,
+          pdfFileID: writeStream.id,
+        });
+        await prescription.save();
+
+        // Set the response headers
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader(
+          "Content-Disposition",
+          "inline; filename=prescription.pdf"
+        );
+
+        // Send the PDF buffer as the response
+        res.status(200).send(pdfBuffer);
+      }
+    });
+  } catch (err) {
+    console.error("Server error:", err);
+    res.status(500).json({
+      status: "error",
+      message: "Internal server error.",
+    });
+  }
+};
+
+```
+**Example 2 (View Patient Prescription):**
+
+```javascript
+exports.viewPatientPrescriptions = async function (req, res) {
+  try {
+    const { patient } = req.body;
+    const doctorID = req.user._id;
+    const prescriptions = await Prescription.find({
+      doctorID,
+      patientID: patient.userID,
+    });
+    const prescriptionsWithFiles = await Promise.all(
+      prescriptions.map(async (prescription) => {
+        if (prescription.pdfFileID) {
+          const file = await gfs
+            .find({ _id: prescription.pdfFileID })
+            .toArray();
+          const fileStream = gfs.openDownloadStream(prescription.pdfFileID);
+          const chunks = [];
+          return new Promise((resolve, reject) => {
+            fileStream.on("data", (chunk) => {
+              chunks.push(chunk);
+            });
+            fileStream.on("end", () => {
+              const fileData = Buffer.concat(chunks);
+              resolve({ ...prescription.toObject(), fileData });
+            });
+            fileStream.on("error", (error) => {
+              reject(error);
+            });
+          });
+        } else {
+          return prescription.toObject();
+        }
+      })
+    );
+    res.status(200).json({ prescriptions: prescriptionsWithFiles });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+};
+
+```
+.
+
 
 
 
