@@ -1,4 +1,3 @@
-
 # el7a2ni Clinc
 
 in this project we have a clinc reservation system .
