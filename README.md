@@ -673,7 +673,106 @@ JWT_SECRET=Khleeha-Ala-Allah
 
    The backend server should now be running and listening for requests.
 
+# API Refrences
 
+This section provides a detailed overview of the available API endpoints for our application. The API is structured around REST principles, delivering access to resources such as messages, conversations, admins, patients, doctors, and other entities. Authentication is required for most endpoints, ensuring secure access and operations.
+
+**Authentication**
+
+POST /login: User login
+POST /validateToken: Validate user token
+POST /verifyUser: Verify user account
+POST /changePassword: Change user password (Authenticated)
+POST /forgotPassword: User forgot password
+POST /resetPassword: Reset user password
+User Management
+POST /register: Register a new user
+GET /getUsers: Get all users (Authenticated)
+GET /getUserID: Get user ID (Authenticated)
+
+**Admin Management**
+
+GET /getCurrentAdmin: getCurrentUserAdmin(Authenticated)
+GET /pendingDoctors:viewPendingDoctors
+GET /getPending: getPendingDoctors
+POST /approveOrRejectDoctor:approveDoctor (Authenticated)
+GET / : getAllAdmins
+POST /  :addAdmin
+DELETE / :delAdminDoctorPatient
+
+**Patient Management**
+
+PUT /wallet-amount-update :updateWalletValue  (Authenticated)
+POST /save-stripe-token:payForPackage (Authenticated)
+GET /patientdoctors:getPatientDoctors  (Authenticated)
+GET /mydoctors:getMyDoctors    (Authenticated)
+PATCH /add-family-members:addFamilyMembers   (Authenticated)
+GET /currentPatient:getCurrentPatient  (Authenticated)
+GET /getAppointments:getAppointments (Authenticated)
+GET /persecriptions:getPatientPrescribtions     (Authenticated)
+PATCH /subscribeToPackage:subscribeToPackage  (Authenticated)
+PATCH /subscribeForFamilyMember:subscribeForFamilyMember (Authenticated)
+GET /getFamilyMembersPatients:getFamilyMemberPatients (Authenticated)
+PATCH /unsubscribeFromPackage:cancelHealthPackage  (Authenticated)
+PATCH /unsubscribeFromFamilyMember :cancelFamilyMemberPackage  (Authenticated)
+GET /viewCurrentHealthPackage:viewCurrentHealthPackage    (Authenticated)
+GET /viewFamilyMemberHealthPackages:viewFamilyMemberHealthPackages (Authenticated)
+PATCH /addFamilyMemberUsingEmail (Authenticated)
+PATCH /addFamilyMemberUsingMobileNumber (Authenticated)
+GET /getHealthCareDetails:getHealthCareDetails   (Authenticated)
+GET /getHealthCareDetailsForFamilyMember  (Authenticated)
+GET /:id :getPatients
+GET /getDoctorApp/:id : GetDoctorAppointments
+GET /doctorAppointments/:doctorID:.viewDoctorAppointmentsForMonth (Authenticated)
+POST /SelectAppointment/:doctorID/:selectedDateTime : .SelectAppointmentPatient (Authenticated)
+POST / SelectAppointmentFamilyMember/:doctorID/:selectedDateTime/:FamilyMember:SelectAppointmentFamilyMember (Authenticated)
+PATCH /rescheduleAppointment/:appointmentID/:newDateTime:rescheduleAppointment (Authenticated)
+PATCH /rescheduleFamilyMemberAppointment/:appointmentID/:newDateTime/:familyMemberID:.rescheduleFamilyMemberAppointment (Authenticated)
+GET /viewPrescriptions:viewPrescriptions (Authenticated)
+PATCH /cancelAppointment/:appointmentID" (Authenticated)
+POST /followUpRequest:followUpRequestAppointment  (Authenticated)
+
+**Doctor Management**
+
+GET /:getAppointmentsPatients   (Authenticated)
+GET /appointments:getAppointments   (Authenticated)
+PATCH /addAvaliableSlots:addAvailableSlots  (Authenticated)
+POST /scheduleFollowUpPatient/:patientID/:selectedDateTime  
+:scheduleFollowUpWithPatients (Authenticated)
+POST /addHealthRecord/:username:addNewHealthRecordForPatient
+ (Authenticated)
+PATCH /update-profile:updateDoctor    (Authenticated)
+PATCH /update-email :updateDoctorEmail   (Authenticated)
+GET /getPatients: getPatientsByDoctorId     (Authenticated)
+GET /allPrescriptions :getAllPrescriptions
+GET /:doctorId/:patientId/get-info : getPrescriptionsByDoctorAndPatient
+POST /addPrescription: .addPrescription  (Authenticated)
+POST /viewPrescriptions:viewPatientPrescriptions (Authenticated)
+POST /updatePrescription : .updatePatientPrescriptions (Authenticated)
+GET /viewAllDoctors:viewAllDoctors
+GET /getCurrDoc :getCurrDoc (Authenticated)
+PATCH /rescheduleAppointmentPatient/:appointmentID/:newDateTime :.rescheduleAppointmen
+(Authenticated)
+PATCH /cancelAppointment/:appointmentID:cancelAppointment  (Authenticated)
+PATCH /revokeFollowUpRequest:revokeFollowUpRequest (Authenticated)
+PATCH /acceptFollowUpRequest:acceptFollowUpRequest (Authenticated)
+
+**Package Management**
+
+GET / :getAllPackages 
+POST /createPackage:addPackage
+PUT /updatePackage:updatePackage
+DELETE /deletePackage:deletePackage
+Notfication Management
+GET /: getAllNotifications (Authenticated)
+POST /:  createNewNotfication (Authenticated)
+DELETE /:deleteNotfication  (Authenticated)
+
+**Message Management**
+
+GET /notifications :getMessagesNotifications   (Authenticated)
+POST / ,upload.single("file"),: .createMessage 
+GET /:conversationId:getM
 
 
 
