@@ -32,7 +32,7 @@ To maintain the quality and readability of our code, we adhere to a set of codin
 
 We appreciate your adherence to these guidelines, as it helps to keep our codebase clean, organized, and accessible to everyone!
 
-## Screenshots
+# Screenshots
 
 ![App Screenshot](https://drive.google.com/uc?id=1CBjkvhprH4C9PH24iuQLh9kpgnKy2xJX)
 
