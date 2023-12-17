@@ -6,10 +6,11 @@ import { faPaperclip, faTimes, faDownload, faMicrophone ,faPaperPlane,faTrashCan
 import FileViewer from 'react-file-viewer';
 import { ReactMic } from 'react-mic';
 import { faVideo } from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from '../AuthContext';
 
 
 
-const ChatInterface = ({ name, messages, onSendMessage, setMessages,loading,callUser }) => {
+const ChatInterface = ({ name,userRole, messages, onSendMessage, setMessages,loading,callUser }) => {
   const [message, setMessage] = useState('');
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
@@ -20,6 +21,8 @@ const ChatInterface = ({ name, messages, onSendMessage, setMessages,loading,call
   const [recordedBlob, setRecordedBlob] = useState(null);
   const cancel=useRef(false);
   const lastMessageRef = useRef(null);
+  const { role } = useAuth();
+
 
   useEffect(() => {
     if (lastMessageRef.current) {
@@ -208,7 +211,9 @@ const ChatInterface = ({ name, messages, onSendMessage, setMessages,loading,call
   return (
     <div className="chat-interface">
       <div className="chat-header">{name}
-      <FontAwesomeIcon icon={faVideo} onClick={callUser} />
+      {(role==='doctor'&& userRole===undefined)&&(
+        <FontAwesomeIcon icon={faVideo} onClick={callUser} />
+      )}
       </div>
       <div className={`message-list ${loading ? 'blurred-background' : ''}`}>
         {messages.map((message, index) => (
