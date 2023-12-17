@@ -3,16 +3,17 @@ import { useAuth } from '../AuthContext';
 import "./allUsers.css";
 
 const UserList = ({ users, onSelectUser }) => {
+  console.log(users);
   const { role } = useAuth();
 
   const pharmacistsAndPatients = role === 'doctor' ? users : [];
   const doctors = role === 'patient' ? users : [];
 
-  const hasPharmacists = pharmacistsAndPatients.some((user) => user.role === 'pharmasict');
+  const hasPharmacists = pharmacistsAndPatients.some((user) => user.role === 'pharmacist');
 
   return (
     <div className="user-list">
-      {(role === 'pharmacist' || role === 'doctor') && (
+      {(role === '"pharmacist"' || role === 'doctor') && (
         <>
           <h2>Patients</h2>
           {pharmacistsAndPatients
